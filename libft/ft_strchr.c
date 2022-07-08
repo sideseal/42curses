@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 20:06:28 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/08 16:11:39 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/08 17:30:53 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/08 18:08:43 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+char	*ft_strchr(const char *s, int c)
 {
+	size_t	slen;
 	size_t	i;
 
+	slen = 0;
+	while (s[slen] != '\0')
+		slen++;
 	i = 0;
-	while (i < n)
+	while (i <= slen)
 	{
-		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
+		if (s[i] == c)
+			return (((char *)s) + i);
 		i++;
 	}
-	return ((void *)dst);
+	return (NULL);
 }

@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 20:06:28 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/08 16:11:39 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/08 20:15:05 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/08 20:57:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
+	size_t	j;
 
+	if (needle[0] == '\0')
+		return ((char *)haystack);
 	i = 0;
-	while (i < n)
+	while (haystack[i] != '\0' && i < len)
 	{
-		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
+		j = 0;
+		while (haystack[i + j] == needle[j] && i + j < len)
+		{
+			j++;
+			if (needle[j] == '\0')
+				return (((char *)haystack) + i);
+		}
 		i++;
 	}
-	return ((void *)dst);
+	return (NULL);
 }
