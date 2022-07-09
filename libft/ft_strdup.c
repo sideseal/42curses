@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/08 16:45:04 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/09 14:25:35 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/09 14:40:56 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/09 15:14:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-	size_t	dstlen;
-	size_t	srclen;
-	size_t	i;
+#include <stdlib.h>
 
-	dstlen = 0;
-	while (dst[dstlen] != '\0')
-		dstlen++;
-	srclen = 0;
-	while (src[srclen] != '\0')
-		srclen++;
-	if (dstlen >= dstsize)
-		return (srclen + dstsize);
+char	*ft_strdup(const char *s1)
+{
+	size_t	i;
+	char	*copy;
+
 	i = 0;
-	while (i + dstlen + 1 < dstsize && src[i] != '\0')
+	while (s1[i] != '\0')
+		i++;
+	copy = malloc(sizeof(char) * i + 1);
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (s1[i] != '\0')
 	{
-		dst[dstlen + i] = src[i];
+		copy[i] = s1[i];
 		i++;
 	}
-	dst[dstlen + i] = '\0';
-	return (srclen + dstlen);
+	copy[i] = '\0';
+	return (copy);
 }

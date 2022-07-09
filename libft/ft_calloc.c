@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/08 16:45:04 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/09 14:25:35 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/09 14:06:14 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/09 16:11:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+#include <stdlib.h>
+
+void	*ft_calloc(size_t count, size_t size)
 {
-	size_t	dstlen;
-	size_t	srclen;
+	void	*ptr;
 	size_t	i;
 
-	dstlen = 0;
-	while (dst[dstlen] != '\0')
-		dstlen++;
-	srclen = 0;
-	while (src[srclen] != '\0')
-		srclen++;
-	if (dstlen >= dstsize)
-		return (srclen + dstsize);
+	ptr = malloc(count * size);
+	if (!ptr)
+		return (NULL);
 	i = 0;
-	while (i + dstlen + 1 < dstsize && src[i] != '\0')
-	{
-		dst[dstlen + i] = src[i];
-		i++;
-	}
-	dst[dstlen + i] = '\0';
-	return (srclen + dstlen);
+	while (i < (count * size))
+		((unsigned char *)ptr)[i++] = 0;
+	return ((void *)ptr);
 }

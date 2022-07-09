@@ -1,35 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/08 16:45:04 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/09 14:25:35 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/09 15:52:19 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/09 17:01:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-	size_t	dstlen;
-	size_t	srclen;
-	size_t	i;
+#include <stdlib.h>
 
-	dstlen = 0;
-	while (dst[dstlen] != '\0')
-		dstlen++;
-	srclen = 0;
-	while (src[srclen] != '\0')
-		srclen++;
-	if (dstlen >= dstsize)
-		return (srclen + dstsize);
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	int		slen;
+	int		i;
+
+	slen = 0;
 	i = 0;
-	while (i + dstlen + 1 < dstsize && src[i] != '\0')
+	while (s[slen] != '\0')
+		slen++;
+	if ((unsigned int)slen < start)
+		sub = malloc(sizeof(char));
+	else
 	{
-		dst[dstlen + i] = src[i];
-		i++;
+		sub = malloc(sizeof(char) * len + 1);
+		if (!sub)
+			return (NULL);
+		while (start < len && s[start] != '\0')
+		{
+			sub[i] = s[start];
+			i++;
+			start++;
+		}
 	}
-	dst[dstlen + i] = '\0';
-	return (srclen + dstlen);
+	sub[i] = '\0';
+	return (sub);
 }
