@@ -1,31 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/09 16:11:41 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 15:28:02 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/11 15:39:22 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/11 16:19:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int	check_set(char const *set, char ch)
 {
-	char	*string;
-	size_t	pflen;
-	size_t	sflen;
+	size_t	k;
 
-	if (s1 == NULL || s2 == NULL)
+	k = 0;
+	while (set[k] != '\0')
+	{
+		if (set[k] == ch)
+			return (1);
+		k++;
+	}
+	return (0);
+}
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	size_t	strlen;
+	size_t	i;
+	size_t	j;
+	char	*string;
+
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	pflen = ft_strlen(s1);
-	sflen = ft_strlen(s2);
-	string = malloc(sizeof(char) * (pflen + sflen) + 1);
+	strlen = ft_strlen(s1);
+	string = malloc(sizeof(char) * strlen + 1);
 	if (!string)
 		return (NULL);
-	ft_strlcpy(string, s1, pflen + 1);
-	ft_strlcpy(string + pflen, s2, sflen + 1);
+	i = 0;
+	if (check_set(set, s1[0]))
+		i++;
+	if (check_set(set, s1[strlen - 1]))
+		strlen--;
+	j = 0;
+	while (i < strlen)
+		string[j++] = s1[i++];
+	string[j] = '\0';
 	return (string);
 }

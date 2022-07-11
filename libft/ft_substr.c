@@ -6,36 +6,35 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 15:52:19 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/09 17:01:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/11 15:51:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*sub;
-	int		slen;
-	int		i;
+	char		*substr;
+	size_t		strlen;
+	size_t		i;
 
-	slen = 0;
-	i = 0;
-	while (s[slen] != '\0')
-		slen++;
-	if ((unsigned int)slen < start)
-		sub = malloc(sizeof(char));
+	if (s == NULL)
+		return (NULL);
+	strlen = ft_strlen(s);
+	if (strlen < start)
+		substr = malloc(sizeof(char));
 	else
+		substr = malloc(sizeof(char) * len + 1);
+	if (!substr)
+		return (NULL);
+	i = 0;
+	while ((size_t)start < len && s[start] != '\0' \
+		&& strlen >= start)
 	{
-		sub = malloc(sizeof(char) * len + 1);
-		if (!sub)
-			return (NULL);
-		while (start < len && s[start] != '\0')
-		{
-			sub[i] = s[start];
-			i++;
-			start++;
-		}
+		substr[i] = s[start];
+		i++;
+		start++;
 	}
-	sub[i] = '\0';
-	return (sub);
+	substr[i] = '\0';
+	return (substr);
 }

@@ -1,31 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/09 16:11:41 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 15:28:02 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/11 19:45:51 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/11 20:10:16 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int	find_quotient(int n)
 {
-	char	*string;
-	size_t	pflen;
-	size_t	sflen;
+	int	q;
 
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	pflen = ft_strlen(s1);
-	sflen = ft_strlen(s2);
-	string = malloc(sizeof(char) * (pflen + sflen) + 1);
-	if (!string)
-		return (NULL);
-	ft_strlcpy(string, s1, pflen + 1);
-	ft_strlcpy(string + pflen, s2, sflen + 1);
-	return (string);
+	q = 1;
+	if (n < 0)
+		q *= -1;
+	if (-9 <= n && n <= 9)
+		return (q);
+	q *= 10;
+	while (n / q >= 10)
+		q *= 10;
+	return (q);
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	int	q;
+	int	nb;
+
+	if (n < 0)
+		write(fd, "-", 1);
+	q = find_quotient(n);
+	while (q)
+	{
+		nb = '0' + n / q;
+		write(fd, &nb, 1);
+		n %= q;
+		q /= 10;
+	}
 }
