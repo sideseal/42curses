@@ -6,20 +6,20 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 17:30:53 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/08 18:08:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/11 14:33:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 char	*ft_strchr(const char *s, int c)
 {
-	size_t	slen;
+	size_t	len;
 	size_t	i;
 
-	slen = 0;
-	while (s[slen] != '\0')
-		slen++;
+	len = ft_strlen(s);
 	i = 0;
-	while (i <= slen)
+	while (i <= len)
 	{
 		if (s[i] == c)
 			return (((char *)s) + i);
