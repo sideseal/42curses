@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 18:02:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 19:04:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/12 15:12:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	char	*string;
 	size_t	i;
 
-	if (s == NULL)
+	if (!s || !f)
 		return (NULL);
 	string = ft_strdup(s);
 	if (!string)
