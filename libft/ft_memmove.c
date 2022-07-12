@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 14:44:07 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 14:29:00 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/12 18:43:40 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
+	if (!dst && !src)
+		return (NULL);
 	if (dst <= src)
 		ft_memcpy(dst, src, len);
 	else

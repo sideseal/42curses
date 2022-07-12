@@ -6,13 +6,13 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 19:45:51 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 20:10:16 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/12 18:14:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	find_quotient(int n)
+int	putnbr_find_quotient(int n)
 {
 	int	q;
 
@@ -34,7 +34,7 @@ void	ft_putnbr_fd(int n, int fd)
 
 	if (n < 0)
 		write(fd, "-", 1);
-	q = find_quotient(n);
+	q = putnbr_find_quotient(n);
 	while (q)
 	{
 		nb = '0' + n / q;

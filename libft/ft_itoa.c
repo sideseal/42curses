@@ -6,13 +6,13 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:48:44 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 20:12:38 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/12 18:14:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	find_quotient(int n)
+int	itoa_find_quotient(int n)
 {
 	int	q;
 
@@ -49,7 +49,7 @@ char	*ft_itoa(int n)
 	size_t	start;
 	char	*arr;
 
-	q = find_quotient(n);
+	q = itoa_find_quotient(n);
 	len = get_length(q);
 	arr = malloc(sizeof(char) * len + 1);
 	if (!arr)
