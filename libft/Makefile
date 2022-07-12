@@ -6,13 +6,11 @@
 #    By: gychoi <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/12 16:28:01 by gychoi            #+#    #+#              #
-#    Updated: 2022/07/12 17:27:31 by gychoi           ###   ########.fr        #
+#    Updated: 2022/07/12 18:27:08 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
-
-INCLUDE = ./
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
@@ -69,7 +67,7 @@ OBJS = $(SRCS:.c=.o)
 BNS_OBJS = $(BNS_SRCS:.c=.o)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
@@ -88,4 +86,4 @@ fclean : clean
 re : fclean 
 	$(MAKE) all
 
-.PHNOY : all, bonus, clean, fclean, re
+.PHNOY : all bonus clean fclean re
