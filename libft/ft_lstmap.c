@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 15:47:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/12 17:12:49 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/13 16:31:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list	*nnew;
-	t_list	**nlst;
+	t_list	*nlst;
 
 	if (!lst || !f || !del)
 		return (NULL);
@@ -25,11 +25,11 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		nnew = ft_lstnew(f(lst->content));
 		if (!nnew)
 		{
-			ft_lstclear(nlst, del);
+			ft_lstclear(&nlst, del);
 			return (NULL);
 		}
-		ft_lstadd_front(nlst, nnew);
+		ft_lstadd_back(&nlst, nnew);
 		lst = lst->next;
 	}
-	return (*nlst);
+	return (nlst);
 }

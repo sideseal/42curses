@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:20:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 16:54:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/13 16:17:16 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ char	**ft_split(char const *s, char c)
 	size_t	idx;
 	char	**words;
 
+	if (s == NULL)
+		return (NULL);
 	words = malloc(sizeof(char *) * (word_count(s, c) + 1));
 	if (!words)
 		return (NULL);
