@@ -6,7 +6,7 @@
 #    By: gychoi <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/12 16:28:01 by gychoi            #+#    #+#              #
-#    Updated: 2022/07/13 16:26:03 by gychoi           ###   ########.fr        #
+#    Updated: 2022/07/14 15:29:17 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,24 +27,33 @@ ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c ft_
 OBJS = $(SRCS:.c=.o)
 BNS_OBJS = $(BNS_SRCS:.c=.o)
 
+ifdef WITH_BONUS
+	OBJ_FILES = $(BNS_OBJS)
+else
+	OBJ_FILES = $(OBJS)
+endif
+
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME) : $(OBJS)
-	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+$(NAME) : $(OBJ_FILES)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJ_FILES)
 
+.PHONY: all
 all : $(NAME)
 
-bonus : $(BNS_OBJS)
-	$(AR) $(ARFLAGS) $(NAME) $(BNS_OBJS)
+.PHONY: bonus
+bonus :
+	$(MAKE) WITH_BONUS=1 $(NAME)
 
+.PHONY: clean
 clean :
 	$(RM) $(OBJS) $(BNS_OBJS)
 
+.PHONY: fclean
 fclean : clean
 	$(RM) $(NAME)
 
+.PHONY: re
 re : fclean 
 	$(MAKE) all
-
-.PHNOY : all bonus clean fclean re
