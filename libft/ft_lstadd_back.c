@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 14:45:43 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/12 17:12:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 14:05:22 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
+	t_list	*curr;
+
 	if (!lst || !new)
 		return ;
 	if (!*lst)
@@ -21,6 +23,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		*lst = new;
 		return ;
 	}
-	*lst = ft_lstlast(*lst);
-	(*lst)->next = new;
+	curr = ft_lstlast(*lst);
+	curr->next = new;
 }

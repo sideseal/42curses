@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:20:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/13 16:17:16 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 14:56:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ char	*add_word(char const *s, char c, int i)
 		len++;
 	word = malloc(sizeof(char) * len + 1);
 	if (!word)
-	{
-		free(word);
 		return (NULL);
-	}
 	j = 0;
 	while (s[i + j] != '\0' && s[i + j] != c)
 	{
@@ -55,6 +52,23 @@ char	*add_word(char const *s, char c, int i)
 	}
 	word[j] = '\0';
 	return (word);
+}
+
+int	check_valid_word(char *word, char **words)
+{
+	size_t	i;
+
+	if (!word)
+	{
+		i = 0;
+		while (words[i] != NULL)
+		{
+			free(words[i]);
+			i++;
+		}
+		return (0);
+	}
+	return (1);
 }
 
 char	**ft_split(char const *s, char c)
@@ -77,9 +91,8 @@ char	**ft_split(char const *s, char c)
 		if (s[i] != '\0' && s[i] != c)
 		{
 			words[idx] = add_word(s, c, i);
-			if (!words[idx])
+			if (!check_valid_word(words[idx++], words))
 				return (NULL);
-			idx++;
 			while (s[i] != '\0' && s[i] != c)
 				i++;
 		}
