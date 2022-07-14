@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 17:30:53 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 14:33:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 20:25:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strchr(const char *s, int c)
 	i = 0;
 	while (i <= len)
 	{
-		if (s[i] == c)
+		if (s[i] == (unsigned char)c)
 			return (((char *)s) + i);
 		i++;
 	}

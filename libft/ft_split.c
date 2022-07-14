@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:20:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/14 17:09:53 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 20:00:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	check_valid_word(char *word, char **words, size_t idx)
 			free(words[i]);
 			i++;
 		}
+		free(words);
 		return (0);
 	}
 	return (1);
