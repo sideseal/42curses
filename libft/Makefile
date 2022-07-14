@@ -33,14 +33,8 @@ else
 	OBJ_FILES = $(OBJS)
 endif
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 $(NAME) : $(OBJ_FILES)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJ_FILES)
-
-#$(NAME) : $(OBJS)
-#	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
 
 .PHONY: all
 all : $(NAME)
@@ -48,8 +42,6 @@ all : $(NAME)
 .PHONY: bonus
 bonus :
 	$(MAKE) WITH_BONUS=1 $(NAME)
-#bonus : $(BNS_OBJS)
-#	$(AR) $(ARFLAGS) $(NAME) $(BNS_OBJS)
 
 .PHONY: clean
 clean :

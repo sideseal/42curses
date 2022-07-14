@@ -21,13 +21,12 @@ size_t	word_count(char const *s, char c)
 	i = 0;
 	while (s[i] != '\0')
 	{
-		while (s[i] != '\0' && s[i] != c)
-			i++;
-		if (s[i] == '\0')
-			break ;
 		while (s[i] != '\0' && s[i] == c)
 			i++;
-		count++;
+		if (s[i] != '\0' && s[i] != c)
+			count ++;
+		while (s[i] != '\0' && s[i] != c)
+			i++;
 	}
 	return (count);
 }
@@ -54,22 +53,20 @@ char	*add_word(char const *s, char c, int i)
 	return (word);
 }
 
-int	check_valid_word(char *word, char **words, size_t idx)
+char	**free_memory(char **words, size_t idx)
 {
 	size_t	i;
 
-	if (!word)
+	i = 0;
+	while (i <= idx)
 	{
-		i = 0;
-		while (i <= idx)
-		{
-			free(words[i]);
-			i++;
-		}
-		free(words);
-		return (0);
+		free(words[i]);
+		words[i] = NULL;
+		i++;
 	}
-	return (1);
+	free(words);
+	words = NULL;
+	return (NULL);
 }
 
 char	**make_words(char const *s, char **words, char c)
@@ -86,8 +83,8 @@ char	**make_words(char const *s, char **words, char c)
 		if (s[i] != '\0' && s[i] != c)
 		{
 			words[idx] = add_word(s, c, i);
-			if (!check_valid_word(words[idx], words, idx))
-				return (NULL);
+			if (!words[idx])
+				return (free_memory(words, idx));
 			idx++;
 			while (s[i] != '\0' && s[i] != c)
 				i++;
@@ -100,10 +97,12 @@ char	**make_words(char const *s, char **words, char c)
 char	**ft_split(char const *s, char c)
 {
 	char	**words;
+	size_t	count;
 
 	if (s == NULL)
 		return (NULL);
-	words = malloc(sizeof(char *) * (word_count(s, c) + 1));
+	count = word_count(s, c);
+	words = malloc(sizeof(char *) * (count + 1));
 	if (!words)
 		return (NULL);
 	return (make_words(s, words, c));
