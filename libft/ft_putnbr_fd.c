@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 19:45:51 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/12 18:14:53 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 16:58:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	ft_putnbr_fd(int n, int fd)
 	int	q;
 	int	nb;
 
+	if (fd < 0)
+		return ;
 	if (n < 0)
 		write(fd, "-", 1);
 	q = putnbr_find_quotient(n);

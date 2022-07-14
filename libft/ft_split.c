@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:20:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/14 14:56:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 17:09:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ char	*add_word(char const *s, char c, int i)
 	return (word);
 }
 
-int	check_valid_word(char *word, char **words)
+int	check_valid_word(char *word, char **words, size_t idx)
 {
 	size_t	i;
 
 	if (!word)
 	{
 		i = 0;
-		while (words[i] != NULL)
+		while (i <= idx)
 		{
 			free(words[i]);
 			i++;
@@ -71,17 +71,11 @@ int	check_valid_word(char *word, char **words)
 	return (1);
 }
 
-char	**ft_split(char const *s, char c)
+char	**make_words(char const *s, char **words, char c)
 {
 	size_t	i;
 	size_t	idx;
-	char	**words;
 
-	if (s == NULL)
-		return (NULL);
-	words = malloc(sizeof(char *) * (word_count(s, c) + 1));
-	if (!words)
-		return (NULL);
 	i = 0;
 	idx = 0;
 	while (s[i] != '\0')
@@ -91,12 +85,25 @@ char	**ft_split(char const *s, char c)
 		if (s[i] != '\0' && s[i] != c)
 		{
 			words[idx] = add_word(s, c, i);
-			if (!check_valid_word(words[idx++], words))
+			if (!check_valid_word(words[idx], words, idx))
 				return (NULL);
+			idx++;
 			while (s[i] != '\0' && s[i] != c)
 				i++;
 		}
 	}
 	words[idx] = NULL;
 	return (words);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**words;
+
+	if (s == NULL)
+		return (NULL);
+	words = malloc(sizeof(char *) * (word_count(s, c) + 1));
+	if (!words)
+		return (NULL);
+	return (make_words(s, words, c));
 }

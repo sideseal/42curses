@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 15:47:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/14 14:14:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/07/14 17:04:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 			ft_lstclear(&nlst, del);
 			return (NULL);
 		}
-		ft_lstadd_front(&nlst, nnew);
+		ft_lstadd_back(&nlst, nnew);
 		lst = lst->next;
 	}
 	return (nlst);
