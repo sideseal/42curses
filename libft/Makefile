@@ -6,13 +6,13 @@
 #    By: gychoi <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/12 16:28:01 by gychoi            #+#    #+#              #
-#    Updated: 2022/07/14 15:58:33 by gychoi           ###   ########.fr        #
+#    Updated: 2022/07/14 20:15:28 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 AR = ar
 ARFLAGS = crus
@@ -28,7 +28,7 @@ OBJS = $(SRCS:.c=.o)
 BNS_OBJS = $(BNS_SRCS:.c=.o)
 
 ifdef WITH_BONUS
-	OBJ_FILES = $(BNS_OBJS)
+	OBJ_FILES = $(BNS_OBJS) $(OBJS)
 else
 	OBJ_FILES = $(OBJS)
 endif
@@ -39,12 +39,17 @@ endif
 $(NAME) : $(OBJ_FILES)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJ_FILES)
 
+#$(NAME) : $(OBJS)
+#	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+
 .PHONY: all
 all : $(NAME)
 
 .PHONY: bonus
 bonus :
 	$(MAKE) WITH_BONUS=1 $(NAME)
+#bonus : $(BNS_OBJS)
+#	$(AR) $(ARFLAGS) $(NAME) $(BNS_OBJS)
 
 .PHONY: clean
 clean :
