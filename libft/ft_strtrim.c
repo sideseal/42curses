@@ -37,9 +37,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	slen = ft_strlen(s1);
 	i = 0;
-	while (check_set(set, s1[i]))
+	while (s1[i] != '\0' && check_set(set, s1[i]))
 		i++;
-	while (check_set(set, s1[slen - 1]))
+	while (i <= slen && check_set(set, s1[slen - 1]))
 		slen--;
 	if (i > slen)
 		string = malloc(sizeof(char));
