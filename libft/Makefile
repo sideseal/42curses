@@ -6,7 +6,7 @@
 #    By: gychoi <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/12 16:28:01 by gychoi            #+#    #+#              #
-#    Updated: 2022/07/14 20:15:28 by gychoi           ###   ########.fr        #
+#    Updated: 2022/07/15 20:09:12 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,20 +28,20 @@ OBJS = $(SRCS:.c=.o)
 BNS_OBJS = $(BNS_SRCS:.c=.o)
 
 ifdef WITH_BONUS
-	OBJ_FILES = $(BNS_OBJS) $(OBJS)
+	OBJECTS = $(OBJS) $(BNS_OBJS)
 else
-	OBJ_FILES = $(OBJS)
+	OBJECTS = $(OBJS)
 endif
 
-$(NAME) : $(OBJ_FILES)
-	$(AR) $(ARFLAGS) $(NAME) $(OBJ_FILES)
+$(NAME) : $(OBJECTS)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJECTS)
 
 .PHONY: all
-all : $(NAME)
+all :
+	$(MAKE) WITH_BONUS=1
 
 .PHONY: bonus
-bonus :
-	$(MAKE) WITH_BONUS=1 $(NAME)
+bonus : all
 
 .PHONY: clean
 clean :
