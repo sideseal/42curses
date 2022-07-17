@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	itoa_find_quotient(int n)
+static int	find_quotient(int n)
 {
 	int	q;
 
@@ -27,7 +27,7 @@ int	itoa_find_quotient(int n)
 	return (q);
 }
 
-size_t	get_length(int q)
+static size_t	get_length(int q)
 {
 	size_t	c;
 
@@ -49,7 +49,7 @@ char	*ft_itoa(int n)
 	size_t	start;
 	char	*arr;
 
-	q = itoa_find_quotient(n);
+	q = find_quotient(n);
 	len = get_length(q);
 	arr = malloc(sizeof(char) * len + 1);
 	if (!arr)

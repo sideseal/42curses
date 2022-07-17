@@ -12,14 +12,14 @@
 
 #include "libft.h"
 
-int	check_set(char const *set, char ch)
+static int	check_set(char const *set, char ch)
 {
 	size_t	k;
 
 	k = 0;
 	while (set[k] != '\0')
 	{
-		if (set[k] == (unsigned char)ch)
+		if (set[k] == (char)ch)
 			return (1);
 		k++;
 	}

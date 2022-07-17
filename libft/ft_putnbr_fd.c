@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	putnbr_find_quotient(int n)
+static int	find_quotient(int n)
 {
 	int	q;
 
@@ -36,7 +36,7 @@ void	ft_putnbr_fd(int n, int fd)
 		return ;
 	if (n < 0)
 		write(fd, "-", 1);
-	q = putnbr_find_quotient(n);
+	q = find_quotient(n);
 	while (q)
 	{
 		nb = '0' + n / q;
