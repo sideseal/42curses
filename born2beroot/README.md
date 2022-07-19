@@ -83,7 +83,7 @@ Virtual Box를 사용하여 갓아 머신을 만들고, 가상 머신의 시그�
 	- [https://opencomputeproject.github.io/onie/design-spec/x86_boot_loader.html](https://opencomputeproject.github.io/onie/design-spec/x86_boot_loader.html)
 21. LVM 비밀번호, root/root 비밀번호 입력 후 들어가면 가상 머신의 세계가 등장한다. `lsblk` 명령어를 입력하여 LVM 파티션이 두 개인지 확인하자.
 
-![lsblk](../img/lsblk.png)
+![lsblk](./img/lsblk.png)
 
 
 LVM, 파티션, http 프록시, grub 설명하기.
