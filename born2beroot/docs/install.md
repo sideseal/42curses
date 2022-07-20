@@ -1,4 +1,4 @@
-## 가상 머신(Virtual Machine, VM)이란?
+# 가상 머신(Virtual Machine, VM)이란?
 
 가상화란 일반적으로 컴퓨터 리소스를 추상화함을, 즉 컴퓨터 내부의 작동 방식을 다른 시스템, 응용 프로그램, 사용자들로부터 감추는 기술을 의미한다. 그렇다면 가상 머신(가상화된 컴퓨터?!)이란 무엇일까?
 
@@ -20,19 +20,19 @@
 
 참고: [https://eunjinii.tistory.com/10](https://eunjinii.tistory.com/10)
 
-## CentOS? Debian?
+# CentOS? Debian?
 
 리눅스(linux)는 오픈소스로써 누구나 자유롭게 수정하고 배포할 수 있다. 따라서 수많은 형태의 리눅스들이 나오게 되었는데, 크게 두 가지 계열의 리눅스로 말할 수 있다고 한다. 바로 레드햇 계열과 데비안 계열이다. 이들의 대표적인 버전으로 레드햇은 센토스(CentOS), 데비안은 우분투(UbuntuOS)가 있다. (하지만 과제에서 사용해야 하는 버전은 센토스와 데비안 자체이다!)
 
 참고: [https://jhnyang.tistory.com/135](https://jhnyang.tistory.com/135)
 
-### CentOS
+## CentOS
 
 레드햇 엔터프라이즈 리눅스(RHEL)이 유료화됨에 대한 반발로 나온 운영체제. RHEL의 기술을 그대로 사용할 수 있다는 장점이 있지만, 오픈소스로 돌아가기에 사후 기술 지원이 RHEL에 비해 느리다고 한다. `yum`(Yellodog Update Modified)이라는 패키지 설치 관리 도구(패키지 매니저)를 사용한다.
 
 참고: [https://dololak.tistory.com/331](https://dololak.tistory.com/331)
 
-### Devian
+## Devian
 
 데비안은 순수하게 오픈소스 자원자들로부터 구성된 운영체제이다. 데비안은 안정성을 매우 중시하는 리눅스 배포판이여서, 서버 사용에 있어 상당한 인기를 끌고 있다고 한다. `apt`(Advanced Packaging Tool)라는 패키지 매니저를 사용한다(`apt-get`과 큰 차이는 없다) 유명한 오픈소스인 만큼 커뮤니티도 아주 크다.
 
@@ -42,7 +42,7 @@
 
 [What's New in Devian 11 "Bullseye"?](https://www.linuxjournal.com/content/whats-new-debian-11-bullseye)
 
-## Devian 설치하기
+# Devian 설치하기
 
 설치 과정은 다음의 블로그를 참고했다: [https://techdebt.tistory.com/18](https://techdebt.tistory.com/18)
 
@@ -61,7 +61,7 @@
 	- VMDK(Virtual Machine Disk) : Virtual Box와 VMware Player에서 구동이 가능한 포맷 방식.
 	- 동적 할당(dynamically allocation)은 가상 머신이 사용한 만큼만 호스트 컴퓨터의 하드 디스크 용량을 사용한다. 고정 할당(Fixed size)을 사용하면 가상 머신을 좀 더 빠르게 사용할 수 있지만, 호스트 컴퓨터를 보다 쾌적하게 이용하기 위해 동적 할당을 선택하였다.
 5. 선택을 모두 완료하고, Virtual Box 창으로 다시 나오게 되면, 상단의 'start'를 누르고 다운로드했던 iso 파일을 마운트한다.
-6. 'install' -> 언어 설정 -> 타임존 설 -> 키보드 언어 설정
+6. 'install' -> 언어 설정 -> 타임존 설정 -> 키보드 언어 설정
 7. 서브젝트에 나온 대로 hostname은 'intra id'42로 해야 한다(즉, gychoi42).
 8. 도메인 이름은 생략.
 9. 비밀번호 설정. 비밀번호를 설정하지 않으면 root, 유저 구분 없이 모두 sudo를 사용할 수 있게 되어버린다!
@@ -79,6 +79,34 @@
 	- [https://opencomputeproject.github.io/onie/design-spec/x86_boot_loader.html](https://opencomputeproject.github.io/onie/design-spec/x86_boot_loader.html)
 21. LVM 비밀번호, root/root 비밀번호 입력 후 들어가면 가상 머신의 세계가 등장한다. `lsblk` 명령어를 입력하여 LVM 파티션이 두 개인지 확인하자.
 
-<img src="../img/lsblk.png" alt="lsblk" width="300" />
+<img src="../img/lsblk.png" alt="lsblk" width="600" />
 
-LVM, 파티션, http 프록시, grub 설명하기.
+- swap? : 디스크 공간을 메모리 공간처럼 교환하여 사용하는 것. /swap 파티션은 swap 파일 시스템을 위한 공간이다. 메모리 공간이 부족할 때 디스크 공간을 메모리처럼 사용할 수 있다.
+
+# LVM
+
+LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유연하게 관리하기 위한 커널의 한 부분이다.
+
+이전에는 하드 디스크를 파티셔닝 한 후 OS 영역에 마운트 하여 read/write를 수행하였는데, 이 경우 저장 공간의 크기가 고정되어 유연하게 대응하기가 어렵다. 이를 보완하기 위한 방법으로 LVM을 구성할 수 있다. LVM은 파티션 대신 volume이라는 단위로 저장 장치를 다룬다. LVM은 스토리지의 확장 및 변경에 유연하며, 크기를 변경할 때 기존 데이터의 이전이 필요 없다.
+- 마운트(mount) : 물리적인 디스크를 운영체제에 고정(연결)하는 것. 즉 **디스크 공간과 디렉토리를 연결**한다. (USB를 컴퓨터에 연결하여 사용하는 과정을 떠올려보자.) 그런데 CLI 환경의 리눅스에서는 자동으로 마운트가 되지 않는다. 그리고 마운트는 외부 장치 뿐만 아니라 위 사진처럼 boot용 디스크 공간을 /boot 디렉토리에 연결하는데도 사용된다. /boot 디렉토리에는 운영 시스템의 커널이 들어간다.
+- 파티션(partition) : 디스크 공간을 나눈 것. sda는 크게 sda1와 sda2 파티션으로 나누어진다. sda1은 Boot용 파티션으로 사용되고, sda2는 나머지 모든 리눅스 정보를 담는데 사용된다. 리눅스 서버에서 파티션을 나누는 이유는 관리의 편리함도 있지만, **시스템 안정성 확보와 보안**을 위해 꼭 필요한 부분이기도 하다. 파티션을 나누지 않고 사용할 경우, 용량이 꽉 찼을 때 새로운 프로세스를 실행할 수 없게 되거나, 프로세스가 중단되는 문제가 발생한다.
+- 확장 파티션(extended partition) : 일반적으로 파티션은 최대 4개 까지 나누는 것이 가능하지만, extended 파티션 기술을 사용하면, extended 파티션으로 정해진 파티션 내에서 여러 개의 파티션을 나눌 수 있다. 그러한 파티션을 logical partition이라고 부른다. logical 파티션은 무조건 5번부터 시작한다.
+
+그렇다면 LVM은 저장 공간을 어떻게 유연하게 관리할까? 간단하게 요약한다면, LVM은 여러 개의 디스크 공간을 합쳐 하나의 공간을 사용하는 것처럼 만든다. 리눅스 서버를 운영할 때, 일반적으로 컴퓨터를 사용하는 것처럼 디스크 용량이 부족하면 교체하는 일은 매우 힘들다. 물리 디스크를 추가하여 파티션의 크기를 변경하기 위해선 운영체제 재설치를 해야한다. 하지만 LVM을 사용하면 재설치 없이 크기를 조정할 수 있고, 사용하기 애매한 짜투리 공간까지 모두 하나의 공간으로 모아주기에 디스크 공간을 효율적으로 사용할 수 있다.
+
+참고: [https://mamu2830.blogspot.com/2019/12/lvmpv-vg-lv-pe-lvm.html](https://mamu2830.blogspot.com/2019/12/lvmpv-vg-lv-pe-lvm.html)
+
+# http 프록시
+
+프록시(Proxy)란 대리 혹은 중계의 의미를 가지며, 프록시 서버는 클라이언트와 서버 사이에서 중간자 역할을 한다. 프록시 서버는 인터넷 연결을 위한 인증, 인터넷 연결 공유, 대역폭 제어 그리고 정보를 필터링하거나 블락킹을 할 수 있다. http 프록시 서버는 http 요청을 받는 프록시 서버다. 웹 서버처럼 http로 들어온 요청을 다루고 응답을 클라이언트에게 돌려면서 동시에 http 클라이언트처럼 요청을 서버로 보낸다.
+
+<img src="../img/proxy.png" alt="lsblk" width="600" />
+이미지 출처: https://docs.microsoft.com/en-us/openspecs/office_protocols/ms-grvhenc/2c054f5b-804d-40c3-8695-f4298b5931b6
+
+참고: [https://code-masterjung.tistory.com/53](https://code-masterjung.tistory.com/53)
+
+# GRUB
+
+GRUB(Grand Unified Bootloader)은 GNU에서 만든 부트로더로, 대부분의 리눅스가 GRUB을 기본 부트로더로 설정한다. 부트로더는 리눅스 OS의 커널 이미지를 로드하고, 이후 커널이 기본적인 작동을 완료하여 시스템 부팅이 완료된다. GRUB은 파일명과 커널이 위치하고 있는 디스크 파티션만 알고 있다면 커널을 로드할 수 있다. 몇몇 리눅스 커널은 GRUB과 같은 부트로더 없이도 부팅 작업을 할 수 있지만, 자료가 사라지는 등 여러 문제가 발생하기에 왠만해선 부트로더를 설치하는 것이 안전하다고 한다. ([https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader](https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader))
+
+참고 : [https://youngswooyoung.tistory.com/67](https://youngswooyoung.tistory.com/67)
