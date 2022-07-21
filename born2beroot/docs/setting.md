@@ -39,7 +39,7 @@ dpkg란 데비안 패키지 관리 시스템의 기초가 되는 소프트웨어
 패키지를 관리하기 위한 패키지 관리 도구는 저수준 툴(low-level tools)과 고수준 툴(high-level tools)로 나뉜다.
 	* 저수준 툴 : 실제 패키지의 설치, 업데이트 삭제 등을 수행. 하지만 자동으로 패키지를 다운로드하거나 패키지 간 의존성을 해결하지 않는다.
 	* 고수준 툴 : 패키지 의존성 해결, 패키지 다운로드, 패키지 검색 등의 기능을 제공.
-dpkg는 데비안 계열의 리눅스에서 사용되는 저수준 패키지 관리자(low-level package manager)이고, apt는 데비안 계열의 리눅스에서 사용되는 고수준 패키지 관리자(high-level package manager)이다.
+dpkg는 데비안 계열의 리눅스에서 사용되는 저수준 패키지 관리자(low-level package manager)이고, apt는 데비안 계열의 리눅스에서 사용되는 고수준 패키지 관리자(high-level package manager)이다. 소프트웨어를 관리하는데 보통 apt 명령으로 충분하지만, 시스템에 있는 특정 파일과 패키지의 관계를 보는 것처럼, 보다 자세한 일을 수행하기 위해선 dpkg 명령이 필요하다고 한다.
 
 <img src="../img/packageManager.png" alt="package manager" width="600" />
 
