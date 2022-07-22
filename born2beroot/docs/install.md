@@ -44,7 +44,10 @@
 
 # Devian 설치하기
 
-설치 과정은 다음의 블로그를 참고했다: [https://techdebt.tistory.com/18](https://techdebt.tistory.com/18)
+설치 과정은 다음의 블로그들을 참고했다:  
+[https://techdebt.tistory.com/18](https://techdebt.tistory.com/18)
+
+[https://velog.io/@octo__/Born2beRoot-Virtualbox-Debian-설치](https://velog.io/@octo__/Born2beRoot-Virtualbox-Debian-%EC%84%A4%EC%B9%98)
 
 먼저, [https://www.debian.org/releases/stable/debian-installer/](https://www.debian.org/releases/stable/debian-installer/)로 이동하여, 'netinst'(전체 운영 체제를 설치할 수 있는 단일 CD)에서 `amd64`의 디스크 이미지를 다운로드한다.
 * AMD64 : AMD사가 만든 64bit 프로세서(x86-64). 기존 32bit 아키텍처와 호환되면서도 인텔의 프로세서와 다르게 성능 저하가 없어 64bit 프로세서의 표준으로 자리가 매겨졌다고 한다. (ARM64와 헷갈리지만... ARM은 RISC 명령어 체계를 사용하고, 인텔 계열의 AMD는 CISC 명령어 체계를 사용한다.)
@@ -82,13 +85,14 @@
 <img src="../img/lsblk.png" alt="lsblk" width="600" />
 
 - swap? : 디스크 공간을 메모리 공간처럼 교환하여 사용하는 것. /swap 파티션은 swap 파일 시스템을 위한 공간이다. 메모리 공간이 부족할 때 디스크 공간을 메모리처럼 사용할 수 있다.
+- sda? : 소형 컴퓨터 인터페이스(Small Computer System Interface, SCSI) 방식의 하드디스크 중 하나. SCSI란 컴퓨터에 주변기기를 연결하기 위한 표준 인터페이스이다.;;;;;
 
 # LVM
 
 LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유연하게 관리하기 위한 커널의 한 부분이다.
 
 이전에는 하드 디스크를 파티셔닝 한 후 OS 영역에 마운트 하여 read/write를 수행하였는데, 이 경우 저장 공간의 크기가 고정되어 유연하게 대응하기가 어렵다. 이를 보완하기 위한 방법으로 LVM을 구성할 수 있다. LVM은 파티션 대신 volume이라는 단위로 저장 장치를 다룬다. LVM은 스토리지의 확장 및 변경에 유연하며, 크기를 변경할 때 기존 데이터의 이전이 필요 없다.
-- 마운트(mount) : 물리적인 디스크를 운영체제에 고정(연결)하는 것. 즉 **디스크 공간과 디렉토리를 연결**한다. (USB를 컴퓨터에 연결하여 사용하는 과정을 떠올려보자.) 그런데 CLI 환경의 리눅스에서는 자동으로 마운트가 되지 않는다. 그리고 마운트는 외부 장치 뿐만 아니라 위 사진처럼 boot용 디스크 공간을 /boot 디렉토리에 연결하는데도 사용된다. /boot 디렉토리에는 운영 시스템의 커널이 들어간다.
+- 마운트(mount) : 물리적인 디스크를 운영체제에 고정(연결)하는 것. 즉 파티션의 자원을 사용자가 사용할 수 있도록 **디스크 공간과 디렉토리를 연결**한다. (USB를 컴퓨터에 연결하여 사용하는 과정을 떠올려보자.) 그런데 CLI 환경의 리눅스에서는 자동으로 마운트가 되지 않는다. 그리고 마운트는 외부 장치 뿐만 아니라 위 사진처럼 부팅용 디스크 공간을 /boot 파티션에 연결하는데도 사용된다. /boot 파티션에는 부팅 시스템 파일들이 설치된다.
 - 파티션(partition) : 디스크 공간을 나눈 것. sda는 크게 sda1와 sda2 파티션으로 나누어진다. sda1은 Boot용 파티션으로 사용되고, sda2는 나머지 모든 리눅스 정보를 담는데 사용된다. 리눅스 서버에서 파티션을 나누는 이유는 관리의 편리함도 있지만, **시스템 안정성 확보와 보안**을 위해 꼭 필요한 부분이기도 하다. 파티션을 나누지 않고 사용할 경우, 용량이 꽉 찼을 때 새로운 프로세스를 실행할 수 없게 되거나, 프로세스가 중단되는 문제가 발생한다.
 - 확장 파티션(extended partition) : 일반적으로 파티션은 최대 4개 까지 나누는 것이 가능하지만, extended 파티션 기술을 사용하면, extended 파티션으로 정해진 파티션 내에서 여러 개의 파티션을 나눌 수 있다. 그러한 파티션을 logical partition이라고 부른다. logical 파티션은 무조건 5번부터 시작한다.
 
@@ -100,7 +104,7 @@ LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유
 
 프록시(Proxy)란 대리 혹은 중계의 의미를 가지며, 프록시 서버는 클라이언트와 서버 사이에서 중간자 역할을 한다. 프록시 서버는 인터넷 연결을 위한 인증, 인터넷 연결 공유, 대역폭 제어 그리고 정보를 필터링하거나 블락킹을 할 수 있다. http 프록시 서버는 http 요청을 받는 프록시 서버다. 웹 서버처럼 http로 들어온 요청을 다루고 응답을 클라이언트에게 돌려면서 동시에 http 클라이언트처럼 요청을 서버로 보낸다.
 
-<img src="../img/proxy.png" alt="lsblk" width="600" />
+<img src="../img/proxy.png" alt="proxy" width="600" />
 이미지 출처: https://docs.microsoft.com/en-us/openspecs/office_protocols/ms-grvhenc/2c054f5b-804d-40c3-8695-f4298b5931b6
 
 참고: [https://code-masterjung.tistory.com/53](https://code-masterjung.tistory.com/53)
@@ -108,6 +112,7 @@ LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유
 # GRUB
 
 GRUB(Grand Unified Bootloader)은 GNU에서 만든 부트로더로, 대부분의 리눅스가 GRUB을 기본 부트로더로 설정한다. 부트로더는 리눅스 OS의 커널 이미지를 로드하고, 이후 커널이 기본적인 작동을 완료하여 시스템 부팅이 완료된다. GRUB은 파일명과 커널이 위치하고 있는 디스크 파티션만 알고 있다면 커널을 로드할 수 있다. 몇몇 리눅스 커널은 GRUB과 같은 부트로더 없이도 부팅 작업을 할 수 있지만, 자료가 사라지는 등 여러 문제가 발생하기에 왠만해선 부트로더를 설치하는 것이 안전하다고 한다. ([https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader](https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader))
+	* 부트로더(Bootloader) : 운영 체제가 실행되기 이전에 미리 실행되어 커널이 올바르게 실행될 수 있도록 사전 작업을 수행하고 최종적으로는 아무 이상 없이 운영 체제를 실행시키기 위한 프로그램.
 
 참고: [https://youngswooyoung.tistory.com/67](https://youngswooyoung.tistory.com/67)
 
@@ -125,7 +130,27 @@ aptitude는 사용자 인터페이스를 추가해, 사용자가 텍스트 기�
 
 * apt 관련 정보가 인터넷에 더 많기도 하고, 아직은 인터페이스가 친절한 점이 딱히 매력으로 다가오지 않아 apt를 그대로 사용할 계획.
 
-# SELinux
+# SELinux, AppArmor
 
-# APPArmor
+## SELinux
 
+SELinux(Security Enhanced Linux)는 Linux 시스템용 보안 아키텍처(혹은 Linux Kernel 보안 모듈)로, 과거 리눅스는 소스코드가 공개되어 있었기에 보안이 취약한 측면이 있어, 리눅스의 시스템 액세스 권한을 강화하기 위해 만들어졌다고 한다. SELinux는 매우 강력한 프로그램으로, 파일 1개를 읽을 때 조차도 권한을 검사할 정도로 강력한 보안을 요구한다. IBM/RedHat 계열에서 선호되는 보안 프레임워크이다. (하지만 SELinux는 침입 차단 시스템이나 바이러스 백신처럼 작동하는 것이 아닌, 시스템 버그 및 오류로부터 2차 피해를 막는 것이기에, 여러 보안 요소와 함께 사용하여야 한다.)
+
+참고:  
+[https://it-serial.tistory.com/entry/Linux-SELinux-개념-관련-명령어](https://it-serial.tistory.com/entry/Linux-SELinux-%EA%B0%9C%EB%85%90-%EA%B4%80%EB%A0%A8-%EB%AA%85%EB%A0%B9%EC%96%B4)
+
+[https://velog.io/@octo__/Born2beRoot](https://velog.io/@octo__/Born2beRoot)
+
+## AppArmor
+
+AppArmor도 SELinux와 동일하게 리눅스 보안 모듈이다. AppArmor와 SELinux 모두 MAC(Mandatory Access Control, 강제적 접근 통제) 보안을 제공한다. 차이점이라면 SELinux는 파일에 라벨을 적용하지만(inode-based), AppArmor는 파일 경로를 통해 작동한다(path-based). 또한 SELinux는 policy file과 right file system을 통해 작동하지만, AppArmor는 policy file만으로 작동한다. 그렇기에 SELinux가 조금 더 복잡하다고... 그리고 SELinux는 시스템 전체에 보안을 설정하지만, AppArmor는 응용프로그램 단위의 보안 모델을 구현하여, 개별 응용프로그램을 보호하는 일에 집중한다. Devian 계열에서 선호하는 보안 프레임워크이다.
+	* inode : 파일을 기술하는 디스크 상의 데이터 구조로서, 파일의 데이터 블록이 디스크 상의 어느 주소에 위치하고 있는가와 같은 파일에 대한 중요한 정보를 갖고 있다.
+	* 정책 파일(Policy File) : 유닉스와 리눅스 시스템에서 권한 관리(Privilege Management) 기반의 시스템 보안 규칙을 정의하는 명령어들을 모아놓은 파일.
+	* 접근 통제(Access Control) : 운영체제에서 접근 통제는 디렉터리나 파일, 네트워크 소켓과 같은 시스템 자원을 적절한 권한을 가진 사용자나 그룹이 접근하고 사용할 수 있게 통제하는 것을 의미한다.
+
+<img src="../img/apparmor.png" alt="apparmor" width="600" />
+출처: [https://elinux.org/images/3/39/SecureOS_nakamura.pdf](https://elinux.org/images/3/39/SecureOS_nakamura.pdf)
+
+참고: [https://velog.io/@kdkeiie8/Linux-AppArmor-리눅스-커널-보안-모듈](https://velog.io/@kdkeiie8/Linux-AppArmor-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EB%B3%B4%EC%95%88-%EB%AA%A8%EB%93%88)
+
+Devian 11에는 AppArmor가 이미 깔려 있기에, `aa-status` 명령어로 AppArmor가 실행 중인지 확인할 수 있다.

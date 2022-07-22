@@ -1,7 +1,6 @@
 # SSH 포트 및 권한 변경
 
 A SSH service will be running on port 4242 only. For security reasons, it must not be possible to connect using SSH as root.
-
 SSH 연결은 4242번 포트에서만 가능해야 하고, 루트 계정으로 연결되어서는 안된다.
 
 ## SSH란?
@@ -13,9 +12,9 @@ SSH를 이용한 통신에서는 클라이언트(Clinent: Host에 접속하려�
 	* 포트(port) : 네트워크 서비스나 특정 프로세스를 식별하는 논리적 단위를 의미하며, 클라이언트가 특정 서버의 프로그램을 지정하는 방법으로 사용된다. 하나의 호스트 컴퓨터는 여러 개의 서버를 실행할 수 있기에, 클라이언트가 어느 서버에 접속할 것인지 포트 번호를 사용하여 명시한다.
 
 참고:  
-[https://medium.com/@jamessoun93/ssh란-무엇인가요-87b58c521d6f](https://medium.com/@jamessoun93/ssh%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94-87b58c521d6f)
-[https://whitedelay.github.io/post/what-is-ssh](https://whitedelay.github.io/post/what-is-ssh)
-[https://study-recording.tistory.com/13](https://study-recording.tistory.com/13)
+[https://medium.com/@jamessoun93/ssh란-무엇인가요-87b58c521d6f](https://medium.com/@jamessoun93/ssh%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94-87b58c521d6f)  
+[https://whitedelay.github.io/post/what-is-ssh](https://whitedelay.github.io/post/what-is-ssh)  
+[https://study-recording.tistory.com/13](https://study-recording.tistory.com/13)  
 
 * * *
 
@@ -49,7 +48,7 @@ dpkg는 데비안 계열의 리눅스에서 사용되는 저수준 패키지 관
 
 과제에서 sudo를 다루는 문제가 나오긴 하지만, 우리가 sudo를 사용함으로써 얻을 수 있는 이점은 무엇일까?
 
-sudo를 사용하면 root가 시스템 상에서 작업하는 시간이 짧아진다. root shell로 장시간 작업을 하다가 실수를 하게 될 경우, 결과를 책임질 수 없게 된다. 따라서 root 권한이 필요한 명령어의 경우에만 sudo를 사용한다면, 사용자의 오류를 방지할 수 있게 된다.
+sudo(substitute user do)를 사용하면 root가 시스템 상에서 작업하는 시간이 짧아진다. root shell로 장시간 작업을 하다가 실수를 하게 될 경우, 결과를 책임질 수 없게 된다. 따라서 root 권한이 필요한 명령어의 경우에만 sudo를 사용한다면, 사용자의 오류를 방지할 수 있게 된다.
 
 또한 sudo를 사용하면 사용자의 특권 행동이 로그(log)로 남게 되기에 추적이 쉬워지고, 이에 따라 사용자의 권한과 책임이 명확해진다. 만약 root 권한을 여러 사람이 공유한다면(su root), 어떤 작업이 누구에 의해 행해졌는지 파악할 수 없게 된다.
 
@@ -97,4 +96,19 @@ sudo systemctl restart ssh
 
 # UFW 방화벽 설정
 
-You have to configure your operating system with the UFW firewall and thus leave only port 4242 open.
+You have to configure your operating system with the UFW firewall and thus leave only port 4242 open. Your firewall must be active when you launch your virtual machine.
+UFW 방화벽으로 운영 체제를 설정하고, 4242 포트만 열어놓는다. 가상 머신을 실행할 때 방화벽도 같이 활성화해야 한다.
+
+## 방화벽이란?
+
+방화벽(firewall)은 외부 사용자(WAN, Wide Area Network)들이 내부 네트워크(LAN, Local Area Network)에 불법으로 접근하지 못하도록 하는 네트워크 보안 시스템이다. 방화벽은 신뢰할 수 있는 내부 네트워크와 신뢰할 수 없는 외부 네트워크 간의 장벽을 구성하여,  미리 정의된 보안 규칙에 기반하여 들어오고 나가는 네트워크 트래픽을 모니터링하고 제어한다. 방화벽의 주요 기능은 다음과 같다:
+* 접근 제어 : 외부에서 내부 네트워크에 접속하는 패킷을 필터링하거나 프록시 방식을 이용하여 접근을 통제한다.
+* 사용자 인증 : 방화벽을 지나가는 트래픽에 대한 사용자를 증명한다.
+* 감사 및 로그 : 트래픽에 대한 접속 정보를 기록하고, 네트워크 사용에 대한 통계를 제공한다.
+* 프라이버시 보호 : 프록시, 이중 DNS 등의 기능을 제공하여 내부 네트워크와 외부 네트워크 간의 중개자 역할을 함으로써 내부 네트워크의 정보 유출을 방지한다.
+* 데이터 암호화 : 보통 VPN의 기능을 이용하여 방화벽에서 다른 방화벽까지 데이터를 암호화하여 전송한다.
+* 주소 변환 : 발신지 호스트의 IP 주소나 목적지 호스트의 IP 주소를 전송 단계에서 변경하여 전달한다.
+
+참고:  
+[https://m.blog.naver.com/scw0531/221479042618](https://m.blog.naver.com/scw0531/221479042618)  
+[https://co-no.tistory.com/26](https://co-no.tistory.com/26)
