@@ -85,7 +85,7 @@
 <img src="../img/lsblk.png" alt="lsblk" width="600" />
 
 - swap? : 디스크 공간을 메모리 공간처럼 교환하여 사용하는 것. /swap 파티션은 swap 파일 시스템을 위한 공간이다. 메모리 공간이 부족할 때 디스크 공간을 메모리처럼 사용할 수 있다.
-- sda? : 소형 컴퓨터 인터페이스(Small Computer System Interface, SCSI) 방식의 하드디스크 중 하나. SCSI란 컴퓨터에 주변기기를 연결하기 위한 표준 인터페이스이다.;;;;;
+- sda? : 소형 컴퓨터 인터페이스(Small Computer System Interface, SCSI) 방식의 하드디스크 중 하나. SCSI란 컴퓨터에 주변기기를 연결하기 위한 표준 인터페이스이다.
 
 # LVM
 
@@ -144,12 +144,13 @@ SELinux(Security Enhanced Linux)는 Linux 시스템용 보안 아키텍처(혹�
 ## AppArmor
 
 AppArmor도 SELinux와 동일하게 리눅스 보안 모듈이다. AppArmor와 SELinux 모두 MAC(Mandatory Access Control, 강제적 접근 통제) 보안을 제공한다. 차이점이라면 SELinux는 파일에 라벨을 적용하지만(inode-based), AppArmor는 파일 경로를 통해 작동한다(path-based). 또한 SELinux는 policy file과 right file system을 통해 작동하지만, AppArmor는 policy file만으로 작동한다. 그렇기에 SELinux가 조금 더 복잡하다고... 그리고 SELinux는 시스템 전체에 보안을 설정하지만, AppArmor는 응용프로그램 단위의 보안 모델을 구현하여, 개별 응용프로그램을 보호하는 일에 집중한다. Devian 계열에서 선호하는 보안 프레임워크이다.
+
 	* inode : 파일을 기술하는 디스크 상의 데이터 구조로서, 파일의 데이터 블록이 디스크 상의 어느 주소에 위치하고 있는가와 같은 파일에 대한 중요한 정보를 갖고 있다.
 	* 정책 파일(Policy File) : 유닉스와 리눅스 시스템에서 권한 관리(Privilege Management) 기반의 시스템 보안 규칙을 정의하는 명령어들을 모아놓은 파일.
 	* 접근 통제(Access Control) : 운영체제에서 접근 통제는 디렉터리나 파일, 네트워크 소켓과 같은 시스템 자원을 적절한 권한을 가진 사용자나 그룹이 접근하고 사용할 수 있게 통제하는 것을 의미한다.
 
 <img src="../img/apparmor.png" alt="apparmor" width="600" />
-출처: [https://elinux.org/images/3/39/SecureOS_nakamura.pdf](https://elinux.org/images/3/39/SecureOS_nakamura.pdf)
+이미지 출처: https://elinux.org/images/3/39/SecureOS_nakamura.pdf
 
 참고: [https://velog.io/@kdkeiie8/Linux-AppArmor-리눅스-커널-보안-모듈](https://velog.io/@kdkeiie8/Linux-AppArmor-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EB%B3%B4%EC%95%88-%EB%AA%A8%EB%93%88)
 
