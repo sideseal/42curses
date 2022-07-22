@@ -112,7 +112,7 @@ LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유
 # GRUB
 
 GRUB(Grand Unified Bootloader)은 GNU에서 만든 부트로더로, 대부분의 리눅스가 GRUB을 기본 부트로더로 설정한다. 부트로더는 리눅스 OS의 커널 이미지를 로드하고, 이후 커널이 기본적인 작동을 완료하여 시스템 부팅이 완료된다. GRUB은 파일명과 커널이 위치하고 있는 디스크 파티션만 알고 있다면 커널을 로드할 수 있다. 몇몇 리눅스 커널은 GRUB과 같은 부트로더 없이도 부팅 작업을 할 수 있지만, 자료가 사라지는 등 여러 문제가 발생하기에 왠만해선 부트로더를 설치하는 것이 안전하다고 한다. ([https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader](https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader))
-	* 부트로더(Bootloader) : 운영 체제가 실행되기 이전에 미리 실행되어 커널이 올바르게 실행될 수 있도록 사전 작업을 수행하고 최종적으로는 아무 이상 없이 운영 체제를 실행시키기 위한 프로그램.
+* 부트로더(Bootloader) : 운영 체제가 실행되기 이전에 미리 실행되어 커널이 올바르게 실행될 수 있도록 사전 작업을 수행하고 최종적으로는 아무 이상 없이 운영 체제를 실행시키기 위한 프로그램.
 
 참고: [https://youngswooyoung.tistory.com/67](https://youngswooyoung.tistory.com/67)
 
@@ -121,10 +121,10 @@ GRUB(Grand Unified Bootloader)은 GNU에서 만든 부트로더로, 대부분의
 apt는 소프트웨어의 설치와 제거를 처리하는 패키지 관리 도구다. apt 명령어에 설치할 패키지 이름을 입력하면, `/etc/apt/sources.list`에 지정된 소스 목록에서 해당 패키지 + 종속성 목록을 함께 찾아 자동으로 설치한다. 따라서 패키지를 설치할 때 종속성 문제를 걱정하지 않아도 된다.
 
 aptitude는 사용자 인터페이스를 추가해, 사용자가 텍스트 기반 대화형으로 패키지를 검색하고 설치, 제거할 수 있는 high-level 패키지 관리 도구이다. aptitude는 apt보다 더 방대하고 많은 일을 할 수 있다.
-	- 설치된 패키지 목록을 보여주고, 패키지를 자동 또는 수동으로 설치하도록 표시하며, 업그레이드에 사용할 수 없는 패키지를 보관할 수 있다.
-	- aptitude는 패키지를 삭제할 때 사용되지 않는 패키지까지 삭제하는 반면, apt는 `-auto-remove`, `apt-get autoremove`를 명시해줘야 한다.
-	- aptitude는 `why`, `why-not` 명령어로 동작이 잘 안되는 이유를 볼 수 있다.
-	- apt는 패키지 설치/제거 중 충돌이 일어나면 종료되지만, aptitude는 해결 방법을 제시한다.
+- 설치된 패키지 목록을 보여주고, 패키지를 자동 또는 수동으로 설치하도록 표시하며, 업그레이드에 사용할 수 없는 패키지를 보관할 수 있다.
+- aptitude는 패키지를 삭제할 때 사용되지 않는 패키지까지 삭제하는 반면, apt는 `-auto-remove`, `apt-get autoremove`를 명시해줘야 한다.
+- aptitude는 `why`, `why-not` 명령어로 동작이 잘 안되는 이유를 볼 수 있다.
+- apt는 패키지 설치/제거 중 충돌이 일어나면 종료되지만, aptitude는 해결 방법을 제시한다.
 
 참고: [https://velog.io/@joonpark/aptitude-vs-apt](https://velog.io/@joonpark/aptitude-vs-apt)
 
@@ -145,9 +145,9 @@ SELinux(Security Enhanced Linux)는 Linux 시스템용 보안 아키텍처(혹�
 
 AppArmor도 SELinux와 동일하게 리눅스 보안 모듈이다. AppArmor와 SELinux 모두 MAC(Mandatory Access Control, 강제적 접근 통제) 보안을 제공한다. 차이점이라면 SELinux는 파일에 라벨을 적용하지만(inode-based), AppArmor는 파일 경로를 통해 작동한다(path-based). 또한 SELinux는 policy file과 right file system을 통해 작동하지만, AppArmor는 policy file만으로 작동한다. 그렇기에 SELinux가 조금 더 복잡하다고... 그리고 SELinux는 시스템 전체에 보안을 설정하지만, AppArmor는 응용프로그램 단위의 보안 모델을 구현하여, 개별 응용프로그램을 보호하는 일에 집중한다. Devian 계열에서 선호하는 보안 프레임워크이다.
 
-	* inode : 파일을 기술하는 디스크 상의 데이터 구조로서, 파일의 데이터 블록이 디스크 상의 어느 주소에 위치하고 있는가와 같은 파일에 대한 중요한 정보를 갖고 있다.
-	* 정책 파일(Policy File) : 유닉스와 리눅스 시스템에서 권한 관리(Privilege Management) 기반의 시스템 보안 규칙을 정의하는 명령어들을 모아놓은 파일.
-	* 접근 통제(Access Control) : 운영체제에서 접근 통제는 디렉터리나 파일, 네트워크 소켓과 같은 시스템 자원을 적절한 권한을 가진 사용자나 그룹이 접근하고 사용할 수 있게 통제하는 것을 의미한다.
+* inode : 파일을 기술하는 디스크 상의 데이터 구조로서, 파일의 데이터 블록이 디스크 상의 어느 주소에 위치하고 있는가와 같은 파일에 대한 중요한 정보를 갖고 있다.
+* 정책 파일(Policy File) : 유닉스와 리눅스 시스템에서 권한 관리(Privilege Management) 기반의 시스템 보안 규칙을 정의하는 명령어들을 모아놓은 파일.
+* 접근 통제(Access Control) : 운영체제에서 접근 통제는 디렉터리나 파일, 네트워크 소켓과 같은 시스템 자원을 적절한 권한을 가진 사용자나 그룹이 접근하고 사용할 수 있게 통제하는 것을 의미한다.
 
 <img src="../img/apparmor.png" alt="apparmor" width="600" />
 이미지 출처: https://elinux.org/images/3/39/SecureOS_nakamura.pdf
