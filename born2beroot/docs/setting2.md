@@ -9,6 +9,8 @@ You have to implement a strong password policy. ... To set up a strong password 
 * The following rule does not apply to the root password: The password must have at least 7 characters that are not part of the former password.
 * Of course, your root password has to comply with this policy.
 
+!! After setting up your configuration files, you will have to change all the passwords of the accounts present on the virtual machine, including the root account.
+
 여러분은 강력한 패스워드 정책을 만들어야 한다. ... 강력한 패스워드 정책을 만들기 위해서, 여러분은 다음의 요구 조건들을 준수해야 한다:
 * 여러분의 패스워드는 30일마다 만료되어야 한다.
 * (패스워드를 설정하고) 최소한 2일이 지나야 패스워드를 변경할 수 있다.
@@ -17,6 +19,8 @@ You have to implement a strong password policy. ... To set up a strong password 
 * 패스워드가 유저의 이름을 포함해서는 안된다.
 * 패스워드는 이전의 패스워드와 최소한 7글자가 달라야 한다(root는 예외로 이 조건을 따르지 않아도 된다).
 * 당연히, root 또한 위의 조건들을 모두 따라야 한다.
+
+!! 패스워드 환경 설정 파일을 변경한 후에, 여러분은 root를 포함하여 가상 머신에 있는 모든 계정의 패스워드를 변경해야 합니다.
 
 * * *
 
@@ -85,10 +89,42 @@ password    requisite        pam_pwquality.so retry=3 minlen=1 dcredit=-1 ucredi
 
 * 문제 요구 조건에서 root 계정은 새로운 비밀번호 7글자가 이전과 달라야 한다는 조건을 기억한다면... 다행히도 root 계정은 이전의 패스워드를 묻는 일이 없기에, `difok=7` 조건이 실행되지 않는다고 한다. ([https://man.archlinux.org/man/pam_pwquality.8#enforce_for_root](https://man.archlinux.org/man/pam_pwquality.8#enforce_for_root))
 
-이제 마지막으로 만약 위의 조건에 맞지 않는 패스워드를 가진 root와 유저가 있다면 `passwd` 명령어를 통해 비밀번호를 바꾸자. 만약 강제로 유저로 하여금 패스워드 변경을 하게 한다면, `passwd -e <username>`을 실행하면 된다.
+이제 마지막으로 root와 유저로 하여금 패스워드 변경을 하도록, `passwd -e <username>`을 실행한다. 해당 명령어는 유저의 <패스워드 만료까지 남은 기간>을 0으로 변경하여, 다음 로그인 시 비밀번호 변경이 요청된다.
 
 참고:  
 [https://www.linuxtechi.com/enforce-password-policies-linux-ubuntu-centos/](https://www.linuxtechi.com/enforce-password-policies-linux-ubuntu-centos/)  
 [https://www.cyberciti.biz/faq/linux-set-change-password-how-to/](https://www.cyberciti.biz/faq/linux-set-change-password-how-to/)
 
+# sudo 및 유저 정책
 
+You have to install and configure sudo following strict rules.
+In addition to the root user, a user with your login as username has to be present. This user has to belong to the user42 and sudo groups.
+
+i) During the defense, you will have to create a new user and assign it to a group.
+
+...
+
+To set up a strong configuration for your sudo group, you have to comply with the following requirements:
+* Authentication using sudo has to be limited to 3 attempts in the event of an incorrect password.
+* A custom message of your choice has to be displayed if an error due to a wrong password occurs when using sudo.
+* Each action using sudo has to be archived, both inputs and outputs. The log file has to be saved in the `/var/log/sudo/` folder.
+* The TTY mode has to be enabled for security reasons.
+* For security reasons too, the paths that can be used by sudo must be restricted.
+	- Example: `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin`
+
+여러분은 sudo를 설치하고 강력한 sudo 정책을 만들어야 한다.
+root 유저와 더불어 여러분의 login 아이디를 이름으로 삼은 유저가 존재해야 한다. 해당 유저는 user42와 sudo 그룹에 속해야 한다.
+
+i) 디펜스가 진행되는 동안, 여러분은 새로운 유저를 만들어 그룹에 포함시킬 수 있어야 한다.
+
+...
+
+강력한 sudo 그룹 정책을 설정하기 위해, 여러분은 다음의 요구 조건들을 준수해야 한다:
+* sudo를 이용한 인증에 있어 비밀번호 오류에 의한 재시도는 3회로 제한된다.
+* sudo를 이용함에 있어 비밀번호 오류가 발생하면, 여러분이 선택한 커스텀 메세지가 출력되어야 한다.
+* sudo를 이용하는 행동의 입력과 출력은 모두 기록되어야 한다. 로그 파일은 `/var/log/sudo/` 폴더에 저장되어야 한다.
+* 보안상의 이유로 TTY 모드를 활성화해야 한다.
+* 동일하게 보안상의 이유로, sudo를 사용할 수 있는 경로는 제한되어야 한다.
+	- 예시: `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin`
+
+* * *
