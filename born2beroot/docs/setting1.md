@@ -116,3 +116,115 @@ UFW 방화벽으로 운영 체제를 설정하고, 4242 포트만 열어놓는�
 참고:  
 [https://m.blog.naver.com/scw0531/221479042618](https://m.blog.naver.com/scw0531/221479042618)  
 [https://co-no.tistory.com/26](https://co-no.tistory.com/26)
+
+## UFW란?
+
+UFW(Uncomplicated Firewall)는 데비안 계열 및 다양한 리눅스 환경에서 작동되는 사용하기 쉬운 방화벽 관리 프로그램이다. UFW는 기본적으로 8.04 LTS(Long Term Support) 이후의 모든 데비안 및 우분투에서 사용할 수 있다([https://ko.wikipedia.org/wiki/UFW](https://ko.wikipedia.org/wiki/UFW))...라곤 하지만, Devian 11에는 설치되어 있지 않으니, 아래의 과정을 따라 설치하자.
+
+```sh
+# UFW 설치
+sudo apt install ufw
+
+# 설치한 후, UFW를 활성화해야 한다.
+sudo ufw enable
+
+# UFW 비활성화
+sudo ufw disable
+
+# UFW 상태 확인(간단하게)
+sudo ufw status
+
+# UFW 상태 확인(자세하게)
+sudo ufw status verbose
+```
+
+* * *
+
+## UFW 규칙 설정
+
+방화벽에서 4242포트만 열어놓기 위해, 우선 기본 정책으로 모든 접근을 차단한다. 그리고 tcp/udp 상관 없이, 4242번 포트를 연다.
+
+```sh
+# 듣기로는 기본적으로 내부 네트워크에 들어오는 모든 접근을 차단(deny)한다고 하지만,
+# 유비무환의 정신으로 다시 한 번 설정하자.
+sudo ufw default deny
+
+# 4242번 포트를 연다.
+sudo ufw allow 4242
+
+# 업데이트된 상태를 확인한다.
+sudo ufw status verbose
+
+# output:
+...
+Default: deny (incoming), allow (outgoing), disabled (routed)
+...
+To                      Action        from
+--                      ------        ----
+4242                    ALLOW IN      Anywhere
+4242 (v6)               ALLOW IN      Anywhere (v6)
+```
+
+UFW와 관련된 몇 가지 참고할 만한 설정들
+
+* 방화벽 정책 삭제
+```sh
+# 내가 만든 정책을 숫자로 확인한 후, 삭제할 수 있다.
+sudo ufw status numbered
+
+# output:
+status: active
+
+     To                      Action        from
+     --                      ------        ----
+[ 1] 4242                    ALLOW IN      Anywhere
+[ 2] 4242 (v6)               ALLOW IN      Anywhere (v6)
+
+sudo ufw delete 1
+
+# output:
+Deleting:
+  <내가 만든 규칙>
+Proceed with operation (y|n)?
+```
+
+* 방화벽 로그 기록
+```sh
+# 로그 기록 실행
+sudo ufw logging on
+# 로그 기록 중지
+sudo ufw logging off
+```
+
+`sudo ufw enable`로 방화벽을 활성화하면, 방화벽은 가상 머신이 실행되면 자동으로 실행된다.
+
+참고: [https://webdir.tistory.com/206](https://webdir.tistory.com/206)
+
+# Hostname 확인
+
+The hostname of your virtual machine must be your login ending with 42 (e.g., wil42). You will have to modify this hostname during your evaluation.
+가상 머신의 호스트 이름은 여러분의 로그인 아이디 + 42 입니다. 여러분은 평가 도중 호스트 이름으 변경해야 합니다.
+
+## hostname?
+호스트 이름(hostname)은 호스트 컴퓨터가 네트워크에서 불리는 이름이다. 호스트 이름은 지역 네트워크에서 컴퓨터 간 서로를 구분하기 위해 사용된다.
+
+## hostname 확인 및 변경
+
+```sh
+# 먼저 혹시 모르니 systemd가 설치되어 있는지 확인하자.
+dpkg-query -l | grep systemd
+
+# 잘 설치되어 있다면... (설치 안되었으면 apt로 다운로드!)
+hostnamectl
+
+# output:
+    Static hostname: gychoi42
+    ...
+
+# 호스트 이름 변경
+hostnamectl set-hostname <new-hostname>
+```
+
+길이가 길어져서 2편으로 분할한다!
+
+[Part 2-2. Setting: 패스워드, sudo](./setting2.md)
