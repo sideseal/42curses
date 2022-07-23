@@ -160,8 +160,6 @@ sudo:x:27:
 
 ```sh
 # user42, sudo 그룹을 gychoi의 Secondary group에 이어서 추가한다.
-# -a : 그룹을 대치하지 않고 뒤에 이어붙이기.
-# -G : Secondary group을 지정.
 gpasswd -a gychoi user42
 gpasswd -a gychoi sudo
 
@@ -169,8 +167,7 @@ gpasswd -a gychoi sudo
 id gychoi
 
 #output
-id=1000(gychoi) gid=1000(gychoi) groups=1000(gychoi),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev),1001(user42)                                     ^^^^^^^^
-                         ^^^^^^^^^^^^
+id=1000(gychoi) gid=1000(gychoi) groups=1000(gychoi),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev),1001(user42)
 
 # 반대로 삭제할 떈...
 gpasswd -d gychoi <group>
