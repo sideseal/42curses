@@ -91,6 +91,12 @@ password    requisite        pam_pwquality.so retry=3 minlen=1 dcredit=-1 ucredi
 
 이제 마지막으로 root와 유저로 하여금 패스워드 변경을 하도록, `passwd -e <username>`을 실행한다. 해당 명령어는 유저의 <패스워드 만료까지 남은 기간>을 0으로 변경하여, 다음 로그인 시 비밀번호 변경이 요청된다.
 
+```sh
+# 재 접속시...
+You are required to change your password immediately (administrator enforceed).
+...
+```
+
 참고:  
 [https://www.linuxtechi.com/enforce-password-policies-linux-ubuntu-centos/](https://www.linuxtechi.com/enforce-password-policies-linux-ubuntu-centos/)  
 [https://www.cyberciti.biz/faq/linux-set-change-password-how-to/](https://www.cyberciti.biz/faq/linux-set-change-password-how-to/)
@@ -128,3 +134,55 @@ i) 디펜스가 진행되는 동안, 여러분은 새로운 유저를 만들어 
 	- 예시: `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin`
 
 * * *
+
+## 그룹에 유저 추가하기
+
+지금까지 root와 gychoi 유저를 만든 상태이다. user42 그룹을 만들고 user42와 sudo 그룹이 잘 만들어져있는지 확인한다.
+
+```sh
+# user42 그룹 만들기
+groupadd user42
+
+# user42 그룹 확인하기
+cat /etc/group | grep user42
+
+# output
+user42:x:1001:
+
+# sudo 그룹 확인하기
+cat /etc/group | grep sudo
+
+# output
+sudo:x:27:
+```
+
+이제 gychoi 유저를 user42와 sudo 그룹에 추가하자.
+
+```sh
+# user42, sudo 그룹을 gychoi의 Secondary group에 이어서 추가한다.
+# -a : 그룹을 대치하지 않고 뒤에 이어붙이기.
+# -G : Secondary group을 지정.
+gpasswd -a gychoi user42
+gpasswd -a gychoi sudo
+
+# gychoi가 속한 그룹 체크(gychoi 계정이라면 재로그인이 필요할 수 있다)
+id gychoi
+
+#output
+id=1000(gychoi) gid=1000(gychoi) groups=1000(gychoi),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev),1001(user42)                                     ^^^^^^^^
+                         ^^^^^^^^^^^^
+
+# 반대로 삭제할 떈...
+gpasswd -d gychoi <group>
+```
+
+* Linux의 group 개념은, 어떤 파일이나 시스템 자원을 그룹에 따라 접근할 수 있는 권한을 다르게 하기 위해 주로 사용되는 듯 하다. 모든 파일들은 각각 한 명의 유저와 하나의 그롭에 소속된다. 유저는 반드시 1차 그룹(Primary group)에 속해야 하고, 최대 15개의 2차 그룹(Secondary groups)에 속할 수 있다.
+	- 1차 그룹은 유저가 새로운 파일/디렉터리를 만들거나, 파일을 수정하거나, 명령어를 수행하는데 적용된다.
+	- 2차 그룹은 유저가 1차 그룹 외에 속한 그룹들을 나열한다. 2차 그룹에 속한 유저들은 2차 그룹에 속한 파일들을 읽고 쓸 수 있다.
+	- 참고: [https://askubuntu.com/questions/853399/can-we-have-a-user-without-a-primary-group](https://askubuntu.com/questions/853399/can-we-have-a-user-without-a-primary-group)
+* 새로운 유저를 만들기 위해선 `adduser <username>` 명령어를 입력하자. 유저를 삭제할 땐 `deluser -f <username>`을 입력하자.
+* 그룹의 리스트를 확인할 땐 `cat /etc/group`, 유저를 확인할 땐 `cat /etc/passwd`를 사용!
+
+참고:  
+[https://chanchan-father.tistory.com/206](https://chanchan-father.tistory.com/206)  
+[https://kingname.tistory.com/155](https://kingname.tistory.com/155)

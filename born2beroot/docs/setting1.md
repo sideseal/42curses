@@ -74,7 +74,7 @@ sudo apt install openssh-server
 systemctl status ssh
 ```
 * systemctl이란?
-	- systemctl은 systemd 및 서비스를 제어하고 관리하는 데 사용되는 Linux 유틸리티이다. systemd(system management daemon)는 시스템의 첫 번째 프로세스(1번 PID)로, 부팅부터 서비스 관리, 로그 관리 등 시스템의 전반적인 기능을 관리하는 데몬(daemon, 백그라운드에서 여러 작업을 하는 프로세스)이다.
+	- systemctl은 systemd 및 서비스를 제어하고 관리하는 데 사용되는 Linux 유틸리티이다. systemd(system management daemon)는 시스템의 첫 번째 프로세스(1번 PID)로, 부팅부터 서비스 관리, 로그 관리 등 시스템의 전반적인 기능을 관리하는 데몬(daemon, 백그라운드에서 여러 작업을 하는 프로세스)이다. `ctl` 접미사는 control을 의미한다고 XD
 	- 참고: [https://junb51.tistory.com/9](https://junb51.tistory.com/9)
 
 SSH는 기본적으로 22번 포트로 연결되어 있기에, sshd_config 파일을 수정하여 포트를 변경하고 루트 계정 접속을 막는다.
@@ -95,6 +95,46 @@ PermitRootLogin no
 ```sh
 sudo systemctl restart ssh
 ```
+
+## 호스트 컴퓨터와 가상 머신 연결하기
+
+호스트 컴퓨터에서 SSH로 접속하기 위해, 가상 머신의 IP 주소를 확인한다. `10.0.2.15`는 Virtual Box 내부용 IP이다. 그리고 SSH가 4242번 포트를 사용하는지 다시 한 번 확인하자!
+
+```sh
+hostname -I
+
+# output
+10.0.2.15
+
+systemctl status ssh
+
+# output
+...
+Jul 23 14:39:39 gychoi42 sshd[509]: Server listening on 0.0.0.0 port 4242.
+```
+
+하지만, `10.0.2.15`는 Virtual Box의 private network에서 작동하는 사설 IP(private IP)이기에, 호스트 컴퓨터는 해당 IP 주소로 접근할 수 없다. 따라서 호스트 컴퓨터가 가상 머신의 네트워크로 SSH 접속을 할 수 있도록 NAT를 이용한 포트포워딩을 해주자. (SSH 접속을 위한 포트 포워딩을 SSH Tunneling이라고 부르기도 한다. 즉, Local과 Remote 컴퓨터 간 터널을 뚫는다.)
+* NAT란? : NAT(Network Address Translation)는 라우터 등의 장비를 통해 다수의 사설 IP를 하나의 공인 IP(public IP)로 변환하는 기술이다. NAT을 사용하면 호스트 컴퓨터의 IP 주소를 사용하여 가상 머신 네트워크의 자원을 이용할 수 있다.
+	- 참고: [https://velog.io/@zigje9/NAT란](https://velog.io/@zigje9/NAT%EB%9E%80)
+* 포트포워딩이란? : 포트 포워딩(Port-Forwarding)은 패킷이 라우터와 같은 네트워크 게이트웨이를 통과하는 동안, 네트워크 주소를 변환하는 것이다. 즉, 외부 IP의 특정 포트에 전송된 요청을 라우터가 내부 IP의 특정 포트를 향하도록 연결한다. 사설 IP의 단점은 IP를 알아볼 수 없기 때문에, 요청을 보내고 싶어도 보낼 수 없다는 것이다. 따라서 공인 IP와 사설 IP를 포트포워딩하여, 공인 IP로 요청이 들어오면 사설 IP로 향하도록 설정한다.
+	- 참고: [https://technerd.tistory.com/36](https://technerd.tistory.com/36)
+
+1. 먼저, Virtual Box 창을 열고 톱니바퀴 모양 'Settings'를 누른다.
+2. Network 탭으로 들어가 NAT로 설정이 되어있는지 확인하고, Advanced를 펼친다.
+3. Advanced 아래에 있는 'Port Forwarding' 버튼을 누르고, 우측 상단 초록색 버튼을 눌러 규칙을 추가한다.
+4. 아래와 같이 규칙을 설정한다.
+```
+Name             Protocol     Host IP     Host Port     Guest IP     Guest Port
+Rule 1           TCP          127.0.0.1   4242          10.0.2.15    4242
+```
+* 127.0.0.1은 호스트 컴퓨터의 IP를 나타내는 loopback 주소이다.
+5. OK를 누르고 설정을 저장한다.
+
+이제 `ssh gychoi@127.0.0.1 -p 4242`를 입력하면, 가상 머신으로 연결된다. NAT로 호스트 컴퓨터의 주소가 가상 머신의 주소를 향하도록 지시하였고, 포트포워딩으로 호스트 컴퓨터의 4242번 포트를 가상 머신의 4242번 포트로 연결하였다.
+
+참고:  
+[https://velog.io/@combi_jihoon/네트워크10-NAT와-포트포워딩](https://velog.io/@combi_jihoon/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC10-NAT%EC%99%80-%ED%8F%AC%ED%8A%B8%ED%8F%AC%EC%9B%8C%EB%94%A9)  
+[https://www.nemonein.xyz/2020/01/3048/](https://www.nemonein.xyz/2020/01/3048/)
 
 # UFW 방화벽 설정
 
@@ -137,8 +177,6 @@ sudo ufw status
 # UFW 상태 확인(자세하게)
 sudo ufw status verbose
 ```
-
-* * *
 
 ## UFW 규칙 설정
 

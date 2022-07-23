@@ -70,7 +70,7 @@
 9. 비밀번호 설정. 비밀번호를 설정하지 않으면 root, 유저 구분 없이 모두 sudo를 사용할 수 있게 되어버린다!
 10. root가 아닌 유저 한 명을 추가한다. 유저 이름은 인트라 id 그대로 하였음.
 11. 서브젝트의 요구에 따라 LVM을 사용한다. 'use entire disk and set up encrypted LVM' 선택.
-12. 서브젝트의 요구에 따라 2개 이상의 LVM을 만들기 위해 /home 파티션을 분리하는 옵션을 선택한다.
+12. 서브젝트의 요구에 따라 2개 이상의 encrypted partition을 만들기 위해 /home 파티션을 분리하는 옵션을 선택한다.
 13. LVM에도 비밀번호를 설정해주자.
 14. 서브젝트에 나온대로 파티셔닝을 하기 위해 최댓값(8.1GB)로 설정한다.
 15. extra media installation은 생략.
@@ -86,6 +86,8 @@
 
 - swap? : 디스크 공간을 메모리 공간처럼 교환하여 사용하는 것. /swap 파티션은 swap 파일 시스템을 위한 공간이다. 메모리 공간이 부족할 때 디스크 공간을 메모리처럼 사용할 수 있다.
 - sda? : 소형 컴퓨터 인터페이스(Small Computer System Interface, SCSI) 방식의 하드디스크 중 하나. SCSI란 컴퓨터에 주변기기를 연결하기 위한 표준 인터페이스이다.
+	- sda2 : `fdisk`를 입력하면, Extended라고 표시되는데, 이는 sda2가 sda5를 지시하는 포인터의 역할을 함을 의미한다. (그렇기에 용량이 작다.) ([https://unix.stackexchange.com/questions/83781/understanding-partition-table-with-sda1-sda2-sda5](https://unix.stackexchange.com/questions/83781/understanding-partition-table-with-sda1-sda2-sda5))
+	- encrypted partitions : LVM에 의해 만들어진 암호화된 파티션. /boot 파티션은 일반적으로 암호화되지 않는다고 한다. ([https://unix.stackexchange.com/questions/657922/what-is-an-encrypted-lvm](https://unix.stackexchange.com/questions/657922/what-is-an-encrypted-lvm))
 
 # LVM
 
