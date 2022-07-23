@@ -4,6 +4,6 @@ Virtual Box를 사용하여 가상 머신을 만들고, 가상 머신의 시그�
 
 [Part 1. Install](./docs/install.md)
 
-[Part 2-1. Setting: SSH, 방화벽](./docs/setting1.md)
+[Part 2-1. Setting: SSH, 포트포워딩, 방화벽](./docs/setting1.md)
 
 [Part 2-2. Setting: 패스워드, 유저, sudo](./docs/setting2.md)
