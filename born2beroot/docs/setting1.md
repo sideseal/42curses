@@ -96,7 +96,7 @@ PermitRootLogin no
 sudo systemctl restart ssh
 ```
 
-## 호스트 컴퓨터와 가상 머신 연결하기
+# 호스트 컴퓨터와 가상 머신 연결하기(포트포워딩)
 
 호스트 컴퓨터에서 SSH로 접속하기 위해, 가상 머신의 IP 주소를 확인한다. `10.0.2.15`는 Virtual Box 내부용 IP이다. 그리고 SSH가 4242번 포트를 사용하는지 다시 한 번 확인하자!
 
