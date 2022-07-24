@@ -141,16 +141,19 @@ i) 디펜스가 진행되는 동안, 여러분은 새로운 유저를 만들어 
 
 ```sh
 # user42 그룹 만들기
-groupadd user42
+addgroup user42
+
+# 그룹 삭제는...
+delgroup <group>
 
 # user42 그룹 확인하기
-cat /etc/group | grep user42
+grep 'user42' /etc/group
 
 # output
 user42:x:1001:
 
 # sudo 그룹 확인하기
-cat /etc/group | grep sudo
+grep 'sudo' /etc/group
 
 # output
 sudo:x:27:
@@ -160,8 +163,8 @@ sudo:x:27:
 
 ```sh
 # user42, sudo 그룹을 gychoi의 Secondary group에 이어서 추가한다.
-gpasswd -a gychoi user42
-gpasswd -a gychoi sudo
+adduser gychoi user42
+adduser gychoi sudo
 
 # gychoi가 속한 그룹 체크(gychoi 계정이라면 재로그인이 필요할 수 있다)
 id gychoi
@@ -170,7 +173,7 @@ id gychoi
 id=1000(gychoi) gid=1000(gychoi) groups=1000(gychoi),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev),1001(user42)
 
 # 반대로 삭제할 떈...
-gpasswd -d gychoi <group>
+deluser gychoi <group>
 ```
 
 * Linux의 group 개념은, 어떤 파일이나 시스템 자원을 그룹에 따라 접근할 수 있는 권한을 다르게 하기 위해 주로 사용되는 듯 하다. 모든 파일들은 각각 한 명의 유저와 하나의 그롭에 소속된다. 유저는 반드시 1차 그룹(Primary group)에 속해야 하고, 최대 15개의 2차 그룹(Secondary groups)에 속할 수 있다.
@@ -183,3 +186,11 @@ gpasswd -d gychoi <group>
 참고:  
 [https://chanchan-father.tistory.com/206](https://chanchan-father.tistory.com/206)  
 [https://kingname.tistory.com/155](https://kingname.tistory.com/155)
+
+## sudo group 정책 변경
+
+일반적으로 유저는 sudo 명령어를 실행할 수 없다. 유저가 sudo 명령어를 실행하기 위해선, 해당 유저를 sudo group에 추가해야 한다. 위에서 gychoi 유저를 user42와 sudo 그룹에 추가하였기 떄문에, 이제 gychoi 유저는 sudo 명령어를 사용할 수 있다.
+
+그렇다면 이제 sudo group의 정책을 강력하게 만들어보자. sudo group의 정책을 변경하기 위해선 `/etc/sudoers` 파일의 내용을 수정해야 한다. 다만, sudoers 파일은 기본적으로 쓰기 명령이 없기 때문에, `visudo`라는 명령어로 파일 수정을 진행해야 한다.
+
+

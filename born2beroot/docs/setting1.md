@@ -58,7 +58,7 @@ sudo(substitute user do)를 사용하면 root가 시스템 상에서 작업하�
 
 따라서 root 권한을 최소화하는 것이 시스템 보안에 중요한 요소라면, sudo의 사용은 보안의 기본이라고 할 수 있을 것이다. 하지만 동시에 sudo 명령어를 남용하는 것을 조심해야 할 것이다. 가령 root가 아닌 유저가 sudo 명령어로 패키지를 설치하게 된다면 시스템 보안의 문제가 발생할 수 있다.
 
-* 참고로 sudo와 su는 조금 다르다! su는 사용자를 전환하는 명령어라면(`su -`는 root 계정으로 전환된다), sudo는 사용자 전환 없이 단일 명령에 대해 root 권한을 부여한다.
+* 참고로 sudo와 su는 조금 다르다! su는 사용자를 전환하는 명령어라면(`su -`는 root 계정으로 전환된다), sudo는 사용자 전환 없이 단일 명령에 대해 root 권한을 부여한다. ([https://brownbears.tistory.com/227](https://brownbears.tistory.com/227))
 
 참고: [https://deois.tistory.com/entry/sudo사용의-필요성](https://deois.tistory.com/entry/sudo%EC%82%AC%EC%9A%A9%EC%9D%98-%ED%95%84%EC%9A%94%EC%84%B1)
 
@@ -267,4 +267,4 @@ hostnamectl set-hostname <new-hostname>
 
 길이가 길어져서 2편으로 분할한다!
 
-[Part 2-2. Setting: 패스워드, sudo](./setting2.md)
+[Part 2-2. Setting: 패스워드, 유저, sudo](./setting2.md)
