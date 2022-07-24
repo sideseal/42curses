@@ -192,5 +192,76 @@ deluser gychoi <group>
 일반적으로 유저는 sudo 명령어를 실행할 수 없다. 유저가 sudo 명령어를 실행하기 위해선, 해당 유저를 sudo group에 추가해야 한다. 위에서 gychoi 유저를 user42와 sudo 그룹에 추가하였기 떄문에, 이제 gychoi 유저는 sudo 명령어를 사용할 수 있다.
 
 그렇다면 이제 sudo group의 정책을 강력하게 만들어보자. sudo group의 정책을 변경하기 위해선 `/etc/sudoers` 파일의 내용을 수정해야 한다. 다만, sudoers 파일은 기본적으로 쓰기 명령이 없기 때문에, `visudo`라는 명령어로 파일 수정을 진행해야 한다.
+	- 그런데 기본 에디터가 nano로 실행되기에, 조금 익숙하지 않을 수도 있다. `.bashrc`에 `export EDITOR=/usr/bin/vim`을 설정하여 vim 에디터로 실행되도록 하자. (마지막에 `source ~/.bashrc` 잊지 말기!)
 
+sudoers에 설정되어있는 변수들을 살펴보자.
+* env_reset : sudo 명령어가 새로운 환경에서 실행될 수 있도록 한다. `HOME, MAIL, SHELL, LOGNAME, USER` 환경 변수는 새로운 환경에 그대로 적용된다.
+* mail_badpass : 유저가 틀린 비밀번호를 입력하여 sudo 명령어를 실행하지 못하는 경우, 유저의 `mailto` 경로로 메일을 보낸다.
+* secure_path : 유저의 환경 변수 경로 대신, secure_path로 설정된 경로에 한정해서 sudo + 명령어를 실행한다.
+	- secure_path에 대한 보다 자세한 이야기: [https://www.tuwlab.com/ece/24044](https://www.tuwlab.com/ece/24044)
 
+우선, sudo 명령어 비밀번호 재입력 횟수는 기본적으로 3회로 제한되어 있다. 비밀번호 인증 횟수를 변경하기 위해선 `passwd_tries` 설정을 사용하면 된다. (기본으로 설정되어 있어서 파일에 따로 적지는 않았다.)
+
+비밀번호 오류가 발생하는 경우, 커스텀 메세지가 출력되도록 하려면 `badpass_message` 설정을 사용하자. 재미있는건, `insults` 설정을 사용해도 커스텀 메세지가 출력된다. (그런데 커스텀 메세지의 상태가...?!)
+
+```sh
+Defaults	badpass_message="WRONG PASSWORD, PLEASE TRY AGAIN!"
+
+# 혹은, 누군가 유저를 사랑하지 않는 사람이라면...
+
+Defaults	insults
+```
+
+만약, sudo 로그인 실패로 권한을 얻지 못하였을 때에도 메세지를 출력하도록, 아래 설정을 추가로 해야할 것 같다.
+```sh
+authfail_message="AUTHENTICATION FAILED"
+```
+
+sudo 입출력의 로그 파일을 만들기 위해선 다음과 같이 설정한다.
+
+```sh
+# 우선, /var/log에 sudo 디렉터리를 생성하자.
+mkdir /var/log/sudo
+
+# 그리고 다시 visudo로 돌아와...
+
+# sudo의 입출력이 /var/log/sudo에 적히도록 설정한다.
+Defaults	log_input, log_output, iolog_dir="/var/log/sudo/"
+Defaults	log_host, logfile="/var/log/sudo/"
+```
+* `iolog_dir="/var/log/sudo/%{user}"`로 하면 유저의 이름 안에 log 정보가 담기는데, 우선 조금 애매해서 설정은 위처럼 진행했다.
+
+TTY 모드도 활성화하자.
+
+```sh
+Defaults	requiretty
+```
+* TTY(Teletypewriter)는 간단하게 콘솔이나 터미널을 의미한다고 생각하면 된다. 그렇다면 보안을 위해 TTY를 활성화해야 하는 이유는 무엇일까?
+	- sudo 명령어가 TTY 상태에서 진행되어야 한다는 의미는, 현재 터미널 바깥에서 sudo 명령어가 사용되는 경우를 방지할 수 있다. 가령, sudo 권한이 없는 유저가 cronjob에 sudo 명령어를 적어놓고 실행하는 경우를 막을 수 있다.
+	- 참고: [https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi](https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi)
+	- [콘솔? 터미널? 쉘?](https://hanamon.kr/%ED%84%B0%EB%AF%B8%EB%84%90-%EC%BD%98%EC%86%94-%EC%89%98-%EB%AA%85%EB%A0%B9%EC%A4%84terminal-console-shell-command-line%EC%9D%98-%EC%B0%A8%EC%9D%B4-2/)
+
+마지막으로, `secure_path`를 서브젝트에서 요구하는 대로 수정하자.
+
+```sh
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+```
+
+완성된 모습은 아래와 같다:
+
+```sh
+# visudo 9번째 줄
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults	authfail_message="AUTHENTICATION FAILED"
+Defaults	log_input, log_output, iolog_dir="/var/log/sudo/"
+Defaults	log_host, logfile="var/log/sudo/sudo.log"
+Defaults	requiretty
+```
+
+참고:  
+[https://www.tecmint.com/sudoers-configurations-for-setting-sudo-in-linux/](https://www.tecmint.com/sudoers-configurations-for-setting-sudo-in-linux/)  
+[man sudoers](https://www.freebsd.org/cgi/man.cgi?query=sudoers&apropos=0&sektion=0&manpath=FreeBSD+13.0-RELEASE+and+Ports&arch=default&format=html)  
+
+이제, 마지막 맨데토리인 `monitoring.sh`를 작성하러 가보자.
