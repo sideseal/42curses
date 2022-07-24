@@ -1,7 +1,7 @@
-# 목차
+# 목차 <a name="table></a>
 
 1. [가상머신이란?](#vm)
-2. [CentOS? Devian?](#centdevian)
+2. [CentOS? Devian?](#centosdevian)
 3. [Devian 설치하기](#installdevian)
 4. [LVM](#lvm)
 5. [http 프록시](#httpproxy)
@@ -32,7 +32,9 @@
 
 참고: [https://eunjinii.tistory.com/10](https://eunjinii.tistory.com/10)
 
-# CentOS? Debian? <a name="centdevian"></a>
+[목차로](#table)
+
+# CentOS? Debian? <a name="centosdevian"></a>
 
 리눅스(linux)는 오픈소스로써 누구나 자유롭게 수정하고 배포할 수 있다. 따라서 수많은 형태의 리눅스들이 나오게 되었는데, 크게 두 가지 계열의 리눅스로 말할 수 있다고 한다. 바로 레드햇 계열과 데비안 계열이다. 이들의 대표적인 버전으로 레드햇은 센토스(CentOS), 데비안은 우분투(UbuntuOS)가 있다. (하지만 과제에서 사용해야 하는 버전은 센토스와 데비안 자체이다!)
 
@@ -53,6 +55,8 @@
 이번 과제에서는 Devian을 사용할 예정이다('`Debian` is highly recommended if you are new to system administration.' ㅎㅎ;;) Devian 11은 여러 하드웨어의 지원과 더불어 Apache, Emacs, LibreOffice, Vim의 최신 버전과(Vim은 최근 9.0이 나왔지만...) 업데이트된 Linux kernal을 사용한다.
 
 [What's New in Devian 11 "Bullseye"?](https://www.linuxjournal.com/content/whats-new-debian-11-bullseye)
+
+[목차로](#table)
 
 # Devian 설치하기 <a name="installdevian"></a>
 
@@ -101,6 +105,8 @@
 	- sda2 : `fdisk`를 입력하면, Extended라고 표시되는데, 이는 sda2가 sda5를 지시하는 포인터의 역할을 함을 의미한다. (그렇기에 용량이 작다.) ([https://unix.stackexchange.com/questions/83781/understanding-partition-table-with-sda1-sda2-sda5](https://unix.stackexchange.com/questions/83781/understanding-partition-table-with-sda1-sda2-sda5))
 	- encrypted partitions : LVM에 의해 만들어진 암호화된 파티션. /boot 파티션은 일반적으로 암호화되지 않는다고 한다. ([https://unix.stackexchange.com/questions/657922/what-is-an-encrypted-lvm](https://unix.stackexchange.com/questions/657922/what-is-an-encrypted-lvm))
 
+[목차로](#table)
+
 # LVM <a name="lvm"></a>
 
 LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유연하게 관리하기 위한 커널의 한 부분이다.
@@ -114,6 +120,8 @@ LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유
 
 참고: [https://mamu2830.blogspot.com/2019/12/lvmpv-vg-lv-pe-lvm.html](https://mamu2830.blogspot.com/2019/12/lvmpv-vg-lv-pe-lvm.html)
 
+[목차로](#table)
+
 # http 프록시 <a name="httpproxy"></a>
 
 프록시(Proxy)란 대리 혹은 중계의 의미를 가지며, 프록시 서버는 클라이언트와 서버 사이에서 중간자 역할을 한다. 프록시 서버는 인터넷 연결을 위한 인증, 인터넷 연결 공유, 대역폭 제어 그리고 정보를 필터링하거나 블락킹을 할 수 있다. http 프록시 서버는 http 요청을 받는 프록시 서버다. 웹 서버처럼 http로 들어온 요청을 다루고 응답을 클라이언트에게 돌려면서 동시에 http 클라이언트처럼 요청을 서버로 보낸다.
@@ -123,12 +131,16 @@ LVM(Logical Volumn Manager)은 리눅스의 저장 공간을 효율적이고 유
 
 참고: [https://code-masterjung.tistory.com/53](https://code-masterjung.tistory.com/53)
 
+[목차로](#table)
+
 # GRUB <a name="grub"></a>
 
 GRUB(Grand Unified Bootloader)은 GNU에서 만든 부트로더로, 대부분의 리눅스가 GRUB을 기본 부트로더로 설정한다. 부트로더는 리눅스 OS의 커널 이미지를 로드하고, 이후 커널이 기본적인 작동을 완료하여 시스템 부팅이 완료된다. GRUB은 파일명과 커널이 위치하고 있는 디스크 파티션만 알고 있다면 커널을 로드할 수 있다. 몇몇 리눅스 커널은 GRUB과 같은 부트로더 없이도 부팅 작업을 할 수 있지만, 자료가 사라지는 등 여러 문제가 발생하기에 왠만해선 부트로더를 설치하는 것이 안전하다고 한다. ([https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader](https://tecporto.pt/wiki/index.php/Booting_the_Linux_Kernel_without_a_bootloader))
 * 부트로더(Bootloader) : 운영 체제가 실행되기 이전에 미리 실행되어 커널이 올바르게 실행될 수 있도록 사전 작업을 수행하고 최종적으로는 아무 이상 없이 운영 체제를 실행시키기 위한 프로그램.
 
 참고: [https://youngswooyoung.tistory.com/67](https://youngswooyoung.tistory.com/67)
+
+[목차로](#table)
 
 # aptitude vs. apt <a name="apptitudeapt"></a>
 
@@ -143,6 +155,8 @@ aptitude는 사용자 인터페이스를 추가해, 사용자가 텍스트 기�
 참고: [https://velog.io/@joonpark/aptitude-vs-apt](https://velog.io/@joonpark/aptitude-vs-apt)
 
 * apt 관련 정보가 인터넷에 더 많기도 하고, 아직은 인터페이스가 친절한 점이 딱히 매력으로 다가오지 않아 apt를 그대로 사용할 계획.
+
+[목차로](#table)
 
 # SELinux, AppArmor <a name="selinuxapparmor"></a>
 
@@ -169,3 +183,5 @@ AppArmor도 SELinux와 동일하게 리눅스 보안 모듈이다. AppArmor와 S
 참고: [https://velog.io/@kdkeiie8/Linux-AppArmor-리눅스-커널-보안-모듈](https://velog.io/@kdkeiie8/Linux-AppArmor-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EB%B3%B4%EC%95%88-%EB%AA%A8%EB%93%88)
 
 Devian 11에는 AppArmor가 이미 깔려 있기에, `aa-status` 명령어로 AppArmor가 실행 중인지 확인할 수 있다.
+
+[목차로](#table)
