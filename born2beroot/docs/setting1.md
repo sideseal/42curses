@@ -127,6 +127,9 @@ Jul 23 14:39:39 gychoi42 sshd[509]: Server listening on 0.0.0.0 port 4242.
 * 포트포워딩이란? : 포트 포워딩(Port-Forwarding)은 패킷이 라우터와 같은 네트워크 게이트웨이를 통과하는 동안, 네트워크 주소를 변환하는 것이다. 즉, 외부 IP의 특정 포트에 전송된 요청을 라우터가 내부 IP의 특정 포트를 향하도록 연결한다. 사설 IP의 단점은 IP를 알아볼 수 없기 때문에, 요청을 보내고 싶어도 보낼 수 없다는 것이다. 따라서 공인 IP와 사설 IP를 포트포워딩하여, 공인 IP로 요청이 들어오면 사설 IP로 향하도록 설정한다.
 	- 참고: [https://technerd.tistory.com/36](https://technerd.tistory.com/36)
 
+<img src="../img/natportforward.png" alt="natportforward" width="600" />
+이미지 출처: https://doc.milestonesys.com/2022r1/en-US/onvifdriver/configuration_of_devices_behind.htm?Highlight=nat
+
 1. 먼저, Virtual Box 창을 열고 톱니바퀴 모양 'Settings'를 누른다.
 2. Network 탭으로 들어가 NAT로 설정이 되어있는지 확인하고, Advanced를 펼친다.
 3. Advanced 아래에 있는 'Port Forwarding' 버튼을 누르고, 우측 상단 초록색 버튼을 눌러 규칙을 추가한다.
@@ -139,6 +142,15 @@ Rule 1           TCP          127.0.0.1   4242          10.0.2.15    4242
 5. OK를 누르고 설정을 저장한다.
 
 이제 `ssh gychoi@127.0.0.1 -p 4242`를 입력하면, 가상 머신으로 연결된다. NAT로 호스트 컴퓨터의 주소가 가상 머신의 주소를 향하도록 지시하였고, 포트포워딩으로 호스트 컴퓨터의 4242번 포트를 가상 머신의 4242번 포트로 연결하였다.
+
+* NAT와 Bridge의 차이?
+- NAT와 Bridge는 가상 머신이 IP를 어디에서 할당 받는가로 구분할 수 있다.
+	- NAT는 가상 머신이 호스트 컴퓨터로부터 IP를 할당받는다. 따라서 가상 머신은 호스트 컴퓨터를 통해서만 외부 네트워크와 통신할 수 있다.
+	- Bridge는 가상 머신이 공유기로부터 IP를 할당받는다. 따라서 가상 머신이 다른 외부 컴퓨터와도 접속이 가능해진다.
+	- NAT 방식을 선택한 이유는, 1) 실제로 서비스하는 것이 아니기에 외부에서 접근할 필요가 마땅히 없음, 2) 가상 머신이 외부와 바로 연결된다면 보안의 위험이 생길 수 있다고 보았음. 따라서 호스트 컴퓨터와 가상 머신을 NAT로 연결하여, 호스트 컴퓨터의 접속만 허용하도록 설정하였다.
+
+<img src="../img/natbridge" alt="natbridge" width="600" />
+이미지 출처: https://chunggaeguri.tistory.com/entry/Network-Host-only-NAT-Bridged
 
 참고:  
 [https://velog.io/@combi_jihoon/네트워크10-NAT와-포트포워딩](https://velog.io/@combi_jihoon/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC10-NAT%EC%99%80-%ED%8F%AC%ED%8A%B8%ED%8F%AC%EC%9B%8C%EB%94%A9)  
