@@ -149,7 +149,7 @@ Rule 1           TCP          127.0.0.1   4242          10.0.2.15    4242
 	- Bridge는 가상 머신이 공유기로부터 IP를 할당받는다. 따라서 가상 머신이 다른 외부 컴퓨터와도 접속이 가능해진다.
 	- NAT 방식을 선택한 이유는, 1) 실제로 서비스하는 것이 아니기에 외부에서 접근할 필요가 마땅히 없음, 2) 가상 머신이 외부와 바로 연결된다면 보안의 위험이 생길 수 있다고 보았음. 따라서 호스트 컴퓨터와 가상 머신을 NAT로 연결하여, 호스트 컴퓨터의 접속만 허용하도록 설정하였다.
 
-<img src="../img/natbridge" alt="natbridge" width="600" />
+<img src="../img/natbridge.png" alt="natbridge" width="600" />
 이미지 출처: https://chunggaeguri.tistory.com/entry/Network-Host-only-NAT-Bridged
 
 참고:  
