@@ -1,6 +1,6 @@
 # 목차 <a name="table"></a>
 
-1, [패스워드 정책](#password)
+1. [패스워드 정책](#password)
 2. [sudo 및 유저 정책](#sudouser)
 
 
@@ -271,3 +271,5 @@ Defaults	requiretty
 [man sudoers](https://www.freebsd.org/cgi/man.cgi?query=sudoers&apropos=0&sektion=0&manpath=FreeBSD+13.0-RELEASE+and+Ports&arch=default&format=html)  
 
 이제, 마지막 맨데토리인 `monitoring.sh`를 작성하러 가보자.
+
+[Part 3. Monitoring.sh](./monitoring.md)
