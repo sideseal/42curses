@@ -169,5 +169,3 @@ AppArmor도 SELinux와 동일하게 리눅스 보안 모듈이다. AppArmor와 S
 참고: [https://velog.io/@kdkeiie8/Linux-AppArmor-리눅스-커널-보안-모듈](https://velog.io/@kdkeiie8/Linux-AppArmor-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EB%B3%B4%EC%95%88-%EB%AA%A8%EB%93%88)
 
 Devian 11에는 AppArmor가 이미 깔려 있기에, `aa-status` 명령어로 AppArmor가 실행 중인지 확인할 수 있다.
-
-[목차로](#table)

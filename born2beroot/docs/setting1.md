@@ -1,4 +1,12 @@
-# SSH 포트 및 권한 변경
+# 목차 <a name="table"></a>
+
+1. [SSH 포트 및 권한 변경](#sshport)
+2. [호스트 컴퓨터와 가상 머신 연결하기](#portforward)
+3. [UFW 방화벽 설정](#ufw)
+4. [Hostname 확인](#hostname)
+
+
+# SSH 포트 및 권한 변경 <a name="sshport"></a>
 
 A SSH service will be running on port 4242 only. For security reasons, it must not be possible to connect using SSH as root.
 SSH 연결은 4242번 포트에서만 가능해야 하고, 루트 계정으로 연결되어서는 안된다.
@@ -96,7 +104,7 @@ PermitRootLogin no
 sudo systemctl restart ssh
 ```
 
-# 호스트 컴퓨터와 가상 머신 연결하기(포트포워딩)
+# 호스트 컴퓨터와 가상 머신 연결하기(포트포워딩) <a name="portforward"></a>
 
 호스트 컴퓨터에서 SSH로 접속하기 위해, 가상 머신의 IP 주소를 확인한다. `10.0.2.15`는 Virtual Box 내부용 IP이다. 그리고 SSH가 4242번 포트를 사용하는지 다시 한 번 확인하자!
 
@@ -136,7 +144,7 @@ Rule 1           TCP          127.0.0.1   4242          10.0.2.15    4242
 [https://velog.io/@combi_jihoon/네트워크10-NAT와-포트포워딩](https://velog.io/@combi_jihoon/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC10-NAT%EC%99%80-%ED%8F%AC%ED%8A%B8%ED%8F%AC%EC%9B%8C%EB%94%A9)  
 [https://www.nemonein.xyz/2020/01/3048/](https://www.nemonein.xyz/2020/01/3048/)
 
-# UFW 방화벽 설정
+# UFW 방화벽 설정 <a name="ufw"></a>
 
 You have to configure your operating system with the UFW firewall and thus leave only port 4242 open. Your firewall must be active when you launch your virtual machine.
 UFW 방화벽으로 운영 체제를 설정하고, 4242 포트만 열어놓는다. 가상 머신을 실행할 때 방화벽도 같이 활성화해야 한다.
@@ -238,7 +246,7 @@ sudo ufw logging off
 
 참고: [https://webdir.tistory.com/206](https://webdir.tistory.com/206)
 
-# Hostname 확인
+# Hostname 확인 <a name="hostname"></a>
 
 The hostname of your virtual machine must be your login ending with 42 (e.g., wil42). You will have to modify this hostname during your evaluation.
 가상 머신의 호스트 이름은 여러분의 로그인 아이디 + 42 입니다. 여러분은 평가 도중 호스트 이름으 변경해야 합니다.

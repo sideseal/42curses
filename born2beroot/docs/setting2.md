@@ -1,4 +1,10 @@
-# 패스워드 정책
+# 목차 <a name="table"></a>
+
+1, [패스워드 정책](#password)
+2. [sudo 및 유저 정책](#sudouser)
+
+
+# 패스워드 정책 <a name="password"></a>
 
 You have to implement a strong password policy. ... To set up a strong password policy, you have to comply with the following requirements:
 * Your password has to expire every 30 days.
@@ -101,7 +107,7 @@ You are required to change your password immediately (administrator enforceed).
 [https://www.linuxtechi.com/enforce-password-policies-linux-ubuntu-centos/](https://www.linuxtechi.com/enforce-password-policies-linux-ubuntu-centos/)  
 [https://www.cyberciti.biz/faq/linux-set-change-password-how-to/](https://www.cyberciti.biz/faq/linux-set-change-password-how-to/)
 
-# sudo 및 유저 정책
+# sudo 및 유저 정책 <a name="sudouser"></a>
 
 You have to install and configure sudo following strict rules.
 In addition to the root user, a user with your login as username has to be present. This user has to belong to the user42 and sudo groups.
