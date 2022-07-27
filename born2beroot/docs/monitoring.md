@@ -69,6 +69,21 @@ echo "#CPU physical : $(lscpu | grep 'Socket' | awk '{ print $2 }')"
 
 `/proc/cpuinfo`의 항목을 출력하여 가상 프로세서(vCPU)의 개수를 출력한다. `/proc/cpuinfo`는 현재 컴퓨터의(즉 가상 머신의) CPU 정보를 표시한다. 0 부터 카운팅되기 때문에, `processor : 0`은 하나의 가상 프로세서가 있다는 의미이다.
 
+```sh
+echo "vCPU : $(cat /proc/cpuinfo | grep 'processor' | wc -l)"
+```
+
 참고: [https://webhostinggeeks.com/howto/how-to-display-the-number-of-processors-vcpu-on-linux-vps/](https://webhostinggeeks.com/howto/how-to-display-the-number-of-processors-vcpu-on-linux-vps/)
 
-작성해야함!
+## 서버에서 사용 가능한 RAM 표시
+
+```sh
+var=$(free -m | grep Total | awk '{ printf("%d/%dMB (%.2f%%)\n", $3, $2, $3/$2 * 100.0) }')
+echo "#Memory Usage: $var"
+```
+* `-m` 플래그는 MB 단위로 사용량을 표시한다.
+* 퍼센티지 기호를 `printf`로 출력하기 위해선 두 번 적어야 한다.
+
+참고:  
+[https://stackoverflow.com/questions/10585978/how-to-get-the-percentage-of-memory-free-with-a-linux-command](https://stackoverflow.com/questions/10585978/how-to-get-the-percentage-of-memory-free-with-a-linux-command)  
+[https://devconnected.com/how-to-check-ram-on-linux/](https://devconnected.com/how-to-check-ram-on-linux/)
