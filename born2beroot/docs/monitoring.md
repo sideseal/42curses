@@ -3,40 +3,42 @@
 At server startup, the script will display some information (lilsted below) on all terminals every 10 minutes (take a look at `wall`). The banner is optional. No error must be visible.
 
 Your script must always be able to display the following information:
-* The architecture of your operating system and its kernel version.
-* The number of physical processors.
-* The number of vritual processors.
-* The current available RAM on your server and its utilization rate as a percentage.
-* The current available memory on your server and its utilization rate as a percentage.
-* The current utilization rate of your processors as a percentage.
-* The date and time of the last reboot.
-* Whether LVM is active or not.
-* The number of active connections.
-* The number of users using the server.
-* The IPv4 address of your server and its MAC (Media Access Control) address.
-* The nuber of commands executed with the `sudo` program.
+
+- The architecture of your operating system and its kernel version.
+- The number of physical processors.
+- The number of vritual processors.
+- The current available RAM on your server and its utilization rate as a percentage.
+- The current available memory on your server and its utilization rate as a percentage.
+- The current utilization rate of your processors as a percentage.
+- The date and time of the last reboot.
+- Whether LVM is active or not.
+- The number of active connections.
+- The number of users using the server.
+- The IPv4 address of your server and its MAC (Media Access Control) address.
+- The nuber of commands executed with the `sudo` program.
 
 i) During the defense, you will be asked to explain how this script works. You will also bave to interrupt it without modifying it. Take a look at cron.
 
 서버가 작동하면, 스크립트는 아래의 정보를 매 10 분마다 터미널에 출력해야 한다(`wall` 옵션을 참고할 것). 배너를 넣는 것은 선택 사항이고, 스크립트에서 오류가 발생해선 안된다.
 
 여러분의 스크립트는 아래의 정보를 언제나 출력해야 한다:
-* 여러분이 사용하는 운영 체제와 커널 버전
-* 물리 프로세서의 개수
-* 가상 프로세서의 개수
-* 여러분의 서버의 RAM 사용량을 퍼센티지로 표시
-* 여러분의 서버의 메모리 사용량을 퍼센티지로 표시
-* 현재 프로세서의 사용량을 퍼센티지로 표시
-* 마지막 재부팅 시각
-* LVM 활성화 여부
-* 현재 활성화된 네트워크 연결의 개수
-* 서버를 사용하고 있는 유저의 수
-* 여러분의 서버의 IPv4 주소의 MAC 주소
-* `sudo`와 함께 실행된 명령어의 개수
+
+- 여러분이 사용하는 운영 체제와 커널 버전
+- 물리 프로세서의 개수
+- 가상 프로세서의 개수
+- 여러분의 서버의 RAM 사용량을 퍼센티지로 표시
+- 여러분의 서버의 메모리 사용량을 퍼센티지로 표시
+- 현재 프로세서의 사용량을 퍼센티지로 표시
+- 마지막 재부팅 시각
+- LVM 활성화 여부
+- 현재 활성화된 네트워크 연결의 개수
+- 서버를 사용하고 있는 유저의 수
+- 여러분의 서버의 IPv4 주소의 MAC 주소
+- `sudo`와 함께 실행된 명령어의 개수
 
 i) 여러분이 디펜스를 진행하는 동안, 스크립트가 어떻게 작동하는지 설명할 수 있어야 한다. 또한 스크립트를 수정하지 않고, 진행되는 스크립트를 중단할 수도 있어야 한다. cron을 살펴볼 것.
 
-* * *
+---
 
 먼저, 스크립트에 표시해야 할 사항들을 하나씩 구현해보자.
 
@@ -57,8 +59,9 @@ echo "#Architecture: $(uname -a)"
 ```sh
 echo "#CPU physical : $(lscpu | grep 'Socket' | awk '{ print $2 }')"
 ```
-* CPU 소켓은 컴퓨터의 마더 보드를 CPU와 연결하는 장치이다. 따라서 소켓의 개수는 곧 물리 CPU의 개수라고 볼 수 있을 것이라고 생각하였다.
-* `nproc` 명령어는 CPU 코어의 개수를 세는 것이기에, 물리 프로세서의 개수와 차이가 날 것이다.
+
+- CPU 소켓은 컴퓨터의 마더 보드를 CPU와 연결하는 장치이다. 따라서 소켓의 개수는 곧 물리 CPU의 개수라고 볼 수 있을 것이라고 생각하였다.
+- `nproc` 명령어는 CPU 코어의 개수를 세는 것이기에, 물리 프로세서의 개수와 차이가 날 것이다.
 
 <img src="../img/socketcore.png" alt="socketcore" width="600" />
 이미지 출처: https://www.intel.com/content/www/us/en/developer/articles/technical/performance-counter-monitor.html
@@ -81,14 +84,16 @@ echo "vCPU : $(cat /proc/cpuinfo | grep 'processor' | wc -l)"
 RAM_RATE=$(free -m | grep Total | awk '{ printf("%d/%dMB (%.2f%%)\n", $3, $2, $3/$2 * 100.0) }')
 echo "#Memory Usage: $RAM_RATE"
 ```
-* `-m` 플래그는 MB 단위로 사용량을 표시한다.
-* 퍼센티지 기호를 `printf`로 출력하기 위해선 두 번 적어야 한다.
+
+- `-m` 플래그는 MB 단위로 사용량을 표시한다.
+- 퍼센티지 기호를 `printf`로 출력하기 위해선 두 번 적어야 한다.
 
 질문:
+
 1. `free`로 출력하는 메모리 사용량 중에서, `buff/cache`를 포함하지 않는 이유는?
-	- 일반적으로 Memory utilization은 특정한 순간에 사용 가능한 메모리의 사용량을 나타낸다고 한다. `buff/cache`가 메모리의 일정 부분을 점유하고 있지만, 서브젝트가 요구하는 것은 직접 사용할 수 있는 용량을 의미한다고 생각하였기에, `buff/cache`를 포함시키지 않았다.
+   - 일반적으로 Memory utilization은 특정한 순간에 사용 가능한 메모리의 사용량을 나타낸다고 한다. `buff/cache`가 메모리의 일정 부분을 점유하고 있지만, 서브젝트가 요구하는 것은 직접 사용할 수 있는(available) 용량을 의미한다고 생각하였기에, `buff/cache`를 포함시키지 않았다.
 2. RAM과 메모리의 차이는?
-	- 간단하게 RAM은 컴퓨터가 종료되면 데이터가 사라지는 휘발성을 가지고, 그 외의 Memory는 하드디스크와 같이 장기적으로 데이터를 저장할 수 있다.
+   - 간단하게 RAM은 컴퓨터가 종료되면 데이터가 사라지는 휘발성을 가지고, 그 외의 Memory는 하드디스크와 같이 장기적으로 데이터를 저장할 수 있다.
 
 참고:  
 [https://stackoverflow.com/questions/10585978/how-to-get-the-percentage-of-memory-free-with-a-linux-command](https://stackoverflow.com/questions/10585978/how-to-get-the-percentage-of-memory-free-with-a-linux-command)  
@@ -106,8 +111,9 @@ DISK_TOTAL=$(df -m / /root | awk '{ sum += $2 } END { printf("%d", sum / 1024) }
 DISK_RATE=$(awk -v USED="$DISK_USED" -v TOTAL="$DISK_TOTAL" 'BEGIN { printf("(%d%%)\n", USED/TOTAL / 1024 * 100) }')
 echo "#Disk Usage: $DISK_USED/${DISK_TOTAL}Gb $DISK_RATE"
 ```
-* root와 home 디렉터리의 디스크 용량을 합쳐서 계산하였다.
-* `-m` 플래그는 MB 단위로 사용량을 표시한다.
+
+- root와 home 디렉터리의 디스크 용량을 합쳐서 계산하였다.
+- `-m` 플래그는 MB 단위로 사용량을 표시한다.
 
 참고:  
 [https://maktooob.tistory.com/19](https://maktooob.tistory.com/19)  
@@ -116,12 +122,53 @@ echo "#Disk Usage: $DISK_USED/${DISK_TOTAL}Gb $DISK_RATE"
 
 # 프로세서의 사용량 표시
 
+서브젝트 사진에는 'CPU Load'로 적혀있는데, CPU 사용률(CPU Usage)과 CPU 부하(CPU Load)는 완전히 같은 의미는 아니라고 한다.
+
+- CPU Load는 CPU에 실행중이거나 대기중인 작업의 개수(즉 프로세스의 개수)를 평균으로 나타낸 값이다.
+  - CPU Load는 CPU가 얼마나 잘 사용되고 있는지 확인하는 지표로 사용할 수 있다.
+  - CPU Load는 일반적으로 0~1의 값을 갖는다(다만 이는 단일 코어의 경우이고, 코어의 개수에 따라 값은 배가 된다). 만약 1의 값을 넘어가는 경우, CPU에서 처리하지 못하고 대기하는 프로세스가 있다는 의미이다.
+  - CPU Load 수치는 낮을 수록 좋다.
+  - Linux에서 `uptime` 명령어로 CPU Load를 확인할 수 있다.
+- CPU Usage는 시스템 사용률(CPU System)과 사용자 사용률(CPU User) 등을 합친 값이다.
+  - 시스템 사용률은 운영체제가 사용한 CPU 사용률을 의미하며, 사용자 사용률은 응용프로그램이 사용하는 CPU 사용률을 의미한다.
+  - 시스템 사용률이 높다면 시스템 사양을 높여야 한다.
+  - 사용자 사용률이 높다면 시스템 업그레이드 또는 어플리케이션의 분배에 대해 고민해야 한다.
+
+따라서 'CPU Load'의 값을 서브젝트에 나온 대로 utilization의 의미로 해석하여, CPU Usage를 출력하였다.
+
+`cat /proc/stat`로 별 다른 패키지의 설치 없이 확인할 수도 있지만, `/proc/stat`은 시스템이 부팅된 이후, [CPU의 사용률을 누적하여 나타낸 것](https://www.idnt.net/en-US/kb/941772)이기에, 실제 사용률과 다를 수 있다고 생각하였다. 무엇보다, 리눅스는 현재 CPU의 사용률을 한 번에 나타낼 수 있는 시스템 요소를 가지지 않는다고 한다! 그렇다면 마지막으로 남은 방법은, CPU 사용률을 나타내는 명령어를 반복 수행하여, 이전의 값과 얼마나 달라졌는지 파악하는 수밖에 없다.
+
+나는 `top` 명령어를 두 번 실행하여, 첫 번째 `top`의 결과를 제외한 값을 출력하였다(첫 번째 값은 마지막 부팅 이후의 평균 CPU Load값을 나타낸다고 한다).
+
+```sh
+CPU_USAGE=$(top -d 0.5 -b -n2 | grep '^%Cpu' | tail -1 | awk '{ printf("%.1f%%\n", $2+$4+$6+$12+$14) }')
+echo "#CPU load: $CPU_USAGE"
+```
+
+- `-d` : 실행 반복 딜레이를 설정한다. 여기서는 첫 번째 `top`과 두 번째 `top` 실행을 0.5초 간격으로 설정함.
+- `-b` : Batch 모드로 실행. 사실 여기서는 큰 차이는 없지만, 인터랙티브 모드로 실행하였을 땐 모든 프로세스가 표시되지 않는 반면, Batch 모드는 모두 표시한다. 일반적으로 Batch 모드는 해당 결과를 데이터로 사용할 때 자주 쓰이는 듯하다. [https://unix.stackexchange.com/questions/138484/what-does-batch-mode-mean-for-the-top-command](https://unix.stackexchange.com/questions/138484/what-does-batch-mode-mean-for-the-top-command)
+- `-n` : `top`을 실행할 횟수 설정. 첫 번째 `top` 결과는 잘못된 값을 가지기에 두 번 실행하여 마지막 값을 취한다(`tail -1`).
+- `$2` : 사용자 CPU 사용률(`%us`)
+- `$4` : 시스템 CPU 사용률(`%sy`)
+- `$6` : 프로세스 우선순위 설정에 사용되는 CPU 사용률(`%ni`)
+- `$12` : 하드웨어 인터럽트에 사용되는 CPU 사용률(`%hi`)
+- `$14` : 소프트웨어 인터럽트에 사용되는 CPU 사용률(`%si`)
+
+* 만약 CPU 사용률을 테스트하고 싶다면, `stress`를 사용하자:
+
+```sh
+# stress 패키지 설치
+apt install stress
+
+# worker를 1로 설정, output이 안나오게 quiet, background 실행
+stress -c 1 -q &
+
+# stress 프로세스 모두 중단
+pkill stress
+```
+
 참고:  
 [https://www.baeldung.com/linux/get-cpu-usage](https://www.baeldung.com/linux/get-cpu-usage)  
-[https://tkyoo.tistory.com/26](https://tkyoo.tistory.com/26)  
-[https://blog.naver.com/ptupark/130102605590](https://blog.naver.com/ptupark/130102605590)  
-[https://brunch.co.kr/@leedongins/76](https://brunch.co.kr/@leedongins/76)
-
-아니, /proc이 현재 CPU 사용률이 아닌, 누적 사용률이라고?!
-
-[https://meongj-devlog.tistory.com/171](https://meongj-devlog.tistory.com/171)
+[https://brunch.co.kr/@leedongins/76](https://brunch.co.kr/@leedongins/76)  
+[https://sabarada.tistory.com/146](https://sabarada.tistory.com/146)  
+[https://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time](https://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time)
