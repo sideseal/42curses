@@ -136,9 +136,9 @@ echo "#Disk Usage: $DISK_USED/${DISK_TOTAL}Gb $DISK_RATE"
 
 따라서 'CPU Load'의 값을 서브젝트에 나온 대로 utilization의 의미로 해석하여, CPU Usage를 출력하였다.
 
-`cat /proc/stat`로 별 다른 패키지의 설치 없이 확인할 수도 있지만, `/proc/stat`은 시스템이 부팅된 이후, [CPU의 사용률을 누적하여 나타낸 것](https://www.idnt.net/en-US/kb/941772)이기에, 실제 사용률과 다를 수 있다고 생각하였다. 무엇보다, 리눅스는 현재 CPU의 사용률을 한 번에 나타낼 수 있는 시스템 요소를 가지지 않는다고 한다! 그렇다면 마지막으로 남은 방법은, CPU 사용률을 나타내는 명령어를 반복 수행하여, 이전의 값과 얼마나 달라졌는지 파악하는 수밖에 없다.
+`cat /proc/stat`로 별 다른 패키지의 설치 없이 확인할 수도 있지만, `/proc/stat`은 시스템이 부팅된 이후, [CPU의 사용률을 누적하여 나타낸 것](https://www.idnt.net/en-US/kb/941772)이기에, 실제 사용률과 다를 수 있다고 생각하였다. 무엇보다, 리눅스는 현재 CPU의 사용률을 "한 번에" 나타낼 수 있는 시스템 요소를 가지지 않는다고 한다!
 
-나는 `top` 명령어를 두 번 실행하여, 첫 번째 `top`의 결과를 제외한 값을 출력하였다(첫 번째 값은 마지막 부팅 이후의 평균 CPU Load값을 나타낸다고 한다).
+나는 `top` 명령어를 두 번 실행하여, 첫 번째 `top`의 결과를 제외한 값을 출력하였다(첫 번째 값은 CPU 변화량을 비교할 샘플이 없기 때문에, 대신 마지막 부팅 이후의 평균 CPU Load값을 나타낸다고 한다([https://bugzilla.redhat.com/show_bug.cgi?id=174619](https://bugzilla.redhat.com/show_bug.cgi?id=174619))).
 
 ```sh
 CPU_USAGE=$(top -d 0.5 -b -n2 | grep '^%Cpu' | tail -1 | awk '{ printf("%.1f%%\n", $2+$4+$6+$12+$14) }')
@@ -172,3 +172,66 @@ pkill stress
 [https://brunch.co.kr/@leedongins/76](https://brunch.co.kr/@leedongins/76)  
 [https://sabarada.tistory.com/146](https://sabarada.tistory.com/146)  
 [https://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time](https://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time)
+
+# 마지막 재부팅 시각 표시
+
+Linux의 `who` 명령어는 호스트에 로그인한 사용자의 정보를 출력한다. `-b` 플래그는 마지막 부팅 시간을 출력한다.
+
+```sh
+echo "#Last boot: $(who -b | awk '{ printf("%s %s\n", $3, $4) }')"
+```
+
+참고: [https://hbase.tistory.com/256](https://hbase.tistory.com/256)
+
+# LVM 활성화 여부
+
+`/etc/fstab` 파일을 확인하여 LVM 사용 여부를 확인한다. `fstab` 파일은 리눅스에서 사용하는 파일시스템 정보를 저장하고 있으며, 리눅스 부팅 시 마운트 정보를 저장하고 있다. 만약 `root`의 파일시스템이 `/dev/mapper/<VM name>`이라면, LVM을 사용하고 있다는 의미가 된다. `dev/mapper`의 의미는, 리눅스 커널의 물리적 공간을 가상 공간으로 한 단계 추상화하여 매핑하였다는 뜻이다([https://en.wikipedia.org/wiki/Device_mapper](https://en.wikipedia.org/wiki/Device_mapper)).
+
+```sh
+if [[ $(cat /etc/fstab | grep 'root') =~ "/dev/mapper" ]]; then
+	echo "#LVM use: yes"
+else
+	echo "#LVM use: no"
+fi
+```
+
+- 정규식을 이용하여 `/dev/mappper`가 대상에 포함되어 있는지 확인한다(포함된다면 1, 아니면 0 반환).
+- 스크립트의 대괄호의 개수는 작동에는 차이가 없지만, 괄호가 하나인 경우 별도의 프로세스가 실행(`/usr/bin/[`), 반면 괄호가 두 개인 경우 bash 자체적으로 내장된 기능을 사용하여 별도의 프로세스를 실행하지 않는다. ([http://bahndal.egloos.com/531206](http://bahndal.egloos.com/531206))
+
+참고:  
+[https://meongj-devlog.tistory.com/134](https://meongj-devlog.tistory.com/134)  
+[https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm](https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm)
+
+# 활성화된 네트워크 연결 개수 표시
+
+`ss` 명령어는 리눅스 시스템의 소켓 상태를 조회할 수 있는 유틸리티이다. `ss`는 옵션 없이 사용하면 listening socket(Clinet측 소켓의 연결 요청이 있을 때까지 기다리는 Server의 소켓. Client 소켓에서 연결 요청을 하고 Server 소켓이 허락을 해야 통신을 할 수 있도록 연결된다.)을 제외하고 현재 연결되어 있는 모든 소켓(TCP/UDP/Unix)을 표시한다. TCP 소켓을 표시하기 위해선 `-t` 옵션을 주면 된다.
+
+- 소켓(Socket)이란? : 프로그램이 네트워크에서 데이터를 통신할 수 있도록 연결해주는 통신 인터페이스. 소켓은 인터넷과 프로세스 사이에 놓여 그 둘을 연결하는 역할을 한다.
+- TCP(Transmission Control Protocol) : 서버와 클라이언트 간에 데이터를 신뢰성 있게 전달하기 위해 만들어진 프로토콜. 서버와 클라이언트가 1대 1로 연결되며, 연결형 서비스를 지원하는 프로토콜로 인터넷 환경에서 기본으로 사용한다. IP가 데이터의 배달을 처리한다면 TCP는 패킷을 추적하고 관리한다.
+
+<img src="../img/socket.png" alt="socket" width="600" />
+이미지 출처: https://ghfkdgml.tistory.com/14
+
+연결된 소켓은 `State` 필드가 `ESTAB`으로 표시된다. 따라서 `ESTAB`이 표시된 행의 개수를 세어 출력하였다.
+
+```sh
+TCP_CONN=$(ss -t | grep 'ESTAB' | wc -l)
+echo "#Connections TCP : $TCP_CONN ESTABLISHED"
+```
+
+참고:  
+[https://www.lesstif.com/lpt/linux-socket-ss-socket-statistics-91947283.html](https://www.lesstif.com/lpt/linux-socket-ss-socket-statistics-91947283.html)  
+[https://medium.com/@su_bak/term-socket%EC%9D%B4%EB%9E%80-7ca7963617ff](https://medium.com/@su_bak/term-socket%EC%9D%B4%EB%9E%80-7ca7963617ff)  
+[https://codinghero.tistory.com/98](https://codinghero.tistory.com/98)
+
+# 현재 서버를 사용하고 있는 유저의 수 표시
+
+`who` 명령어로 현재 접속한 사용자의 정보의 개수를 세어 표시하자.
+
+```sh
+echo "#User log: $(who | wc -l)"
+```
+
+# 서버의 IPv4 주소와 MAC 주소 표시
+
+https://linuxhint.com/find-ip-address-linux/
