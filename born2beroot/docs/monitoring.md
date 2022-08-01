@@ -101,7 +101,7 @@ echo "#Memory Usage: $RAM_RATE"
 [https://beforb.tistory.com/5](https://beforb.tistory.com/5)  
 [https://www.easytechjunkie.com/what-is-the-difference-between-ram-and-memory.htm](https://www.easytechjunkie.com/what-is-the-difference-between-ram-and-memory.htm)
 
-# 서버의 메모리 사용량 표시
+## 서버의 메모리 사용량 표시
 
 서브젝트에서 말하는 메모리는 RAM이 아닌 메모리, 즉 하드디스크를 의미한다고 생각하여, `df` 명령어를 사용하였다.
 
@@ -120,7 +120,7 @@ echo "#Disk Usage: $DISK_USED/${DISK_TOTAL}Gb $DISK_RATE"
 [https://www.unix.com/filesystems-disks-and-memory/40966-sum-df-command.html](https://www.unix.com/filesystems-disks-and-memory/40966-sum-df-command.html)  
 [https://www.hostinger.com/tutorials/vps/how-to-check-and-manage-disk-space-via-terminal](https://www.hostinger.com/tutorials/vps/how-to-check-and-manage-disk-space-via-terminal)
 
-# 프로세서의 사용량 표시
+## 프로세서의 사용량 표시
 
 서브젝트 사진에는 'CPU Load'로 적혀있는데, CPU 사용률(CPU Usage)과 CPU 부하(CPU Load)는 완전히 같은 의미는 아니라고 한다.
 
@@ -141,18 +141,17 @@ echo "#Disk Usage: $DISK_USED/${DISK_TOTAL}Gb $DISK_RATE"
 나는 `top` 명령어를 두 번 실행하여, 첫 번째 `top`의 결과를 제외한 값을 출력하였다(첫 번째 값은 CPU 변화량을 비교할 샘플이 없기 때문에, 대신 마지막 부팅 이후의 평균 CPU Load값을 나타낸다고 한다([https://bugzilla.redhat.com/show_bug.cgi?id=174619](https://bugzilla.redhat.com/show_bug.cgi?id=174619))).
 
 ```sh
-CPU_USAGE=$(top -d 0.5 -b -n2 | grep '^%Cpu' | tail -1 | awk '{ printf("%.1f%%\n", $2+$4+$6+$12+$14) }')
+CPU_USAGE=$(top -d 0.5 -b -n2 | grep -Po "[0-9.]*(?=( id,))" | tail -1 | awk '{ printf("%.1f%%\n", 100-$1) }')
 echo "#CPU load: $CPU_USAGE"
 ```
 
 - `-d` : 실행 반복 딜레이를 설정한다. 여기서는 첫 번째 `top`과 두 번째 `top` 실행을 0.5초 간격으로 설정함.
 - `-b` : Batch 모드로 실행. 사실 여기서는 큰 차이는 없지만, 인터랙티브 모드로 실행하였을 땐 모든 프로세스가 표시되지 않는 반면, Batch 모드는 모두 표시한다. 일반적으로 Batch 모드는 해당 결과를 데이터로 사용할 때 자주 쓰이는 듯하다. [https://unix.stackexchange.com/questions/138484/what-does-batch-mode-mean-for-the-top-command](https://unix.stackexchange.com/questions/138484/what-does-batch-mode-mean-for-the-top-command)
 - `-n` : `top`을 실행할 횟수 설정. 첫 번째 `top` 결과는 잘못된 값을 가지기에 두 번 실행하여 마지막 값을 취한다(`tail -1`).
-- `$2` : 사용자 CPU 사용률(`%us`)
-- `$4` : 시스템 CPU 사용률(`%sy`)
-- `$6` : 프로세스 우선순위 설정에 사용되는 CPU 사용률(`%ni`)
-- `$12` : 하드웨어 인터럽트에 사용되는 CPU 사용률(`%hi`)
-- `$14` : 소프트웨어 인터럽트에 사용되는 CPU 사용률(`%si`)
+- `-Po` : `grep` 명령어에서 사용되는 플래그. `-P`는 `Perl` 언어 방식의 정규 표현식을 사용한다는 의미이고, `-o`는 현재 정규 표현식에 해당하는 부분만 출력한다는 의미이다.
+- `[0-9.]*(?=( id,))` : `grep` 명령어와 함께 사용하는 정규 표현식.
+	- `[0-9.]*` : 주어진 문자열에서 한 자리 숫자와 점(`.`) 문자를 모두 찾는다(`... 0.0 us, 100.0 id ...`문자열에서 `0.0 100.0`를 매칭한다).
+	- `(?=( id,))` : 정규 표현식의 Lookaround 기능 중 하나인 Positive Lookahead. `?=` 이후의 조건이 만족되는 이전의 매칭을 결과에 포함한다(따라서 매칭된 패턴 중 `100.0 id,` 문자열에서 `100.0`만 출력된다).
 
 * 만약 CPU 사용률을 테스트하고 싶다면, `stress`를 사용하자:
 
@@ -172,8 +171,11 @@ pkill stress
 [https://brunch.co.kr/@leedongins/76](https://brunch.co.kr/@leedongins/76)  
 [https://sabarada.tistory.com/146](https://sabarada.tistory.com/146)  
 [https://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time](https://unix.stackexchange.com/questions/69185/getting-cpu-usage-same-every-time)
+[https://stackoverflow.com/questions/9229333/how-to-get-overall-cpu-usage-e-g-57-on-linux](https://stackoverflow.com/questions/9229333/how-to-get-overall-cpu-usage-e-g-57-on-linux)  
+[https://scripter.co/grep-po/](https://scripter.co/grep-po/)  
+[https://elvanov.com/2388](https://elvanov.com/2388)
 
-# 마지막 재부팅 시각 표시
+## 마지막 재부팅 시각 표시
 
 Linux의 `who` 명령어는 호스트에 로그인한 사용자의 정보를 출력한다. `-b` 플래그는 마지막 부팅 시간을 출력한다.
 
@@ -183,7 +185,7 @@ echo "#Last boot: $(who -b | awk '{ printf("%s %s\n", $3, $4) }')"
 
 참고: [https://hbase.tistory.com/256](https://hbase.tistory.com/256)
 
-# LVM 활성화 여부
+## LVM 활성화 여부
 
 `/etc/fstab` 파일을 확인하여 LVM 사용 여부를 확인한다. `fstab` 파일은 리눅스에서 사용하는 파일시스템 정보를 저장하고 있으며, 리눅스 부팅 시 마운트 정보를 저장하고 있다. 만약 `root`의 파일시스템이 `/dev/mapper/<VM name>`이라면, LVM을 사용하고 있다는 의미가 된다. `dev/mapper`의 의미는, 리눅스 커널의 물리적 공간을 가상 공간으로 한 단계 추상화하여 매핑하였다는 뜻이다([https://en.wikipedia.org/wiki/Device_mapper](https://en.wikipedia.org/wiki/Device_mapper)).
 
@@ -202,7 +204,7 @@ fi
 [https://meongj-devlog.tistory.com/134](https://meongj-devlog.tistory.com/134)  
 [https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm](https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm)
 
-# 활성화된 네트워크 연결 개수 표시
+## 활성화된 네트워크 연결 개수 표시
 
 `ss` 명령어는 리눅스 시스템의 소켓 상태를 조회할 수 있는 유틸리티이다. `ss`는 옵션 없이 사용하면 listening socket(Clinet측 소켓의 연결 요청이 있을 때까지 기다리는 Server의 소켓. Client 소켓에서 연결 요청을 하고 Server 소켓이 허락을 해야 통신을 할 수 있도록 연결된다.)을 제외하고 현재 연결되어 있는 모든 소켓(TCP/UDP/Unix)을 표시한다. TCP 소켓을 표시하기 위해선 `-t` 옵션을 주면 된다.
 
@@ -224,7 +226,7 @@ echo "#Connections TCP : $TCP_CONN ESTABLISHED"
 [https://medium.com/@su_bak/term-socket%EC%9D%B4%EB%9E%80-7ca7963617ff](https://medium.com/@su_bak/term-socket%EC%9D%B4%EB%9E%80-7ca7963617ff)  
 [https://codinghero.tistory.com/98](https://codinghero.tistory.com/98)
 
-# 현재 서버를 사용하고 있는 유저의 수 표시
+## 현재 서버를 사용하고 있는 유저의 수 표시
 
 `who` 명령어로 현재 접속한 사용자의 정보의 개수를 세어 표시하자.
 
@@ -232,6 +234,8 @@ echo "#Connections TCP : $TCP_CONN ESTABLISHED"
 echo "#User log: $(who | wc -l)"
 ```
 
-# 서버의 IPv4 주소와 MAC 주소 표시
+## 서버의 IPv4 주소와 MAC 주소 표시
 
-https://linuxhint.com/find-ip-address-linux/
+Linux 서버의 IP 주소는 `hostname` 명령어를 통해 확인할 수 있다. `-i`
+
+https://stackoverflow.com/questions/60615270/hostname-i-vs-hostname-i-in-linux
