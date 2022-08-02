@@ -150,8 +150,8 @@ echo "#CPU load: $CPU_USAGE"
 - `-n` : `top`을 실행할 횟수 설정. 첫 번째 `top` 결과는 잘못된 값을 가지기에 두 번 실행하여 마지막 값을 취한다(`tail -1`).
 - `-Po` : `grep` 명령어에서 사용되는 플래그. `-P`는 `Perl` 언어 방식의 정규 표현식을 사용한다는 의미이고, `-o`는 현재 정규 표현식에 해당하는 부분만 출력한다는 의미이다.
 - `[0-9.]*(?=( id,))` : `grep` 명령어와 함께 사용하는 정규 표현식.
-	- `[0-9.]*` : 주어진 문자열에서 한 자리 숫자와 점(`.`) 문자를 모두 찾는다(`... 0.0 us, 100.0 id ...`문자열에서 `0.0 100.0`를 매칭한다).
-	- `(?=( id,))` : 정규 표현식의 Lookaround 기능 중 하나인 Positive Lookahead. `?=` 이후의 조건이 만족되는 이전의 매칭을 결과에 포함한다(따라서 매칭된 패턴 중 `100.0 id,` 문자열에서 `100.0`만 출력된다).
+  - `[0-9.]*` : 주어진 문자열에서 한 자리 숫자와 점(`.`) 문자를 모두 찾는다(`... 0.0 us, 100.0 id ...`문자열에서 `0.0 100.0`를 매칭한다).
+  - `(?=( id,))` : 정규 표현식의 Lookaround 기능 중 하나인 Positive Lookahead. `?=` 이후의 조건이 만족되는 이전의 매칭을 결과에 포함한다(따라서 매칭된 패턴 중 `100.0 id,` 문자열에서 `100.0`만 출력된다).
 
 * 만약 CPU 사용률을 테스트하고 싶다면, `stress`를 사용하자:
 
@@ -236,6 +236,64 @@ echo "#User log: $(who | wc -l)"
 
 ## 서버의 IPv4 주소와 MAC 주소 표시
 
-Linux 서버의 IP 주소는 `hostname` 명령어를 통해 확인할 수 있다. `-i`
+Linux 서버의 IP 주소는 `hostname` 명령어를 통해 확인할 수 있다. IP 주소를 나타내는 옵션으로는 `-i`와 `-I`가 있는데, 실제 서버의 IP 주소를 확인하기 위해선 `-I` 옵션을 사용해야 한다.
 
-https://stackoverflow.com/questions/60615270/hostname-i-vs-hostname-i-in-linux
+왜냐하면 `i` 옵션이 보여주는 IP 주소는 루프백(loopback) 주소이기 때문이다. 루프백 주소는 호스트 자기 자신과 통신하기 위한 주소이기 때문에, 실제로 외부에서 접근하는 IP 주소와는 다르다. 네트워크가 연결되지 않아도 루프백 주소에 접근할 수 있다. 우리가 익숙하게 들은 localhost가 바로 루프백 주소이다.
+
+`-I` 옵션은 루프백 주소와 IPv6 주소를 제외하고, 호스트가 실제로 네트워크에서 여겨지는 주소를 반환한다.
+
+MAC 주소는 `/sys/class/net/enp0s3/address`에서 확인할 수 있다.
+
+- MAC 주소란? : 네트워크 상에서 서로를 구분하기 위해 장치(Device)마다 할당된 물리적 주소를 의미한다. 하드웨어 주소, 물리적 주소, 이더넷(Ethernet) 주소 등으로 불리기도 한다. IP 주소는 네트워크 주소로, 통신 중 변동 가능성이 존재한다. 따라서 안전한 통신을 위해서는 변하지 않는 기계의 고유한 주소 번호가 있어야 하는데, 맥 주소가 이러한 역할을 담당한다. 따라서 두 장치의 통신에는 데이터의 목적지인 IP 주소 뿐만 아니라 맥 주소가 함께 지정되어야 한다.
+- `enp0s3` : 이더넷 장치에 할당된 이름(`en`이 이더넷을 의미한다).
+
+```sh
+echo "#Network: IP $(hostname -I)($(cat /sys/class/net/enp0s3/address))"
+```
+
+참고:  
+[https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-net](https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-net)  
+[https://www.howtouselinux.com/post/linux-command-get-mac-address-in-linux](https://www.howtouselinux.com/post/linux-command-get-mac-address-in-linux)  
+[https://stackoverflow.com/questions/60615270/hostname-i-vs-hostname-i-in-linux](https://stackoverflow.com/questions/60615270/hostname-i-vs-hostname-i-in-linux)  
+[https://askubuntu.com/questions/754213/what-is-difference-between-localhost-address-127-0-0-1-and-127-0-1-1](https://askubuntu.com/questions/754213/what-is-difference-between-localhost-address-127-0-0-1-and-127-0-1-1)  
+[https://jhnyang.tistory.com/404](https://jhnyang.tistory.com/404)
+
+## 실행된 sudo 명령어의 개수 표시
+
+`journalctl` 명령어를 사용하여 실행된 sudo 명령어들을 구하였다. `journalctl`은 `systemd`의 서비스 로그를 검색하고 확인할 수 있는 유틸리티이다. 리눅스용 시스템/서비스 매니저인 `systemd` 프로세스는 로그 데이터를 journal이라는 바이너리 형식으로 저장한다.
+
+```sh
+echo "#Sudo : $(jorunalctl _COMM=sudo | grep 'COMMAND' | wc -l) cmd"
+```
+
+참고:  
+[https://www.lesstif.com/system-admin/linux-journalctl-82215080.html](https://www.lesstif.com/system-admin/linux-journalctl-82215080.html)
+[https://unix.stackexchange.com/questions/167935/details-about-sudo-commands-executed-by-all-user](https://unix.stackexchange.com/questions/167935/details-about-sudo-commands-executed-by-all-user)
+
+# CRON 설정
+
+이제 마지막으로 주기적으로 10분마다 스크립트가 실행되면 터미널에 결과가 출력되는 과정을 완료하자.
+
+`crontab`은 cron 작업을 설정하는 파일이다. cron은 UNIX 운영체제에서 어떤 작업을 특정 시간에 실행시키기 위한 [데몬(daemon)](https://haruhiism.tistory.com/9)이다. cron 프로세스는 `/etc/crontab` 파일에 설정된 내용을 읽고 작업을 수행한다.
+
+우선, `monitoring.sh`를 `chmod +x`를 이용하여 실행 가능하도록 설정한다.
+
+그리고 `crontab -e`를 입력하여 `crontab`에 아래처럼 쓴다.
+
+```sh
+# crontab
+
+*/10 * * * * /root/monitoring.sh | wall
+```
+
+- 매 10분마다 스크립트 실행.
+- `wall` : 터미널에 접속된 모든 사용자의 터미널로 메세지를 보내는 명령어.
+
+`crontab`을 확인하고 싶다면 `contab- l`을 입력한다.
+`crontab`을 중지하고 싶다면 `crontab -r`을 입력하면 된다.
+
+참고:  
+[https://jootc.com/p/201811172241](https://jootc.com/p/201811172241)  
+[https://jdm.kr/blog/2](https://jdm.kr/blog/2)
+
+맨데토리는 여기서 끝!
