@@ -52,6 +52,7 @@ mount /dev/gychoi42-vg/var-log /var/log
 마지막에는 /etc/fstab에 위 UUID 적어야 부팅시 안지워짐
 
 (나중에 좀 더 자세히 정리하기)
+```
 
 <img src="../img/partition.png" alt="partition" width="600" />
 
