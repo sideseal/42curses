@@ -5,7 +5,7 @@
 (갑작스러울 수 있지만, 물리적 볼륨, 볼륨 그룹, 논리적 볼륨을 한 번에 설명하는 그림)
 
 <img src="../img/volumes.png" alt="volumes" width="600" />
-이미지 출처: https://askubuntu.com/questions/417642/logical-volume-physical-volume-and-volume-groups
+이미지 출처: https://askubuntu.com/questions/417642/logical-volume-physical-volume-and-volume-groups  
 
 LVM 파티션을 추가하기 위해, 우선 가상 머신의 하드 디스크 용량을 늘려주기로 하였다. 커맨드 라인으로 입력하는 방법도 있으나... 간단하게 VM 매니저 어플리케이션으로 들어가, `File -> Virtual Media Manager -> Properties` 하단의 용량을 늘려주고(나는 8G에서 10G로 늘렸다), 적용 버튼을 누르면, 가상 머신의 용량이 증가한다.
 
@@ -23,35 +23,55 @@ LVM 파티션을 추가하기 위해, 우선 가상 머신의 하드 디스크 �
 따라서 [GNU parted 유틸리티](https://geekpeach.net/ko/linux-parted-%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0-%EC%9D%B4%ED%95%B4)를 사용하여, sda5 파티션의 크기를 늘렸다.
 
 ```sh
-# 실행
-parted /dev/sda
-
-# 
-
+# parted 설치
 apt install parted
 
+# 실행 
+# (따로 디스크를 추가하지 않고 용량을 늘렸기에 첫 번째 하드디스크를 다룬다)
+parted /dev/sda
+
+# 2번 파티션, 5번 파티션을 늘어난 용량만큼 크기 조정.
+# 2번 파티션은 논리적 파티션인 5번 파티션을 지시하고 있다.
+# 따라서 2번과 5번을 모두 용량을 같게 처리해야 하나... 확신이 들지는 않지만,
+# fdisk로 파티션의 끝을 확인해보면 동일하기에, 두 파티션 모두 용량을 최대로 늘리도록 명령어를 사용하였음.
 resizepart 2, 5 to 100%
 
+# 조정이 끝났다면, quit를 입력하고 프로그램을 나온다.
+
+# df -h를 입력해보면, 아직 용량이 늘어나지 않았다고 나올 것이다.
+# 먼저, pvs를 입력하여 우리가 늘리고자 하는 물리 디스크(물리 볼륨)의 이름을 확인하고(sda5_crypt),
+# 아래의 명령어를 입력하여 리사이징을 진행한다.
 pvresize /dev/mapper/sda5_crypt
+
+# 이제 다시 pvs를 입력하면, 반영 여부를 다시 확인할 수 있다.
+# root, home과 동일한 볼륨 그룹에 논리적 볼륨을 추가로 생성한다.
+# 2GB만 추가해서 대충 4개를 비슷하네 분배했다. 어차피 구조만 비슷하면 될 것 같기에...
 lvcreate -n var -L 500M gychoi42-vg
-...
+lvcreate -n srv -L 500M gychoi42-vg
+lvcreate -n tmp -L 300M gychoi42-vg
 lvcreate -n var-log -l +100%FREE gychoi42-vg
 
-mount 하기 전에, /var 의 내용을 따로 옮겨놓고, 다시 붙여넣어야 한다.
-https://unix.stackexchange.com/questions/591971/after-partitioning-mounting-and-turning-of-directory-is-missing
-
+# root와 home의 파일 시스템과 동일하게 파티션을 설정해주었다.
 mkfs.ext4 /dev/gychoi42-vg/var
 ...
+mkfs.ext4 /dev/gychoi42-vg/var-log /var/log
 
+# 그리고 잠깐! 마운트(mount) 하기 전에, 개인적인 추측으로는
+# /var 의 내용을 따로 옮겨놓고, 다시 var에 붙여넣어야 할 것 같다.
+# 무턱대고 마운트 했다가 그 안의 파일이 모두 사라지는 참사가 발생했었음...
+# https://unix.stackexchange.com/questions/591971/after-partitioning-mounting-and-turning-of-directory-is-missing
+
+# 위 링크를 따라 파일을 옮겨놓았다면, 만들어진 논리적 볼륨에 디렉토리를 마운트하자.
 mount /dev/gychoi42-vg/var /var
 ...
-cd /var
-mkdir log
 mount /dev/gychoi42-vg/var-log /var/log
 
-마지막에는 /etc/fstab에 위 UUID 적어야 부팅시 안지워짐
-
-(나중에 좀 더 자세히 정리하기)
+# 그리고 마지막으로 /etc/fstab 파일에, 지금까지 만든 논리적 볼륨의 UUID 혹은 논리 볼륨의 디렉토리를 적는다.
+# 그래야 부팅 시 자동으로 디스크를 읽을 수 있어, 만든 파티션이 부팅 이후에도 사라지지 않는다.
+# /etc/fstab
+UUID=xxx	/var		ext4	defaults	0 2
+...
+UUID=xxx	/var/log	ext4	defaults	0 2
 ```
 
 <img src="../img/partition.png" alt="partition" width="600" />
@@ -63,3 +83,5 @@ mount /dev/gychoi42-vg/var-log /var/log
 [https://unix.stackexchange.com/questions/637893/how-to-increase-lvm-when-using-luks2-on-debian-buster](https://unix.stackexchange.com/questions/637893/how-to-increase-lvm-when-using-luks2-on-debian-buster)  
 [https://itguava.tistory.com/100](https://itguava.tistory.com/100)  
 [https://starrykss.tistory.com/1760](https://starrykss.tistory.com/1760)
+
+ext4, fstab에 대해 좀 더 자세하게 정리하기.
