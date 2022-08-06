@@ -5,11 +5,12 @@
 (갑작스러울 수 있지만, 물리적 볼륨, 볼륨 그룹, 논리적 볼륨을 한 번에 설명하는 그림)
 
 <img src="../img/volumes.png" alt="volumes" width="600" />
-이미지 출처: https://askubuntu.com/questions/417642/logical-volume-physical-volume-and-volume-groups  
+이미지 출처: https://askubuntu.com/questions/417642/logical-volume-physical-volume-and-volume-groups
 
 LVM 파티션을 추가하기 위해, 우선 가상 머신의 하드 디스크 용량을 늘려주기로 하였다. 커맨드 라인으로 입력하는 방법도 있으나... 간단하게 VM 매니저 어플리케이션으로 들어가, `File -> Virtual Media Manager -> Properties` 하단의 용량을 늘려주고(나는 8G에서 10G로 늘렸다), 적용 버튼을 누르면, 가상 머신의 용량이 증가한다.
 
 증가한 가상 머신의 용량을 확인하기 위해 `lsblk`를 입력하고, `sda`를 살펴보면 된다.
+
 - `lsblk` : 리눅스 디바이스 정보를 트리 형식으로 출력하는 명령어.
 - `sda` : 리눅스 시스템이 첫 번째로 발견한 하드디스크의 이름. 가상 머신이 SCSI 인터페이스를 사용하여 `/dev/sda`로 불리는 듯하다.
 - 참고: [https://m.blog.naver.com/tlsrka649/221797149037](https://m.blog.naver.com/tlsrka649/221797149037)
@@ -26,7 +27,7 @@ LVM 파티션을 추가하기 위해, 우선 가상 머신의 하드 디스크 �
 # parted 설치
 apt install parted
 
-# 실행 
+# 실행
 # (따로 디스크를 추가하지 않고 용량을 늘렸기에 첫 번째 하드디스크를 다룬다)
 parted /dev/sda
 
@@ -34,45 +35,78 @@ parted /dev/sda
 # 2번 파티션은 논리적 파티션인 5번 파티션을 지시하고 있다.
 # 따라서 2번과 5번을 모두 용량을 같게 처리해야 하나... 확신이 들지는 않지만,
 # fdisk로 파티션의 끝을 확인해보면 동일하기에, 두 파티션 모두 용량을 최대로 늘리도록 명령어를 사용하였음.
-resizepart 2, 5 to 100%
+(parted) resizepart 2
+# 100% 입력하고 엔터
+End?    [8.7GB]? 100%
+...
+# 파티션 5번에 대해 위와 동일하게 진행한다.
+(parted) resizepart 5
+End?    [8.7GB]? 100%
 
 # 조정이 끝났다면, quit를 입력하고 프로그램을 나온다.
+# 아마 reboot를 한 번 하고, 아래 pvresize를 실행해야 하는 것 같다.
 
-# df -h를 입력해보면, 아직 용량이 늘어나지 않았다고 나올 것이다.
 # 먼저, pvs를 입력하여 우리가 늘리고자 하는 물리 디스크(물리 볼륨)의 이름을 확인하고(sda5_crypt),
-# 아래의 명령어를 입력하여 리사이징을 진행한다.
+# 아래의 명령어를 입력하여 할당된 디스크 공간에 맞게 파티션을 리사이징을 진행한다.
 pvresize /dev/mapper/sda5_crypt
 
-# 이제 다시 pvs를 입력하면, 반영 여부를 다시 확인할 수 있다.
+# 이제 다시 pvs를 입력하면, 반영 여부를 확인할 수 있다.
+
 # root, home과 동일한 볼륨 그룹에 논리적 볼륨을 추가로 생성한다.
 # 2GB만 추가해서 대충 4개를 비슷하네 분배했다. 어차피 구조만 비슷하면 될 것 같기에...
+# -L은 MB, GB ... 단위로 정하는 명령이고, -l은 4MB 사이즈 기준으로 정하는 옵션이다.
 lvcreate -n var -L 500M gychoi42-vg
 lvcreate -n srv -L 500M gychoi42-vg
-lvcreate -n tmp -L 300M gychoi42-vg
+lvcreate -n tmp -L 500M gychoi42-vg
 lvcreate -n var-log -l +100%FREE gychoi42-vg
 
 # root와 home의 파일 시스템과 동일하게 파티션을 설정해주었다.
 mkfs.ext4 /dev/gychoi42-vg/var
 ...
-mkfs.ext4 /dev/gychoi42-vg/var-log /var/log
+mkfs.ext4 /dev/gychoi42-vg/var-log
 
 # 그리고 잠깐! 마운트(mount) 하기 전에, 개인적인 추측으로는
 # /var 의 내용을 따로 옮겨놓고, 다시 var에 붙여넣어야 할 것 같다.
 # 무턱대고 마운트 했다가 그 안의 파일이 모두 사라지는 참사가 발생했었음...
-# https://unix.stackexchange.com/questions/591971/after-partitioning-mounting-and-turning-of-directory-is-missing
 
-# 위 링크를 따라 파일을 옮겨놓았다면, 만들어진 논리적 볼륨에 디렉토리를 마운트하자.
+# 해당 링크를 따라 디렉토리를 마운트했다.
+# https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition
+
+# single user mode로 들어가, 디렉토리에 read-write 행동이 발생하지 않도록 한다.
+init 1
+
+# mnt 폴더에 임시로 디렉토리름 만들고, 마운트를 한다.
+# 그런데 해당 과정이 왜 필요한지는 아직 정확히 모르겠음...
+mkdir /mnt/var
+mount /dev/gychoi42-vg/var /mnt/var
+
+# 디렉토리로 이동하여 파일에 담긴 모든 정보를 mnt/<dir> 폴더에 복사한다.
+cd /var
+cp -ax . /mnt/var
+
+# 디렉토리 복사본을 만들고 기존 디렉토리를 지운다.
+cd /
+mv var var.old
+
+# 디렉토리를 새로 만든다.
+mkdir var
+
+# 마운트 해제
+umount /dev/gychoi42-vg/var
+
+# 새로 만들어진 디렉토리로 마운트
 mount /dev/gychoi42-vg/var /var
-...
-mount /dev/gychoi42-vg/var-log /var/log
 
-# 그리고 마지막으로 /etc/fstab 파일에, 지금까지 만든 논리적 볼륨의 UUID 혹은 논리 볼륨의 디렉토리를 적는다.
-# 그래야 부팅 시 자동으로 디스크를 읽을 수 있어, 만든 파티션이 부팅 이후에도 사라지지 않는다.
-# /etc/fstab
-UUID=xxx	/var		ext4	defaults	0 2
-...
-UUID=xxx	/var/log	ext4	defaults	0 2
+# /etc/fstab 파일에 파티션의 정보를 저장해서 reboot 하더라도 지워지지 않게 한다.
+/dev/gychoi42-vg/var    /var    ext4    defaults    0 0
+
+# srv, tmp, var/log에 대해서도 위 과정을 동일하게 반복함.
+# 모두 마운트가 완료되었다면, 멀티태스킹 모드로 돌아온다.
+init 5
 ```
+
+- `ext4` : `ext`는 리눅스용 파일 시스템을 의미한다. `ext4`는 이전의 버전들과 하휘 호환성을 가짐과 동시에 성능이 향상된 버전이라고 한다.
+- 파일 시스템 : 운영체제가 파일을 사용자가 쉽게 접근 및 발견할 수 있도록, 시스템의 디스크상에 일정한 규칙을 가지고 보관하는 방식. 운영체제가 파일들을 일정한 규칙을 연속적으로 사용하여 디스크의 파티션 상에 저장하게 되면, 저장장치 내에서 파일을 저장하는데 용이하고, 파일 검색 및 관리를 효율적으로 할 수 있다. (http://www.incodom.kr/Linux/파일시스템)[http://www.incodom.kr/Linux/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C]
 
 <img src="../img/partition.png" alt="partition" width="600" />
 
@@ -83,5 +117,6 @@ UUID=xxx	/var/log	ext4	defaults	0 2
 [https://unix.stackexchange.com/questions/637893/how-to-increase-lvm-when-using-luks2-on-debian-buster](https://unix.stackexchange.com/questions/637893/how-to-increase-lvm-when-using-luks2-on-debian-buster)  
 [https://itguava.tistory.com/100](https://itguava.tistory.com/100)  
 [https://starrykss.tistory.com/1760](https://starrykss.tistory.com/1760)
+[https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition](https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition)
 
-ext4, fstab에 대해 좀 더 자세하게 정리하기.
+fstab에 대해 좀 더 자세하게 정리하기.
