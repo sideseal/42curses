@@ -210,6 +210,7 @@ fi
 
 - 소켓(Socket)이란? : 프로그램이 네트워크에서 데이터를 통신할 수 있도록 연결해주는 통신 인터페이스. 소켓은 인터넷과 프로세스 사이에 놓여 그 둘을 연결하는 역할을 한다.
 - TCP(Transmission Control Protocol) : 서버와 클라이언트 간에 데이터를 신뢰성 있게 전달하기 위해 만들어진 프로토콜. 서버와 클라이언트가 1대 1로 연결되며, 연결형 서비스를 지원하는 프로토콜로 인터넷 환경에서 기본으로 사용한다. IP가 데이터의 배달을 처리한다면 TCP는 패킷을 추적하고 관리한다.
+- UDP(User Datagram Protocol) : 연결 상태를 유지하기보단 주어진 목적지로 데이터를 전달만 하는 비연결지향(connectionless) 프로토콜. 커뮤니케이션이 일어나기 전까지 연결이 이루어지지 않는다(즉 커뮤니케이션의 순간에만 연결이 되어있다). - 'fire-and-forgot' 프로토콜.
 
 <img src="../img/socket.png" alt="socket" width="600" />
 이미지 출처: https://ghfkdgml.tistory.com/14
@@ -224,7 +225,9 @@ echo "#Connections TCP : $TCP_CONN ESTABLISHED"
 참고:  
 [https://www.lesstif.com/lpt/linux-socket-ss-socket-statistics-91947283.html](https://www.lesstif.com/lpt/linux-socket-ss-socket-statistics-91947283.html)  
 [https://medium.com/@su_bak/term-socket%EC%9D%B4%EB%9E%80-7ca7963617ff](https://medium.com/@su_bak/term-socket%EC%9D%B4%EB%9E%80-7ca7963617ff)  
-[https://codinghero.tistory.com/98](https://codinghero.tistory.com/98)
+[https://codinghero.tistory.com/98](https://codinghero.tistory.com/98)  
+[https://simhyejin.github.io/2016/07/04/connectionoriented-connectionless/](https://simhyejin.github.io/2016/07/04/connectionoriented-connectionless/)  
+[https://www.spiceworks.com/tech/networking/articles/tcp-vs-udp/](https://www.spiceworks.com/tech/networking/articles/tcp-vs-udp/)
 
 ## 현재 서버를 사용하고 있는 유저의 수 표시
 

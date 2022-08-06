@@ -98,15 +98,25 @@ umount /dev/gychoi42-vg/var
 mount /dev/gychoi42-vg/var /var
 
 # /etc/fstab 파일에 파티션의 정보를 저장해서 reboot 하더라도 지워지지 않게 한다.
+# blkid 명령어로 파티션의 UUID를 맨 앞에 입력해도 된다.
 /dev/gychoi42-vg/var    /var    ext4    defaults    0 0
+# [파일시스템 장치명]   [마운트 포인트] [파일 시스템 종류]  [옵션]  [덤프, 파일체크 옵션]
+# https://itdexter.tistory.com/311
 
 # srv, tmp, var/log에 대해서도 위 과정을 동일하게 반복함.
-# 모두 마운트가 완료되었다면, 멀티태스킹 모드로 돌아온다.
-init 5
+
+# 모두 마운트가 완료되었다면, RunLevel을 변경하여 CLI 멀티태스킹 모드로 돌아온다.
+init 3
+
+# 여담이지만 systemctl get-default가 graphical.target로 나오기에
+# systemctl set-default multi-user.target으로 변경하였다.
+# https://shuzy65536.tistory.com/20
 ```
 
 - `ext4` : `ext`는 리눅스용 파일 시스템을 의미한다. `ext4`는 이전의 버전들과 하휘 호환성을 가짐과 동시에 성능이 향상된 버전이라고 한다.
 - 파일 시스템 : 운영체제가 파일을 사용자가 쉽게 접근 및 발견할 수 있도록, 시스템의 디스크상에 일정한 규칙을 가지고 보관하는 방식. 운영체제가 파일들을 일정한 규칙을 연속적으로 사용하여 디스크의 파티션 상에 저장하게 되면, 저장장치 내에서 파일을 저장하는데 용이하고, 파일 검색 및 관리를 효율적으로 할 수 있다. (http://www.incodom.kr/Linux/파일시스템)[http://www.incodom.kr/Linux/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C]
+- 런 레벨(runlevel) : 시스템 관리의 용이함을 위하여 서비스의 실행을 단계별로 구분하여 적용하는 것. 1은 안전모드, 3은 텍스트 인터페이스 기반 다중 사용자 모드이고, 5는 그래픽 인터페이스 기반 다중 사용자 모드이다.
+- fstab : 리눅스 부팅 시 마운트 정보와 파일 시스템 정보를 저장하고 있는 파일. 시스템이 부팅할 때 파일에 구성된 정보들이 자동으로 적용될 수 있도록 한다.
 
 <img src="../img/partition.png" alt="partition" width="600" />
 
@@ -116,7 +126,5 @@ init 5
 [https://askubuntu.com/questions/1110790/encrypted-drive-cloning-resizing-partitions-problem](https://askubuntu.com/questions/1110790/encrypted-drive-cloning-resizing-partitions-problem)  
 [https://unix.stackexchange.com/questions/637893/how-to-increase-lvm-when-using-luks2-on-debian-buster](https://unix.stackexchange.com/questions/637893/how-to-increase-lvm-when-using-luks2-on-debian-buster)  
 [https://itguava.tistory.com/100](https://itguava.tistory.com/100)  
-[https://starrykss.tistory.com/1760](https://starrykss.tistory.com/1760)
+[https://starrykss.tistory.com/1760](https://starrykss.tistory.com/1760)  
 [https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition](https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition)
-
-fstab에 대해 좀 더 자세하게 정리하기.
