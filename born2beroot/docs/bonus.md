@@ -160,10 +160,7 @@ apt install php-fpm php-cli
 # PHP가 7.4버전이라고 가정.
 systemctl status php7.4-fpm
 
-# Output:
-...
-Active: active (running)
-...
+# Active: active (running) 확인.
 ```
 - php-fpm : PHP를 FastCGI 모드로 동작하게 해준다고 하는데... (CGI, Common Gateway Interface는 웹서버와 외부 프로그램을 연결하는 표준화된 프로토콜) 왜 Apache2가 빠져있는지는 모르겠다 ㅎㅎ;;
 - 참고 : [https://askubuntu.com/questions/1160433/how-to-install-php-without-apache-webserver](https://askubuntu.com/questions/1160433/how-to-install-php-without-apache-webserver)
@@ -233,5 +230,105 @@ ufw allow 80
 <img src="../img/php.png" alt="php" width="600" />
 
 웹 서버가 작동한다!
+
+lighttpd와 PHP 설정을 모두 마쳤으니, MariaDB를 설치하자.
+
+```sh
+apt install mariadb-server mariadb-client
+
+# systemctl로 MariaDB 상태 확인
+systemctl status mariadb
+# Active: active (running) 확인.
+```
+
+워드프레스와 PHP를 연결하기 위해 PHP용 MySQL도 다운로드하자. (다운로드 안하면 사이트가 작동하지 않는다.)
+
+```sh
+apt install php7.4-mysql
+```
+
+터미널에 `mariadb`을 입력하고 워드프레스용 데이터베이스를 만든다.
+
+```sh
+mariadb
+
+# DB 생성
+MariaDB [(none)]> CREATE DATABASE wordpress;
+# root 계정 생성
+MariaDB [(none)]> CREATE USER 'root'@'localhost' IDENTIFIED BY '<패스워드>';
+# DB에 root 계정 접속 허용
+MariaDB [(none)]> GRANT ALL ON wordpress.* TO 'root'@'localhost' IDENTIFIED BY '<패스워드>';
+# 설정 적용
+MariaDB [(none)]> FLUSH PREVILEGES;
+# 나가기
+MariaDB [(none)]> EXIT;
+
+# 앞으로 MariaDB에 로그인하려면...
+mariadb -u root -p
+```
+
+그리고 만약 몬가가 잘못되었다면... 이 [링크](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=abc2185&logNo=220294755812)를 참고하면 도움이 될지도...?!
+
+이제 마지막으로 워드프레스를 설치하자. 웹 서버의 루트 폴더인 `/var/www/html`에 `wget`로 워드프레스를 설치한다.
+
+```sh
+cd /var/www/html
+wget https://wordpress.org/latest.tar.gz
+```
+- `wget` : HTTP 통신 또는 FTP 통신을 사용해 웹 서버에서 파일 또는 콘텐츠를 다운로드할 때 사용하는 소프트웨어.
+- 참고 : [https://jokerkwu.tistory.com/43](https://jokerkwu.tistory.com/43)
+
+다운로드를 마쳤다면, `tar`를 사용하여 파일을 푼다.
+
+```sh
+tar -xvzf latest.tar.gz
+```
+- `tar` : "테이프 아카이버(Tape ARchiver)"의 앞 글자들을 조합한 이름을 가진 명령어로, 여러 개의 팡리을 하나의 파일로 묶거나 풀 때 사용한다. 데이터의 크기를 줄이기 위한 파일 압축은 수행하지 않는다.
+- `-x` : 아카이브에서 파일 추출(파일을 풀 때 사용).
+- `-v` : 처리되는 과정을 자세하게 나열.
+- `-z` : gzip 압축 적용 옵션.
+- `-f` : 대상 아카이브 지정 (기본 옵션).
+- 참고 : [https://recipes4dev.tistory.com/146](https://recipes4dev.tistory.com/146)
+
+`/var/www/html/wordpress`로 이동하여, `wp-config-sample.php` 파일을 수정한다.
+
+```sh
+# 22번째 줄부터
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'wordpress' );
+
+/** MySQL database username */
+define( 'DB_USER', 'root' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '<패스워드>' );
+
+/** MySQL hostname */
+define( 'DB_HOST', 'localhost' );
+
+/** Database Charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+```
+
+사이트의 보안을 위해서 파일 하단의 "Authentication Unique Keys and Salts"에 랜덤한 UUID를 입력해도 된다.
+해당 값들은 웹 브라우저의 쿠키와 세션에 저장되어 암호화에 사용된다고 한다.
+다만 나는 워드프레스를 띄우는 일만 진행하고자 한다. (어차피 가상머신 끄면 접속하지 않을 것이기도 하고...)
+- 참고 : [https://swiftcoding.org/changing-wp-salt-keys](https://swiftcoding.org/changing-wp-salt-keys)
+
+설정을 모두 완료했다면 `wp-config-sample.php` 파일을 `wp-config.php` 파일로 변경한다.
+
+```sh
+mv wp-config-sample.php wp-config.php
+```
+
+웹 브라우저에 `localhost:8080/wordpress`를 입력하고 들어가 계정을 생성하고 로그인을 하면...
+
+<img src="../img/wordpress.png" alt="wordpress" width="600" />
+
+짠! 아주 깔끔하고 멋진 워드프레스 홈페이지가 나온다. 새까만 터미널 화면만 보다가 웹페이지를 보니 눈이 정화되는 기분이다.
+
+참고 :  
+[https://www.atlantic.net/dedicated-server-hosting/how-to-install-wordpress-with-lighttpd-web-server-on-ubuntu-20-04/](https://www.atlantic.net/dedicated-server-hosting/how-to-install-wordpress-with-lighttpd-web-server-on-ubuntu-20-04/)  
+[https://nostressdev.tistory.com/11](https://nostressdev.tistory.com/11)
 
 pool이란? php.ini란?
