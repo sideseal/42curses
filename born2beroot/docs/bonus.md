@@ -145,5 +145,93 @@ lighttpd, MariaDB, PHP를 이용하여 워드프레스 웹사이트를 구축해
 - 워드프레스 : 세계 최대의 온라인 발행 플랫폼으로, 웹페이지 제작 및 관리를 위한 콘텐치 관리 시스템(CMS, Contents Management System)의 하나.
 	- 참고 : [http://b-lot.co.kr/워드프레스란/](http://b-lot.co.kr/%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4%EB%9E%80/)
 
-ㅇㅇ
+우선 lighttpd 웹 서버를 설치하자.
 
+```sh
+apt install lighttpd
+```
+
+그리고 PHP를 설치해야 하는데, 일반적인 설치로는 Apache2가 자동으로 설치되기 때문에, 서브젝트의 요구에 맞게 Apache2를 제외하고 설치하도록 아래처럼 입력하였다. 또한 lighttpd는 FastCGI의 서포트 없이는 사용할 수 없다고 한다!
+
+```sh
+apt install php-fpm php-cli
+
+# 잘 설치되었는지 확인하기 위해선 service로 상태를 확인하자.
+# PHP가 7.4버전이라고 가정.
+systemctl status php7.4-fpm
+
+# Output:
+...
+Active: active (running)
+...
+```
+- php-fpm : PHP를 FastCGI 모드로 동작하게 해준다고 하는데... (CGI, Common Gateway Interface는 웹서버와 외부 프로그램을 연결하는 표준화된 프로토콜) 왜 Apache2가 빠져있는지는 모르겠다 ㅎㅎ;;
+- 참고 : [https://askubuntu.com/questions/1160433/how-to-install-php-without-apache-webserver](https://askubuntu.com/questions/1160433/how-to-install-php-without-apache-webserver)
+
+그리고 `etc/php/7.4/fpm/php.ini` 파일에서, 아래의 문장을 찾아 주석 해제한다. (그냥 파일의 맨 아래에 추가해도 된다.)
+
+```sh
+cgi.fix_pathinfo=1
+```
+
+CGI, FastCGI에는 PATH_INFO가 없어 PHP가 URL로 쿼리와 같은 요청을 전달받을 수 없는 것 같다. `cgi.fix_pathinfo`를 1로 하면 PHP가 전달받은 요청을 최대한 찾고자 하여 결과를 반환하는 듯하다. Nginx에서는 보안상의 이유로 0으로 설정하라고 하지만, 현재 버전의 PHP에는 보안의 문제가 없다는 것 같기도 하고...
+- 참고 : [https://stackoverflow.com/questions/15493207/php-what-are-the-effects-of-cgi-fix-pathinfo-1-in-php-ini-on-a-webserver](https://stackoverflow.com/questions/15493207/php-what-are-the-effects-of-cgi-fix-pathinfo-1-in-php-ini-on-a-webserver)
+
+그리고 `/etc/php/7.4/fpm/pool.d/www.conf` 파일을 아래와 같이 수정한다.
+
+```sh
+# 36번째 라인
+;listen = run/php/php7.4-fpm.sock
+listen = 127.0.0.1:9000
+```
+
+- `listen` : 웹에서 PHP에 대한 요청이 들어오면, 해당 포트로 전달하여 PHP가 처리를 하도록, listening IP 포트를 지정하였다. 기존 소켓 연결은 잘 안된다고...
+- 참고 : [https://goodsaem.github.io/local/105-mac-ubuntu-setup.html#5-php-www-설정](https://goodsaem.github.io/local/105-mac-ubuntu-setup.html#_5-php-www-%E1%84%89%E1%85%A5%E1%86%AF%E1%84%8C%E1%85%A5%E1%86%BC)
+
+수정하였다면 `systemctl restart php7.4-fpm`으로 설정을 적용한다.
+
+그리고 `/etc/lighttpd/conf-available/15-fastcgi-php.conf` 파일을 아래와 같이 수정한다.
+해당 파일은 FastCGI로 PHP를 실행할 수 있도록 한다.
+
+```sh
+fastcgi.server += (".php" =>
+		((
+			#"bin-path" => "/usr/bin/php-cgi",
+			#"socket" => "/run/lighttpd/php.socket",
+			"host" => "127.0.0.1",
+			"port" => "9000",
+```
+
+설정을 마쳤다면 FastCGI를 작동시키자.
+
+```sh
+lighty-enable-mod fastcgi
+lighty-enable-mod fastcgi-php
+# lighttpd 재시작
+systemctl restart lighttpd
+```
+
+`/etc/lighttpd/lighttpd.conf` 파일을 보면, `server.document-root`가 `/var/www/html`에, 그리고 `server.port`가 HTTP 전용인 80번인 것을 확인할 수 있다.
+이전 맨데토리 서브젝트에서, 오직 4242번 포트만을 허용하도록 방화벽을 설정하였는데, 서버의 HTTP 전송을 허용하기 위해 80번 포트를 연다.
+
+```sh
+ufw allow 80
+```
+
+그리고 호스트 컴퓨터의 웹브라우저에서 가상 머신의 웹 서버로 접속하기 위해, 포트포워딩을 진행하자. 나는 호스트 컴퓨터의 8080 포트를 가상 머신의 80번 포트와 연결하였다.
+
+가상 머신으로 다시 돌아와, `/var/www/html`에 기본적인 PHP 파일을 하나 만들어보자. `/var/www/html` 디렉토리에 `index.php` 파일을 아래와 같이 간단하게 설정하였다.
+
+```html
+<?php
+	phpinfo()
+?>
+```
+
+이제 `localhost:8080/index.php`를 입력해보면...
+
+<img src="../img/php.png" alt="php" width="600" />
+
+웹 서버가 작동한다!
+
+pool이란? php.ini란?
