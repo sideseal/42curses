@@ -128,3 +128,22 @@ init 3
 [https://itguava.tistory.com/100](https://itguava.tistory.com/100)  
 [https://starrykss.tistory.com/1760](https://starrykss.tistory.com/1760)  
 [https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition](https://unix.stackexchange.com/questions/131311/moving-var-home-to-separate-partition)
+
+## WordPress 구축
+
+lighttpd, MariaDB, PHP를 이용하여 워드프레스 웹사이트를 구축해야 한다.
+
+- lighttpd : Apache보다 적은 메모리 자원을 사용하면서도 높은 성능을 보이는 오픈소스 웹 서버 어플리케이션.
+	- 웹 서버 : 웹 브라우저와 같은 클라이언트로부터 HTTP 요청을 받아들이고, HTML 문서와 같은 웹 페이지를 반환하는 컴퓨터 프로그램.
+	- 참고 : [https://ko.wikipedia.org/wiki/웹서버](https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84), [https://aroundck.tistory.com/1113](https://aroundck.tistory.com/1113)
+- MariaDB : MySQL을 유료화한 오라클에 대한 반발로 나온 오픈소스 RDBMS.
+	- RDBMS(Relational Database Management System) : 관계형 데이터베이스(RDB, Relational Database)를 생성, 수정 및 관리할 수 있는 소프트웨어.
+	- 참고 : [https://jwprogramming.tistory.com/52](https://jwprogramming.tistory.com/52), [https://bio-info.tistory.com/102](https://bio-info.tistory.com/102)
+- PHP : 서버 측에서 실행되는 서버 사이드 스크립트 언어. PHP로 작성된 코드를 HTML 코드 안에 추가하면, 웹 서버는 해당 PHP 코드를 해석하여 동적 웹 페이지를 생성한다.
+	- 자바스크립트는 클라이언트 측에서 실행되는 스크립트 언어.
+	- 참고 : [https://choseongho93.tistory.com/61](https://choseongho93.tistory.com/61)
+- 워드프레스 : 세계 최대의 온라인 발행 플랫폼으로, 웹페이지 제작 및 관리를 위한 콘텐치 관리 시스템(CMS, Contents Management System)의 하나.
+	- 참고 : [http://b-lot.co.kr/워드프레스란/](http://b-lot.co.kr/%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4%EB%9E%80/)
+
+ㅇㅇ
+
