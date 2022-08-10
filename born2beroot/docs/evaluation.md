@@ -19,7 +19,7 @@ SELinux와 AppArmor는 모두 MAC 보안을 제공. 즉 보안 정책을 사용�
 
 SELinux는 주로 파일 시스템 단위로 보안 모델을 다루고, AppArmor는 주로 응용프로그램 단위로 보안 모델을 다루는 듯하다.
 
-AppArmor는 Debian 10 이후 버전에 자동으로 깔려있음. (`aa-status`로 확인)
+AppArmor는 Debian 10 이후 버전에 자동으로 깔려있음. (`aa-status`로 확인) - 그 밖의 다른 명령어들은?
 
 ## 명령어들
 
