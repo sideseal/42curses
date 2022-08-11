@@ -233,7 +233,7 @@ mkdir /var/log/sudo
 
 # sudo의 입출력이 /var/log/sudo에 적히도록 설정한다.
 Defaults	log_input, log_output, iolog_dir="/var/log/sudo/"
-Defaults	log_host, logfile="/var/log/sudo/"
+Defaults	log_host, logfile="/var/log/sudo/sudo.log"
 ```
 * `iolog_dir="/var/log/sudo/%{user}"`로 하면 유저의 이름 안에 log 정보가 담기는데, 우선 조금 애매해서 설정은 위처럼 진행했다.
 
@@ -243,15 +243,19 @@ TTY 모드도 활성화하자.
 Defaults	requiretty
 ```
 * TTY(Teletypewriter)는 간단하게 콘솔이나 터미널을 의미한다고 생각하면 된다. 그렇다면 보안을 위해 TTY를 활성화해야 하는 이유는 무엇일까?
-	- sudo 명령어가 TTY 상태에서 진행되어야 한다는 의미는, 현재 터미널 바깥에서 sudo 명령어가 사용되는 경우를 방지할 수 있다. 가령, sudo 권한이 없는 유저가 cronjob에 sudo 명령어를 적어놓고 실행하는 경우를 막을 수 있다.
-	- 참고: [https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi](https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi)
-	- [콘솔? 터미널? 쉘?](https://hanamon.kr/%ED%84%B0%EB%AF%B8%EB%84%90-%EC%BD%98%EC%86%94-%EC%89%98-%EB%AA%85%EB%A0%B9%EC%A4%84terminal-console-shell-command-line%EC%9D%98-%EC%B0%A8%EC%9D%B4-2/)
+- sudo 명령어가 TTY 상태에서 진행되어야 한다는 의미는, 현재 터미널 바깥에서 sudo 명령어가 사용되는 경우를 방지할 수 있다. 가령, sudo 권한이 없는 유저가 cronjob에 sudo 명령어를 적어놓고 실행하는 경우를 막을 수 있다.
+- 참고: [https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi](https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi)
+- [콘솔? 터미널? 쉘?](https://hanamon.kr/%ED%84%B0%EB%AF%B8%EB%84%90-%EC%BD%98%EC%86%94-%EC%89%98-%EB%AA%85%EB%A0%B9%EC%A4%84terminal-console-shell-command-line%EC%9D%98-%EC%B0%A8%EC%9D%B4-2/)
 
 마지막으로, `secure_path`를 서브젝트에서 요구하는 대로 수정하자.
 
 ```sh
 Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 ```
+
+- `/bin` : Linux의 기본 명령어가 들어있는 디렉토리.
+- 참고 : [https://jacking75.github.io/OS_linux_dir_kind/](https://jacking75.github.io/OS_linux_dir_kind/)
+
 
 완성된 모습은 아래와 같다:
 
