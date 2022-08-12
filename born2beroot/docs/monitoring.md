@@ -106,8 +106,8 @@ echo "#Memory Usage: $RAM_RATE"
 서브젝트에서 말하는 메모리는 RAM이 아닌 메모리, 즉 하드디스크를 의미한다고 생각하여, `df` 명령어를 사용하였다.
 
 ```sh
-DISK_USED=$(df -m / /root | awk '{ sum += $3 } END { printf("%d", sum) }')
-DISK_TOTAL=$(df -m / /root | awk '{ sum += $2 } END { printf("%d", sum / 1024) }')
+DISK_USED=$(df -m /home /root | awk '{ sum += $3 } END { printf("%d", sum) }')
+DISK_TOTAL=$(df -m /home /root | awk '{ sum += $2 } END { printf("%d", sum / 1024) }')
 DISK_RATE=$(awk -v USED="$DISK_USED" -v TOTAL="$DISK_TOTAL" 'BEGIN { printf("(%d%%)\n", USED/TOTAL / 1024 * 100) }')
 echo "#Disk Usage: $DISK_USED/${DISK_TOTAL}Gb $DISK_RATE"
 ```
