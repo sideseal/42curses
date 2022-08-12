@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/12 16:15:00 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/12 19:58:22 by gychoi           ###   ########.fr       */
+/*   Created: 2022/08/12 16:24:36 by gychoi            #+#    #+#             */
+/*   Updated: 2022/08/12 20:01:50 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-char	*get_next_line(int fd)
+# include <unistd.h>
+# include <stdlib.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+char	*get_next_line(int fd);
+
+typedef struct	s_list
 {
-	if (fd < 0 || BUFFER_SIZE < 0)
-		return (NULL);
-}
+	char			*buffer;
+	struct	s_list	*next;
+}	t_list;
+
+#endif
