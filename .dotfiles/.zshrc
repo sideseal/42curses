@@ -152,5 +152,6 @@ export MAIL="gychoi@student.42seoul.kr"
 source /Users/gychoi/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias francinette=/Users/gychoi/francinette/tester.sh
-
 alias paco=/Users/gychoi/francinette/tester.sh
+
+alias rm="rm -i"
