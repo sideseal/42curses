@@ -6,32 +6,56 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:22 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/18 20:22:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/19 17:37:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*ft_lstfind_fd(t_list *node, int fd)
+// 지우기!
+#include <stdio.h>
+
+t_list	*gnl_lstclear(t_list **head)
 {
-	if (!node)
+	t_list	*next;
+
+	if (head == NULL)
 		return (NULL);
-	while (node)
+	while (*head != NULL)
 	{
-		if (node->fd == fd)
-			break;
-		if (node->next == NULL)
-		{
-			node->next = gnl_lstnew(fd);
-			if (!node->next)
-				return (NULL);
-		}
-		node = node->next;
+		next = (*head)->next;
+		if ((*head)->temp != NULL)
+			free((*head)->temp);
+		free(*head);
+		*head = next;
 	}
-	return (node);
+	return (NULL);
 }
 
-t_list	*ft_lstnew_fd(int fd)
+t_list	*fd_lstfind(t_list **node, int fd)
+{
+	if (*node == NULL)
+	{
+		*node = fd_lstnew(fd);
+		if (*node == NULL)
+			return (NULL);
+	}
+	while (*node)
+	{
+		if ((*node)->fd == fd)
+			break ;
+		if ((*node)->next == NULL)
+		{
+			(*node)->next = fd_lstnew(fd);
+			if ((*node)->next == NULL)
+				return (NULL);
+		}
+		*node = (*node)->next;
+	}
+	return (*node);
+}
+
+t_list	*fd_lstnew(int fd)
 {
 	t_list	*new;
 
@@ -39,7 +63,7 @@ t_list	*ft_lstnew_fd(int fd)
 	if (!new)
 		return (NULL);
 	new->fd = fd;
-	new->buffer = NULL;
+	new->temp = NULL;
 	new->next = NULL;
 	return (new);
 }
