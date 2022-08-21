@@ -21,16 +21,18 @@
 # endif
 
 char	*get_next_line(int fd);
+char	*gnl_strjoin(char *s1, char const *s2);
 
 typedef struct s_list
 {
-	int				fd;
-	char			*temp;
+	int		fd;
+	char		*backup;
+	int		length;
 	struct s_list	*next;
 }	t_list;
 
-t_list	*fd_lstnew(int fd);
-t_list	*fd_lstfind(t_list **node, int fd);
-t_list	*gnl_lstclear(t_list **head);
+t_list	*gnl_lstnew(int fd);
+t_list	*gnl_lstfind(t_list **node, int fd);
+char	*gnl_lstclear(t_list **head);
 
 #endif

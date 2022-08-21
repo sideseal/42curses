@@ -15,28 +15,50 @@
 // 지우기!
 #include <stdio.h>
 
-t_list	*gnl_lstclear(t_list **head)
+char	*gnl_strjoin(char *s1, char const *s2)
+{
+	size_t	len1;
+	size_t	len2;
+	size_t	index;
+	char	*string;
+
+	len1 = 0;
+	while (s1[len1])
+		len1++;
+	len2 = 0;
+	while (s2[len2])
+		len2++;
+	string = malloc(sizeof(char) * (len1 + len2));
+	if (string == NULL)
+		return (NULL);
+	index = 0;
+	while (*s1)
+		string[index++] = *s1++;
+	while (*s2)
+		string[index++] = *s2++;
+	string[index] = '\0';
+	return (string);
+}
+
+char	*gnl_lstclear(t_list **node)
 {
 	t_list	*next;
 
-	if (head == NULL)
-		return (NULL);
-	while (*head != NULL)
+	while (*node != NULL)
 	{
-		next = (*head)->next;
-		if ((*head)->temp != NULL)
-			free((*head)->temp);
-		free(*head);
-		*head = next;
+		next = (*node)->next;
+		free((*node)->backup);
+		free(*node);
+		*node = next;
 	}
 	return (NULL);
 }
 
-t_list	*fd_lstfind(t_list **node, int fd)
+t_list	*gnl_lstfind(t_list **node, int fd)
 {
 	if (*node == NULL)
 	{
-		*node = fd_lstnew(fd);
+		*node = gnl_lstnew(fd);
 		if (*node == NULL)
 			return (NULL);
 	}
@@ -46,7 +68,7 @@ t_list	*fd_lstfind(t_list **node, int fd)
 			break ;
 		if ((*node)->next == NULL)
 		{
-			(*node)->next = fd_lstnew(fd);
+			(*node)->next = gnl_lstnew(fd);
 			if ((*node)->next == NULL)
 				return (NULL);
 		}
@@ -55,7 +77,7 @@ t_list	*fd_lstfind(t_list **node, int fd)
 	return (*node);
 }
 
-t_list	*fd_lstnew(int fd)
+t_list	*gnl_lstnew(int fd)
 {
 	t_list	*new;
 
@@ -63,7 +85,11 @@ t_list	*fd_lstnew(int fd)
 	if (!new)
 		return (NULL);
 	new->fd = fd;
-	new->temp = NULL;
+	new->backup = malloc(sizeof(char));
+	if (new->backup == NULL)
+		return (NULL);
+	new->backup[0] = '\0';
+	new->length = 0;
 	new->next = NULL;
 	return (new);
 }

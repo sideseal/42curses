@@ -16,36 +16,67 @@
 #include <stdio.h>
 #include <string.h>
 
-// 한 줄 읽는 함수.
-// 1. 만약 안에 개행이 있다면, 개행 전까지 라인을 반환하고 나머지는 구조체에 저장.
-// 2. 만약 안에 개행이 없다면, 개행이 나올 때까지 read를 반복.
-// 3. 만약 파일이 끝이거나 오류가 난다면, 해당 구조체를 free하고 NULL을 반환.
-char	*read_line(t_list *node)
+int	has_newline(char *buffer)
 {
-	char	*buffer[BUFFER_SIZE + 1];
+	int	index;
+	
+	index = 0;
+	while (buffer[index])
+	{
+		if (buffer[index] == '\n')
+			return (1);
+		index++;
+	}
+	return (0);
+}
+
+char	*read_backup(t_list *node)
+{
+	printf("read from buffer: %s\n", node->backup);
+	return (NULL);
+}
+
+char	*read_file(t_list *node)
+{
+	char	buffer[BUFFER_SIZE + 1];
 	char	*temp;
-	char	*line;
-	int		idx;
-	ssize_t	read_bytes;
-	// 뭔가 X됨을 의미하는 최대 한도의 변수 선언 ㅋㅋ...
+	ssize_t	readout;
+
+	while (1)
+	{
+		readout = read(node->fd, buffer, BUFFER_SIZE);
+		if (readout < 0)
+			return (NULL);
+		if (readout == 0)
+			break ;
+		buffer[readout] = '\0';
+		temp = node->backup;
+		node->backup = gnl_strjoin(temp, buffer);
+		if (node->backup == NULL)
+			return (NULL);
+		free(temp);
+		if (has_newline(buffer))
+			break ;
+	}
+	return (node->backup);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_list	*head;
-	t_list			*head_start;
+	static t_list		*head;
 	t_list			*node;
 	char			*line;
 
 	printf("\n\n======start=======\n\n");
 	if (fd < 0 || BUFFER_SIZE < 1)
-		return (gnl_lstclear(&head_start));
-	head_start = head;
-	node = fd_lstfind(&head, fd);
+		return (gnl_lstclear(&head));
+	node = gnl_lstfind(&head, fd);
 	if (node == NULL)
-		return (gnl_lstclear(&head_start));
-	line = read_line(node);
-	if (line == NULL)
-		return (gnl_lstclear(&head_start));
+		return (gnl_lstclear(&head));
+	if (node->length < 1)
+		node->backup = read_file(node);
+	line = read_backup(node);
+	// if (line == NULL)
+	// 	return (gnl_lstclear(&head));
 	return (line);
 }
