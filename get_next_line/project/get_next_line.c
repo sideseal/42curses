@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:15:00 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/19 19:49:00 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/22 18:29:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,12 @@
 #include <stdio.h>
 #include <string.h>
 
-int	has_newline(char *buffer)
+int	check_newline(char *buffer, int index)
 {
-	int	index;
-	
-	index = 0;
 	while (buffer[index])
 	{
 		if (buffer[index] == '\n')
-			return (1);
+			return (index + 1);
 		index++;
 	}
 	return (0);
@@ -32,11 +29,27 @@ int	has_newline(char *buffer)
 
 char	*read_backup(t_list *node)
 {
-	printf("read from buffer: %s\n", node->backup);
-	return (NULL);
+	int		newline_index;
+	char	*line;
+
+	newline_index = check_newline(node->backup, node->cursor);
+	printf("string: %s\n\n", node->backup);
+	printf("newline index, cursor: %d, %d\n\n", newline_index, node->cursor);
+	if (!newline_index)
+	{
+		// 이 부분 바꿔야 함.
+		node->backup[0] = '\0';
+		node->cursor = 0;
+		return (node->backup);
+	}
+	line = gnl_strldup(node->backup, node->cursor, newline_index);
+	if (line == NULL)
+		return (NULL);
+	node->cursor = newline_index;
+	return (line);
 }
 
-char	*read_file(t_list *node)
+char	*make_backup(t_list *node)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	char	*temp;
@@ -47,15 +60,16 @@ char	*read_file(t_list *node)
 		readout = read(node->fd, buffer, BUFFER_SIZE);
 		if (readout < 0)
 			return (NULL);
+		// 맨 마지막에 개행이 자동으로 추가되나?
 		if (readout == 0)
-			break ;
+			return (NULL);
 		buffer[readout] = '\0';
 		temp = node->backup;
 		node->backup = gnl_strjoin(temp, buffer);
 		if (node->backup == NULL)
 			return (NULL);
 		free(temp);
-		if (has_newline(buffer))
+		if (check_newline(buffer, 0))
 			break ;
 	}
 	return (node->backup);
@@ -64,8 +78,8 @@ char	*read_file(t_list *node)
 char	*get_next_line(int fd)
 {
 	static t_list		*head;
-	t_list			*node;
-	char			*line;
+	t_list				*node;
+	char				*line;
 
 	printf("\n\n======start=======\n\n");
 	if (fd < 0 || BUFFER_SIZE < 1)
@@ -73,10 +87,14 @@ char	*get_next_line(int fd)
 	node = gnl_lstfind(&head, fd);
 	if (node == NULL)
 		return (gnl_lstclear(&head));
-	if (node->length < 1)
-		node->backup = read_file(node);
+	if (!node->cursor)
+	{
+		node->backup = make_backup(node);
+		if (node->backup == NULL)
+			return (gnl_lstclear(&head));
+	}
 	line = read_backup(node);
-	// if (line == NULL)
-	// 	return (gnl_lstclear(&head));
+	if (line == NULL)
+		return (gnl_lstclear(&head));
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:22 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/19 17:37:38 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/22 18:29:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,26 @@
 
 // 지우기!
 #include <stdio.h>
+// strjoin에 마지막 + 1 해줘야 하나?
+// char const, const char 차이?
+
+char	*gnl_strldup(const char *s1, int index1, int index2)
+{
+	int		len;
+	char	*string;
+
+	len = index1;
+	while (len < index2)
+		len++;
+	string = malloc(sizeof(char) * len + 1);
+	if (string == NULL)
+		return (NULL);
+	len = 0;
+	while (index1 < index2)
+		string[len++] = s1[index1++];
+	string[len] = '\0';
+	return (string);
+}
 
 char	*gnl_strjoin(char *s1, char const *s2)
 {
@@ -89,7 +109,7 @@ t_list	*gnl_lstnew(int fd)
 	if (new->backup == NULL)
 		return (NULL);
 	new->backup[0] = '\0';
-	new->length = 0;
+	new->cursor = 0;
 	new->next = NULL;
 	return (new);
 }
