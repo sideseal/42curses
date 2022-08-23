@@ -14,10 +14,10 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
-TARGET = gnl.out
+TARGET = app.out
 
 SRCS_NAME = get_next_line.c get_next_line_utils.c main.c
-SRCS_DIR = project
+SRCS_DIR = get_next_line
 TEST_DIR = test
 SRCS := $(wildcard $(TEST_DIR)/*.c) $(wildcard $(SRCS_DIR)/*.c)
 OBJS_NAME = $(SRCS_NAME:.c=.o)
