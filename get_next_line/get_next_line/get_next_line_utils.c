@@ -6,11 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:22 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/22 18:29:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/24 20:07:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+#include "stdio.h"
 
 char	*gnl_strdup(t_list *node)
 {
@@ -33,7 +35,7 @@ char	*gnl_strdup(t_list *node)
 	return (string);
 }
 
-char	*gnl_strjoin(char *s1, char const *s2)
+char	*gnl_strjoin(t_list *node, char const *s2)
 {
 	size_t	len1;
 	size_t	len2;
@@ -41,20 +43,21 @@ char	*gnl_strjoin(char *s1, char const *s2)
 	char	*string;
 
 	len1 = 0;
-	while (s1[len1])
+	while (node->backup[len1])
 		len1++;
 	len2 = 0;
 	while (s2[len2])
 		len2++;
-	string = malloc(sizeof(char) * (len1 + len2));
+	string = malloc(sizeof(char) * (len1 + len2) + 1);
 	if (string == NULL)
 		return (NULL);
 	index = 0;
-	while (*s1)
-		string[index++] = *s1++;
+	while (*node->backup)
+		string[index++] = *(node->backup)++;
 	while (*s2)
 		string[index++] = *s2++;
 	string[index] = '\0';
+	free(node->backup);
 	return (string);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/22 18:29:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/24 19:58:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*gnl_strjoin(char *s1, char const *s2);
 
 typedef struct s_list
 {
@@ -34,5 +33,6 @@ t_list	*gnl_lstnew(int fd);
 t_list	*gnl_lstfind(t_list **node, int fd);
 char	*gnl_lstclear(t_list **node, int fd);
 char	*gnl_strdup(t_list *node);
+char	*gnl_strjoin(t_list *node, char const *s2);
 
 #endif
