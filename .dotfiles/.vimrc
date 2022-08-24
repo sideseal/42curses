@@ -7,7 +7,7 @@
 " _(_)____/ /_/  /_/ /_/ /_//_/    \___/  
 "
 " Maintainer: sideseal
-" Last Modified: 2022-07-24 17:05:38
+" Last Modified: 2022-08-24 15:05:50
 " ========================================
 
 
@@ -27,7 +27,7 @@ set laststatus=2
 " --------------------------------------------
 set statusline=
 set statusline +=\ %n\ 		"buffer number
-set statusline +=%{&ff}		"file format
+set statusline +=%{&ff}JJJJJJJJJJJJJJJJJJJJJJJ		"file format
 set statusline +=%y		"file type
 set statusline +=\ %<%F		"full path
 set statusline +=%m		"modified flag
@@ -168,6 +168,22 @@ function! CreateInPreview()
 	execute 'silent !touch ' . b:netrw_curdir.'/'.l:filename 
 	redraw!
 endf
+autocmd FileType netrw setl bufhidden=wipe
+function! CloseNetrw() abort
+  for bufn in range(1, bufnr('$'))
+    if bufexists(bufn) && getbufvar(bufn, '&filetype') ==# 'netrw'
+      silent! execute 'bwipeout ' . bufn
+      if getline(2) =~# '^" Netrw '
+        silent! bwipeout
+      endif
+      return
+    endif
+  endfor
+endfunction
+augroup closeOnOpen
+  autocmd!
+  autocmd BufWinEnter * if getbufvar(winbufnr(winnr()), "&filetype") != "netrw"|call CloseNetrw()|endif
+aug END
 " --------------------------------------------
 
 if has('persistent_undo')
