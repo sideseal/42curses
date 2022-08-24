@@ -6,13 +6,19 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:32:41 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/19 15:14:02 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/24 17:12:12 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <fcntl.h>
 #include "../get_next_line/get_next_line.h"
+
+void	check_leak(void)
+{
+//	system("export MallocStackLogging=1");
+	system("leaks --list -- app.out");
+}
 
 int	main(void)
 {
@@ -36,6 +42,7 @@ int	main(void)
 	{
 		printf("* fd1 return: %s\n", ret1);
 		printf("-----------------\n");
+		free(ret1);
 		ret1 = get_next_line(fd1);
 	}
 	printf("\n***** TEST 2 *****\n");
@@ -44,6 +51,7 @@ int	main(void)
 	{
 		printf("* fd2 return: %s\n", ret2);
 		printf("-----------------\n");
+		free(ret2);
 		ret2 = get_next_line(fd2);
 	}
 	printf("\n***** TEST 3 *****\n");
@@ -54,6 +62,8 @@ int	main(void)
 		printf("* fd3 return: %s\n", ret3);
 		printf("* fd4 return: %s\n", ret4);
 		printf("-----------------\n");
+		free(ret3);
+		free(ret4);
 		ret3 = get_next_line(fd3);
 		ret4 = get_next_line(fd4);
 	}
@@ -62,5 +72,6 @@ int	main(void)
 	close(fd2);
 	close(fd3);
 	close(fd4);
+	atexit(check_leak);
 	return (0);
 }
