@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/18 14:53:29 by gychoi            #+#    #+#              #
-#    Updated: 2022/08/18 16:23:39 by gychoi           ###   ########.fr        #
+#    Updated: 2022/08/24 16:17:34 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,11 @@ OBJS_NAME = $(SRCS_NAME:.c=.o)
 OBJS_DIR = .
 OBJS := $(patsubst %.o,$(OBJS_DIR)/%.o,$(OBJS_NAME))
 
+ifeq ($(MAKECMDGOALS),debug)
+# CFLAGS += -g3 -fsanitize=address
+CFLAGS += -g
+endif
+
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -35,6 +40,9 @@ $(TARGET) : $(OBJS)
 
 .PHONY : all
 all : $(TARGET)
+
+.PHONY : debug
+debug : $(TARGET)
 
 .PHONY : clean
 clean :
