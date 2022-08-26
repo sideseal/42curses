@@ -21,6 +21,8 @@
 # endif
 
 char	*get_next_line(int fd);
+char	*gnl_strdup(char *s1);
+char	*gnl_strjoin(char *s1, char *s2);
 
 typedef struct s_list
 {
@@ -32,7 +34,5 @@ typedef struct s_list
 t_list	*gnl_lstnew(int fd);
 t_list	*gnl_lstfind(t_list **node, int fd);
 char	*gnl_lstclear(t_list **node, int fd);
-char	*gnl_strdup(t_list *node);
-char	*gnl_strjoin(t_list *node, char const *s2);
 
 #endif

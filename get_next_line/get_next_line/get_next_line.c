@@ -13,69 +13,83 @@
 #include "get_next_line.h"
 
 #include "string.h"
-#include "stdio.h"
 
-size_t	gnl_strlen(const char *s)
-{
-	size_t	index;
-
-	index = 0;
-	while (s[index] != '\n' && s[index] != '\0')
-		index++;
-	return (index);
-}
-
-int	check_newline(char *str)
+int	search_newline(char *line)
 {
 	size_t	i;
 
 	i = 0;
-	while (str[i])
+	while (line[i] != '\0')
 	{
-		if (str[i] == '\n')
-			return (i + 1);
+		if (line[i] == '\n')
+			return (1);
 		i++;
 	}
 	return (0);
 }
 
-// strdup 함수 고쳐야 함.
-char	*read_backup(t_list *node)
+char	*make_one_line(t_list *node)
 {
-	char	*line;
+	char	*string;
+	char	*temp;
+	size_t	i;
 
-	line = gnl_strdup(node);
-	if (line == NULL)
+	i = 0;
+	while (node->backup[i] != '\n' && node->backup[i] != '\0')
+		i++;
+	string = malloc(sizeof(char) * i + 1);
+	if (string == NULL)
 		return (NULL);
-	return (line);
+	i = 0;
+	temp = node->backup;
+	while (*(node->backup) != '\n' && *(node->backup) != '\0')
+		string[i++] = *(node->backup)++;
+	string[i] = '\0';
+	node->backup++;
+	node->backup = gnl_strdup(node->backup);
+	if (node->backup == NULL)
+		return (NULL);
+	free(temp);
+	return (string);
 }
 
-char	*make_backup(t_list *node)
+char	*get_readline(t_list *node)
 {
 	char	buffer[BUFFER_SIZE + 1];
+	char	*temp;
+	char	*line;
 	ssize_t	readout;
 
-	while (!check_newline(node->backup))
+	readout = read(node->fd, buffer, BUFFER_SIZE);
+	if (readout < 0)
+		return (NULL);
+	temp = gnl_strdup(node->backup);
+	free(node->backup);
+	if (temp == NULL)
+		return (NULL);
+	while (readout)
 	{
+		buffer[BUFFER_SIZE] = '\0';
+		line = gnl_strjoin(temp, buffer);
+		if (line == NULL)
+			return (NULL);
+		if (search_newline(line))
+		{
+			free(temp);
+			return (line);
+		}
+		free(temp);
+		temp = line;
 		readout = read(node->fd, buffer, BUFFER_SIZE);
-		if (readout < 0)
-			return (NULL);
-		if (readout == 0)
-			break ;
-		buffer[readout] = '\0';
-		printf("go into strjoin...\n");
-		node->backup = gnl_strjoin(node, buffer);
-		if (node->backup == NULL)
-			return (NULL);
 	}
-	printf("OUT\n");
-	return (node->backup);
+	return (temp);
 }
 
 char	*get_next_line(int fd)
 {
 	static t_list		*head;
 	t_list				*node;
+	char				*temp;
 	char				*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
@@ -83,11 +97,22 @@ char	*get_next_line(int fd)
 	node = gnl_lstfind(&head, fd);
 	if (node == NULL)
 		return (gnl_lstclear(&head, fd));
-	node->backup = make_backup(node);
-	if (node->backup == NULL || gnl_strlen(node->backup) < 1)
+	temp = get_readline(node);
+	if (temp == NULL || strlen(temp) < 1) // 임시로...
+	{
+		free(temp);
 		return (gnl_lstclear(&head, fd));
-	line = read_backup(node);
-	if (line == NULL)
+	}
+	node->backup = gnl_strdup(temp);
+	free(temp);
+	if (node->backup == NULL)
 		return (gnl_lstclear(&head, fd));
+	line = make_one_line(node);
+	if (line == NULL || strlen(line) < 1) // 임시로...
+	{
+		free(line);
+		free(node->backup);
+		return (gnl_lstclear(&head, fd));
+	}
 	return (line);
 }

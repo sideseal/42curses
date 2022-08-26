@@ -14,50 +14,55 @@
 
 #include "stdio.h"
 
-char	*gnl_strdup(t_list *node)
+char	*gnl_strdup(char *s1)
 {
-	int		index;
+	size_t	len;
+	size_t	i;
 	char	*string;
 
-	index = 0;
-	while (node->backup[index] != '\n'
-		&& node->backup[index] != '\0')
-		index++;
-	string = malloc(sizeof(char) * index + 1);
+	if (s1 == NULL)
+	{
+		string = malloc(sizeof(char));
+		if (string == NULL)
+			return (NULL);
+		string[0] = '\0';
+		return (string);
+	}
+	len = 0;
+	while (s1[len] != '\0')
+		len++;
+	string = malloc(sizeof(char) * len + 1);
 	if (string == NULL)
 		return (NULL);
-	index = 0;
-	while (*(node->backup) != '\n'
-		&& *(node->backup) != '\0')
-		string[index++] = *(node->backup)++;
-	string[index] = '\0';
-	(node->backup)++;
+	i = 0;
+	while (*s1)
+		string[i++] = *s1++;
+	string[i] = '\0';
 	return (string);
 }
 
-char	*gnl_strjoin(t_list *node, char const *s2)
+char	*gnl_strjoin(char *s1, char *s2)
 {
 	size_t	len1;
 	size_t	len2;
-	size_t	index;
+	size_t	i;
 	char	*string;
 
 	len1 = 0;
-	while (node->backup[len1])
+	while (s1[len1] != '\0')
 		len1++;
 	len2 = 0;
-	while (s2[len2])
+	while (s2[len2] != '\0')
 		len2++;
 	string = malloc(sizeof(char) * (len1 + len2) + 1);
 	if (string == NULL)
 		return (NULL);
-	index = 0;
-	while (*node->backup)
-		string[index++] = *(node->backup)++;
+	i = 0;
+	while (*s1)
+		string[i++] = *s1++;
 	while (*s2)
-		string[index++] = *s2++;
-	string[index] = '\0';
-	free(node->backup);
+		string[i++] = *s2++;
+	string[i] = '\0';
 	return (string);
 }
 
@@ -119,10 +124,7 @@ t_list	*gnl_lstnew(int fd)
 	if (new == NULL)
 		return (NULL);
 	new->fd = fd;
-	new->backup = malloc(sizeof(char));
-	if (new->backup == NULL)
-		return (NULL);
-	new->backup[0] = '\0';
+	new->backup = NULL;
 	new->next = NULL;
 	return (new);
 }
