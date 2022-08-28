@@ -64,13 +64,15 @@ int	main(void)
 		printf("-----------------\n");
 		free(ret3);
 		free(ret4);
+		printf("fd3 is closed\n");
+		close(fd3);
 		ret3 = get_next_line(fd3);
 		ret4 = get_next_line(fd4);
 	}
 	printf("<=============== END\n");
 	close(fd1);
 	close(fd2);
-	close(fd3);
+	//close(fd3);
 	close(fd4);
 	atexit(check_leak);
 	return (0);
