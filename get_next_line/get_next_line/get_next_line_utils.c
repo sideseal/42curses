@@ -12,12 +12,9 @@
 
 #include "get_next_line.h"
 
-#include "stdio.h"
-
 char	*gnl_strdup(char *s1)
 {
 	size_t	len;
-	size_t	i;
 	char	*string;
 
 	if (s1 == NULL)
@@ -34,10 +31,10 @@ char	*gnl_strdup(char *s1)
 	string = malloc(sizeof(char) * len + 1);
 	if (string == NULL)
 		return (NULL);
-	i = 0;
+	len = 0;
 	while (*s1)
-		string[i++] = *s1++;
-	string[i] = '\0';
+		string[len++] = *s1++;
+	string[len] = '\0';
 	return (string);
 }
 
@@ -74,6 +71,7 @@ char	*gnl_lstclear(t_list **node, int fd)
 	while (*node && (*node)->fd == fd)
 	{
 		tmp = (*node)->next;
+		free((*node)->backup);
 		free(*node);
 		*node = tmp;
 	}
@@ -83,6 +81,7 @@ char	*gnl_lstclear(t_list **node, int fd)
 		if (cur->next && cur->next->fd == fd)
 		{
 			tmp = cur->next->next;
+			free(cur->next->backup);
 			free(cur->next);
 			cur->next = tmp;
 		}
