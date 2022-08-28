@@ -25,8 +25,8 @@ OBJS_DIR = .
 OBJS := $(patsubst %.o,$(OBJS_DIR)/%.o,$(OBJS_NAME))
 
 ifeq ($(MAKECMDGOALS),debug)
-# CFLAGS += -g3 -fsanitize=address
-CFLAGS += -g
+CFLAGS += -g3 -fsanitize=address
+# CFLAGS += -g
 endif
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
