@@ -6,11 +6,21 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:22 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/24 20:07:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/29 20:35:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	gnl_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
 
 char	*gnl_strdup(char *s1)
 {
@@ -91,12 +101,12 @@ char	*gnl_lstclear(t_list **node, int fd)
 	return (NULL);
 }
 
-t_list	*gnl_lstfind(t_list **node, int fd)
+t_list	*gnl_lstset(t_list **head, int fd)
 {
 	t_list	*cur;
 	t_list	*new;
 
-	cur = *node;
+	cur = *head;
 	while (cur != NULL)
 	{
 		if (cur->fd == fd)
@@ -105,25 +115,15 @@ t_list	*gnl_lstfind(t_list **node, int fd)
 			break ;
 		cur = cur->next;
 	}
-	new = gnl_lstnew(fd);
-	if (new == NULL)
-		return (NULL);
-	if (*node == NULL)
-		*node = new;
-	else
-		cur->next = new;
-	return (new);
-}
-
-t_list	*gnl_lstnew(int fd)
-{
-	t_list	*new;
-
 	new = malloc(sizeof(t_list));
 	if (new == NULL)
 		return (NULL);
 	new->fd = fd;
 	new->backup = NULL;
 	new->next = NULL;
+	if (*head == NULL)
+		*head = new;
+	else
+		cur->next = new;
 	return (new);
 }

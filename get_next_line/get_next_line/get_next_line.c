@@ -6,21 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:15:00 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/24 20:09:55 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/29 20:31:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	gnl_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
 
 size_t	search_newline(char *line)
 {
@@ -78,7 +68,6 @@ char	*get_readline(t_list *node)
 	temp = gnl_strdup(node->backup);
 	if (temp == NULL)
 		return (NULL);
-	free(node->backup);
 	while (readout)
 	{
 		buffer[readout] = '\0';
@@ -103,16 +92,14 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	node = gnl_lstfind(&head, fd);
+	node = gnl_lstset(&head, fd);
 	if (node == NULL)
 		return (gnl_lstclear(&head, fd));
 	temp = node->backup;
 	node->backup = get_readline(node);
+	free(temp);
 	if (node->backup == NULL)
-	{
-		free(temp);
 		return (gnl_lstclear(&head, fd));
-	}
 	if (gnl_strlen(node->backup) < 1)
 		return (gnl_lstclear(&head, fd));
 	line = make_one_line(node);
