@@ -12,16 +12,6 @@
 
 #include "get_next_line.h"
 
-size_t	gnl_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
 char	*gnl_strdup(char *s1)
 {
 	size_t	len;
@@ -73,30 +63,30 @@ char	*gnl_strjoin(char *s1, char *s2)
 	return (string);
 }
 
-char	*gnl_lstclear(t_list **node, int fd)
+char	*gnl_lstclear(t_list **head, int fd)
 {
 	t_list	*cur;
 	t_list	*tmp;
 
-	while (*node && (*node)->fd == fd)
+	if (*head != NULL && (*head)->fd == fd)
 	{
-		tmp = (*node)->next;
-		free((*node)->backup);
-		free(*node);
-		*node = tmp;
+		tmp = (*head)->next;
+		free((*head)->backup);
+		free(*head);
+		*head = tmp;
 	}
-	cur = *node;
-	while (cur)
+	cur = *head;
+	while (cur != NULL)
 	{
-		if (cur->next && cur->next->fd == fd)
+		if (cur->next != NULL && cur->next->fd == fd)
 		{
 			tmp = cur->next->next;
 			free(cur->next->backup);
 			free(cur->next);
 			cur->next = tmp;
+			break ;
 		}
-		else
-			cur = cur->next;
+		cur = cur->next;
 	}
 	return (NULL);
 }
@@ -104,26 +94,36 @@ char	*gnl_lstclear(t_list **node, int fd)
 t_list	*gnl_lstset(t_list **head, int fd)
 {
 	t_list	*cur;
-	t_list	*new;
 
+	if (*head == NULL)
+	{
+		*head = gnl_lstnew(fd);
+		return (*head);
+	}
 	cur = *head;
 	while (cur != NULL)
 	{
 		if (cur->fd == fd)
-			return (cur);
-		if (cur->next == NULL)
 			break ;
+		if (cur->next == NULL)
+		{
+			cur->next = gnl_lstnew(fd);
+			return (cur->next);
+		}
 		cur = cur->next;
 	}
+	return (cur);
+}
+
+t_list	*gnl_lstnew(int fd)
+{
+	t_list	*new;
+
 	new = malloc(sizeof(t_list));
 	if (new == NULL)
 		return (NULL);
 	new->fd = fd;
 	new->backup = NULL;
 	new->next = NULL;
-	if (*head == NULL)
-		*head = new;
-	else
-		cur->next = new;
 	return (new);
 }

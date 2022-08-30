@@ -12,6 +12,16 @@
 
 #include "get_next_line.h"
 
+size_t	gnl_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
 size_t	search_newline(char *line)
 {
 	size_t	i;
