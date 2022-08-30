@@ -33,6 +33,6 @@ typedef struct s_list
 
 t_list	*gnl_lstset(t_list **head, int fd);
 t_list	*gnl_lstnew(int fd);
-char	*gnl_lstclear(t_list **node, int fd);
+void	*gnl_lstclear(t_list **node, int fd);
 
 #endif

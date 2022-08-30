@@ -63,7 +63,7 @@ char	*gnl_strjoin(char *s1, char *s2)
 	return (string);
 }
 
-char	*gnl_lstclear(t_list **head, int fd)
+void	*gnl_lstclear(t_list **head, int fd)
 {
 	t_list	*cur;
 	t_list	*tmp;

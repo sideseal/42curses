@@ -104,16 +104,16 @@ char	*get_next_line(int fd)
 		return (NULL);
 	node = gnl_lstset(&head, fd);
 	if (node == NULL)
-		return (gnl_lstclear(&head, fd));
+		return ((char *)gnl_lstclear(&head, fd));
 	temp = node->backup;
 	node->backup = get_readline(node);
 	free(temp);
 	if (node->backup == NULL)
-		return (gnl_lstclear(&head, fd));
+		return ((char *)gnl_lstclear(&head, fd));
 	if (gnl_strlen(node->backup) < 1)
-		return (gnl_lstclear(&head, fd));
+		return ((char *)gnl_lstclear(&head, fd));
 	line = make_one_line(node);
 	if (line == NULL)
-		return (gnl_lstclear(&head, fd));
+		return ((char *)gnl_lstclear(&head, fd));
 	return (line);
 }
