@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:15:00 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/29 20:31:53 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/08/31 12:27:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,12 @@ char	*make_one_line(t_list *node)
 		string[i++] = *(node->backup)++;
 	string[i] = '\0';
 	node->backup = gnl_strdup(node->backup);
+	free(temp);
 	if (node->backup == NULL)
 	{
 		free(string);
-		free(temp);
 		return (NULL);
 	}
-	free(temp);
 	return (string);
 }
 
