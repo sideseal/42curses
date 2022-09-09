@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 21:42:55 by gychoi            #+#    #+#             */
-/*   Updated: 2022/09/09 23:09:35 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/09/09 23:15:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	print_address_recursive(unsigned long long num, char *base)
 int	print_address(void *p)
 {
 	unsigned long long	daddr;
-	int			printed;
-	int			ret;
+	int				printed;
+	int				ret;
 
 	if (p == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:08:49 by gychoi            #+#    #+#             */
-/*   Updated: 2022/09/09 21:12:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/09/09 23:17:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	print_char(char c)
 {
-	ssize_t	ret;
+	int	printed;
 
-	ret = (int)write(1, &c, 1);
-	if (ret < 0)
+	printed = (int)write(1, &c, 1);
+	if (printed < 0)
 		return (-1);
-	return (ret);
+	return (printed);
 }
