@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_printf_utils.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/12 14:32:56 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/12 14:40:21 by gychoi           ###   ########.fr       */
+/*   Created: 2022/09/09 20:09:04 by gychoi            #+#    #+#             */
+/*   Updated: 2022/09/09 22:26:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef FT_PRINTF_UTILS_H
+# define FT_PRINTF_UTILS_H
 
-int	ft_lstsize(t_list *lst)
-{
-	int	size;
+# include <unistd.h>
+# include <stdarg.h>
 
-	size = 0;
-	while (lst != NULL)
-	{
-		lst = lst->next;
-		size++;
-	}
-	return (size);
-}
+int	print_char(char c);
+int	print_string(char *str);
+int	print_address(void *p);
+
+#endif

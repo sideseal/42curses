@@ -6,69 +6,91 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:11:07 by gychoi            #+#    #+#             */
-/*   Updated: 2022/09/08 16:41:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/09/09 23:01:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-#include "stdio.h" // just for test
+#include <stdio.h> // 지우기
 
-int	parsing_format(va_list *ap, char type)
+int	handle_specifier(va_list *ap, char spec)
 {
-// 	if (type == 'c')
-// 		// ft_write
-// 	if (type == 's')
-// 		// ft_write with sentence len
-// 		;
-// 	if (type == 'p')
-// 		// print_memory
-// 		;
-// 	if (type == 'd' || type == 'i')
-// 		// ft_itoa
-// 		;
-// 	if (type == 'u')
-// 		// print unsigned
-// 		;
-// 	if (type == 'x')
-// 		// print hex low
-// 		;
-// 	if (type == 'X')
-// 		// print hex upper
-// 		;
-// 	if (type == '%')
-// 		// print %
-// 		;
-	return (0);
+	if (spec == 'c')
+		return (print_char(va_arg(*ap, int)));
+	else if (spec == 's')
+		return (print_string(va_arg(*ap, char *)));
+	else if (spec == 'p')
+		return (print_address(va_arg(*ap, void *)));
+	else if (spec == 'd' || spec == 'i')
+		// ft_itoa
+		;
+	else if (spec == 'u')
+		// print unsigned
+		;
+	else if (spec == 'x')
+		// print hex low
+		;
+	else if (spec == 'X')
+		// print hex upper
+		;
+	else if (spec == '%')
+		return (print_char('%'));
+	else
+		return (-1);
+}
+
+int	parsing_format(const char *format, va_list *ap)
+{
+	int	ret;
+	int	printed;
+
+	printed = 0;
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			ret = handle_specifier(ap, *(++format));
+			if (ret < 0)
+				return (-1);
+		}
+		else
+		{
+			ret = (int)write(1, &(*format), 1);
+			if (ret < 0)
+				return (-1);
+		}
+		printed += ret;
+		format++;
+	}
+	return (printed);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	va_list	ap;
-	int		len;
-	int		i;
+	int	printed;
 
 	va_start(ap, format);
-	len = 0;
-	i = 0;
-	while (format[i] != '\0')
-	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			len += parsing_format(&ap, format[i + 1]);
-			i++;
-			continue ;
-		}
-		// write one character format[i]
-		len++;
-		i++;
-	}
+	printed = parsing_format(format, &ap);
 	va_end(ap);
-	return (len);
+	if (printed < 0)
+		return (-1);
+	return (printed);
 }
 
 int	main(void)
 {
-	ft_printf("hello%d\n", 10);
+	int	len1;
+	int	len2;
+	int	len3;
+	char	p[] = "hello\n";
+
+	len1 = ft_printf("hell%c, %s", 'O', "world");
+	printf("len: %d\n", len1);
+	len2 = ft_printf("%s", NULL);
+	printf("len: %d\n", len2);
+	len3 = ft_printf("%p", p);
+	printf("len: %d\n", len3);
 	return (0);
 }

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   print_char.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 16:59:31 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/11 14:34:05 by gychoi           ###   ########.fr       */
+/*   Created: 2022/09/09 20:08:49 by gychoi            #+#    #+#             */
+/*   Updated: 2022/09/09 21:12:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf_utils.h"
 
-size_t	ft_strlen(const char *s)
+int	print_char(char c)
 {
-	size_t	i;
+	ssize_t	ret;
 
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	ret = (int)write(1, &c, 1);
+	if (ret < 0)
+		return (-1);
+	return (ret);
 }
