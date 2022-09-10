@@ -6,13 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:11:07 by gychoi            #+#    #+#             */
-/*   Updated: 2022/09/09 23:01:23 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/09/10 18:39:40 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-#include <stdio.h> // 지우기
 
 int	handle_specifier(va_list *ap, char spec)
 {
@@ -23,17 +21,13 @@ int	handle_specifier(va_list *ap, char spec)
 	else if (spec == 'p')
 		return (print_address(va_arg(*ap, void *)));
 	else if (spec == 'd' || spec == 'i')
-		// ft_itoa
-		;
+		return (print_number(va_arg(*ap, int), "0123456789", 1));
 	else if (spec == 'u')
-		// print unsigned
-		;
+		return (print_number(va_arg(*ap, unsigned int), "0123456789", 0));
 	else if (spec == 'x')
-		// print hex low
-		;
+		return (print_number(va_arg(*ap, unsigned int), "0123456789abcdef", 0));
 	else if (spec == 'X')
-		// print hex upper
-		;
+		return (print_number(va_arg(*ap, unsigned int), "0123456789ABCDEF", 0));
 	else if (spec == '%')
 		return (print_char('%'));
 	else
@@ -69,7 +63,7 @@ int	parsing_format(const char *format, va_list *ap)
 int	ft_printf(const char *format, ...)
 {
 	va_list	ap;
-	int	printed;
+	int		printed;
 
 	va_start(ap, format);
 	printed = parsing_format(format, &ap);
@@ -77,20 +71,4 @@ int	ft_printf(const char *format, ...)
 	if (printed < 0)
 		return (-1);
 	return (printed);
-}
-
-int	main(void)
-{
-	int	len1;
-	int	len2;
-	int	len3;
-	char	p[] = "hello\n";
-
-	len1 = ft_printf("hell%c, %s", 'O', "world");
-	printf("len: %d\n", len1);
-	len2 = ft_printf("%s", NULL);
-	printf("len: %d\n", len2);
-	len3 = ft_printf("%p", p);
-	printf("len: %d\n", len3);
-	return (0);
 }

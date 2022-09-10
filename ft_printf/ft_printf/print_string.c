@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils.h                                  :+:      :+:    :+:   */
+/*   print_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/09 20:09:04 by gychoi            #+#    #+#             */
-/*   Updated: 2022/09/09 22:26:08 by gychoi           ###   ########.fr       */
+/*   Created: 2022/09/09 21:05:36 by gychoi            #+#    #+#             */
+/*   Updated: 2022/09/10 15:32:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_UTILS_H
-# define FT_PRINTF_UTILS_H
+#include "ft_printf.h"
 
-# include <unistd.h>
-# include <stdarg.h>
+int	print_string(char *str)
+{
+	int	printed;
+	int	len;
 
-int	print_char(char c);
-int	print_string(char *str);
-int	print_address(void *p);
-
-#endif
+	if (str == NULL)
+	{
+		printed = (int)write(1, "(null)", 6);
+		if (printed < 0)
+			return (-1);
+		return (printed);
+	}
+	len = 0;
+	while (str[len] != 0)
+		len++;
+	printed = (int)write(1, str, len);
+	if (printed < 0)
+		return (-1);
+	return (printed);
+}

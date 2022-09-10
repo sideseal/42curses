@@ -6,13 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 21:42:55 by gychoi            #+#    #+#             */
-/*   Updated: 2022/09/09 23:15:45 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/09/10 18:37:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_utils.h"
-
-#include <stdio.h>
+#include "ft_printf.h"
 
 int	print_address_recursive(unsigned long long num, char *base)
 {
@@ -32,14 +30,15 @@ int	print_address_recursive(unsigned long long num, char *base)
 int	print_address(void *p)
 {
 	unsigned long long	daddr;
-	int				printed;
-	int				ret;
+	int					printed;
+	int					ret;
 
 	if (p == 0)
 	{
 		ret = (int)write(1, "0x0", 3);
 		if (ret < 0)
 			return (-1);
+		return (ret);
 	}
 	printed = 0;
 	daddr = (unsigned long long)p;
