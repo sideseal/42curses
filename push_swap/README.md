@@ -7,7 +7,7 @@
 ### Trun-in files
 `Makefile`, `push_swap.c`, `*.c`
 ### 허용 함수
-`write`, `read`, `malloc`, `free`, `exit`
+`write`, `read`, `malloc`, `free`, `exit`, 내가 작성했던 도구들(ft_printf ...)
 
 * 프로그램은 작은 숫자가 스택 a의 top에 오도록 순서대로 정렬해야 하고, 사용한 명령어의 목록을 출력한다.
 * 명령어는 '\n'으로만 구분되어 출력되어야 한다.
@@ -32,3 +32,5 @@
 * `rrb` (reverse rotate b) : 스택 b의 원소를 한 칸씩 아래로 옮긴다. 스택의 마지막 원소는 맨 첫 번쨰 원소가 된다.
 * `rrr` : `rra`와 `rrb`를 동시에 수행한다.
 
+## 참고점들
+* 오류 시 `exit` status 1을 반환하고 종료한다.
