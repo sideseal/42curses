@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/13 22:38:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/14 01:52:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,13 @@ typedef struct s_deque
 	struct s_list	*tail;
 }	t_deque;
 
-void	deque_init(t_deque **deque_a, t_deque **deque_b);
 void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc);
+t_deque	*ps_deqnew(void);
+
 void	ps_lstadd_back(t_list **lst, t_list *new);
 t_list	*ps_lstnew(int value);
 t_list	*ps_lstlast(t_list *lst);
+
+void	pb(t_deque *deque_a, t_deque *deque_b);
 
 #endif

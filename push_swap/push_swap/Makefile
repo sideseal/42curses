@@ -6,20 +6,21 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/05 19:57:34 by gychoi            #+#    #+#              #
-#    Updated: 2022/11/13 23:28:47 by gychoi           ###   ########.fr        #
+#    Updated: 2022/11/14 01:54:06 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-#CFLAGS =
+#CFLAGS = -Wall -Wextra -Werror
+CFLAGS =
 RM = rm -f
 
 SRCS = push_swap.c \
 	param_utils.c \
 	deque_utils.c \
 	list_utils.c \
+	op_push.c \
 
 OBJS = $(SRCS:.c=.o)
 

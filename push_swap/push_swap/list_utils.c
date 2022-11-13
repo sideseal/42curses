@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 22:04:05 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/13 23:24:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/14 01:31:49 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ps_lstadd_back(t_list **lst, t_list *new)
 	t_list	*curr;
 
 	if (lst == NULL || new == NULL)
-		exit(1);
+		return ;
 	if (*lst == NULL)
 	{
 		*lst = new;

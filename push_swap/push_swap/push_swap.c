@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 22:50:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/13 23:28:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/14 01:55:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
-	deque_a = NULL;
-	deque_b = NULL;
-	list = NULL;
 	array = get_valid_param(argc, argv);
-	deque_init(&deque_a, &deque_b);
+	list = NULL;
+	deque_a = ps_deqnew();
+	deque_b = ps_deqnew();
 	deque_set(deque_a, &list, array, argc);
-	printf("%d, %d, %d\n", deque_a->tail->data, deque_a->tail->prev->data, deque_a->tail->prev->prev->data);
+	printf("%d\n", deque_a->head->data);
+	printf("size: %d\n", deque_a->size);
+	pb(deque_a, deque_b);
+	printf("%d, %d\n", deque_a->head->data, deque_b->head->data);
+	printf("size: %d, %d\n", deque_a->size, deque_b->size);
 	return (0);
 }
