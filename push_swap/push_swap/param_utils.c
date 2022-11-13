@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 18:08:50 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/05 23:09:21 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/13 21:20:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ static int	ps_atoi(char *a)
 	return ((int)value);
 }
 
-void	check_param(int *array, int argc, char **argv)
+static void	fill_array(int *array, int argc, char **argv)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (i < argc - 1)
@@ -51,6 +50,13 @@ void	check_param(int *array, int argc, char **argv)
 		array[i] = ps_atoi(argv[i + 1]);
 		i++;
 	}
+}
+
+static void	check_duplicate(int *array, int argc)
+{
+	int	i;
+	int	j;
+
 	i = 0;
 	while (i < argc - 2)
 	{
@@ -63,4 +69,16 @@ void	check_param(int *array, int argc, char **argv)
 		}
 		i++;
 	}
+}
+
+int	*get_valid_param(int argc, char **argv)
+{
+	int	*array;
+
+	array = (int *)malloc(sizeof(int) * (argc - 1));
+	if (array == NULL)
+		exit(1);
+	fill_array(array, argc, argv);
+	check_duplicate(array, argc);
+	return (array);
 }
