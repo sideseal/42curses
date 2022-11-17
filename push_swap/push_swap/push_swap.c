@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 22:50:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/17 22:05:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/18 01:07:34 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	iter(t_deque *deq)
 	node = deq->head;
 	while (node != NULL)
 	{
-		printf("%d\n", node->data);
+		printf("%d (index: %d)\n", node->data, node->index);
 		node = node->next;
 	}
 	printf("\n");
@@ -48,6 +48,8 @@ int	main(int argc, char **argv)
 	deque_b = ps_deqnew();
 	
 	deque_set(deque_a, &list, array, argc);
+	free(array);
+
 	printf("deque_a iter: \n");
 	iter(deque_a);
 	printf("deque_b iter: \n");

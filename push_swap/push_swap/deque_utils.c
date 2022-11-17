@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 21:37:23 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/14 01:27:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/18 01:07:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,30 @@ t_deque	*ps_deqnew(void)
 	return (deq);
 }
 
+static void	set_index(t_list **list)
+{
+	int	index;
+	t_list	*iter;
+	t_list	*head;
+
+	iter = *list;
+	head = *list;
+	while (*list)
+	{
+		index = 0;
+		while (iter)
+		{
+			if ((*list)->data > iter->data)
+				index++;
+			iter = iter->next;
+		}
+		(*list)->index = index;
+		*list = (*list)->next;
+		iter = head;
+	}
+	*list = head;
+}
+
 void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc)
 {
 	int	i;
@@ -35,6 +59,7 @@ void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc)
 		ps_lstadd_back(list, ps_lstnew(array[i]));
 		i++;
 	}
+	set_index(list);
 	deque_a->size = argc - 1;
 	deque_a->head = *list;
 	deque_a->tail = ps_lstlast(*list);

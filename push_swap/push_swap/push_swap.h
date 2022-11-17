@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/17 21:29:26 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/18 00:56:55 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	*get_valid_param(int argc, char **argv);
 typedef struct	s_list
 {
 	int	data;
-	int	idx;
+	int	index;
 	struct s_list	*next;
 	struct s_list	*prev;
 }	t_list;
