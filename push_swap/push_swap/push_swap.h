@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/14 01:52:26 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/17 21:29:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,18 @@ t_list	*ps_lstnew(int value);
 t_list	*ps_lstlast(t_list *lst);
 
 void	pb(t_deque *deque_a, t_deque *deque_b);
+void	pa(t_deque *deque_a, t_deque *deque_b);
+
+void	ra(t_deque *deque_a);
+void	rb(t_deque *deque_b);
+void	rr(t_deque *deque_a, t_deque *deque_b);
+
+void	rra(t_deque *deque_a);
+void	rrb(t_deque *deque_b);
+void	rrr(t_deque *deque_a, t_deque *deque_b);
+
+void	sa(t_deque *deque_a);
+void	sb(t_deque *deque_b);
+void	ss(t_deque *deque_a, t_deque *deque_b);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/05 19:57:34 by gychoi            #+#    #+#              #
-#    Updated: 2022/11/14 01:54:06 by gychoi           ###   ########.fr        #
+#    Updated: 2022/11/17 21:29:04 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,9 @@ SRCS = push_swap.c \
 	deque_utils.c \
 	list_utils.c \
 	op_push.c \
+	op_rotate.c \
+	op_reverse_rotate.c \
+	op_swap.c \
 
 OBJS = $(SRCS:.c=.o)
 

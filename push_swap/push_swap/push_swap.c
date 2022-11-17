@@ -6,13 +6,26 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 22:50:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/14 01:55:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/17 22:05:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 #include "stdio.h"
+
+void	iter(t_deque *deq)
+{
+	t_list	*node;
+
+	node = deq->head;
+	while (node != NULL)
+	{
+		printf("%d\n", node->data);
+		node = node->next;
+	}
+	printf("\n");
+}
 
 void	ps_error(void)
 {
@@ -33,11 +46,54 @@ int	main(int argc, char **argv)
 	list = NULL;
 	deque_a = ps_deqnew();
 	deque_b = ps_deqnew();
+	
 	deque_set(deque_a, &list, array, argc);
-	printf("%d\n", deque_a->head->data);
-	printf("size: %d\n", deque_a->size);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+
 	pb(deque_a, deque_b);
-	printf("%d, %d\n", deque_a->head->data, deque_b->head->data);
-	printf("size: %d, %d\n", deque_a->size, deque_b->size);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+	
+	pb(deque_a, deque_b);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+	
+	pb(deque_a, deque_b);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+
+	rb(deque_b);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+
+	rrb(deque_b);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+
+	sb(deque_b);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+
+	sa(deque_a);
+	printf("deque_a iter: \n");
+	iter(deque_a);
+	printf("deque_b iter: \n");
+	iter(deque_b);
+
 	return (0);
 }
