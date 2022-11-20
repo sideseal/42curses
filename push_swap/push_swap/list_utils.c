@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 22:04:05 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/18 01:07:52 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/20 16:41:15 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_list	*ps_lstnew(int value)
 	if (new == NULL)
 		exit(1);
 	new->data = value;
-	new->index = 0;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);

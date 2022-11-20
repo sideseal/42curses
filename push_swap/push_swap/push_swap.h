@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/18 00:56:55 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/20 22:40:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	*get_valid_param(int argc, char **argv);
 typedef struct	s_list
 {
 	int	data;
-	int	index;
 	struct s_list	*next;
 	struct s_list	*prev;
 }	t_list;
@@ -34,8 +33,10 @@ typedef struct s_deque
 	struct s_list	*tail;
 }	t_deque;
 
-void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc);
 t_deque	*ps_deqnew(void);
+int	deque_sorted(t_deque *deque_b);
+void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc);
+void	deque_partitioning(t_deque *deque_a, t_deque *deque_b, int pivot_a, int pivot_b);
 
 void	ps_lstadd_back(t_list **lst, t_list *new);
 t_list	*ps_lstnew(int value);
@@ -56,4 +57,7 @@ void	sa(t_deque *deque_a);
 void	sb(t_deque *deque_b);
 void	ss(t_deque *deque_a, t_deque *deque_b);
 
+void	sort(int *array, t_deque *deque_a, t_deque *deque_b);
+void	sort_small(t_deque *deque_a, int size);
+void	array_sort(int *array, int size);
 #endif

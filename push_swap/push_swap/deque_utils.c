@@ -6,11 +6,49 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 21:37:23 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/18 01:07:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/20 22:40:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int	deque_sorted(t_deque *deque_b)
+{
+	t_list	*node;
+	int	size;
+
+	node = deque_b->head;
+	size = deque_b->size;
+	while (--size)
+	{
+		if (node->data > node->next->data)
+			return (0);
+		node = node->next;
+	}
+	return (1);
+}
+
+void	deque_partitioning(t_deque *deque_a, t_deque *deque_b, int pivot_a, int pivot_b)
+{
+	int	size;
+
+	size = deque_a->size;
+	while (--size)
+	{
+		if (deque_a->head->data < pivot_a)
+		{
+			pb(deque_a, deque_b);
+			rb(deque_b);
+		}
+		else if (deque_a->head->data < pivot_b)
+			pb(deque_a, deque_b);
+		else
+			ra(deque_a);
+	}
+	while (deque_a->size)
+		pb(deque_a, deque_b);
+	sort_small(deque_a, deque_a->size);
+}
 
 t_deque	*ps_deqnew(void)
 {
@@ -25,30 +63,6 @@ t_deque	*ps_deqnew(void)
 	return (deq);
 }
 
-static void	set_index(t_list **list)
-{
-	int	index;
-	t_list	*iter;
-	t_list	*head;
-
-	iter = *list;
-	head = *list;
-	while (*list)
-	{
-		index = 0;
-		while (iter)
-		{
-			if ((*list)->data > iter->data)
-				index++;
-			iter = iter->next;
-		}
-		(*list)->index = index;
-		*list = (*list)->next;
-		iter = head;
-	}
-	*list = head;
-}
-
 void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc)
 {
 	int	i;
@@ -59,7 +73,6 @@ void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc)
 		ps_lstadd_back(list, ps_lstnew(array[i]));
 		i++;
 	}
-	set_index(list);
 	deque_a->size = argc - 1;
 	deque_a->head = *list;
 	deque_a->tail = ps_lstlast(*list);

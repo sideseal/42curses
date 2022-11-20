@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:10:58 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/17 20:30:56 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/20 19:50:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ra(t_deque *deque_a)
 	node->next = NULL;
 	deque_a->tail->next = node;
 	deque_a->tail = node;
-	write(2, "ra\n", 3);
+	write(1, "ra\n", 3);
 }
 
 void	rb(t_deque *deque_b)
@@ -41,12 +41,12 @@ void	rb(t_deque *deque_b)
 	node->next = NULL;
 	deque_b->tail->next = node;
 	deque_b->tail = node;
-	write(2, "rb\n", 3);
+	write(1, "rb\n", 3);
 }
 
 void	rr(t_deque *deque_a, t_deque *deque_b)
 {
 	ra(deque_a);
 	rb(deque_b);
-	write(2, "rr\n", 3);
+	write(1, "rr\n", 3);
 }

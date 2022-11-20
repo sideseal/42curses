@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 20:52:51 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/17 22:04:53 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/20 19:51:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	sa(t_deque *deque_a)
 	second->next = first;
 	second->prev = NULL;
 	deque_a->head = second;
-	write(2, "sa\n", 3);
+	write(1, "sa\n", 3);
 }
 
 void	sb(t_deque *deque_b)
@@ -51,12 +51,12 @@ void	sb(t_deque *deque_b)
 	second->next = first;
 	second->prev = NULL;
 	deque_b->head = second;
-	write(2, "sb\n", 3);
+	write(1, "sb\n", 3);
 }
 
 void	ss(t_deque *deque_a, t_deque *deque_b)
 {
 	sa(deque_a);
 	sb(deque_b);
-	write(2, "ss\n", 3);
+	write(1, "ss\n", 3);
 }
