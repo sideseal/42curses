@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/20 22:40:42 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/28 02:14:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_deque
 t_deque	*ps_deqnew(void);
 int	deque_sorted(t_deque *deque_b);
 void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc);
-void	deque_partitioning(t_deque *deque_a, t_deque *deque_b, int pivot_a, int pivot_b);
+void	deque_partition(t_deque *deque_a, t_deque *deque_b, int p_a, int p_b);
 
 void	ps_lstadd_back(t_list **lst, t_list *new);
 t_list	*ps_lstnew(int value);
@@ -59,5 +59,10 @@ void	ss(t_deque *deque_a, t_deque *deque_b);
 
 void	sort(int *array, t_deque *deque_a, t_deque *deque_b);
 void	sort_small(t_deque *deque_a, int size);
+
 void	array_sort(int *array, int size);
+int	get_min_data(t_deque *deque);
+int	get_max_data(t_deque *deque);
+int	check_upward(t_deque *deque, int curr);
+int	check_downward(t_deque *deque, int curr);
 #endif

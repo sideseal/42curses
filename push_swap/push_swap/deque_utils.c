@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 21:37:23 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/20 22:40:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/28 02:54:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,30 @@ int	deque_sorted(t_deque *deque_b)
 	return (1);
 }
 
-void	deque_partitioning(t_deque *deque_a, t_deque *deque_b, int pivot_a, int pivot_b)
+void	deque_partition(t_deque *deque_a, t_deque *deque_b, int p_a, int p_b)
 {
 	int	size;
 
 	size = deque_a->size;
 	while (--size)
 	{
-		if (deque_a->head->data < pivot_a)
+		if (deque_a->head->data < p_a)
 		{
 			pb(deque_a, deque_b);
 			rb(deque_b);
 		}
-		else if (deque_a->head->data < pivot_b)
+		else if (deque_a->head->data < p_b && deque_a->head->data != p_a)
 			pb(deque_a, deque_b);
 		else
 			ra(deque_a);
 	}
-	while (deque_a->size)
-		pb(deque_a, deque_b);
+	while (deque_a->size > 2)
+	{
+		if (deque_a->head->data != p_a && deque_a->head->data != p_b)
+			pb(deque_a, deque_b);
+		else
+			ra(deque_a);
+	}
 	sort_small(deque_a, deque_a->size);
 }
 

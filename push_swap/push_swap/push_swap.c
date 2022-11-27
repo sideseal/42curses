@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 22:50:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/20 21:56:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/25 23:14:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ int	main(int argc, char **argv)
 	deque_b = ps_deqnew();
 	array = get_valid_param(argc, argv);
 	deque_set(deque_a, &list, array, argc);
-	sort(array,deque_a, deque_b);
+	sort(array, deque_a, deque_b);
 	return (0);
 }
