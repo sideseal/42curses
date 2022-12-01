@@ -6,19 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:09:43 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/28 02:54:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/30 15:13:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 #include <stdio.h>
-//static void	sort_type_two(t_deque *deque_a, t_deque *deque_b, int curr)
-//{
-//	int	d_index;
-//	int	u_index;
-//}
-//
 void	iterr(t_deque *deq)
 {
 	t_list	*node;
@@ -26,49 +20,95 @@ void	iterr(t_deque *deq)
 	node = deq->head;
 	while (node != NULL)
 	{
-		printf("%d\n", node->data);
+		printf("%d ", node->data);
 		node = node->next;
 	}
-	printf("\n");
+}
+void	show_deque(t_deque *a, t_deque *b)
+{
+	printf("\n\tA FRONT ");
+	iterr(a);
+	printf("REAR\n");
+	printf("\tB FRONT ");
+	iterr(b);
+	printf("REAR\n\n");
 }
 
-static void	sort_type_one(t_deque *deque_a, t_deque *deque_b, int curr)
+
+
+
+
+
+int	find_best_index_mid(t_deque *deque, int data)
 {
 	int	d_index;
 	int	u_index;
 
-	d_index = check_downward(deque_a, curr);
-	u_index = check_upward(deque_a, curr);
-	printf("curr: %d, d_index: %d, u_index: %d\n", curr, d_index, u_index);
-	iterr(deque_a);
-	if (d_index >= u_index)
+	d_index = check_downward(deque, data);
+	u_index = check_upward(deque, data);
+	printf("\td_index = %d, u_index = %d\n", d_index, u_index);
+	if (d_index == u_index)
+		d_index++;
+	if (d_index < u_index)
+		return (d_index);
+	else
+		return (u_index * -1);
+}
+
+static int	set_index(t_deque *deque_a, t_deque *deque_b, int *type)
+{
+	int	data;
+
+	if (deque_b->head->data > deque_max_data(deque_a))
 	{
-		while (u_index--)
-			rra(deque_a);
-		pa(deque_a, deque_b);
+		printf("\t[MAX]\n");
+		*type = 0;
+		data = deque_max_data(deque_a);
+		return (find_best_index_mid(deque_a, data));
+	}
+	else if (deque_b->head->data < deque_min_data(deque_a))
+	{
+		printf("\t[MIN]\n");
+		*type = 1;
+		data = deque_min_data(deque_a);
+		return (find_best_index_mid(deque_a, data));
 	}
 	else
 	{
-		while (d_index--)
-			ra(deque_a);
-		pa(deque_a, deque_b);
+		printf("\t[MID]\n");
+		*type = 2;
+		data = deque_mid_data(deque_a, deque_b->head->data);
+		return (find_best_index_mid(deque_a, data));
 	}
 }
 
-// max 값 비교한 후, tail head 인덱스 차이만큼 rra, ra 수행.
-// 정렬된 상태에서만 비교해야 한다.
-// 설정 후 움직인 만큼 정렬하는 함수 필요.
 static void	greedy_sort(t_deque *deque_a, t_deque *deque_b)
 {
-	int	curr;
+	int	index;
+	int	type;
 
 	while (deque_b->size)
 	{
-		curr = deque_b->head->data;
-		//if (deque_sorted(deque_a))
-		sort_type_one(deque_a, deque_b, curr);
-		//else
-			//sort_type_two(deque_a, deque_b, curr);
+		type = -1;
+		index = set_index(deque_a, deque_b, &type);
+		show_deque(deque_a, deque_b);
+		if (index < 0)
+		{
+			index *= -1;
+			while (index--)
+				rra(deque_a);
+			if (type == 0 && index)
+				ra(deque_a);
+		}
+		else
+		{
+			while (index--)
+				ra(deque_a);
+			if (type == 0 && index)
+				rra(deque_a);
+		}
+		pa(deque_a, deque_b);
+		show_deque(deque_a, deque_b);
 	}
 }
 
@@ -90,6 +130,52 @@ void	sort(int *array, t_deque *deque_a, t_deque *deque_b)
 	{
 		deque_partition(deque_a, deque_b, p_a, p_b);
 		greedy_sort(deque_a, deque_b);
+		show_deque(deque_a, deque_b);
 	}
 	free(array);
 }
+//static void	greedy_sort(t_deque *deque_a, t_deque *deque_b)
+//{
+//	int	index;
+//	int	type;
+//	int	tmp;
+//
+//	while (deque_b->size)
+//	{
+//		type = -1;
+//		index = set_index(deque_a, deque_b, &type);
+//		//show_deque(deque_a, deque_b);
+//		if (type == 0)
+//		{
+//			pa(deque_a, deque_b);
+//			ra(deque_a);
+//		}
+//		else if (type == 1)
+//			pa(deque_a, deque_b);
+//		else
+//		{
+//			if (index < 0)
+//			{
+//				index *= -1;
+//				//index += 1;
+//				tmp = index + 1;
+//				while (index--)
+//					rra(deque_a);
+//				pa(deque_a, deque_b);
+//				//while (tmp--)
+//				//	ra(deque_a);
+//			}
+//			else
+//			{
+//				//index += 1;
+//				tmp = index;
+//				while (index--)
+//					ra(deque_a);
+//				pa(deque_a, deque_b);
+//				//while (tmp--)
+//				//	rra(deque_a);
+//			}
+//		}
+//	}
+//}
+

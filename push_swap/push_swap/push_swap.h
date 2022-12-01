@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/28 02:14:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/30 00:15:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,13 @@ void	ss(t_deque *deque_a, t_deque *deque_b);
 
 void	sort(int *array, t_deque *deque_a, t_deque *deque_b);
 void	sort_small(t_deque *deque_a, int size);
-
 void	array_sort(int *array, int size);
-int	get_min_data(t_deque *deque);
-int	get_max_data(t_deque *deque);
-int	check_upward(t_deque *deque, int curr);
-int	check_downward(t_deque *deque, int curr);
+
+int	deque_min_data(t_deque *deque);
+int	deque_max_data(t_deque *deque);
+int	deque_mid_data(t_deque *deque, int data);
+int	check_upward(t_deque *deque, int data);
+int	check_downward(t_deque *deque, int data);
+
+int	find_best_index(t_deque *deque, int data);
 #endif

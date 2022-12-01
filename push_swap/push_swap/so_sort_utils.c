@@ -6,97 +6,32 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 21:55:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/28 02:31:17 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/11/29 11:29:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-#include <stdio.h>
-int	get_min_data(t_deque *deque)
+static void	sort_three(t_deque *deque_a)
 {
-	t_list	*node;
-	int	min;
-
-	min = deque->head->data;
-	node = deque->head;
-	while (node)
-	{
-		if (min > node->data)
-			min = node->data;
-		node = node->next;
-	}
-	return (min);
+	if (deque_a->head->data > deque_a->head->next->data
+		&& deque_a->head->data > deque_a->tail->data)
+		ra(deque_a);
+	else if (deque_a->head->next->data > deque_a->head->data
+		&& deque_a->head->next->data > deque_a->tail->data)
+		rra(deque_a);
+	if (deque_a->head->data > deque_a->head->next->data)
+		sa(deque_a);
 }
 
-int	get_max_data(t_deque *deque)
+void	sort_small(t_deque *deque_a, int size)
 {
-	t_list	*node;
-	int	max;
-
-	max = deque->head->data;
-	node = deque->head;
-	while (node)
-	{
-		if (max > node->data)
-			max = node->data;
-		node = node->next;
-	}
-	return (max);
-}
-
-int	check_downward(t_deque *deque, int curr)
-{
-	t_list	*node;
-	int	index;
-
-	node = deque->head;
-	index = 0;
-	while (node)
-	{
-		if (node == deque->head)
-		{
-			if (deque->tail->data < curr 
-			&& curr < node->data)
-				break;
-		}
-		if (node->next != NULL)
-		{
-			if (node->data < curr
-			&& curr < node->next->data)
-				break;
-		}
-		index++;
-		node = node->next;
-	}
-	return (index);
-}
-
-int	check_upward(t_deque *deque, int curr)
-{
-	t_list	*node;
-	int	index;
-
-	node = deque->tail;
-	index = 0;
-	while (node)
-	{
-		if (node == deque->tail)
-		{
-			if (deque->head->data < curr 
-			&& curr > node->data)
-				break;
-		}
-		if (node->prev != NULL)
-		{
-			if (node->prev->data < curr
-			&& curr < node->data)
-				break;
-		}
-		index++;
-		node = node->prev;
-	}
-	return (index);
+	if (size == 1)
+		return ;
+	else if (size == 2 && !deque_sorted(deque_a))
+		sa(deque_a);
+	else if (size == 3 && !deque_sorted(deque_a))
+		sort_three(deque_a);
 }
 
 void	array_sort(int *array, int size)
