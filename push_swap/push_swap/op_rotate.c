@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:10:58 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 15:57:53 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/04 22:05:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	rb(t_deque *deque_b)
 	write(1, "rb\n", 3);
 }
 
-static void	rr_ra(t_deque *deque_a)
+void	silent_ra(t_deque *deque_a)
 {
 	t_list	*node;
 
@@ -59,7 +59,7 @@ static void	rr_ra(t_deque *deque_a)
 	deque_a->tail = node;
 }
 
-static void	rr_rb(t_deque *deque_b)
+void	silent_rb(t_deque *deque_b)
 {
 	t_list	*node;
 
@@ -76,7 +76,7 @@ static void	rr_rb(t_deque *deque_b)
 
 void	rr(t_deque *deque_a, t_deque *deque_b)
 {
-	rr_ra(deque_a);
-	rr_rb(deque_b);
+	silent_ra(deque_a);
+	silent_rb(deque_b);
 	write(1, "rr\n", 3);
 }

@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   deque_utils.c                                      :+:      :+:    :+:   */
+/*   ps_deque_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 21:37:23 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 13:41:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/04 22:31:40 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	deque_sorted(t_deque *deque_b)
+int	deque_sorted(t_deque *deque)
 {
 	t_list	*node;
-	int	size;
 
-	node = deque_b->head;
-	size = deque_b->size;
-	while (--size)
+	node = deque->head;
+	if (node == NULL || node->next == NULL)
+		return (1);
+	while (node->next)
 	{
 		if (node->data > node->next->data)
 			return (0);

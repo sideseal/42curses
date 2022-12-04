@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:10:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 16:26:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/04 22:07:17 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_deque
 }	t_deque;
 
 void	ps_error(void);
+
 int	*get_valid_param(int argc, char **argv);
 
 t_deque	*ps_deqnew(void);
@@ -44,19 +45,27 @@ void	ps_lstclear(t_deque *deque);
 t_list	*ps_lstnew(int value);
 t_list	*ps_lstlast(t_list *lst);
 
-void	pb(t_deque *deque_a, t_deque *deque_b);
 void	pa(t_deque *deque_a, t_deque *deque_b);
+void	pb(t_deque *deque_a, t_deque *deque_b);
+void	silent_pa(t_deque *deque_a, t_deque *deque_b);
+void	silent_pb(t_deque *deque_a, t_deque *deque_b);
 
 void	ra(t_deque *deque_a);
 void	rb(t_deque *deque_b);
+void	silent_ra(t_deque *deque_a);
+void	silent_rb(t_deque *deque_b);
 void	rr(t_deque *deque_a, t_deque *deque_b);
 
 void	rra(t_deque *deque_a);
 void	rrb(t_deque *deque_b);
+void	silent_rra(t_deque *deque_a);
+void	silent_rrb(t_deque *deque_b);
 void	rrr(t_deque *deque_a, t_deque *deque_b);
 
 void	sa(t_deque *deque_a);
 void	sb(t_deque *deque_b);
+void	silent_sa(t_deque *deque_a);
+void	silent_sb(t_deque *deque_b);
 void	ss(t_deque *deque_a, t_deque *deque_b);
 
 void	sort(int *array, t_deque *deque_a, t_deque *deque_b);
