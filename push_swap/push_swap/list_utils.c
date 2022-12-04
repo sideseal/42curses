@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 22:04:05 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/20 16:41:15 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/02 22:01:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,19 @@ void	ps_lstadd_back(t_list **lst, t_list *new)
 	curr->next = new;
 	new->prev = curr;
 	new->next = NULL;
+}
+
+void	ps_lstclear(t_deque *deque)
+{
+	t_list	*next;
+	t_list	*node;
+
+	node = deque->head;
+	while (node)
+	{
+		next = node->next;
+		free(node);
+		node = next;
+	}
+	free(node);
 }

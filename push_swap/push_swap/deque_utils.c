@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 21:37:23 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/28 02:54:56 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/04 13:41:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	deque_partition(t_deque *deque_a, t_deque *deque_b, int p_a, int p_b)
 		else
 			ra(deque_a);
 	}
-	sort_small(deque_a, deque_a->size);
+	sort_small(deque_a, deque_b, deque_a->size);
 }
 
 t_deque	*ps_deqnew(void)
@@ -66,6 +66,16 @@ t_deque	*ps_deqnew(void)
 	deq->head = NULL;
 	deq->tail = NULL;
 	return (deq);
+}
+
+void	deque_clear(t_deque *deque_a, t_deque *deque_b)
+{
+	if (!deque_a || !deque_b)
+		return ;
+	ps_lstclear(deque_a);
+	ps_lstclear(deque_b);
+	free(deque_a);
+	free(deque_b);
 }
 
 void	deque_set(t_deque *deque_a, t_list **list, int *array, int argc)

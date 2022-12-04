@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 11:28:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/30 15:06:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/02 18:22:17 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	deque_max_data(t_deque *deque)
 	return (max);
 }
 
-// node->data->next?
 int	deque_mid_data(t_deque *deque, int data)
 {
 	t_list	*node;
@@ -54,9 +53,8 @@ int	deque_mid_data(t_deque *deque, int data)
 	node = deque->head;
 	while (node->next)
 	{
-		if (data > node->data && data < node->next->data ||
-		data < node->data && data > node->next->data)
-			mid = node->data;
+		if (data > node->data && data < node->next->data)
+			mid = node->next->data;
 		node = node->next;
 	}
 	return (mid);
