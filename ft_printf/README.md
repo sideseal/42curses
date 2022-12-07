@@ -35,7 +35,9 @@ C언어의 `printf()` 작동방식을 구현하는 과제.
 	- `c, d, i` : `va_arg(ap, int)`
 	- `u, x, X` : `va_arg(ap, unsigned int)`
 	- `s, p` : `va_arg(ap, void *)`
-		- 이 경우, `long long` 8바이트 값으로 설정한다.
+
+### char형이 4바이트로 계산되는 이유?
+- `va_arg` 매크로의 `_INTSIZEOF` 매크로는 double을 제외하고 모두 4바이트로 처리한다. 플랫폼 이식의 편리성과 함께 4바이트로 설정하면 CPU에서 보다 편리하게 인식할 수 있다고...
 
 ## 가변 인자
 
@@ -88,7 +90,7 @@ int main()
 
 ## BONUS (X)
 
-시간이 없어서 기본만 구현하였다...
+민망쓰 ㅎㅎ;;
 
 참고자료:  
 - [https://dojang.io/mod/page/view.php?id=577](https://dojang.io/mod/page/view.php?id=577)
