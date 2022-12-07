@@ -6,11 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 18:11:51 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 18:30:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:05:35 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	gnl_strlen(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:24:51 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 22:48:50 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:57:12 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 int	main(int argc, char **argv)
 {
-	int	*array;
+	int		*array;
 	char	*line;
 	t_list	*list;
 	t_deque	*deque_a;

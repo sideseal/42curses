@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/05 19:57:34 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/04 22:40:12 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/07 20:50:34 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,17 +32,20 @@ SRCS = push_swap.c \
 	so_find_index_utils.c \
 
 BONUS_SRCS = checker_bonus.c \
-	checker_bonus_utils.c \
-	get_next_line.c \
-	get_next_line_utils.c \
-	push_swap_utils.c \
-	ps_param_utils.c \
-	ps_deque_utils.c \
-	ps_list_utils.c \
+	checker_utils_bonus.c \
+	get_next_line_bonus.c \
+	get_next_line_utils_bonus.c \
+	op_silent1_bonus.c \
+	op_silent2_bonus.c \
+	op_silent3_bonus.c \
 	op_push.c \
 	op_rotate.c \
 	op_reverse_rotate.c \
 	op_swap.c \
+	push_swap_utils.c \
+	ps_param_utils.c \
+	ps_deque_utils.c \
+	ps_list_utils.c \
 	so_sort_utils.c \
 	so_greedy_sort.c \
 	so_find_index.c \

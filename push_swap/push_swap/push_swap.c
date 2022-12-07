@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 22:50:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 18:41:28 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:52:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int argc, char **argv)
 {
-	int	*array;
+	int		*array;
 	t_list	*list;
 	t_deque	*deque_a;
 	t_deque	*deque_b;

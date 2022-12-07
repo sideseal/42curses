@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 18:08:50 by gychoi            #+#    #+#             */
-/*   Updated: 2022/11/13 21:20:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:40:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	ps_atoi(char *a)
 {
-	int	i;
-	int	sign;
-	int	digit_flag;
+	int			i;
+	int			sign;
+	int			digit_flag;
 	long long	value;
 
 	i = 0;

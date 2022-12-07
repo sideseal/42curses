@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 11:46:41 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 15:42:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:42:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ static int	ps_abs(int n)
 
 void	find_index(t_deque *deque_a, t_deque *deque_b, int *ia, int *ib)
 {
-	int	i;
-	int	a_idx;
-	int	b_idx;
+	int		i;
+	int		a_idx;
+	int		b_idx;
 	t_list	*node;
 
 	i = 0;

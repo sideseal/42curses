@@ -6,11 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 18:12:23 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 22:34:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:05:43 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*gnl_strdup(char *s1)
 {

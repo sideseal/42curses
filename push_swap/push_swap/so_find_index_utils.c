@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 11:28:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/02 18:22:17 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/07 20:43:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	deque_min_data(t_deque *deque)
 {
 	t_list	*node;
-	int	min;
+	int		min;
 
 	min = deque->head->data;
 	node = deque->head;
@@ -31,7 +31,7 @@ int	deque_min_data(t_deque *deque)
 int	deque_max_data(t_deque *deque)
 {
 	t_list	*node;
-	int	max;
+	int		max;
 
 	max = deque->head->data;
 	node = deque->head;
@@ -47,7 +47,7 @@ int	deque_max_data(t_deque *deque)
 int	deque_mid_data(t_deque *deque, int data)
 {
 	t_list	*node;
-	int	mid;
+	int		mid;
 
 	mid = deque->head->data;
 	node = deque->head;
@@ -62,7 +62,7 @@ int	deque_mid_data(t_deque *deque, int data)
 
 int	check_downward(t_deque *deque, int data)
 {
-	int	index;
+	int		index;
 	t_list	*node;
 
 	index = 0;
@@ -79,7 +79,7 @@ int	check_downward(t_deque *deque, int data)
 
 int	check_upward(t_deque *deque, int data)
 {
-	int	index;
+	int		index;
 	t_list	*node;
 
 	index = 0;
