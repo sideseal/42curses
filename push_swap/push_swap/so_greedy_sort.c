@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:09:43 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/04 16:18:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/08 16:29:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void	rotate_both(t_deque *deque_a, t_deque *deque_b, int *ia, int *ib)
 {
-	while (*ia && *ib && (*ia > 0 && *ib > 0))
+	while (*ia > 0 && *ib > 0)
 	{
 		rr(deque_a, deque_b);
 		*ia = *ia - 1;
 		*ib = *ib - 1;
 	}
-	while (*ia && *ib && (*ia < 0 && *ib < 0))
+	while (*ia < 0 && *ib < 0)
 	{
 		rrr(deque_a, deque_b);
 		*ia = *ia + 1;
