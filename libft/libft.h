@@ -6,14 +6,18 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 12:30:05 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/10 16:20:40 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/13 15:43:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include <stdlib.h>
 # include <unistd.h>
+
+# include "get_next_line.h"
+# include "ft_printf.h"
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);

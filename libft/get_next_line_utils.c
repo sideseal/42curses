@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:22 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/29 20:35:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/13 15:44:55 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ char	*gnl_strjoin(char *s1, char *s2)
 	return (string);
 }
 
-void	*gnl_lstclear(t_list **head, int fd)
+void	*gnl_lstclear(t_gnl **head, int fd)
 {
-	t_list	*cur;
-	t_list	*tmp;
+	t_gnl	*cur;
+	t_gnl	*tmp;
 
 	if (*head != NULL && (*head)->fd == fd)
 	{
@@ -91,9 +91,9 @@ void	*gnl_lstclear(t_list **head, int fd)
 	return (NULL);
 }
 
-t_list	*gnl_lstset(t_list **head, int fd)
+t_gnl	*gnl_lstset(t_gnl **head, int fd)
 {
-	t_list	*cur;
+	t_gnl	*cur;
 
 	if (*head == NULL)
 	{
@@ -115,11 +115,11 @@ t_list	*gnl_lstset(t_list **head, int fd)
 	return (cur);
 }
 
-t_list	*gnl_lstnew(int fd)
+t_gnl	*gnl_lstnew(int fd)
 {
-	t_list	*new;
+	t_gnl	*new;
 
-	new = malloc(sizeof(t_list));
+	new = malloc(sizeof(t_gnl));
 	if (new == NULL)
 		return (NULL);
 	new->fd = fd;

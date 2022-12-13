@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:15:00 by gychoi            #+#    #+#             */
-/*   Updated: 2022/08/31 12:27:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/13 15:44:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ size_t	search_newline(char *line)
 	return (0);
 }
 
-char	*make_one_line(t_list *node)
+char	*make_one_line(t_gnl *node)
 {
 	char	*string;
 	char	*temp;
@@ -64,7 +64,7 @@ char	*make_one_line(t_list *node)
 	return (string);
 }
 
-char	*get_readline(t_list *node)
+char	*get_readline(t_gnl *node)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	char	*temp;
@@ -94,8 +94,8 @@ char	*get_readline(t_list *node)
 
 char	*get_next_line(int fd)
 {
-	static t_list		*head;
-	t_list				*node;
+	static t_gnl		*head;
+	t_gnl				*node;
 	char				*line;
 	char				*temp;
 
