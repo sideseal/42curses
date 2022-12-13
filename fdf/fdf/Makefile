@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/10 19:09:45 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/13 20:34:46 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,16 @@ NAME = fdf
 
 CC = gcc
 #CFLAGS = -Wall -Wextra -Werror
-CFLAGS =
+CFLAGS = -g
 MLXLIB = -L./mlx -lmlx -framework OpenGL -framework AppKit -Imlx
 MLXDIR = ./mlx/
+LIBFT = ./libft/
 RM = rm -f
 
 SRCS = main.c \
+	   proc_file.c \
+	   util_fdf.c \
+	   util_init.c \
 
 OBJS = $(SRCS:.c=.o)
 
@@ -28,13 +32,15 @@ OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(MLXDIR)
-	$(CC) $(CFLAGS) $(MLXLIB) $^ -o $@
+	$(MAKE) -C $(LIBFT)
+	$(CC) $(CFLAGS) $(MLXLIB) $^ -o $@ -L./libft -lft
 	install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
 
 all: $(NAME)
 
 clean:
 	$(MAKE) -C $(MLXDIR) clean
+	$(MAKE) -C $(LIBFT) clean
 	$(RM) $(OBJS)
 
 fclean: clean
