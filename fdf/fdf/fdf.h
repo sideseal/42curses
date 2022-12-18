@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/19 01:41:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/19 02:20:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef	struct	s_map
 {
 	int	width;
 	int	height;
+	struct s_point	*point;
 }	t_map;
 
 typedef struct s_point
