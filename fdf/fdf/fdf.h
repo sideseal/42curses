@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/13 21:02:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/19 01:41:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,32 @@
 # include <stdio.h>
 # include <unistd.h>
 
-typedef struct	s_ctx
+typedef	struct	s_map
 {
-	void	*mlx;
-	void	*win;
-	char	**map;
-	int		width;
-	int		height;
-}	t_ctx;
+	int	width;
+	int	height;
+}	t_map;
+
+typedef struct s_point
+{
+	int		x;
+	int		y;
+	int		z;
+	struct s_point	*next;
+}	t_point;
 
 typedef struct	s_fdf
 {
+	void	*mlx;
+	void	*win;
 	void	*img;
 	char	*addr;
 	int		bpp;
 	int		line_len;
 	int		endian;
+	struct s_map	*map;
 }	t_fdf;
 
-void	fdf_error(void);
-
-t_ctx	*init_ctx(char *path, int img_width, int img_height);
-t_fdf	*init_fdf(t_ctx *ctx, int img_width, int img_height);
-
-char	**read_from_file(t_ctx *ctx, char *path);
-int	get_height(char **map);
-int	get_width(char *line);
+void	fdf_error(char *str);
 
 #endif
