@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/18 21:46:19 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/20 01:39:50 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRCDIR = ./src/
 RM = rm -f
 
 SRCS = main.c \
+       list.c \
+       init.c \
 
 OBJS = $(SRCS:.c=.o)
 

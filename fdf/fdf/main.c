@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:33:07 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/19 03:02:35 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/20 02:09:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,44 +16,6 @@ void	fdf_error(char *str)
 {
 	perror(str);
 	exit(1);
-}
-
-t_point	*fdf_lstnew(int x, int y, int z)
-{
-	t_point	*new;
-
-	new = malloc(sizeof(t_point));
-	if (!new)
-		fdf_error("Error: malloc");
-	new->x = x;
-	new->y = y;
-	new->z = z;
-	new->next = NULL;
-	return (new);
-}
-
-t_point	*fdf_lstlast(t_point *point)
-{
-	if (!point)
-		return (NULL);
-	while (point->next != NULL)
-		point = point->next;
-	return (point);
-}
-
-void	fdf_lstadd_back(t_point **point, t_point *new)
-{
-	t_point	*curr;
-
-	if (!point || !new)
-		return ;
-	if (!*point)
-	{
-		*point = new;
-		return ;
-	}
-	curr = fdf_lstlast(*point);
-	curr->next = new;
 }
 
 void	set_point(t_map *map, char *line, int index_y)
@@ -67,14 +29,16 @@ void	set_point(t_map *map, char *line, int index_y)
 	{
 		if (*vars_x[index_x] == '\n')
 			break ;
-		fdf_lstadd_back(&(map->point), fdf_lstnew(index_x, index_y, ft_atoi(vars_x[index_x])));
+		fdf_lstadd_back(&(map->point), \
+			fdf_lstnew(index_x, index_y, ft_atoi(vars_x[index_x])));
 		free(vars_x[index_x]);
 		index_x++;
 	}
 	free(vars_x);
 }
 
-void	read_file(t_fdf *fdf, char *path)
+// 파일 형식 검증 필요
+void	read_and_set(t_fdf *fdf, char *path)
 {
 	int		fd;
 	int		index_y;
@@ -97,45 +61,22 @@ void	read_file(t_fdf *fdf, char *path)
 	}
 }
 
-t_map	*init_map(void)
+void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, int color)
 {
-	t_map	*new;
+	char	*dst;
 
-	new = malloc(sizeof(t_map *));
-	if (!new)
-		fdf_error("Error: malloc");
-	new->width = 0;
-	new->height = 0;
-	new->point = NULL;
-	return (new);
+	dst = fdf->addr + (y * fdf->line_len + x * (fdf->bpp / 8));
+	*(unsigned int *)dst = color;
 }
 
-t_fdf	*init_fdf(t_fdf *fdf, int img_width, int img_height)
+int	key_hook(int keycode, t_fdf *fdf)
 {
-	t_fdf	*new;
-
-	new = malloc(sizeof(t_fdf *));
-	if (!new)
-		fdf_error("Error: malloc");
-	new->mlx = mlx_init();
-	new->win = mlx_new_window(new->mlx, img_width, img_height, "fdf");
-	new->img = mlx_new_image(new->mlx, img_width, img_height);
-	new->addr = mlx_get_data_addr(new->img, &new->bpp, &new->line_len, &new->endian);
-	new->map = init_map();
-	return (new);
-}
-
-void	iter(t_fdf *fdf)
-{
-	t_point	*curr;
-
-	curr = fdf->map->point;
-	while (curr)
+	if (keycode == 53)
 	{
-		printf("%d, %d, %d\n", curr->x, curr->y, curr->z);
-		curr = curr->next;
+		mlx_destroy_window(fdf->mlx, fdf->win);
+		exit(0);
 	}
-	printf("map: %d, %d\n", fdf->map->width, fdf->map->height);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -147,7 +88,12 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		fdf_error("Usage: ./fdf [file]");
 	fdf = init_fdf(fdf, img_width, img_height);
-	read_file(fdf, argv[1]);
-	iter(fdf);
+	read_and_set(fdf, argv[1]);
+	// draw section
+	my_mlx_pixel_put(fdf, 100, 100, 0x00FF0000);
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	mlx_key_hook(fdf->win, key_hook, fdf);
+	mlx_loop(fdf->mlx);
+	free_fdf(fdf);
 	return (0);
 }

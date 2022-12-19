@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/19 02:20:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/20 01:37:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,14 @@ typedef struct	s_fdf
 }	t_fdf;
 
 void	fdf_error(char *str);
+
+t_point	*fdf_lstnew(int x, int y, int z);
+t_point	*fdf_lstlast(t_point *point);
+void	fdf_lstadd_back(t_point **point, t_point *new);
+void	fdf_lstclear(t_point **point);
+
+t_map	*init_map(void);
+t_fdf	*init_fdf(t_fdf *fdf, int img_width, int img_height);
+void	free_fdf(t_fdf *fdf);
 
 #endif
