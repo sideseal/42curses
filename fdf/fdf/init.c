@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:26:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/20 01:37:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/21 00:53:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,4 @@ t_fdf	*init_fdf(t_fdf *fdf, int img_width, int img_height)
 	new->addr = mlx_get_data_addr(new->img, &new->bpp, &new->line_len, &new->endian);
 	new->map = init_map();
 	return (new);
-}
-
-void	free_fdf(t_fdf *fdf)
-{
-	fdf_lstclear(&(fdf->map->point));
-	free(fdf->map);
-	free(fdf);
 }
