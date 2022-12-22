@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set.c                                              :+:      :+:    :+:   */
+/*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:51:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/21 00:51:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/22 22:59:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	read_and_set(t_fdf *fdf, char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		fdf_error("Error: file descriptor ");
+		fdf_error("Error: file open ");
 	if (!check_valid_file(path))
 		fdf_error("Error: Not a valid file ");
 	index_y = 0;
@@ -79,9 +79,11 @@ void	read_and_set(t_fdf *fdf, char *path)
 	while (read_line > 0)
 	{
 		set_point(fdf->map, read_line, index_y);
-		free(read_line);
 		index_y++;
 		fdf->map->height++;
+		free(read_line);
 		read_line = get_next_line(fd);
 	}
+	if (close(fd) < 0)
+		fdf_error("Error: file close ");
 }

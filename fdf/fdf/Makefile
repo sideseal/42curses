@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/22 17:36:47 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/22 23:11:44 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,6 @@ SRCS = main.c \
        read.c \
 
 OBJS = $(SRCS:.c=.o)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LFTDIR)

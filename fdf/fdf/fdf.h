@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/21 01:37:47 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/22 23:15:29 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <stdio.h>
 # include <unistd.h>
 
+# define SCREEN_WIDTH	1280
+# define SCREEN_HEIGHT	960
+
 typedef	struct	s_map
 {
 	int	width;
@@ -34,6 +37,7 @@ typedef struct s_point
 	int		x;
 	int		y;
 	int		z;
+	int		color;
 	struct s_point	*next;
 }	t_point;
 
@@ -59,6 +63,6 @@ void	fdf_lstadd_back(t_point **point, t_point *new);
 void	fdf_lstclear(t_point **point);
 
 t_map	*init_map(void);
-t_fdf	*init_fdf(t_fdf *fdf, int img_width, int img_height);
+t_fdf	*init_fdf(t_fdf *fdf, int win_width, int win_height);
 
 #endif

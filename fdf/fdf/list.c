@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:24:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/20 01:27:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/22 23:16:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_point	*fdf_lstnew(int x, int y, int z)
 	new->x = x;
 	new->y = y;
 	new->z = z;
+	new->color = 0;
 	new->next = NULL;
 	return (new);
 }
