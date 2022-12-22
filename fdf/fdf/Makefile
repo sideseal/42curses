@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/21 00:55:03 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/22 16:57:45 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS = main.c \
        list.c \
        init.c \
        utils.c \
-       set.c \
+       read.c \
 
 OBJS = $(SRCS:.c=.o)
 
