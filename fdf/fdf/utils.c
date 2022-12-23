@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:52:46 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/21 00:53:41 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/23 16:51:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	fdf_error(char *str)
 
 void	free_fdf(t_fdf *fdf)
 {
-	fdf_lstclear(&(fdf->map->point));
-	free(fdf->map);
+//	fdf_lstclear(&(fdf->map->point));
+//	free(fdf->map);
 	free(fdf);
 }
