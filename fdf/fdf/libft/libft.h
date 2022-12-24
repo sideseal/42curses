@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 12:30:05 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/13 15:43:32 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/24 19:58:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
 
 char	*get_next_line(int fd);
-int	ft_printf(const char *format, ...);
+int		ft_printf(const char *format, ...);
 
 #endif

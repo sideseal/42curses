@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/23 16:50:26 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/24 22:26:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,14 @@
 
 # define SCREEN_WIDTH	1280
 # define SCREEN_HEIGHT	960
+
 # define KEY_ESC		53
+
+# define COLOR_RED	0xFF0000
+# define COLOR_GREEN	0x00FF00
+# define COLOR_BLUE	0x0000FF
+# define COLOR_BLACK	0x000000
+# define COLOR_WHITE	0xFFFFFF
 
 typedef	struct	s_map
 {
@@ -32,11 +39,19 @@ typedef	struct	s_map
 	int	height;
 }	t_map;
 
+typedef struct	s_coord
+{
+	double	x;
+	double	y;
+	double	z;
+}	t_coord;
+
 typedef struct	s_point
 {
 	double	x;
 	double	y;
 	double	z;
+	int	color;
 }	t_point;
 
 typedef struct	s_fdf
@@ -49,20 +64,22 @@ typedef struct	s_fdf
 	int				line_len;
 	int				endian;
 	struct s_map	map;
-	struct s_point	**points;
+	struct s_coord	**coords;
 }	t_fdf;
 
-void	fdf_error(char *str);
-void	free_fdf(t_fdf *fdf);
 void	read_and_set(t_fdf *fdf, char *path);
 
-//t_point	*fdf_lstnew(int x, int y, int z);
-//t_point	*fdf_lstlast(t_point *point);
-//void	fdf_lstadd_back(t_point **point, t_point *new);
-//void	fdf_lstclear(t_point **point);
-
 t_map	init_map(void);
-t_point	init_point(int x, int y, int z);
+t_coord	init_coord(int x, int y, int z);
 t_fdf	*init_fdf(t_fdf *fdf);
+
+t_point	set_point(t_coord coord, t_map map);
+
+void	draw_frame(t_fdf *fdf);
+
+int	key_hook(int keycode, t_fdf *fdf);
+int	close_hook(t_fdf *fdf);
+
+void	fdf_error(char *str);
 
 #endif

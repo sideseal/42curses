@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/23 17:32:18 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/25 00:05:59 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,25 +15,41 @@ NAME = fdf
 CC = gcc
 #CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -g
-MLXLIB = -L./mlx -lmlx -framework OpenGL -framework AppKit -Imlx
-MLXDIR = ./mlx/
-LFTDIR = ./libft/
-SRCDIR = ./src/
 RM = rm -f
+RMFLAGS = -r
 
+MLXDIR = ./mlx/
+MLXLIB = -L./mlx -lmlx -framework OpenGL -framework AppKit -Imlx
+MLX = $(MLXDIR)libmlx.a
+
+LFTDIR = ./libft/
+LFTLIB = -L./libft -lft
+LIBFT = $(LFTDIR)libft.a
+
+SRCDIR = ./
 SRCS = main.c \
-       list.c \
        init.c \
        utils.c \
        read.c \
+       draw.c \
+       hooks.c \
+       project.c \
 
-OBJS = $(SRCS:.c=.o)
+SOURCES = $(addprefix $(SRCDIR), $(SRCS))
 
-$(NAME): $(OBJS)
-	$(MAKE) -C $(LFTDIR)
-	$(MAKE) -C $(MLXDIR)
-	$(CC) $(CFLAGS) $(MLXLIB) $^ -o $@ -L./libft -lft
+OBJDIR = ./objs/
+OBJS = $(patsubst %.c, %.o, $(SRCS))
+OBJECTS = $(addprefix $(OBJDIR), $(OBJS))
+
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(MLX) $(OBJECTS)
+	$(CC) $(CFLAGS) $(MLXLIB) $(LFTLIB) $(OBJECTS) -o $@
 	install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
+
+$(OBJDIR)%.o: $(SRCDIR)%.c
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LFTDIR)
@@ -41,14 +57,14 @@ $(LIBFT):
 $(MLX):
 	$(MAKE) -C $(MLXDIR)
 
-all: $(NAME)
-
 clean:
 	$(MAKE) -C $(MLXDIR) clean
 	$(MAKE) -C $(LFTDIR) clean
-	$(RM) $(OBJS)
+	$(RM) $(RMFLAGS) $(OBJDIR)
 
 fclean: clean
+	$(RM) $(LIBFT)
+	$(RM) $(MLX)
 	$(RM) $(NAME)
 
 re: fclean

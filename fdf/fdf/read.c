@@ -6,31 +6,31 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:51:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/23 18:07:22 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/24 20:55:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point	*set_point(t_map map, char *line, int index_y)
+static t_coord	*set_coord(t_map map, char *line, int index_y)
 {
 	char	**vars_x;
 	int		index_x;
-	t_point	*point;
+	t_coord	*coord;
 
 	vars_x = ft_split(line, ' ');
-	point = malloc(sizeof(t_point) * map.width);
-	if (point == NULL)
+	coord = malloc(sizeof(t_coord) * map.width);
+	if (coord == NULL)
 		fdf_error("Error: malloc ");
 	index_x = 0;
 	while (vars_x && vars_x[index_x])
 	{
-		point[index_x] = init_point(index_x, index_y, ft_atoi(vars_x[index_x]));
+		coord[index_x] = init_coord(index_x, index_y, ft_atoi(vars_x[index_x]));
 		free(vars_x[index_x]);
 		index_x++;
 	}
 	free(vars_x);
-	return (point);
+	return (coord);
 }
 
 static int	check_valid_file(char *path)
@@ -53,32 +53,38 @@ static int	count_width(char *line)
 
 	vars_x = ft_split(line, ' ');
 	count = 0;
-	while (vars_x[count])
+	while (vars_x && vars_x[count])
 	{
-		if (*vars_x[count] == '\n')
-			break ;
-		count++;
 		free(vars_x[count]);
+		count++;
 	}
 	free(vars_x);
 	return (count);
 }
 
-static void	read_map(t_fdf *fdf, char *path)
+static void	read_map_info(t_fdf *fdf, char *path)
 {
 	int	fd;
 	int	width;
 	int	height;
+	char	*read_line;
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		fdf_error("Error: file open ");
 	if (!check_valid_file(path))
 		fdf_error("Error: Not a valid file ");
-	width = count_width(get_next_line(fd));
+	read_line = get_next_line(fd);
+	width = count_width(read_line);
 	height = 1;
-	while (get_next_line(fd))
+	while (1)
+	{
+		free(read_line);
+		read_line = get_next_line(fd);
+		if (read_line == NULL)
+			break ;
 		height++;
+	}
 	if (close(fd) < 0)
 		fdf_error("Error: file close ");
 	fdf->map.width = width;
@@ -91,12 +97,12 @@ void	read_and_set(t_fdf *fdf, char *path)
 	int		index_y;
 	char	*read_line;
 
-	read_map(fdf, path);
+	read_map_info(fdf, path);
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		fdf_error("Error: file open ");
-	fdf->points = malloc(sizeof(t_point *) * fdf->map.height);
-	if (fdf->points == NULL)
+	fdf->coords = malloc(sizeof(t_coord *) * fdf->map.height);
+	if (fdf->coords == NULL)
 		fdf_error("Error: malloc ");
 	index_y = 0;
 	while (1)
@@ -104,7 +110,7 @@ void	read_and_set(t_fdf *fdf, char *path)
 		read_line = get_next_line(fd);
 		if (read_line == NULL)
 			break ;
-		fdf->points[index_y] = set_point(fdf->map, read_line, index_y);
+		fdf->coords[index_y] = set_coord(fdf->map, read_line, index_y);
 		index_y++;
 		free(read_line);
 	}
