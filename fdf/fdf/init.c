@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:26:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/24 22:01:12 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/27 23:18:28 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,27 @@ t_coord	init_coord(int x, int y, int z)
 	return (new);
 }
 
+t_angle	init_angle(void)
+{
+	t_angle	new;
+
+	new.alpha = 0.7071 * -1;
+	new.beta = 0.5774;
+	new.gamma = 0.5236;
+	return (new);
+}
+
+t_offset	init_offset(void)
+{
+	t_offset	new;
+
+	new.x = 0;
+	new.y = 0;
+	new.z = 1.0;
+	new.zoom = 1.0;
+	return (new);
+}
+
 t_fdf	*init_fdf(t_fdf *fdf)
 {
 	t_fdf	*new;
@@ -44,11 +65,13 @@ t_fdf	*init_fdf(t_fdf *fdf)
 	new->win = mlx_new_window(new->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "fdf");
 	if (new->win == NULL)
 		fdf_error("Error: mlx ");
-	new->img = mlx_new_image(new->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	if (new->img == NULL)
-		fdf_error("Error: mlx ");
-	new->addr = mlx_get_data_addr(new->img, &new->bpp, &new->line_len, &new->endian);
+	//new->img = mlx_new_image(new->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	new->img = NULL;
+	//new->addr = mlx_get_data_addr(new->img, &new->bpp, &new->line_len, &new->endian);
+	new->addr = NULL;
 	new->map = init_map();
 	new->coords = NULL;
+	new->angle = init_angle();
+	new->offset = init_offset();
 	return (new);
 }

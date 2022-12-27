@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/24 22:26:58 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/27 23:18:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,25 @@
 # define SCREEN_HEIGHT	960
 
 # define KEY_ESC		53
+# define KEY_ISO		34
+# define KEY_W			13
+# define KEY_S			1
+# define KEY_A			0
+# define KEY_D			2
+# define KEY_Q			12
+# define KEY_E			14
+# define KEY_UP			126
+# define KEY_DOWN		125
+# define KEY_LEFT		123
+# define KEY_RIGHT		124
+# define KEY_ZOOM_IN	24
+# define KEY_ZOOM_OUT	27
+# define KEY_Z_UP		30
+# define KEY_Z_DOWN		33
 
-# define COLOR_RED	0xFF0000
+# define COLOR_RED		0xFF0000
 # define COLOR_GREEN	0x00FF00
-# define COLOR_BLUE	0x0000FF
+# define COLOR_BLUE		0x0000FF
 # define COLOR_BLACK	0x000000
 # define COLOR_WHITE	0xFFFFFF
 
@@ -37,6 +52,8 @@ typedef	struct	s_map
 {
 	int	width;
 	int	height;
+	int	x_origin;
+	int	y_origin;
 }	t_map;
 
 typedef struct	s_coord
@@ -51,8 +68,31 @@ typedef struct	s_point
 	double	x;
 	double	y;
 	double	z;
-	int	color;
+	int		color;
 }	t_point;
+
+typedef struct	s_pixel
+{
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}	t_pixel;
+
+typedef struct	s_angle
+{
+	double	alpha;
+	double	beta;
+	double	gamma;
+}	t_angle;
+
+typedef struct	s_offset
+{
+	int	x;
+	int	y;
+	double	z;
+	double	zoom;
+}	t_offset;
 
 typedef struct	s_fdf
 {
@@ -65,6 +105,8 @@ typedef struct	s_fdf
 	int				endian;
 	struct s_map	map;
 	struct s_coord	**coords;
+	struct s_angle	angle;
+	struct s_offset	offset;
 }	t_fdf;
 
 void	read_and_set(t_fdf *fdf, char *path);
@@ -73,12 +115,12 @@ t_map	init_map(void);
 t_coord	init_coord(int x, int y, int z);
 t_fdf	*init_fdf(t_fdf *fdf);
 
-t_point	set_point(t_coord coord, t_map map);
+t_point	set_point(t_coord coord, t_fdf *fdf, int keycode);
 
-void	draw_frame(t_fdf *fdf);
+void	draw_frame(t_fdf *fdf, int keycode);
 
-int	key_hook(int keycode, t_fdf *fdf);
-int	close_hook(t_fdf *fdf);
+int		key_hook(int keycode, t_fdf *fdf);
+int		close_hook(t_fdf *fdf);
 
 void	fdf_error(char *str);
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:33:07 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/24 23:35:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/27 23:07:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	main(int argc, char **argv)
 	fdf = init_fdf(fdf);
 	read_and_set(fdf, argv[1]);
 	// draw section start
-	draw_frame(fdf);
+	draw_frame(fdf, -1);
 	//draw_square(fdf);
-	mlx_key_hook(fdf->win, key_hook, fdf);
+	mlx_hook(fdf->win, 2, 0, key_hook, fdf);
 	mlx_hook(fdf->win, 17, 0, close_hook, fdf);
 	mlx_loop(fdf->mlx);
 	// draw section end

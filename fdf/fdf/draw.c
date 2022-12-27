@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 18:31:18 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/25 00:00:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/27 22:03:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,22 @@ static void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, int color)
 //	}
 //}
 
-static void	plot_line(t_point s, t_point f, t_fdf *fdf)
+static void	plot_line(t_pixel s, t_pixel f, t_fdf *fdf)
 {
 	int	dx;
 	int	dy;
 	int	plot;
 
-	dx = fabs(f.x - s.x);
-	dy = fabs(f.y - s.y);
+	dx = abs(f.x - s.x);
+	dy = abs(f.y - s.y);
 	if (dx >= dy)
 	{
 		plot = 2 * dy - dx;
-		while ((int)s.x != (int)f.x)
+		while (1)
 		{
 			my_mlx_pixel_put(fdf, s.x, s.y, 0x0000FF00);
+			if (s.x == f.x)
+				break ;
 			if (plot < 0)
 				plot += 2 * dy;
 			else
@@ -71,9 +73,11 @@ static void	plot_line(t_point s, t_point f, t_fdf *fdf)
 	else
 	{
 		plot = 2 * dx - dy;
-		while ((int)s.y != (int)f.y)
+		while (1)
 		{
 			my_mlx_pixel_put(fdf, s.x, s.y, 0x0000FF00);
+			if (s.y == f.y)
+				break ;
 			if (plot < 0)
 				plot += 2 * dx;
 			else
@@ -92,11 +96,61 @@ static void	plot_line(t_point s, t_point f, t_fdf *fdf)
 	}
 }
 
-void	draw_frame(t_fdf *fdf)
+t_point	**convert_coords(t_fdf *fdf, int keycode)
 {
-	int	y;
-	int	x;
+	t_point	**points;
+	t_point	*point;
+	int		y;
+	int		x;
 
+	points = malloc(sizeof(t_point *) * fdf->map.height);
+	y = 0;
+	while (y < fdf->map.height)
+	{
+		x = 0;
+		point = malloc(sizeof(t_point) * fdf->map.width);
+		while (x < fdf->map.width)
+		{
+			point[x] = set_point(fdf->coords[y][x], fdf, keycode);
+			x++;
+		}
+		points[y] = point;
+		y++;
+	}
+	return (points);
+}
+
+t_pixel	pixelize(t_point point)
+{
+	t_pixel	new;
+
+	new.x = (int)point.x;
+	new.y = (int)point.y;
+	new.z = (int)point.z;
+	new.color = point.color;
+	return (new);
+}
+
+void	set_draw(t_fdf *fdf)
+{
+	if (fdf->img != NULL)
+		mlx_destroy_image(fdf->mlx, fdf->img);
+	fdf->img = mlx_new_image(fdf->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (fdf->img == NULL)
+		fdf_error("Error: mlx ");
+	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bpp, &fdf->line_len, &fdf->endian);
+	if (fdf->addr == NULL)
+		fdf_error("Error: mlx ");
+}
+
+void	draw_frame(t_fdf *fdf, int keycode)
+{
+	t_point	**points;
+	int		y;
+	int		x;
+
+	set_draw(fdf);
+	points = convert_coords(fdf, keycode);
 	y = 0;
 	while (y < fdf->map.height)
 	{
@@ -104,11 +158,9 @@ void	draw_frame(t_fdf *fdf)
 		while (x < fdf->map.width)
 		{
 			if (x < fdf->map.width - 1)
-				plot_line(set_point(fdf->coords[y][x], fdf->map), \
-					set_point(fdf->coords[y][x + 1], fdf->map), fdf);
+				plot_line(pixelize(points[y][x]), pixelize(points[y][x + 1]), fdf);
 			if (y < fdf->map.height - 1)
-				plot_line(set_point(fdf->coords[y][x], fdf->map), \
-					 set_point(fdf->coords[y + 1][x], fdf->map), fdf);
+				plot_line(pixelize(points[y][x]), pixelize(points[y + 1][x]), fdf);
 			x++;
 		}
 		y++;

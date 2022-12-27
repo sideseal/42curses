@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:51:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/24 20:55:58 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/27 15:37:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static t_coord	*set_coord(t_map map, char *line, int index_y)
 	index_x = 0;
 	while (vars_x && vars_x[index_x])
 	{
-		coord[index_x] = init_coord(index_x, index_y, ft_atoi(vars_x[index_x]));
+		coord[index_x] = init_coord(index_x - map.x_origin,\
+				index_y - map.y_origin, ft_atoi(vars_x[index_x]));
 		free(vars_x[index_x]);
 		index_x++;
 	}
@@ -98,6 +99,8 @@ void	read_and_set(t_fdf *fdf, char *path)
 	char	*read_line;
 
 	read_map_info(fdf, path);
+	fdf->map.x_origin = fdf->map.width / 2;
+	fdf->map.y_origin = fdf->map.height / 2;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		fdf_error("Error: file open ");
