@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 21:41:55 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/27 23:17:35 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/28 19:04:10 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	init_projection(t_coord coord, t_point *p, t_fdf *fdf)
 	fdf->angle.gamma = 0.5236;
 	fdf->offset.x = 0;
 	fdf->offset.y = 0;
-	fdf->offset.z = 0;
-	fdf->offset.zoom = 1;
+	fdf->offset.z = 1.0;
+	fdf->offset.zoom = 1.0;
 	p->x = coord.x * (SCREEN_WIDTH / fdf->map.width / 2);
 	p->y = coord.y * (SCREEN_HEIGHT / fdf->map.height / 2);
 	p->z = coord.z * -1;
