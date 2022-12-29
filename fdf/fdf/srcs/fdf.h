@@ -6,15 +6,15 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/27 23:18:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/30 02:35:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "mlx/mlx.h"
-# include "libft/libft.h"
+# include "../mlx/mlx.h"
+# include "../libft/libft.h"
 
 # include <fcntl.h>
 # include <math.h>
@@ -71,14 +71,6 @@ typedef struct	s_point
 	int		color;
 }	t_point;
 
-typedef struct	s_pixel
-{
-	int	x;
-	int	y;
-	int	z;
-	int	color;
-}	t_pixel;
-
 typedef struct	s_angle
 {
 	double	alpha;
@@ -113,9 +105,10 @@ void	read_and_set(t_fdf *fdf, char *path);
 
 t_map	init_map(void);
 t_coord	init_coord(int x, int y, int z);
-t_fdf	*init_fdf(t_fdf *fdf);
+t_fdf	*init_fdf(void);
 
 t_point	set_point(t_coord coord, t_fdf *fdf, int keycode);
+t_point	**convert_coords(t_fdf *fdf, int keycode);
 
 void	draw_frame(t_fdf *fdf, int keycode);
 
@@ -123,5 +116,8 @@ int		key_hook(int keycode, t_fdf *fdf);
 int		close_hook(t_fdf *fdf);
 
 void	fdf_error(char *str);
+int	fdf_abs(int n);
+int	fdf_open(char *path, int flag);
+void	fdf_close(int fd);
 
 #endif

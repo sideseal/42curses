@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:26:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/27 23:18:28 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/30 02:35:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_map	init_map(void)
 
 	new.width = 0;
 	new.height = 0;
+	new.x_origin = 0;
+	new.y_origin = 0;
 	return (new);
 }
 
@@ -25,23 +27,23 @@ t_coord	init_coord(int x, int y, int z)
 {
 	t_coord	new;
 
-	new.x = (double)x;
-	new.y = (double)y;
-	new.z = (double)z;
+	new.x = x;
+	new.y = y;
+	new.z = z;
 	return (new);
 }
 
-t_angle	init_angle(void)
+static t_angle	init_angle(void)
 {
 	t_angle	new;
 
-	new.alpha = 0.7071 * -1;
-	new.beta = 0.5774;
-	new.gamma = 0.5236;
+	new.alpha = M_PI / 4 * -1;
+	new.beta = asin(tan(M_PI / 6));
+	new.gamma = 0;
 	return (new);
 }
 
-t_offset	init_offset(void)
+static t_offset	init_offset(void)
 {
 	t_offset	new;
 
@@ -52,7 +54,7 @@ t_offset	init_offset(void)
 	return (new);
 }
 
-t_fdf	*init_fdf(t_fdf *fdf)
+t_fdf	*init_fdf(void)
 {
 	t_fdf	*new;
 
@@ -65,9 +67,7 @@ t_fdf	*init_fdf(t_fdf *fdf)
 	new->win = mlx_new_window(new->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "fdf");
 	if (new->win == NULL)
 		fdf_error("Error: mlx ");
-	//new->img = mlx_new_image(new->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	new->img = NULL;
-	//new->addr = mlx_get_data_addr(new->img, &new->bpp, &new->line_len, &new->endian);
 	new->addr = NULL;
 	new->map = init_map();
 	new->coords = NULL;

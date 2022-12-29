@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 18:31:18 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/28 18:57:52 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/29 22:09:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,14 @@ static void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, int color)
 	}
 }
 
-//void	plot_line(int x0, int y0, int x1, int y1, t_fdf *fdf)
-//{
-//	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-//	int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-//	int err = dx + dy, e2;
-//
-//	for (;;) {
-//		my_mlx_pixel_put(fdf, x0, y0, 0x00FF0000);
-//		if (x0 == x1 && y0 == y1) break ;
-//		e2 = 2 * err;
-//		if (e2 >= dy) { err += dy; x0 += sx; }
-//		if (e2 <= dx) { err += dx; y0 += sy; }
-//	}
-//}
-
-static void	plot_line(t_pixel s, t_pixel f, t_fdf *fdf)
+static void	plot_line(t_point s, t_point f, t_fdf *fdf)
 {
 	int	dx;
 	int	dy;
 	int	plot;
 
-	dx = abs(f.x - s.x);
-	dy = abs(f.y - s.y);
+	dx = fdf_abs(f.x - s.x);
+	dy = fdf_abs(f.y - s.y);
 	if (dx >= dy)
 	{
 		plot = 2 * dy - dx;
@@ -120,17 +105,6 @@ t_point	**convert_coords(t_fdf *fdf, int keycode)
 	return (points);
 }
 
-t_pixel	pixelize(t_point point)
-{
-	t_pixel	new;
-
-	new.x = (int)point.x;
-	new.y = (int)point.y;
-	new.z = (int)point.z;
-	new.color = point.color;
-	return (new);
-}
-
 void	set_draw(t_fdf *fdf)
 {
 	if (fdf->img != NULL)
@@ -158,12 +132,14 @@ void	draw_frame(t_fdf *fdf, int keycode)
 		while (x < fdf->map.width)
 		{
 			if (x < fdf->map.width - 1)
-				plot_line(pixelize(points[y][x]), pixelize(points[y][x + 1]), fdf);
+				plot_line(points[y][x], points[y][x + 1], fdf);
 			if (y < fdf->map.height - 1)
-				plot_line(pixelize(points[y][x]), pixelize(points[y + 1][x]), fdf);
+				plot_line(points[y][x], points[y + 1][x], fdf);
 			x++;
 		}
+		free(points[y]);
 		y++;
 	}
+	free(points);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 }

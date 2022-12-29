@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:51:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/27 15:37:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/29 22:32:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,16 @@ static t_coord	*set_coord(t_map map, char *line, int index_y)
 	return (coord);
 }
 
-static int	check_valid_file(char *path)
+static void	check_valid_file(char *path)
 {
 	int	i;
 
 	i = ft_strlen(path);
 	if (i < 5)
 		fdf_error("Error: Not a valid file ");
-	if (path[i - 1] == 'f' && path[i - 2] == 'd' \
-	&& path[i - 3] == 'f' && path [i - 4] == '.')
-		return (1);
-	return (0);
+	if (path[i - 1] != 'f' || path[i - 2] != 'd' \
+	|| path[i - 3] != 'f' || path [i - 4] != '.')
+		fdf_error("Error: Not a valid file ");
 }
 
 static int	count_width(char *line)
@@ -70,11 +69,8 @@ static void	read_map_info(t_fdf *fdf, char *path)
 	int	height;
 	char	*read_line;
 
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		fdf_error("Error: file open ");
-	if (!check_valid_file(path))
-		fdf_error("Error: Not a valid file ");
+	check_valid_file(path);
+	fd = fdf_open(path, O_RDONLY);
 	read_line = get_next_line(fd);
 	width = count_width(read_line);
 	height = 1;
@@ -86,10 +82,9 @@ static void	read_map_info(t_fdf *fdf, char *path)
 			break ;
 		height++;
 	}
-	if (close(fd) < 0)
-		fdf_error("Error: file close ");
 	fdf->map.width = width;
 	fdf->map.height = height;
+	fdf_close(fd);
 }
 
 void	read_and_set(t_fdf *fdf, char *path)
@@ -101,9 +96,7 @@ void	read_and_set(t_fdf *fdf, char *path)
 	read_map_info(fdf, path);
 	fdf->map.x_origin = fdf->map.width / 2;
 	fdf->map.y_origin = fdf->map.height / 2;
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		fdf_error("Error: file open ");
+	fd = fdf_open(path, O_RDONLY);
 	fdf->coords = malloc(sizeof(t_coord *) * fdf->map.height);
 	if (fdf->coords == NULL)
 		fdf_error("Error: malloc ");
@@ -117,6 +110,5 @@ void	read_and_set(t_fdf *fdf, char *path)
 		index_y++;
 		free(read_line);
 	}
-	if (close(fd) < 0)
-		fdf_error("Error: file close ");
+	fdf_close(fd);
 }

@@ -6,15 +6,13 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/27 13:58:57 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/29 18:44:59 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
-
 CC = gcc
-#CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -g
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 RMFLAGS = -r
 
@@ -26,7 +24,7 @@ LFTDIR = ./libft/
 LFTLIB = -L./libft -lft
 LIBFT = $(LFTDIR)libft.a
 
-SRCDIR = ./
+SRCDIR = ./srcs/
 SRCS = main.c \
        init.c \
        utils.c \
@@ -43,19 +41,15 @@ OBJECTS = $(addprefix $(OBJDIR), $(OBJS))
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) $(OBJECTS)
+$(NAME): $(OBJECTS)
+	$(MAKE) -C $(LFTDIR)
+	$(MAKE) -C $(MLXDIR)
 	$(CC) $(CFLAGS) $(MLXLIB) $(LFTLIB) $(OBJECTS) -o $@
-	install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
+	@install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-$(LIBFT):
-	$(MAKE) -C $(LFTDIR)
-
-$(MLX):
-	$(MAKE) -C $(MLXDIR)
 
 clean:
 	$(MAKE) -C $(MLXDIR) clean
