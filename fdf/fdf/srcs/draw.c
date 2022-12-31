@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 18:31:18 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/29 22:09:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/01 01:35:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,98 +23,70 @@ static void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, int color)
 	}
 }
 
-static void	plot_line(t_point s, t_point f, t_fdf *fdf)
+static void	plot_dx_big(t_point s, t_point f, t_fdf *fdf, t_delta delta)
 {
-	int	dx;
-	int	dy;
 	int	plot;
 
-	dx = fdf_abs(f.x - s.x);
-	dy = fdf_abs(f.y - s.y);
-	if (dx >= dy)
+	plot = 2 * delta.dy - delta.dx;
+	while (1)
 	{
-		plot = 2 * dy - dx;
-		while (1)
+		my_mlx_pixel_put(fdf, s.x, s.y, s.color);
+		if (s.x == f.x)
+			break ;
+		if (plot < 0)
+			plot += 2 * delta.dy;
+		else
 		{
-			my_mlx_pixel_put(fdf, s.x, s.y, 0x0000FF00);
-			if (s.x == f.x)
-				break ;
-			if (plot < 0)
-				plot += 2 * dy;
-			else
-			{
-				if (s.y < f.y)
-					s.y++;
-				else
-					s.y--;
-				plot += 2 * (dy - dx);
-			}
-			if (s.x < f.x)
-				s.x++;
-			else
-				s.x--;
-		}
-	}
-	else
-	{
-		plot = 2 * dx - dy;
-		while (1)
-		{
-			my_mlx_pixel_put(fdf, s.x, s.y, 0x0000FF00);
-			if (s.y == f.y)
-				break ;
-			if (plot < 0)
-				plot += 2 * dx;
-			else
-			{
-				if (s.x < f.x)
-					s.x++;
-				else
-					s.x--;
-				plot += 2 * (dx - dy);
-			}
 			if (s.y < f.y)
 				s.y++;
 			else
 				s.y--;
+			plot += 2 * (delta.dy - delta.dx);
 		}
+		if (s.x < f.x)
+			s.x++;
+		else
+			s.x--;
 	}
 }
 
-t_point	**convert_coords(t_fdf *fdf, int keycode)
+static void	plot_dy_big(t_point s, t_point f, t_fdf *fdf, t_delta delta)
 {
-	t_point	**points;
-	t_point	*point;
-	int		y;
-	int		x;
+	int	plot;
 
-	points = malloc(sizeof(t_point *) * fdf->map.height);
-	y = 0;
-	while (y < fdf->map.height)
+	plot = 2 * delta.dx - delta.dy;
+	while (1)
 	{
-		x = 0;
-		point = malloc(sizeof(t_point) * fdf->map.width);
-		while (x < fdf->map.width)
+		my_mlx_pixel_put(fdf, s.x, s.y, s.color);
+		if (s.y == f.y)
+			break ;
+		if (plot < 0)
+			plot += 2 * delta.dx;
+		else
 		{
-			point[x] = set_point(fdf->coords[y][x], fdf, keycode);
-			x++;
+			if (s.x < f.x)
+				s.x++;
+			else
+				s.x--;
+			plot += 2 * (delta.dx - delta.dy);
 		}
-		points[y] = point;
-		y++;
+		if (s.y < f.y)
+			s.y++;
+		else
+			s.y--;
 	}
-	return (points);
 }
 
-void	set_draw(t_fdf *fdf)
+static void	plot_line(t_point s, t_point f, t_fdf *fdf)
 {
-	if (fdf->img != NULL)
-		mlx_destroy_image(fdf->mlx, fdf->img);
-	fdf->img = mlx_new_image(fdf->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	if (fdf->img == NULL)
-		fdf_error("Error: mlx ");
-	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bpp, &fdf->line_len, &fdf->endian);
-	if (fdf->addr == NULL)
-		fdf_error("Error: mlx ");
+	t_delta	delta;
+
+	delta.dx = fdf_abs(f.x - s.x);
+	delta.dy = fdf_abs(f.y - s.y);
+	if (delta.dx >= delta.dy)
+		plot_dx_big(s, f, fdf, delta);
+	else
+		plot_dy_big(s, f, fdf, delta);
 }
 
 void	draw_frame(t_fdf *fdf, int keycode)
@@ -123,8 +95,8 @@ void	draw_frame(t_fdf *fdf, int keycode)
 	int		y;
 	int		x;
 
-	set_draw(fdf);
-	points = convert_coords(fdf, keycode);
+	init_draw(fdf);
+	points = set_points(fdf, keycode);
 	y = 0;
 	while (y < fdf->map.height)
 	{

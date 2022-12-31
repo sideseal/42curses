@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/30 02:35:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/01 01:33:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,13 @@
 # define COLOR_BLACK	0x000000
 # define COLOR_WHITE	0xFFFFFF
 
-typedef	struct	s_map
+typedef struct s_delta
+{
+	int	dx;
+	int	dy;
+}	t_delta;
+
+typedef struct	s_map
 {
 	int	width;
 	int	height;
@@ -103,12 +109,16 @@ typedef struct	s_fdf
 
 void	read_and_set(t_fdf *fdf, char *path);
 
-t_map	init_map(void);
-t_coord	init_coord(int x, int y, int z);
 t_fdf	*init_fdf(void);
+void	init_draw(t_fdf *fdf);
+t_coord	init_coord(int x, int y, int z);
 
-t_point	set_point(t_coord coord, t_fdf *fdf, int keycode);
-t_point	**convert_coords(t_fdf *fdf, int keycode);
+t_point	**set_points(t_fdf *fdf, int keycode);
+
+void	rotate_x(t_point *point, double theta);
+void	rotate_y(t_point *point, double theta);
+void	rotate_z(t_point *point, double theta);
+void	isometric(t_coord coord, t_point *p, t_fdf *fdf);
 
 void	draw_frame(t_fdf *fdf, int keycode);
 
@@ -119,5 +129,6 @@ void	fdf_error(char *str);
 int	fdf_abs(int n);
 int	fdf_open(char *path, int flag);
 void	fdf_close(int fd);
+void	*fdf_malloc(size_t size);
 
 #endif

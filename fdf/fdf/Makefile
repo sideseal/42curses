@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/29 18:44:59 by gychoi           ###   ########.fr        #
+#    Updated: 2022/12/31 23:47:23 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ LIBFT = $(LFTDIR)libft.a
 
 SRCDIR = ./srcs/
 SRCS = main.c \
-       init.c \
+       init1.c \
+       init2.c \
+       set.c \
        utils.c \
        read.c \
        draw.c \

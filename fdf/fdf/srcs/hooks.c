@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 18:43:31 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/30 02:36:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2022/12/31 23:18:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	zoom_or_translate(int keycode, t_fdf *fdf)
 	}
 	if (keycode == KEY_Z_UP)
 	{
-		if (fdf->offset.zoom < 100)
+		if (fdf->offset.z < 100)
 			fdf->offset.z *= 1.2;
 	}
 	if (keycode == KEY_Z_DOWN)
