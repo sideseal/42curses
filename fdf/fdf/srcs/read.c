@@ -6,27 +6,36 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:51:06 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/31 23:37:17 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/01 22:26:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_coord	*get_coord(t_map map, char *line, int index_y)
+static t_coord	*get_coord(t_map *map, char *line, int index_y)
 {
 	char	**vars_x;
-	int		index_x;
+	int		i;
+	int		var_z;
 	t_coord	*coord;
 
 	vars_x = ft_split(line, ' ');
-	coord = fdf_malloc(sizeof(t_coord) * map.width);
-	index_x = 0;
-	while (vars_x && vars_x[index_x])
+	coord = fdf_malloc(sizeof(t_coord) * map->width);
+	i = 0;
+	while (vars_x && vars_x[i])
 	{
-		coord[index_x] = init_coord(index_x - map.x_origin,\
-				index_y - map.y_origin, ft_atoi(vars_x[index_x]));
-		free(vars_x[index_x]);
-		index_x++;
+		if (vars_x[i][0] == '\n')
+		{
+			free(vars_x[i]);
+			break ;
+		}
+		var_z = ft_atoi(vars_x[i]);
+		coord[i] = init_coord(i - map->x_origin, index_y - map->y_origin, var_z);
+		if (var_z > map->z_max)
+			map->z_max = var_z;
+		if (var_z < map->z_min)
+			map->z_min = var_z;
+		free(vars_x[i++]);
 	}
 	free(vars_x);
 	return (coord);
@@ -46,13 +55,18 @@ static void	check_valid_file(char *path)
 
 static int	count_width(char *line)
 {
-	int	count;
+	int		count;
 	char	**vars_x;
 
 	vars_x = ft_split(line, ' ');
 	count = 0;
 	while (vars_x && vars_x[count])
 	{
+		if (vars_x[count][0] == '\n')
+		{
+			free(vars_x[count]);
+			break ;
+		}
 		free(vars_x[count]);
 		count++;
 	}
@@ -62,9 +76,9 @@ static int	count_width(char *line)
 
 static void	read_map_info(t_fdf *fdf, char *path)
 {
-	int	fd;
-	int	width;
-	int	height;
+	int		fd;
+	int		width;
+	int		height;
 	char	*read_line;
 
 	check_valid_file(path);
@@ -85,7 +99,7 @@ static void	read_map_info(t_fdf *fdf, char *path)
 	fdf_close(fd);
 }
 
-void	read_and_set(t_fdf *fdf, char *path)
+void	read_file(t_fdf *fdf, char *path)
 {
 	int		fd;
 	int		index_y;
@@ -102,7 +116,7 @@ void	read_and_set(t_fdf *fdf, char *path)
 		read_line = get_next_line(fd);
 		if (read_line == NULL)
 			break ;
-		fdf->coords[index_y] = get_coord(fdf->map, read_line, index_y);
+		fdf->coords[index_y] = get_coord(&fdf->map, read_line, index_y);
 		index_y++;
 		free(read_line);
 	}

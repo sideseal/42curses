@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 18:31:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/01 01:35:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/01 21:53:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ static void	plot_line(t_point s, t_point f, t_fdf *fdf)
 		plot_dy_big(s, f, fdf, delta);
 }
 
-void	draw_frame(t_fdf *fdf, int keycode)
+void	draw_frame(t_fdf *fdf)
 {
 	t_point	**points;
 	int		y;
 	int		x;
 
 	init_draw(fdf);
-	points = set_points(fdf, keycode);
+	points = set_points(fdf);
 	y = 0;
 	while (y < fdf->map.height)
 	{

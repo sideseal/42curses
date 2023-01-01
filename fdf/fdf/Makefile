@@ -6,13 +6,14 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 17:33:02 by gychoi            #+#    #+#              #
-#    Updated: 2022/12/31 23:47:23 by gychoi           ###   ########.fr        #
+#    Updated: 2023/01/01 20:09:21 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+#CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g
 RM = rm -f
 RMFLAGS = -r
 
@@ -33,6 +34,7 @@ SRCS = main.c \
        read.c \
        draw.c \
        hooks.c \
+       rotate.c \
        project.c \
 
 SOURCES = $(addprefix $(SRCDIR), $(SRCS))
