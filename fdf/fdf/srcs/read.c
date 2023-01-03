@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 00:51:06 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/01 22:26:38 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/03 23:39:04 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,9 @@ static t_coord	*get_coord(t_map *map, char *line, int index_y)
 	i = 0;
 	while (vars_x && vars_x[i])
 	{
-		if (vars_x[i][0] == '\n')
-		{
-			free(vars_x[i]);
-			break ;
-		}
 		var_z = ft_atoi(vars_x[i]);
-		coord[i] = init_coord(i - map->x_origin, index_y - map->y_origin, var_z);
+		coord[i] = init_coord(i - map->x_origin, \
+			index_y - map->y_origin, var_z);
 		if (var_z > map->z_max)
 			map->z_max = var_z;
 		if (var_z < map->z_min)
@@ -62,11 +58,6 @@ static int	count_width(char *line)
 	count = 0;
 	while (vars_x && vars_x[count])
 	{
-		if (vars_x[count][0] == '\n')
-		{
-			free(vars_x[count]);
-			break ;
-		}
 		free(vars_x[count]);
 		count++;
 	}
@@ -120,5 +111,6 @@ void	read_file(t_fdf *fdf, char *path)
 		index_y++;
 		free(read_line);
 	}
+	set_coord_margin(fdf);
 	fdf_close(fd);
 }

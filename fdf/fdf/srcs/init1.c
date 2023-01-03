@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:26:52 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/01 20:59:50 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/03 23:08:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ t_map	init_map(void)
 	new.y_origin = 0;
 	new.z_max = 0;
 	new.z_min = 0;
+	new.x_margin = 0;
+	new.y_margin = 0;
+	new.z_margin = 0;
 	return (new);
 }
 
@@ -53,6 +56,7 @@ static t_offset	init_offset(void)
 	new.y = 0;
 	new.z = 1.0;
 	new.zoom = 1.0;
+	new.bend = 0;
 	return (new);
 }
 
@@ -60,9 +64,7 @@ t_fdf	*init_fdf(void)
 {
 	t_fdf	*new;
 
-	new = malloc(sizeof(t_fdf));
-	if (new == NULL)
-		fdf_error("Error: malloc ");
+	new = fdf_malloc(sizeof(t_fdf));
 	new->mlx = mlx_init();
 	if (new->mlx == NULL)
 		fdf_error("Error: mlx ");

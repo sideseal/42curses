@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:24:36 by gychoi            #+#    #+#             */
-/*   Updated: 2022/12/13 15:45:21 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/02 09:14:36 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 420
 # endif
 
 char	*get_next_line(int fd);

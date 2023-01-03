@@ -6,15 +6,15 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/01 22:30:36 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/04 00:30:49 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "../mlx/mlx.h"
-# include "../libft/libft.h"
+# include "mlx.h"
+# include "libft.h"
 
 # include <fcntl.h>
 # include <math.h>
@@ -43,6 +43,8 @@
 # define KEY_ZOOM_OUT	27
 # define KEY_Z_UP		30
 # define KEY_Z_DOWN		33
+# define KEY_BEND_UP		47
+# define KEY_BEND_DOWN		43
 
 typedef struct s_delta
 {
@@ -50,24 +52,27 @@ typedef struct s_delta
 	int	dy;
 }	t_delta;
 
-typedef struct	s_map
+typedef struct s_map
 {
-	int	width;
-	int	height;
-	int	x_origin;
-	int	y_origin;
-	int	z_max;
-	int	z_min;
+	int		width;
+	int		height;
+	int		x_origin;
+	int		y_origin;
+	int		z_max;
+	int		z_min;
+	double	x_margin;
+	double	y_margin;
+	double	z_margin;
 }	t_map;
 
-typedef struct	s_coord
+typedef struct s_coord
 {
 	double	x;
 	double	y;
 	double	z;
 }	t_coord;
 
-typedef struct	s_point
+typedef struct s_point
 {
 	double	x;
 	double	y;
@@ -75,22 +80,23 @@ typedef struct	s_point
 	int		color;
 }	t_point;
 
-typedef struct	s_angle
+typedef struct s_angle
 {
 	double	alpha;
 	double	beta;
 	double	gamma;
 }	t_angle;
 
-typedef struct	s_offset
+typedef struct s_offset
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
 	double	z;
 	double	zoom;
+	double	bend;
 }	t_offset;
 
-typedef struct	s_fdf
+typedef struct s_fdf
 {
 	void			*mlx;
 	void			*win;
@@ -110,6 +116,7 @@ void	init_draw(t_fdf *fdf);
 t_coord	init_coord(int x, int y, int z);
 
 void	read_file(t_fdf *fdf, char *path);
+void	set_coord_margin(t_fdf *fdf);
 t_point	**set_points(t_fdf *fdf);
 
 void	rotate_x(t_point *point, double theta);
@@ -125,9 +132,10 @@ int		key_hook(int keycode, t_fdf *fdf);
 int		close_hook(t_fdf *fdf);
 
 void	fdf_error(char *str);
-int	fdf_abs(int n);
-int	fdf_open(char *path, int flag);
+int		fdf_abs(int n);
+int		fdf_open(char *path, int flag);
 void	fdf_close(int fd);
 void	*fdf_malloc(size_t size);
+double	get_ratio(int s, int f, int cur);
 
 #endif

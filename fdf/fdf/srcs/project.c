@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 21:41:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/01 21:52:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/03 17:46:40 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ void	reset_translation(t_fdf *fdf)
 	fdf->offset.y = 0;
 	fdf->offset.z = 1.0;
 	fdf->offset.zoom = 1.0;
+	fdf->offset.bend = 0;
 }
