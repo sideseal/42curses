@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 21:41:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/04 21:01:22 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/04 21:11:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	isometric(t_fdf *fdf)
 
 void	orthographic(t_fdf *fdf)
 {
-	fdf->angle.alpha = M_PI / 2 * -1;
+	fdf->angle.alpha = 0;
 	fdf->angle.beta = 0;
 	fdf->angle.gamma = 0;
 }
