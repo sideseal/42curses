@@ -149,12 +149,56 @@ Y축 위의 점 P는 (0,1)의 좌표값을 가진다. 이제 (0,1) 좌표를 예
 
 그렇다면, 2차원 회전행렬을 다음과 같이 Z축에서 수직으로 바라본 경우로 생각할 수 있다.
 
-```
+
+x' = x * cos(a) - y * sin(a) + z * 0
+y' = x * sin(a) + y * cos(a) + z * 0
+z' = x * 0 + y * 0 + z * 1
+
 | cos(a) -sin(a) 0 | | x |
 | sin(a)  cos(a) 0 | | y |
 |   0       0    1 | | z |
 ```
 
-X축과 Y축에 Z축의 정보가 영향을 끼치지 않고, 그대로 유지된다.
+Z축을 기준으로 회전변환을 하는 경우, X축과 Y축에 Z축의 정보가 영향을 끼치지 않고, 그대로 유지된다.
+
+Y축을 기준으로 회전변환을 하는 경우, 2차원 회전행렬에서 Y의 값을 X로, X의 값을 Z로 치환하면 된다.
+
+<img src = "./IMG_README/10.png" width="40%" height="40%">
+
+```
+z' = z * cos(a) - x * sin(a) + y * 0
+x' = z * sin(a) + x * cos(a) + y * 0
+y' = z * 0 + x * 0 + y * 1
+
+----->
+
+x' = z * sin(a) + x * cos(a) + y * 0
+y' = z * 0 + x * 0 + y * 1
+z' = z * cos(a) - x * sin(a) + y * 0
+
+| cos(a) 0 sin(a) | | x |
+|   0    1   0    | | y |
+|-sin(a) 0 cos(a) | | z |
+```
+
+X축을 기준으로 회전변환을 하는 경우, 위와 동일하게 2차원 회전행렬에서 X의 값을 Z로 치환하면 된다.
+
+```
+...
+
+| 1   0       0    | | x |
+| 0 cos(a) -sin(a) | | y |
+| 0 sin(a)  cos(a) | | z |
+```
+
+이러한 회전변환 방식을 오일러(Euler) 회전변환이라고 한다.
+
+이제 위의 식을 코드로 구현하고, 각 축마다 회전하고자 하는 각을 대입하면, 좌표의 값들은 3차원으로 회전하게 된다.
+즉 X축으로, Y축으로, Z축으로 좌표 및 도형을 회전하는 일이 가능하게 된다.
+
+참고자료 :
+- [https://ko.wikipedia.org/wiki/회전변환행렬](https://ko.wikipedia.org/wiki/회전변환행렬)
+- [https://gaussian37.github.io/math-la-rotation_matrix/](https://gaussian37.github.io/math-la-rotation_matrix/)
+- [https://dev-sbee.tistory.com/30](https://dev-sbee.tistory.com/30)
 
 
