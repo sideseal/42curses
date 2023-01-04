@@ -6,13 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:35:06 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/04 00:27:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/04 15:24:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	set_default_color(int z, t_map map)
+static int	set_color(int z, t_map map)
 {
 	double	ratio;
 
@@ -81,7 +81,7 @@ static t_point	set_point(t_coord coord, t_fdf *fdf)
 	bending = (new.x * new.x * fdf->offset.bend) \
 		+ (new.y * new.y * fdf->offset.bend);
 	new.z += bending;
-	new.color = set_default_color(new.z, fdf->map);
+	new.color = set_color(new.z, fdf->map);
 	new.x *= fdf->offset.zoom;
 	new.y *= fdf->offset.zoom;
 	new.z *= fdf->offset.zoom;

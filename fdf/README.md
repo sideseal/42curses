@@ -1,5 +1,7 @@
 # fdf
 
+<img src = "./IMG_README/6.png" width="80%" height="80%">
+
 ## Some Algorithms
 
 ### Bresenham Algorithm
@@ -8,7 +10,7 @@
 
 우리가 생각하는 좌표계와 다르게 컴퓨터 스크린은 픽셀 단위로 이루어져 있기에, 수학적인 직선을 표현하기 위해 적절한 픽셀의 선택이 필요하다.
 
-<img src = "./README_IMG/1.png" width="80%" height="80%">
+<img src = "./IMG_README/1.png" width="80%" height="80%">
 
 브레젠험(Bresenham) 알고리즘은 시작점에서 종료점까지 1 픽셀씩 증가하는 x 좌표의 다음 y 좌표에 대해, 기준점을 바탕으로 y 좌표도 1 픽셀 증가시킬 것인지, 그대로 유지할 것인지 결정한다.
 
@@ -28,7 +30,7 @@ else if (중단점 > 직선)
 ```
 <br />
 
-<img src = "./README_IMG/2.png" width="60%" height="60%">
+<img src = "./IMG_README/2.png" width="60%" height="60%">
 
 그렇다면, 중단점과 직선의 관계를 판단할 수 있는 판별식을 구하여 코드로 구현해야 한다.
 
@@ -69,12 +71,12 @@ else if (F(m) > 0)
 
 현재 좌표 (x_k, y_k)에 픽셀이 찍혀 있고, 다음 좌표 (x_k + 1, y_k + 1)의 중단점 m_k + 1에 대해, 직선은 중단점보다 아래 혹은 위에 그어질 수 있다.
 
-<img src = "./README_IMG/3.png" width="60%" height="60%">
+<img src = "./IMG_README/3.png" width="60%" height="60%">
 
 만약, 중단점보다 아래에 직선이 그어졌을 경우, 다음과 같은 판별식을 도출할 수 있다.
 - `F(m_k + 1) = -2W(y_k + 0.5 - y_1) + 2H(x_k + 1 - x_1)`
 
-<img src = "./README_IMG/4.png" width="60%" height="60%">
+<img src = "./IMG_README/4.png" width="60%" height="60%">
 
 그런데, 현재 중단점과 그 다음 중단점의 관계는 어떻게 될까?
 
@@ -83,7 +85,7 @@ else if (F(m) > 0)
 - 판별식은 다음과 같다 : `F(m_k + 2) = -2W(y_k + 0.5 - y_1) + 2H(x_k + 2 - x_1)`
 - 정리해보면, 이전 판별식보다 `2H`만큼 증가하였다.
 
-<img src = "./README_IMG/5.png" width="60%" height="60%">
+<img src = "./IMG_README/5.png" width="60%" height="60%">
 
 만약, 현재 중단점이 0보다 큰 경우(`F(m_k + 1) > 0)`), 다음 중단점은 1 픽셀 증가한다.
 - 즉, `m_k + 2 = (x_k + 2, y_k + 1.5)`
