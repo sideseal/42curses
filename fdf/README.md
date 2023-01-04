@@ -201,4 +201,16 @@ X축을 기준으로 회전변환을 하는 경우, 위와 동일하게 2차원 
 - [https://gaussian37.github.io/math-la-rotation_matrix/](https://gaussian37.github.io/math-la-rotation_matrix/)
 - [https://dev-sbee.tistory.com/30](https://dev-sbee.tistory.com/30)
 
+### Isometric Projection
+
+3차원 물체를 2차원에 표현하기 위한 투영법 중 하나. 정사도법(즉, X, Y 평면을 Z축에서 수직으로 보는 경우를 생각할 수 있다)으로 봤을 때, 수평 축(Y축)으로 +/- 45도 회전한 다음, 수평 축(X축)으로 +/- 35.264도(= arcsin(tan(30)))만큼 회전하면 된다.
+
+<img src = "./IMG_README/11.png" width="40%" height="40%">
+
+FDF 과제에서 Y축은 아래로 내려갈수록 증가하고, Z축은 위로 갈 수록 증가하기 때문에(즉, Y축은 음수 반전 되어있다), 두 축의 부호를 주의하여 투영해야 한다. 나는 Z의 값에 음수를 곱하여 해결하였다(음수를 곱하지 않으면 튀어나오는 것처럼 보여야 하는 부분이 반대로 움푹 들어가버린다).
+
+프로젝트처럼 모양이 나오지 않는데, 이는 Z축을 추가적으로 돌리지 않아서 그렇다. 여기서 Z축은 도형을 바라보는 관점의 역할을 한다. 프로젝트의 모양처럼 나오지 않더라도, 위키피디아에 나오는 Isometric의 조건을 모두 만족한다.
+
+참고자료 :
+- [https://ko.wikipedia.org/wiki/등축_투영법](https://ko.wikipedia.org/wiki/등축_투영법)
 
