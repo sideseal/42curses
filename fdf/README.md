@@ -212,5 +212,22 @@ FDF 과제에서 Y축은 아래로 내려갈수록 증가하고, Z축은 위로 
 프로젝트처럼 모양이 나오지 않는데, 이는 Z축을 추가적으로 돌리지 않아서 그렇다. 여기서 Z축은 도형을 바라보는 관점의 역할을 한다. 프로젝트의 모양처럼 나오지 않더라도, 위키피디아에 나오는 Isometric의 조건을 모두 만족한다.
 
 참고자료 :
-- [https://ko.wikipedia.org/wiki/등축_투영법](https://ko.wikipedia.org/wiki/등축_투영법)
+- [https://ko.wikipedia.org/wiki/등축_투영법](https://ko.wikipedia.org/wiki/%EB%93%B1%EC%B6%95_%ED%88%AC%EC%98%81%EB%B2%95)
 
+### World Bending Effect
+
+맵이 구부러지는 효과(Rolling log)를 내기 위해선, 아래의 사항들을 고려하면 된다.
+1. 맵을 수직 방향(vertex)으로 바라보는 관점으로 설정한 맵의 좌표값을 구한다.
+	- 나의 경우, Z축에서 수직으로 바라보고 있기에, 따로 설정을 해주지 않았다.
+2. 구부리고자 하는 좌표값에 대해, 2의 제곱을 해준다.
+	- X축과 Y축을 방향을 모두 구부리고자 하므로, X좌표값과 Y좌표값에 대해 2의 제곱을 구한다.
+3. 0.0005 정도의 작은 값으로, Roundness 파라미터를 곱한다.
+4. 이렇게 구해진 값을 Z좌표에 더함으로써, Z축에서 바라볼 시 X와 Y의 좌표가 구부러진 것처럼 보이게 한다.
+
+```
+bended_z_coord += (current_x * current_x * roundness) + (current_y * current_y * roundness);
+```
+
+참고자료 :
+- [https://www.sunnyvalleystudio.com/blog/curved-world-shader-graph-unity](https://www.sunnyvalleystudio.com/blog/curved-world-shader-graph-unity)
+- [https://www.youtube.com/watch?v=SOK3Ias5Nk0](https://www.youtube.com/watch?v=SOK3Ias5Nk0)
