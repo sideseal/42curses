@@ -6,13 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:26:52 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/05 12:41:22 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/05 16:45:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_bonus.h"
 
-t_map	init_map(void)
+static t_map	init_map(void)
 {
 	t_map	new;
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 22:32:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/05 13:04:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/05 18:29:50 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <stdio.h>
 # include <unistd.h>
 
-# define SCREEN_WIDTH	1280
+# define SCREEN_WIDTH	960
 # define SCREEN_HEIGHT	960
 
 # define KEY_ESC		53
