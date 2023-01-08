@@ -187,6 +187,53 @@ THIS SHOULD'T PRINT OUT
 	- `printf()`는 표준 출력, 즉 FD 1번으로 출력을 하는데, 방금 `dup2()`로 FD 1이 표준 출력이 아닌 파일을 가리키도록 변경하였기 때문에, 터미널이 아닌 파일로 출력이 된다.
 3. `dup2()`로 fd1이 파일이 아닌 표준 에러를 가리키도록 한다. 따라서 fd1에 메세지를 출력하면 파일이 아닌 터미널에 표준 에러로 작성된다.
 
+### `fork()`
+
+```c
+#include <unistd.h>
+
+pid_t	fork(void);
+```
+
+
+
+
+
+### `wait()`, `waitpid()`
+
+```c
+#include <sys/wait.h>
+
+pid_t	wait(int *status);
+```
+`wait()` 시스템 콜은 자식 프로세스가 종료될 때까지 부모 프로세스를 `sleep()` 모드로 대기시킨다. 만약 자식 프로세스가 종료되었다면, 함수는 즉시 리턴하여 자식이 사용한 모든 시스템 자원을 해제한다.
+
+이로써 부모 프로세스보다 자식 프로세스가 먼저 종료되어, *고아 프로세스*(PPID 1)가 생기는 것을 방지한다. 하지만 어떤 이유로 부모가 `wait()`를 호출하기 전에, 자식 프로세스가 종료되는 경우가 발생할 수 있는데, 이 경우 자식 프로세스는 *좀비 프로세스*가 된다. 이 경우, `wait()` 함수는 즉시 리턴하도록 되어있다.
+
+`wait()`의 인자 status를 통해 자식 프로세스의 종료 상태를 받아올 수 있다. 시스템 콜 성공 시 종료된 자식 프로세스의 PID를 반환하고, 실패할 경우 -1을 반환한다.
+
+```c
+#include <sys/wait.h>
+
+pid_t	waitpid(pid_t pid, int *status, int options);
+```
+`waitpid()` 시스템 콜은 `wait()`처럼 자식 프로세스가 종료될 때까지 부모 프로세스를 대기시키지만, `wait()`은 자식 프로세스 중 어느 하나라도 종료되면 부모 프로세스로 바로 복귀하지만, `waitpid()`는 특정 자식 프로세스가 종료될 때까지 대기한다.
+
+또한 `wait()`는 자식 프로세스가 종료될 때까지 block되지만, `waitpid()`에 WHOHANG 옵션을 사용하면 부모 프로세스가 block 상태가 되지 않고 작업을 병행할 수 있다.
+
+일반적으로 pid에는 특정한 자식 프로세스의 PID가 들어가고, status에는 자식 프로세스의 종료 상태를 담는다. options에는 부모 프로세스의 대기 상태를 설정한다. 시스템 콜 성공 시 종료된 자식 프로세스의 PID를 반환하고, 실패 시 -1을 반환한다. WHOHANG을 사용하였는데 자식 프로세스가 종료되지 않았다면 0을 반환한다.
+
+```
+pid
+-1 : 여러 자식 중 하나라도 종료되면 부모 프로세스로 복귀한다. wait()와 동일한 처리.
+ 0 : 현재 프로세스 그룹 ID와 같은 그룹의 자식 프로세스가 종료되면 복귀한다.
+양수 : pid에 해당하는 자식 프로세스가 종료되면 복귀한다.
+
+options
+WHOHANG : 자식 프로세스가 종료되었는지, 실행 중인지 확인하고, 바로 부모 프로세스로 복귀한다. 부모 프로세스가 block되지 않는다.
+   0    : 자식 프로세스가 종료될 때까지 부모 프로세스가 block된다. wait()와 동일한 처리.
+```
+
 참고 자료:
 1. IPC:
 	- [https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0)
@@ -198,6 +245,11 @@ THIS SHOULD'T PRINT OUT
 	- [https://sosal.kr/83](https://sosal.kr/83)
 	- [https://m.blog.naver.com/nywoo19/221708412078](https://m.blog.naver.com/nywoo19/221708412078)
 	- [https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading](https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading)
-5. dup:
+5. `dup()`, `dup2()`:
 	- [https://en.wikipedia.org/wiki/Dup_(system_call)](https://en.wikipedia.org/wiki/Dup_(system_call))
 	- [https://reakwon.tistory.com/104](https://reakwon.tistory.com/104)
+6. `fork()`:
+7. `wait()`, `waitpid()`:
+	- [https://reakwon.tistory.com/45](https://reakwon.tistory.com/45)
+	- [https://www.joinc.co.kr/w/man/2/wait](https://www.joinc.co.kr/w/man/2/wait)
+	- [https://badayak.com/entry/C%EC%96%B8%EC%96%B4-%EC%9E%90%EC%8B%9D-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EC%A2%85%EB%A3%8C-%ED%99%95%EC%9D%B8-%ED%95%A8%EC%88%98-waitpid](https://badayak.com/entry/C%EC%96%B8%EC%96%B4-%EC%9E%90%EC%8B%9D-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EC%A2%85%EB%A3%8C-%ED%99%95%EC%9D%B8-%ED%95%A8%EC%88%98-waitpid)
