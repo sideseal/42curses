@@ -57,11 +57,13 @@ UNIX에서 파일 시스템을 관리하기 위해 사용되는 자료구조. �
 
 과제에서는 부모-자식 프로세스 간 통신을 위한 **익명 파이프(Anonymous PIPE)**를 사용한다. 익명 파이프는 한쪽 방향으로만 통신이 가능하기에, 반이중(Half-Duplex) 통신의 특성을 가진다.
 
+몇 가지 쉘 표현들 :
 - `|` : 이전 명령어의 실행 결과를 다음 명령어로 전달한다.
 - `&&` : 이전 명령어가 정상적으로 실행되었을 경우에만 결과를 다음 명령어로 전달한다.
 - `<` : 저장소에 위치한 파일의 내용을 쉘에 연결한다.
 - `>` : 프로그램의 실행 결과를 저장소의 파일에 저장한다.
 - `>>` : 위 명령어와 다르게 저장소의 파일의 내용을 지우지 않고, 프로그램의 실행 결과를 저장소의 파일에 덧붙인다.
+= `<<` : here document, 이 형식 이후의 입력은 모두 저장이 되다가, 표현과 함께 쓴 단어가 나오는 경우 지금까지 저장된 모든 입력들이 출력된다.
 
 ### `pipe()`
 
@@ -76,14 +78,126 @@ int	pipe(int fd[2]);
 `pipe()` 사용 시, 배열로 두 개의 파일 디스크립터를 할당받는다. `fd[0]`은 input stream, `fd[1]`은 output stream으로 
 작동한다. 부모 프로세스가 `fd[1]`에 write 한 데이터를, 자식 프로세스가 `fd[0]`으로 read 할 수 있다.
 
+```
+기억하자, 1에 쓰고 0으로 읽는다!
+```
+
 주의할 점으로, **각 프로세스에서 사용하지 않는 FD는 닫아야 한다**. write end가 닫히면, 이후 read는 EOF를 나타내는 0을 반환한다. read end가 닫히면, 이후 write는 SIGPIPE를 발생시킨다. 만약 write end가 닫히지 않는다면, read는 write가 EOF를 줄 때까지 계속 기다리게 된다. 반대로 read end가 닫히지 않는다면, write는 read가 write를 완료하기 위한 공간을 만들어 줄 때까지 계속 기다리게 된다(혹은 문제가 생기지 않는 것처럼 보이지만, read pipe가 닫힌 이후, write를 하는 일은 오류임에도, read end가 열려있다면 이를 오류로 처리할 수 없다).
 
+### `dup(), dup2()`
+
+`dup()`과 `dup2()`는 파일 디스크립터를 복제한다.
+
+```c
+#include <unistd.h>
+
+int	dup(int fd);
+```
+`dup()`은 전달받은 파일 디스크립터를 복제한다. 성공 시 새로운 파일 디스크립터를, 오류 시 -1을 반환한다.
+
+예제 코드:
+```c
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
+
+int	main(void)
+{
+	int	int fd1, fd2;
+	char	message[6] = "Hello\n";
+
+	fd1 = open("made_by_fd1", O_RDWR|O_CREAT);
+	if (fd1 < 0)
+	{
+		close(fd1);
+		return (1);
+	}
+	fd2 = dup(fd1);
+	write(fd2, message, 6);
+	printf("fd1: %d, fd2: %d\n", fd1, fd2);
+	close(fd1);
+	close(fd2);
+	return (0);
+}
+```
+
+```
+// output
+> gcc main.c
+> ./a.out
+fd1: 3, fd2: 4
+> cat made_by_fd1
+Hello
+```
+<img src = "./IMG_README/5.png" width="60%" height="60%">
+
+```c
+#include <unistd.h>
+
+int	dup2(int fd, int fd2);
+```
+`dup2()`는 복제된 파일 디스크립터를 fd2로 지정한다. 만약 fd2가 이미 할당되어 있다면, 해당 파일 디스크립터를 닫은 후, 전달받은 파일 디스크립터를 복제하여 할당한다. 성공 시 새로운 파일 디스크립터를, 오류 시 -1을 반환한다.
+
+예제 코드:
+```c
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
+
+int	main(void)
+{
+	int	fd1, ret;
+	char	message[7] = "STDERR\n";
+
+	// 1
+	fd1 = open("made_by_fd1", O_RDWR|O_CREAT);
+	if (fd1 < 0)
+	{
+		close(fd1);
+		return (1);
+	}
+	printf("THIS SHOULD PRINT OUT\n");
+	// 2
+	ret = dup2(fd1, STDOUT_FILENO);
+	printf("fd1: %d, ret: %d\n", 1, ret);
+	// 3
+	ret = dup2(STDERR_FILENO, fd1);
+	write(fd1, message, 7);
+	printf("THIS SHOULDN'T PRINT OUT\n");
+	close(fd1);
+	close(ret);
+	return (0);
+}
+```
+
+```
+// output
+> gcc main.c
+> ./a.out
+THIS SHOULD PRINT OUT
+STDERR
+> cat made_by_fd1
+fd1: 3, ret: 1
+THIS SHOULD'T PRINT OUT
+```
+<img src = "./IMG_README/6.png" width="60%" height="60%">
+
+1. fd1이 3번 FD를 가진 상태로, 파일을 연다.
+2. `dup2()`로 1번 FD(표준 출력 FD)가 표준 출력이 아닌 파일을 가리키도록 변경한다. ret의 값은 1을 가진다.
+	- `printf()`는 표준 출력, 즉 FD 1번으로 출력을 하는데, 방금 `dup2()`로 FD 1이 표준 출력이 아닌 파일을 가리키도록 변경하였기 때문에, 터미널이 아닌 파일로 출력이 된다.
+3. `dup2()`로 fd1이 파일이 아닌 표준 에러를 가리키도록 한다. 따라서 fd1에 메세지를 출력하면 파일이 아닌 터미널에 표준 에러로 작성된다.
+
 참고 자료:
-- [https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0)
-- [https://ddongwon.tistory.com/16](https://ddongwon.tistory.com/16)
-- [https://en.wikipedia.org/wiki/File_descriptor](https://en.wikipedia.org/wiki/File_descriptor)
-- [https://en.wikipedia.org/wiki/Dup_(system_call)](https://en.wikipedia.org/wiki/Dup_(system_call))
-- [https://dar0m.tistory.com/233](https://dar0m.tistory.com/233)
-- [https://hyeonski.tistory.com/8](https://hyeonski.tistory.com/8)
-- [https://m.blog.naver.com/nywoo19/221708412078](https://m.blog.naver.com/nywoo19/221708412078)
-- [https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading](https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading)
+IPC:
+	- [https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0)
+	- [https://dar0m.tistory.com/233](https://dar0m.tistory.com/233)
+파일 처리: [https://ddongwon.tistory.com/16](https://ddongwon.tistory.com/16)
+파일 디스크립터 : [https://en.wikipedia.org/wiki/File_descriptor](https://en.wikipedia.org/wiki/File_descriptor)
+파이프:
+	- [https://hyeonski.tistory.com/8](https://hyeonski.tistory.com/8)
+	- [https://sosal.kr/83](https://sosal.kr/83)
+	- [https://m.blog.naver.com/nywoo19/221708412078](https://m.blog.naver.com/nywoo19/221708412078)
+	- [https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading](https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading)
+dup:
+	- [https://en.wikipedia.org/wiki/Dup_(system_call)](https://en.wikipedia.org/wiki/Dup_(system_call))
+	- [https://reakwon.tistory.com/104](https://reakwon.tistory.com/104)
