@@ -188,16 +188,16 @@ THIS SHOULD'T PRINT OUT
 3. `dup2()`로 fd1이 파일이 아닌 표준 에러를 가리키도록 한다. 따라서 fd1에 메세지를 출력하면 파일이 아닌 터미널에 표준 에러로 작성된다.
 
 참고 자료:
-IPC:
+1. IPC:
 	- [https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0)
 	- [https://dar0m.tistory.com/233](https://dar0m.tistory.com/233)
-파일 처리: [https://ddongwon.tistory.com/16](https://ddongwon.tistory.com/16)
-파일 디스크립터 : [https://en.wikipedia.org/wiki/File_descriptor](https://en.wikipedia.org/wiki/File_descriptor)
-파이프:
+2. 파일 처리: [https://ddongwon.tistory.com/16](https://ddongwon.tistory.com/16)
+3. 파일 디스크립터 : [https://en.wikipedia.org/wiki/File_descriptor](https://en.wikipedia.org/wiki/File_descriptor)
+4. 파이프:
 	- [https://hyeonski.tistory.com/8](https://hyeonski.tistory.com/8)
 	- [https://sosal.kr/83](https://sosal.kr/83)
 	- [https://m.blog.naver.com/nywoo19/221708412078](https://m.blog.naver.com/nywoo19/221708412078)
 	- [https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading](https://stackoverflow.com/questions/11599462/what-happens-if-a-child-process-wont-close-the-pipe-from-writing-while-reading)
-dup:
+5. dup:
 	- [https://en.wikipedia.org/wiki/Dup_(system_call)](https://en.wikipedia.org/wiki/Dup_(system_call))
 	- [https://reakwon.tistory.com/104](https://reakwon.tistory.com/104)
