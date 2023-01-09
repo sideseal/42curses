@@ -3,20 +3,21 @@
 UNIX의 파이프 기능을 구현하는 과제이다.
 
 ## Some Concepts
+
 - [Some Concepts](#some-concepts)
-  * [IPC](#ipc)
-  * [파일(FILE)](#파일file)
-  * [파일 디스크립터(FD, File Descriptor)](#파일-디스클립터fd-file-descriptor)
-  * [파일 테이블(File Table)](#파일-테이블file-table)
-  * [아이노드(i-node)](#아이노드i-node)
-  * [프로세스의 파일 접근](#프로세스의-파일-접근)
-  * [파이프(PIPE)](#파이프pipe)
-  * [`pipe()`](#pipe)
-  * [`dup(), dup2()`](#dup-dup2)
-  * [`fork()`](#fork)
-  * [`wait()`, `waitpid()`](#wait-waitpid)
-  * [`access()`](#access)
-- [`unlink()`](#unlink)
+  - [IPC](#ipc)
+  - [파일(FILE)](#file)
+  - [파일 디스크립터(FD, File Descriptor)](#-fd-file-descriptor)
+  - [파일 테이블(File Table)](#-file-table)
+  - [아이노드(i-node)](#i-node)
+  - [프로세스의 파일 접근](#--)
+  - [파이프(PIPE)](#pipe)
+  - [`pipe()`](#pipe)
+  - [`dup(), dup2()`](#dup-dup2)
+  - [`fork()`](#fork)
+  - [`wait()`, `waitpid()`](#wait-waitpid)
+  - [`access()`](#access)
+  - [`unlink()`](#unlink)
 
 ### IPC
 
