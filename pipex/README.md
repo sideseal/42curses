@@ -16,7 +16,7 @@ UNIX의 파이프 기능을 구현하는 과제이다.
   * [`fork()`](#fork)
   * [`wait()`, `waitpid()`](#wait-waitpid)
   * [`access()`](#access)
-  * [`unlink()`](#unlink)
+- [`unlink()`](#unlink)
 
 ### IPC
 
