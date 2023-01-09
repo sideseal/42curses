@@ -3,6 +3,20 @@
 UNIX의 파이프 기능을 구현하는 과제이다.
 
 ## Some Concepts
+- [Some Concepts](#some-concepts)
+  * [IPC](#ipc)
+  * [파일(FILE)](#---file-)
+  * [파일 디스크립터(FD, File Descriptor)](#---------fd--file-descriptor-)
+  * [파일 테이블(File Table)](#-------file-table-)
+  * [아이노드(i-node)](#-----i-node-)
+  * [프로세스의 파일 접근](#-----------)
+  * [파이프(PIPE)](#----pipe-)
+  * [`pipe()`](#-pipe---)
+  * [`dup(), dup2()`](#-dup----dup2---)
+  * [`fork()`](#-fork---)
+  * [`wait()`, `waitpid()`](#-wait------waitpid---)
+  * [`access()`](#-access---)
+  * [`unlink()`](#-unlink---)
 
 ### IPC
 
@@ -194,10 +208,11 @@ THIS SHOULD'T PRINT OUT
 
 pid_t	fork(void);
 ```
+`fork()` 시스템 콜은 프로세스를 생성하는 데 사용한다. `fork()`를 호출하는 쪽이 부모 프로세스, 새롭게 생성되는 프로세스가 자식 프로세스가 된다. 시스템 콜 성공 시 **부모 프로세스에게는 자식 프로세스의 PID 값을 반환하고, 자식 프로세스에게는 0을 반환한다**. 실패 시 부모 프로세스에게 -1을 반환한다.
 
+`fork()` 시스템 콜이 실행되고 프로세스가 생성되면, 부모 프로세스와 자식 프로세스가 동일한 주소 공간의 복사본을 가진다. 즉, 자식 프로세스와 부모 프로세스의 메모리 공간이 별도로 구성된다.
 
-
-
+부모와 자식 프로세스는 별도로 동작하기 때문에, 안정적인 프로그램을 만들기 위해선 `wait()` 혹은 `waitpid()` 시스템 콜을 잘 사용해야 한다.
 
 ### `wait()`, `waitpid()`
 
@@ -206,11 +221,13 @@ pid_t	fork(void);
 
 pid_t	wait(int *status);
 ```
-`wait()` 시스템 콜은 자식 프로세스가 종료될 때까지 부모 프로세스를 `sleep()` 모드로 대기시킨다. 만약 자식 프로세스가 종료되었다면, 함수는 즉시 리턴하여 자식이 사용한 모든 시스템 자원을 해제한다.
+`wait()` 함수는 자식 프로세스가 종료될 때까지 부모 프로세스를 `sleep()` 모드로 대기시킨다. 만약 자식 프로세스가 종료되었다면, 함수는 즉시 리턴하여 자식이 사용한 모든 시스템 자원을 해제한다.
 
 이로써 부모 프로세스보다 자식 프로세스가 먼저 종료되어, *고아 프로세스*(PPID 1)가 생기는 것을 방지한다. 하지만 어떤 이유로 부모가 `wait()`를 호출하기 전에, 자식 프로세스가 종료되는 경우가 발생할 수 있는데, 이 경우 부모 프로세스는 *좀비 프로세스*가 된다. 이 경우, `wait()` 함수는 즉시 리턴하도록 되어있다.
 
-`wait()`의 인자 status를 통해 자식 프로세스의 종료 상태를 받아올 수 있다. 시스템 콜 성공 시 종료된 자식 프로세스의 PID를 반환하고, 실패할 경우 -1을 반환한다.
+`wait()`의 인자 status를 통해 자식 프로세스의 종료 상태를 받아올 수 있다. 호출 성공 시 종료된 자식 프로세스의 PID를 반환하고, 실패할 경우 -1을 반환한다. 가령, 자식 프로세스가 `return` 혹은 `exit`으로 종료되지 않고, 시그널에 의해 종료되는 경우, `wait()`은 -1을 반환한다.
+
+`wait()` 함수는 자식 프로세스의 종료 말고도 부모 프로세스가 자식 프로세스를 수거하는 역할을 하기도 한다. 따라서 `fork()`로 자식 프로세스를 생성하였다면, 부모 프로세스에서 `wait()`을 호출하여 자식 프로세스가 좀비 프로세스가 되지 않도록 꼭 수거를 하도록 하자.
 
 ```c
 #include <sys/wait.h>
@@ -231,7 +248,39 @@ pid
 
 options
 WHOHANG : 자식 프로세스가 종료되었는지, 실행 중인지 확인하고, 바로 부모 프로세스로 복귀한다. 부모 프로세스가 block되지 않는다.
+WUNTRACED : STOP 시그널을 통해 멈춘 자식 프로세스의 status에 대해 반환한다.
+WCONTINUED : CONT 시그널을 통해 멈춘 자식 프로세스의 status에 대해 반환한다.
    0    : 자식 프로세스가 종료될 때까지 부모 프로세스가 block된다. wait()와 동일한 처리.
+```
+
+### `access()`
+
+```c
+#include <unistd.h>
+
+int	access(const char *path, int mode);
+```
+path에는 확인하고자 하는 디렉토리 및 파일명이 들어가며, mode에는 파일 존재 여부 및 권한을 확인한다. `access()` 함수는 디렉토리 및 파일이 인자로 받은 mode를 만족하면 0을 반환하고, 그렇지 않으면 -1을 반환한다.
+
+```
+mode
+F_OK : 파일 존재 여부
+R_OK : 파일 존재 여부, 읽기 권한 여부
+W_OK : 파일 존재 여부, 쓰기 권한 여부
+X_OK : 파일 존재 여부, 실행 권한 여부
+```
+
+### `unlink()`
+
+```c
+#include <unistd.h>
+
+int	unlink(const char *path);
+```
+`unlink()` 함수는 시스템 콜을 사용하여, 파일을 삭제한다. 정확하게는 파일의 하드 링크를 끊는다. 만약 inode에 접근할 수 있는 하드 링크가 하나도 없다면, 곧 파일의 삭제로 이어지게 된다. 함수의 반환 값이 0이면 정상적으로 하드 링크를 끊은 것이고, 실패 시 -1을 반환한다.
+
+```
+[Hard link] -> [inode] -> [data / file]
 ```
 
 참고 자료:
@@ -249,7 +298,12 @@ WHOHANG : 자식 프로세스가 종료되었는지, 실행 중인지 확인하�
 	- [https://en.wikipedia.org/wiki/Dup_(system_call)](https://en.wikipedia.org/wiki/Dup_(system_call))
 	- [https://reakwon.tistory.com/104](https://reakwon.tistory.com/104)
 6. `fork()`:
+	- [https://codetravel.tistory.com/23](https://codetravel.tistory.com/23)
+	- [https://bigpel66.oopy.io/library/42/inner-circle/8](https://bigpel66.oopy.io/library/42/inner-circle/8)
 7. `wait()`, `waitpid()`:
 	- [https://reakwon.tistory.com/45](https://reakwon.tistory.com/45)
 	- [https://www.joinc.co.kr/w/man/2/wait](https://www.joinc.co.kr/w/man/2/wait)
 	- [https://badayak.com/entry/C%EC%96%B8%EC%96%B4-%EC%9E%90%EC%8B%9D-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EC%A2%85%EB%A3%8C-%ED%99%95%EC%9D%B8-%ED%95%A8%EC%88%98-waitpid](https://badayak.com/entry/C%EC%96%B8%EC%96%B4-%EC%9E%90%EC%8B%9D-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EC%A2%85%EB%A3%8C-%ED%99%95%EC%9D%B8-%ED%95%A8%EC%88%98-waitpid)
+8. `access()`, `unlink()`
+	- [https://bigpel66.oopy.io/library/42/inner-circle/8](https://bigpel66.oopy.io/library/42/inner-circle/8)
+	- [https://jybaek.tistory.com/578](https://jybaek.tistory.com/578)
