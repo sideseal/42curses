@@ -269,6 +269,15 @@ int	unlink(const char *path);
 [Hard link] -> [inode] -> [data / file]
 ```
 
+### `execve()`
+
+```c
+#include <unistd.h>
+
+int	execve(const char *filename, char *const argv[], char *const envp[]);
+```
+`execve()` 함수는 실행가능한 파일의 실행 코드를 현재 프로세스에 적재하여, 기존의 실행코드를 실행파일로 교체하고 새로운 기능으로 실행한다. (즉, **새로운 프로세스를 만들어, 현재 프로세스의 흐름을 새로운 프로세스로 교체**한다. 따라서 `fork()` 함수와는 다른 맥락을 가진다.) 함수의 v와 e의 의미는 각각 실행파일에서 vector(배열)로 받을 파라미터와 실행파일에서 사용할 environment(환경 변수)를 파라미터로 받는다는 의미이다. 함수 성공 시, 이미 지정된 프로그램으로 현재 프로세스의 프로그램이 전환되었으므로, 반환값을 받아서 확인할 수 없다. 실패 시, -1을 리턴한다. (벡터와 환경 변수는 항상 NULL로 끝내야 한다는 점을 기억하자.)
+
 참고 자료:
 1. IPC:
 	- [https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4_%EA%B0%84_%ED%86%B5%EC%8B%A0)
@@ -290,6 +299,7 @@ int	unlink(const char *path);
 	- [https://reakwon.tistory.com/45](https://reakwon.tistory.com/45)
 	- [https://www.joinc.co.kr/w/man/2/wait](https://www.joinc.co.kr/w/man/2/wait)
 	- [https://badayak.com/entry/C%EC%96%B8%EC%96%B4-%EC%9E%90%EC%8B%9D-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EC%A2%85%EB%A3%8C-%ED%99%95%EC%9D%B8-%ED%95%A8%EC%88%98-waitpid](https://badayak.com/entry/C%EC%96%B8%EC%96%B4-%EC%9E%90%EC%8B%9D-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EC%A2%85%EB%A3%8C-%ED%99%95%EC%9D%B8-%ED%95%A8%EC%88%98-waitpid)
-8. `access()`, `unlink()`
-	- [https://bigpel66.oopy.io/library/42/inner-circle/8](https://bigpel66.oopy.io/library/42/inner-circle/8)
-	- [https://jybaek.tistory.com/578](https://jybaek.tistory.com/578)
+8. `access()`, `unlink()`: [https://jybaek.tistory.com/578](https://jybaek.tistory.com/578)
+9. `execve()`:
+	- [https://www.it-note.kr/157](https://www.it-note.kr/157)
+	- [https://80000coding.oopy.io/0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe#0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe](https://80000coding.oopy.io/0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe#0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe)
