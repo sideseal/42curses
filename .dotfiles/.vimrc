@@ -7,15 +7,16 @@
 " _(_)____/ /_/  /_/ /_/ /_//_/    \___/  
 "
 " Maintainer: sideseal
-" Last Modified: 2022-08-24 15:05:50
+" Last Modified: 2023-01-13 11:47:33
 " ========================================
 
+autocmd VimEnter * so /usr/share/vim/vimrc
 
 " 1. General setup
-set nocompatible
+"set nocompatible
 syntax on
 set termguicolors
-" darkblue, murphy, slate, 
+"darkblue, murphy, slate,
 colorscheme murphy
 set number
 set nuw=5
@@ -27,7 +28,7 @@ set laststatus=2
 " --------------------------------------------
 set statusline=
 set statusline +=\ %n\ 		"buffer number
-set statusline +=%{&ff}JJJJJJJJJJJJJJJJJJJJJJJ		"file format
+set statusline +=%{&ff}		"file format
 set statusline +=%y		"file type
 set statusline +=\ %<%F		"full path
 set statusline +=%m		"modified flag
@@ -35,9 +36,10 @@ set statusline +=%=%5l		"current line
 set statusline +=/%L		"total lines
 set statusline +=%4v\ 		"virtual column number
 set statusline +=0x%04B\ 	"character under cursorset showcmd
-hi Statusline ctermbg=lightgreen ctermfg=black
+hi Statusline ctermfg=lightgreen ctermbg=black
 " --------------------------------------------
 set wildmenu
+set wildmode=longest,list
 set ruler
 set showcmd
 set nobackup
@@ -47,8 +49,9 @@ set vb
 set mouse+=a
 set noimd
 set splitright
-set backspace=indent,eol,start
-set hidden
+set splitbelow
+" set backspace=indent,eol,start
+" set hidden
 set history=1000
 
 set ve+=onemore
@@ -57,14 +60,14 @@ noremap $ $l
 set wrap
 set linebreak
 " set breakindentopt=shift:2,min:40,sbr
-set showbreak=↳ 
+set showbreak=↳
 set breakindent
 
 set clipboard=unnamed
 nnoremap y "*y
 nnoremap p "*p
-nnoremap Y "+y
-nnoremap P "+p
+nnoremap Y y$
+nnoremap P p$
 set timeout timeoutlen=200
 
 augroup markdown
@@ -73,21 +76,25 @@ augroup markdown
 augroup END
 set nofoldenable
 
-set hlsearch
-set incsearch
-set showmatch
-hi MatchParen cterm=bold ctermbg=lightgreen ctermfg=black
-set ignorecase
-set smartcase
+"set hlsearch
+"set incsearch
+"set showmatch
+
+hi MatchParen ctermbg=lightgreen ctermfg=black
+
+"set ignorecase
+"set smartcase
 set nows
 nnoremap <ESC><ESC> :noh<return>
 
-filetype indent plugin on
+" filetype indent plugin on
 set autoindent
 set smartindent
 set cindent
 set smarttab
 " set tabstop=4
+" set shiftwidth=4
+" wet noexpandtab
 set fileencodings=utf-8,euc-kr
 set fencs=ucs-bom,utf-8,euc-kr
 set guifont=D2Coding:h12:cHANGEUL:qDEFAULT
@@ -115,7 +122,7 @@ let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[5 q" "EI = NORMAL mode (ELSE)
 set ttimeout
 set ttimeoutlen=1
-set ttyfast
+" set ttyfast
 
 
 " 2. Personal settings
@@ -124,7 +131,7 @@ set ttyfast
 " nnoremap cc :execute '!make; ./app.out < input.txt > output.txt'<CR>
 " nnoremap pp :execute '!python main.py < input.txt > output.txt'<CR>
 
-nnoremap hh :Stdheader<CR>
+nnoremap HH :Stdheader<CR>
 
 set autoread
 au CursorHold * checktime
@@ -153,10 +160,12 @@ let g:netrw_sort_sequence = '[\/]$,*'
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 3
+let g:netrw_alto = 1
 let g:netrw_altv = 1
-let g:netrw_winsize = 25
+let g:netrw_winsize = 20
 let g:netrw_fastbrowse = 0
-nnoremap <silent> <TAB><TAB> :Vexplore %:p:h<CR>
+let g:netrw_special_syntax = 1
+nnoremap <silent> <TAB><TAB> : Vexplore %:p:h<CR>
 autocmd FileType netrw nnoremap <buffer> <silent> <TAB><TAB> :bd<CR>
 
 autocmd filetype netrw call Netrw_mappings()
@@ -198,6 +207,8 @@ if has('persistent_undo')
     set undofile
 endif
 set undolevels=1000
+
+" ---------------------------------------------
 
 let g:markdown_fenced_languages = ['html', 'python', 'c', 'js=javascript', 'sh=bash', 'zsh', 'css', 'xml']
 hi link markdownItalic Normal
