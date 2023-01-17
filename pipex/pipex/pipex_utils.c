@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/15 22:30:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/17 23:22:52 by gychoi           ###   ########.fr       */
+/*   Created: 2023/01/17 23:22:00 by gychoi            #+#    #+#             */
+/*   Updated: 2023/01/17 23:22:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include <fcntl.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
-
-# include "libft/libft.h"
-
-# define READ_END	0
-# define WRITE_END	1
-
-void	px_error(char *file, char *str);
-
-#endif
+void	px_error(char *file, char *str)
+{
+	if (file)
+	{
+		ft_putstr_fd(file, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+	}
+	else
+		ft_putstr_fd(str, STDERR_FILENO);
+	exit(1);
+}

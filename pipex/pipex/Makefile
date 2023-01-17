@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/15 22:46:09 by gychoi            #+#    #+#              #
-#    Updated: 2023/01/16 00:37:39 by gychoi           ###   ########.fr        #
+#    Updated: 2023/01/17 23:22:35 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ LFTDIR = ./libft/
 LFTLIB = -L./libft -lft
 LIBFT = $(LFTDIR)libft.a
 
-SRCS = pipex.c
+SRCS = pipex.c \
+	   pipex_utils.c
 
 OBJDIR = ./objs/
 OBJS = $(patsubst %.c, %.o, $(SRCS))
