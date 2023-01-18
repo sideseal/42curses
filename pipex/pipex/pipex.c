@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 22:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/18 02:14:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/18 16:58:59 by ckgun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	child_read(char **argv, char **envp, int *pfd)
 int	main(int argc, char **argv, char **envp)
 {
 	int		pfd[2];
+	int		status;
 	pid_t	pid[2];
 
 	if (argc != 5)
@@ -126,9 +127,13 @@ int	main(int argc, char **argv, char **envp)
 		px_error(NULL, "Error: close\n");
 	if (close(pfd[1]) == -1)
 		px_error(NULL, "Error: close\n");
-	if (waitpid(pid[0], NULL, WNOHANG) == -1)
+	if (waitpid(pid[0], &status, 0) == -1)
 		px_error(NULL, "Error: waitpid\n");
-	if (waitpid(pid[1], NULL, WNOHANG) == -1)
+	if (!WIFEXITED(status))
+		px_error(NULL, "Error: child exit\n");
+	if (waitpid(pid[1], &status, 0) == -1)
 		px_error(NULL, "Error: waitpid\n");
+	if (!WIFEXITED(status))
+		px_error(NULL, "Error: child exit\n");
 	return (0);
 }
