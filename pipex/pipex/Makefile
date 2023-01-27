@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/15 22:46:09 by gychoi            #+#    #+#              #
-#    Updated: 2023/01/27 03:53:45 by gychoi           ###   ########.fr        #
+#    Updated: 2023/01/27 21:23:16 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,30 +24,30 @@ LIBFT = $(LFTDIR)libft.a
 SRCS = pipex.c \
 	   pipex_utils.c
 
-BUILD_DIR = ./build/
+BLDDIR = ./build/
 OBJS = $(patsubst %.c, %.o, $(SRCS))
-OBJECT = $(addprefix $(BUILD_DIR), $(OBJS))
+OBJECT = $(addprefix $(BLDDIR), $(OBJS))
 DEPS = $(OBJECT:.o=.d)
 
-$(NAME): $(BUILD_DIR) $(OBJECT) | $(LIBFT)
+$(NAME): $(BLDDIR) $(OBJECT) | $(LIBFT)
 	$(CC) $(CFLAGS) $(LFTLIB) $(OBJECT) -o $@
 
-$(BUILD_DIR):
-	@mkdir -p $(BUILD_DIR)
-
-$(BUILD_DIR)%.o: %.c
+$(BLDDIR)%.o: %.c
 	$(CC) $(CLFAGS) $(DFLAGS) -c $< -o $@ -MMD
 
--include $(DEPS)
+$(BLDDIR):
+	@mkdir -p $(BLDDIR)
 
 $(LIBFT):
 	@$(MAKE) -C $(LFTDIR)
+
+-include $(DEPS)
 
 all: $(NAME)
 
 clean:
 	$(MAKE) -C $(LFTDIR) clean
-	$(RM) $(RMFLAGS) $(BUILD_DIR)
+	$(RM) $(RMFLAGS) $(BLDDIR)
 
 fclean: clean
 	$(RM) $(RMFLAGS) $(LIBFT)

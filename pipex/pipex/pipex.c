@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 22:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/27 03:53:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/01/27 21:07:47 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*find_path(char *command, char **envp)
 	char	*find;
 	char	**paths;
 
+	if (access(command, F_OK | X_OK) == 0)
+		return (command);
 	i = 0;
 	while (ft_strncmp(envp[i], "PATH", 4))
 		i++;
@@ -65,7 +67,7 @@ void	child_write(char **argv, char **envp, int *pfd)
 	int	infile;
 
 	if (access(argv[1], F_OK) == -1)
-		px_error("No such file or directory\n", argv[1]);
+		px_error("No such file or directory\n", argv[1], 126);
 	infile = px_open(argv[1], O_RDONLY);
 	px_close(pfd[READ_END]);
 	if (pfd[WRITE_END] != STDOUT_FILENO)
@@ -76,7 +78,7 @@ void	child_write(char **argv, char **envp, int *pfd)
 		px_close(infile);
 	}
 	if (execute_command(argv[2], envp) == -1)
-		px_error("command not found\n", argv[2]);
+		px_error("command not found\n", argv[2], 127);
 }
 
 void	child_read(char **argv, char **envp, int *pfd)
@@ -93,7 +95,7 @@ void	child_read(char **argv, char **envp, int *pfd)
 		px_close(outfile);
 	}
 	if (execute_command(argv[3], envp) == -1)
-		px_error("command not found\n", argv[3]);
+		px_error("command not found\n", argv[3], 127);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -103,23 +105,24 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid[2];
 
 	if (argc != 5)
-		px_error("Usage: ./pipex infile \"command1\" \"command2\" outfile\n", NULL);
+		px_error("Usage: ./pipex infile \"command1\" \"command2\"" \
+				"outfile\n", NULL, 1);
 	px_pipe(pfd);
 	pid[0] = fork();
 	if (pid[0] == -1)
-		px_error("Error: fork\n", NULL);
+		px_error("Error: fork\n", NULL, 1);
 	else if (pid[0] == 0)
 		child_write(argv, envp, pfd);
 	pid[1] = fork();
 	if (pid[1] == -1)
-		px_error("Error: fork\n", NULL);
+		px_error("Error: fork\n", NULL, 1);
 	else if (pid[1] == 0)
 		child_read(argv, envp, pfd);
 	px_close(pfd[0]);
 	px_close(pfd[1]);
-	if (waitpid(pid[0], &status, 0) == -1 || !WIFEXITED(status))
-		px_error("Error: child write\n", NULL);
-	if (waitpid(pid[1], &status, 0) == -1 || !WIFEXITED(status))
-		px_error("Error: child read\n", NULL);
-	return (0);
+	if (waitpid(pid[0], &status, 0) == -1)
+		px_error("Error: child write\n", NULL, 1);
+	if (waitpid(pid[1], &status, 0) == -1)
+		px_error("Error: child read\n", NULL, 1);
+	return (WEXITSTATUS(status));
 }
