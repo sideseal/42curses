@@ -98,6 +98,9 @@ precmd_functions+=(_fix_cursor)
 # export MANPATH="/usr/local/man:$MANPATH"
 export PATH=$HOME/homebrew/bin:$PATH
 
+# export python package path
+export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
