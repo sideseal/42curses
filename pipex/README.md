@@ -303,3 +303,19 @@ int	execve(const char *filename, char *const argv[], char *const envp[]);
 9. `execve()`:
 	- [https://www.it-note.kr/157](https://www.it-note.kr/157)
 	- [https://80000coding.oopy.io/0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe#0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe](https://80000coding.oopy.io/0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe#0c3a00e2-178c-46cc-8c8a-ceb8ea2f4dbe)
+
+## Note
+
+처음에는 하나의 파이프로 여러 자식 프로세스의 명령어 실행을 담으려 했는데, 권장되지 않는 방법인 것 같다.
+- [https://stackoverflow.com/questions/63967015/why-cant-i-reuse-a-pipe-to-communicate-with-multiple-child-processes](https://stackoverflow.com/questions/63967015/why-cant-i-reuse-a-pipe-to-communicate-with-multiple-child-processes)
+
+파이프는 sequential하지 않다는 사실을 꼭 기억하자. 그저 하나의 프로세스의 stdout을 다음 프로세스의 stdin으로 보낸다. bash는 모든 프로그램을 병렬로 실행한다.
+
+헷갈리는 표현:
+	- `>` : 표준출력을 파일로 보낸다.
+	- `<` : 파일을 표준입력으로 보낸다.
+
+파이프의 명령어는 마지막 파이프 명령어의 상태를 가진다. (If you would like to get an intermediate return code you have to set the pipefail or get it from the PIPESTATUS)
+- [https://stackoverflow.com/questions/9834086/what-is-a-simple-explanation-for-how-pipes-work-in-bash](https://stackoverflow.com/questions/9834086/what-is-a-simple-explanation-for-how-pipes-work-in-bash)
+
+부모 프로세스는 파이프 READ END의 내용을 STDIN으로 삼는다. 자식 프로세스는 매번 새로 생성되어 (복사된) 부모의 STDIN을 읽어 명령어를 수행하고, 결과값을 파이프 WRITE END에 보낸다. 파이프에 저장된 내용을 가지고 STDIN 한다!!!
