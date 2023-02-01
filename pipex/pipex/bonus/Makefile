@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/15 22:46:09 by gychoi            #+#    #+#              #
-#    Updated: 2023/01/31 22:25:33 by gychoi           ###   ########.fr        #
+#    Created: 2023/01/31 18:44:35 by gychoi            #+#    #+#              #
+#    Updated: 2023/02/02 01:38:13 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ BLDDIR = ./build/
 LIBFT = $(LFTDIR)libft.a
 LFTLIB = -L$(LFTDIR) -lft
 
-SRCS = pipex.c \
-	   pipex_utils.c
+SRCS = pipex_bonus.c \
+	   pipex_utils_bonus.c \
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 OBJECT = $(addprefix $(BLDDIR), $(OBJS))

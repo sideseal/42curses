@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 22:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/01/27 21:07:47 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/02/01 23:10:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ int	execute_command(char *argv, char **envp)
 	tokens = ft_split(argv, ' ');
 	command = ft_strjoin("/", tokens[0]);
 	path = find_path(command, envp);
-	free(command);
 	if (execve(path, tokens, envp) == -1)
 	{
 		i = 0;
 		while (tokens[i])
 			free(tokens[i++]);
 		free(tokens);
+		free(command);
 		free(path);
 	}
 	return (-1);
@@ -67,7 +67,7 @@ void	child_write(char **argv, char **envp, int *pfd)
 	int	infile;
 
 	if (access(argv[1], F_OK) == -1)
-		px_error("No such file or directory\n", argv[1], 126);
+		px_error("No such file or directory\n", argv[1], 0);
 	infile = px_open(argv[1], O_RDONLY);
 	px_close(pfd[READ_END]);
 	if (pfd[WRITE_END] != STDOUT_FILENO)
@@ -78,7 +78,7 @@ void	child_write(char **argv, char **envp, int *pfd)
 		px_close(infile);
 	}
 	if (execute_command(argv[2], envp) == -1)
-		px_error("command not found\n", argv[2], 127);
+		px_error("command not found\n", argv[2], 0);
 }
 
 void	child_read(char **argv, char **envp, int *pfd)
@@ -105,7 +105,7 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid[2];
 
 	if (argc != 5)
-		px_error("Usage: ./pipex infile \"command1\" \"command2\"" \
+		px_error("Usage: ./pipex infile \"command1\" \"command2\" " \
 				"outfile\n", NULL, 1);
 	px_pipe(pfd);
 	pid[0] = fork();
@@ -120,7 +120,7 @@ int	main(int argc, char **argv, char **envp)
 		child_read(argv, envp, pfd);
 	px_close(pfd[0]);
 	px_close(pfd[1]);
-	if (waitpid(pid[0], &status, 0) == -1)
+	if (waitpid(pid[0], NULL, WNOHANG) == -1)
 		px_error("Error: child write\n", NULL, 1);
 	if (waitpid(pid[1], &status, 0) == -1)
 		px_error("Error: child read\n", NULL, 1);
