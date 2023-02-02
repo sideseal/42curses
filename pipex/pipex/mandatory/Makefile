@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/15 22:46:09 by gychoi            #+#    #+#              #
-#    Updated: 2023/01/31 22:25:33 by gychoi           ###   ########.fr        #
+#    Updated: 2023/02/02 14:35:02 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM = rm
 RMFLAGS = -rf
 
 LFTDIR = ../libft/
-BLDDIR = ./build/
+BLDDIR = ../build/
 
 LIBFT = $(LFTDIR)libft.a
 LFTLIB = -L$(LFTDIR) -lft
@@ -32,7 +32,7 @@ OBJS = $(patsubst %.c, %.o, $(SRCS))
 OBJECT = $(addprefix $(BLDDIR), $(OBJS))
 DEPS = $(OBJECT:.o=.d)
 
-$(NAME): $(BLDDIR) $(OBJECT) | $(LIBFT)
+$(NAME): $(OBJECT) | $(LIBFT)
 	$(CC) $(CFLAGS) $(LFTLIB) $(OBJECT) -o $@
 
 $(BLDDIR)%.o: %.c
@@ -40,9 +40,6 @@ $(BLDDIR)%.o: %.c
 
 $(LIBFT):
 	@$(MAKE) -C $(LFTDIR)
-
-$(BLDDIR):
-	@mkdir -p $(BLDDIR)
 
 -include $(DEPS)
 

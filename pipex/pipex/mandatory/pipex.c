@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 22:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/02/01 23:10:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/02/02 15:08:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	execute_command(char *argv, char **envp)
 
 	tokens = ft_split(argv, ' ');
 	command = ft_strjoin("/", tokens[0]);
+	if (tokens == NULL || command == NULL)
+		return (-1);
 	path = find_path(command, envp);
 	if (execve(path, tokens, envp) == -1)
 	{

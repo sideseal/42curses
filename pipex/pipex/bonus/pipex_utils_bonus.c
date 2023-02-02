@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 18:47:43 by gychoi            #+#    #+#             */
-/*   Updated: 2023/02/02 01:37:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/02/02 15:02:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	*find_path(char *command, char **envp)
 	return (find);
 }
 
-// split, strjoin NULL 처리 해줘야 할까?
 int	execute_command(char *argv, char **envp)
 {
 	char	*command;
@@ -50,6 +49,8 @@ int	execute_command(char *argv, char **envp)
 
 	tokens = ft_split(argv, ' ');
 	command = ft_strjoin("/", tokens[0]);
+	if (tokens == NULL || command == NULL)
+		return (-1);
 	path = find_path(command, envp);
 	if (execve(path, tokens, envp) == -1)
 	{
