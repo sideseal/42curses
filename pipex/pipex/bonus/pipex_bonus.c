@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 18:47:35 by gychoi            #+#    #+#             */
-/*   Updated: 2023/02/02 15:05:50 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/02/02 15:27:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	read_line(int *pfd, char *limiter)
 		line = get_next_line(STDIN_FILENO);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 			exit(0);
-		write(pfd[WRITE_END], line, ft_strlen(line));
+		if (write(pfd[WRITE_END], line, ft_strlen(line)) == -1)
+			px_error("Error: write\n", NULL, 1);
 		free(line);
 	}
 }

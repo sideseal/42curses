@@ -222,9 +222,9 @@ pid_t	waitpid(pid_t pid, int *status, int options);
 ```
 `waitpid()` 시스템 콜은 `wait()`처럼 자식 프로세스가 종료될 때까지 부모 프로세스를 대기시키지만, `wait()`은 자식 프로세스 중 어느 하나라도 종료되면 부모 프로세스로 바로 복귀하지만, `waitpid()`는 특정 자식 프로세스가 종료될 때까지 대기한다.
 
-또한 `wait()`는 자식 프로세스가 종료될 때까지 block되지만, `waitpid()`에 WHOHANG 옵션을 사용하면 부모 프로세스가 block 상태가 되지 않고 작업을 병행할 수 있다.
+또한 `wait()`는 자식 프로세스가 종료될 때까지 block되지만, `waitpid()`에 WNOHANG 옵션을 사용하면 부모 프로세스가 block 상태가 되지 않고 작업을 병행할 수 있다.
 
-일반적으로 pid에는 특정한 자식 프로세스의 PID가 들어가고, status에는 자식 프로세스의 종료 상태를 담는다. options에는 부모 프로세스의 대기 상태를 설정한다. 시스템 콜 성공 시 종료된 자식 프로세스의 PID를 반환하고, 실패 시 -1을 반환한다. WHOHANG을 사용하였는데 자식 프로세스가 종료되지 않았다면 0을 반환한다.
+일반적으로 pid에는 특정한 자식 프로세스의 PID가 들어가고, status에는 자식 프로세스의 종료 상태를 담는다. options에는 부모 프로세스의 대기 상태를 설정한다. 시스템 콜 성공 시 종료된 자식 프로세스의 PID를 반환하고, 실패 시 -1을 반환한다. WNOHANG을 사용하였는데 자식 프로세스가 종료되지 않았다면 0을 반환한다.
 
 ```
 pid
@@ -233,7 +233,7 @@ pid
 양수 : pid에 해당하는 자식 프로세스가 종료되면 복귀한다.
 
 options
-WHOHANG : 자식 프로세스가 종료되었는지, 실행 중인지 확인하고, 바로 부모 프로세스로 복귀한다. 부모 프로세스가 block되지 않는다.
+WNOHANG : 자식 프로세스가 종료되었는지, 실행 중인지 확인하고, 바로 부모 프로세스로 복귀한다. 부모 프로세스가 block되지 않는다.
 WUNTRACED : STOP 시그널을 통해 멈춘 자식 프로세스의 status에 대해 반환한다.
 WCONTINUED : CONT 시그널을 통해 멈춘 자식 프로세스의 status에 대해 반환한다.
    0    : 자식 프로세스가 종료될 때까지 부모 프로세스가 block된다. wait()와 동일한 처리.
@@ -319,3 +319,5 @@ int	execve(const char *filename, char *const argv[], char *const envp[]);
 - [https://stackoverflow.com/questions/9834086/what-is-a-simple-explanation-for-how-pipes-work-in-bash](https://stackoverflow.com/questions/9834086/what-is-a-simple-explanation-for-how-pipes-work-in-bash)
 
 부모 프로세스는 파이프 READ END의 내용을 STDIN으로 삼는다. 자식 프로세스는 매번 새로 생성되어 (복사된) 부모의 STDIN을 읽어 명령어를 수행하고, 결과값을 파이프 WRITE END에 보낸다. 파이프에 저장된 내용을 가지고 STDIN 한다!!!
+
+자식의 명령어 수행을 기다린 후, 자식에게서 읽어온 값을 STDIN으로 삼고 다음 프로세스로 진행.
