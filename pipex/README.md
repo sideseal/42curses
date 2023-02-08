@@ -2,6 +2,13 @@
 
 UNIX의 파이프 기능을 구현하는 과제이다.
 
+## 평가 후 수정 사항
+
+- [x] here_doc 처리
+- [x] find_path envp NULL 처리
+- [ ] 환경변수 unset 처리 고민... (미니쉘을 위해!)
+- [ ] 의문의 cat 프로세스? git이 들어있는 폴더는 기본적으로 실행되는건가...
+
 ## Some Concepts
 
 ### IPC

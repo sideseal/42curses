@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:49:30 by gychoi            #+#    #+#             */
-/*   Updated: 2023/02/02 15:49:34 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/02/07 18:23:28 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*find_path(char *command, char **envp)
 	i = 0;
 	while (ft_strncmp(envp[i], "PATH", 4))
 		i++;
+	if (envp[i] == NULL)
+		return (NULL);
 	paths = ft_split(envp[i] + 5, ':');
 	i = 0;
 	find = NULL;
@@ -32,9 +34,8 @@ char	*find_path(char *command, char **envp)
 		path = ft_strjoin(paths[i], command);
 		if (access(path, F_OK | X_OK) == 0)
 			find = ft_strdup(path);
-		free(paths[i]);
+		free(paths[i++]);
 		free(path);
-		i++;
 	}
 	free(paths);
 	return (find);
@@ -49,9 +50,9 @@ int	execute_command(char *argv, char **envp)
 
 	tokens = ft_split(argv, ' ');
 	command = ft_strjoin("/", tokens[0]);
-	if (tokens == NULL || command == NULL)
-		return (-1);
 	path = find_path(command, envp);
+	if (tokens == NULL || command == NULL || path == NULL)
+		return (-1);
 	if (execve(path, tokens, envp) == -1)
 	{
 		i = 0;

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 18:47:35 by gychoi            #+#    #+#             */
-/*   Updated: 2023/02/02 17:58:02 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/02/07 18:20:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	pipeline(int argc, char **argv, char **envp, int i)
 		px_error("command not found\n", argv[argc - 2], 127);
 }
 
-// LIMITER strcmp (LIMITER, LIMITERR) 부분 해결할 것!
-// unset 부분도 가능하면 확인해보기.
 void	read_line(int *pfd, char *limiter)
 {
 	char	*line;
@@ -68,8 +66,11 @@ void	read_line(int *pfd, char *limiter)
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
-			exit(0);
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		{
+			if (ft_strncmp(line + ft_strlen(limiter), "\n", 1) == 0)
+				exit(0);
+		}
 		if (write(pfd[WRITE_END], line, ft_strlen(line)) == -1)
 			px_error("Error: write\n", NULL, 1);
 		free(line);
