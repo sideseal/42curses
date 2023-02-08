@@ -97,6 +97,7 @@ precmd_functions+=(_fix_cursor)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export PATH=$HOME/homebrew/bin:$PATH
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # export python package path
 export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
@@ -123,31 +124,9 @@ export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias brew="~/homebrew/bin/brew"
-function rmv(){
-	if ls ./*.out 1> /dev/null 2> /dev/null; then
-		for i in *.out;
-			do printf '%s removed!\n' "$i";
-		done;
-		rm *.out 1> /dev/null 2> /dev/null;
-	else
-		echo "Nothing to remove...\n";
-	fi
-}
-alias rmv=rmv
-function gcc2(){
- 	# FILENAME=$(basename $1);
-	CFILE=result
-	if gcc -o $CFILE.out -Wall -Wextra -Werror $@; then
-		echo "Piscine GCC is running...";
-	else
-		echo "GCC Compile failed.";
-	fi
-}
 alias wmv="~/misc/wmv/wmv.zsh"
-alias gg=gcc2
 alias nn="norminette -R CheckForbiddenSourceHeader"
 alias hh="norminette -R CheckDefine"
-alias francinette="$HOME"/francinette/tester.sh
 
 echo "Hello, gychoi! ^_^\n"
 export MAIL="gychoi@student.42seoul.kr"
@@ -156,5 +135,3 @@ source /Users/gychoi/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlight
 
 alias francinette=/Users/gychoi/francinette/tester.sh
 alias paco=/Users/gychoi/francinette/tester.sh
-
-alias rm="rm -i"
