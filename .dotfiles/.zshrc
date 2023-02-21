@@ -72,6 +72,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
+	zsh-syntax-highlighting
 )
 
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
@@ -96,8 +97,10 @@ _fix_cursor() {
 precmd_functions+=(_fix_cursor)
 
 # export MANPATH="/usr/local/man:$MANPATH"
-export PATH=$HOME/homebrew/bin:$PATH
+# homebrew configs
+export PATH=$HOME/.brew/bin:$PATH
 export HOMEBREW_NO_AUTO_UPDATE=1
+alias brew="~/.brew/bin/brew"
 
 # export python package path
 export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
@@ -123,7 +126,6 @@ export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias brew="~/homebrew/bin/brew"
 alias wmv="~/misc/wmv/wmv.zsh"
 alias nn="norminette -R CheckForbiddenSourceHeader"
 alias hh="norminette -R CheckDefine"
@@ -131,7 +133,7 @@ alias hh="norminette -R CheckDefine"
 echo "Hello, gychoi! ^_^\n"
 export MAIL="gychoi@student.42seoul.kr"
 
-source /Users/gychoi/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /Users/gychoi/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias francinette=/Users/gychoi/francinette/tester.sh
 alias paco=/Users/gychoi/francinette/tester.sh
