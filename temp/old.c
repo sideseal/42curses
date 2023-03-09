@@ -186,3 +186,21 @@ int	execute(t_cmd *line, t_env *environ)
 	// reset_simple_command_fd(line, PARENT);
 	return (ret);
 }
+
+int	retrieve_childs(t_cmd *line, pid_t pid, int *statloc, int process_type)
+{
+	t_cmd	*cur;
+	pid_t	retrived;
+	int		pid_statloc;
+
+	cur = line;
+	while (cur != NULL)
+	{
+		retrived = ft_wait(statloc, process_type);
+		if (retrived == pid)
+			pid_statloc = *statloc;
+		cur = cur->next;
+	}
+	return (pid_statloc);
+}
+
