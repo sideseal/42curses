@@ -116,3 +116,85 @@ join으로 쓰레드의 종료를 기다리지 않고, 쓰레드가 독립적으
 
 int	pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
 ```
+
+mutex를 사용하기 전에 초기화를 해주는 함수. 첫 번쨰 인자는 mutex를 전달하고, 두 번째 인자는 mutex의 속성을 전달하는데, 기본적으로 NULL을 전달한다. 성공 시 0, 실패 시 0이 아닌 값을 반환한다. 생성한 mutex를 모두 이용하였다면, `pthread_mutex_destroy`로 mutex를 해제하는 것을 잊지 말자.
+
+### `pthread_mutex_destroy`
+
+```c
+#include <pthread.h>
+
+int	pthread_mutex_destroy(pthread_mutex_t *mutex);
+```
+
+해제하고자 하는 mutex를 인자로 받는다. 성공 시 0, 실패 시 0이 아닌 값을 반환한다. 반드시 unlock된 mutex에 대해서만 destroy를 해주어야 한다. lock된 mutex를 destroy하는 경우, UB이다.
+
+### `pthread_mutex_lock`
+
+```c
+#include <pthread.h>
+
+int	pthread_mutex_lock(pthread_mutex_t *mutex);
+```
+
+임계 영역(critical section)에 해당 mutex를 가진 쓰레드 외 다른 쓰레드가 접근할 수 없도록 한다. 이 경우, 다른 쓰레드는 mutex를 얻을 때까지 sleep 상태로 대기한다. 성공 시 0, 실패 시 0이 아닌 값을 반환한다.
+
+### `pthread_mutex_unlock`
+
+```c
+#include <pthread.h>
+
+int	pthread_mutex_unlock(pthread_mutex_t *mutex);
+```
+
+ 해당 쓰레드가 mutex를 가지고 있는 경우, mutex를 반납한다. 임계 영역이 끝난 이후, unlock을 해주어야 할 것이다. 이후 대기하고 있는 쓰레드가 mutex를 획득하여, 임계 영역을 lock하고 데이터에 접근한다. 성공 시 0, 실패시 0이 아닌 값을 반환한다.
+
+### mutex 예제
+
+```c
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+pthread_mutex_t mutex;
+int cnt=0;
+
+void *count(void *arg){
+    int i;
+    char* name = (char*)arg;
+
+    pthread_mutex_lock(&mutex);
+
+    //======== critical section =============
+    cnt=0;
+    for (i = 0; i <10; i++)
+    {
+        printf("%s cnt: %d\n", name,cnt);
+        cnt++;
+        usleep(1);
+    }
+    //========= critical section ============
+    pthread_mutex_unlock(&mutex);
+}
+
+int main()
+{
+    pthread_t thread1,thread2;
+
+    pthread_mutex_init(&mutex,NULL);
+
+    pthread_create(&thread1, NULL, count, (void *)"thread1");
+    pthread_create(&thread2, NULL, count, (void *)"thread2");
+
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+
+    pthread_mutex_destroy(&mutex);
+}
+```
+
+참고 자료:
+- [https://reakwon.tistory.com/98](https://reakwon.tistory.com/98)
+- [https://bigpel66.oopy.io/library/c/etc/4](https://bigpel66.oopy.io/library/c/etc/4)
+
