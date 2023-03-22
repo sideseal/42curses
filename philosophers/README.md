@@ -14,3 +14,10 @@
 참고 : [https://namu.wiki/w/식사하는 철학자 문제](https://namu.wiki/w/%EC%8B%9D%EC%82%AC%ED%95%98%EB%8A%94%20%EC%B2%A0%ED%95%99%EC%9E%90%20%EB%AC%B8%EC%A0%9C)
 
 ## Rules
+
+프로그램(`philo`)은 다음의 인자들을 처리해야 한다.
+- `number_of_philosophers` : 문제에서 처리해야 하는 철학자의 수. 철학자의 수는 포크의 개수와 동일하다.
+- `time_to_die` : 철학자가 마지막 식사를 한 후, milliseconds 단위의 시간인 `time_to_die`가 지나가기 전에 식사를 하지 못하면, 철학자는 굶어죽는다.
+- `time_to_eat` : 철학자가 식사를 하는데 걸리는 milliseconds 단위의 시간. 이 시간 동안 철학자는 두 개의 포크를 점유한다.
+- `time_to_sleep` : 철학자가 잠을 자는데 걸리는 milliseconds 단위의 시간.
+- `number_of_times_each_philosopher_must_eat` (optional argument) : 만약 모든 철학자들이 해당 인자로 들어온 수만큼 식사를 마치게 된다면 시뮬레이션이 종료되어야 한다.
