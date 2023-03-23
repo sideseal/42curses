@@ -198,3 +198,6 @@ int main()
 - [https://reakwon.tistory.com/98](https://reakwon.tistory.com/98)
 - [https://bigpel66.oopy.io/library/c/etc/4](https://bigpel66.oopy.io/library/c/etc/4)
 
+좋은 자료:
+- [https://goodgid.github.io/What-is-Thread/](https://goodgid.github.io/What-is-Thread/)
+
