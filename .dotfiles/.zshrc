@@ -98,15 +98,16 @@ precmd_functions+=(_fix_cursor)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 # pkgsrc config
-export PATH=$HOME/pkg/sbin:$HOME/pkg/bin:$PATH
-export MANPATH="/Users/gychoi/pkg/man:/usr/local/man:$MANPATH"
+#export PATH=$HOME/pkg/sbin:$HOME/pkg/bin:$PATH
+#export MANPATH="/Users/gychoi/pkg/man:/usr/local/man:$MANPATH"
+
 # homebrew configs
 #export PATH=$HOME/.brew/bin:$PATH
 #export HOMEBREW_NO_AUTO_UPDATE=1
 #alias brew="~/.brew/bin/brew"
 
 # export my config
-export PATH=$HOME/misc/bin:$PATH
+export PATH=$HOME/misc/local/bin:$PATH
 
 # export python package path
 export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
@@ -132,7 +133,7 @@ export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias wmv="~/misc/wmv/wmv.zsh"
+alias wmv="~/misc/utils/wmv/wmv.zsh"
 alias rld="exec zsh"
 alias nn="norminette -R CheckForbiddenSourceHeader"
 alias hh="norminette -R CheckDefine"
@@ -143,4 +144,4 @@ echo "Hello, gychoi! ^_^\n"
 export MAIL="gychoi@student.42seoul.kr"
 
 source /Users/gychoi/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-alias pkgsrc="/Users/gychoi/misc/42_pkgsrc/pkgsrc_init.sh"
+#alias pkgsrc="/Users/gychoi/misc/42_pkgsrc/pkgsrc_init.sh"

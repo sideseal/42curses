@@ -218,7 +218,6 @@ set maxmempattern=5000
 
 autocmd BufWritePre ~/.vimrc :1,10s/^\" Last Modified: \zs.*$/\=strftime('%Y-%m-%d %H:%M:%S')/
 
-
 " 0. Tips to remember
 " 10^w< 	-> decrease buffer size (vertically)
 " 10^w>		-> increase buffer size (vertically)
