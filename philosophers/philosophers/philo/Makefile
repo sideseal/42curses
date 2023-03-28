@@ -6,20 +6,24 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/23 16:34:49 by gychoi            #+#    #+#              #
-#    Updated: 2023/03/23 19:23:48 by gychoi           ###   ########.fr        #
+#    Updated: 2023/03/28 21:29:23 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
+#DEBUG = -fsanitize=thread -g
 DFLAGS = -MMD
 RM = rm
 RMFLAGS = -rf
 PTHREAD = -pthread
 BLDDIR = ./build/
 
-SRCS = philo.c
+SRCS = philo.c \
+	   utils.c \
+	   init.c  \
+
 OBJS = $(addprefix $(BLDDIR), $(patsubst %.c, %.o, $(SRCS)))
 DEPS = $(OBJS:.o=.d)
 
