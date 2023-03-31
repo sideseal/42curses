@@ -6,11 +6,21 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:41:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/03/28 21:29:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/03/31 22:56:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long long	get_millisecond(void)
+{
+	struct timeval	time;
+	long long		millisecond;
+
+	gettimeofday(&time, 0);
+	millisecond = time.tv_sec * (long long)1000 + time.tv_usec / 1000;
+	return (millisecond);
+}
 
 int	philo_atoi(char *num)
 {
