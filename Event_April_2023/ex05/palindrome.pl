@@ -6,6 +6,7 @@ use warnings;
 print "Enter a string: ";
 my $input = <STDIN>;
 chomp $input;
+$input = lc $input;
 
 my $reverse_input = reverse $input;
 
