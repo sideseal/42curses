@@ -1,0 +1,11 @@
+ME:
+	generate your best joke under 512 characters.
+
+GPT:
+	Here's a joke for you:
+
+	Why don't scientists trust atoms?
+
+	Because they make up everything!
+
+	I hope that made you laugh!
