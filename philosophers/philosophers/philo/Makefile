@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/23 16:34:49 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/06 23:00:07 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/07 16:42:45 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ RMFLAGS = -rf
 PTHREAD = -pthread
 BLDDIR = ./build/
 
-SRCS = init.c \
+SRCS = main.c \
+	   init.c \
 	   philo.c \
 	   utils.c \
 

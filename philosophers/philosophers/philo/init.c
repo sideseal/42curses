@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/06 22:28:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/07 17:09:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	init_resources(t_resource *resources, t_context context)
 	i = 0;
 	while (i < context.philo_num)
 	{
-		if (pthread_mutex_init(&(resources->forks_mutex)[i], NULL))
+		if (pthread_mutex_init(&(resources->forks_mutex)[i], 0))
 			return (ft_free_both(forks, forks_mutex));
 		i++;
 	}
-	if (pthread_mutex_init(&(resources->print_mutex), NULL))
+	if (pthread_mutex_init(&(resources->print_mutex), 0))
 		return (ft_free_both(forks, forks_mutex));
 	return (0);
 }
@@ -69,7 +69,7 @@ int	init_philos(t_philo **philos, t_context context, t_resource resources)
 
 	*philos = malloc(sizeof(t_philo) * context.philo_num);
 	if (*philos == 0)
-		return (ft_free_both(philos, NULL));
+		return (ft_free_both(philos, 0));
 	i = 0;
 	while (i < context.philo_num)
 	{
@@ -82,7 +82,7 @@ int	init_philos(t_philo **philos, t_context context, t_resource resources)
 		(*philos)[i].fork_mutex[1] = \
 			&(resources.forks_mutex[(i + 1) % context.philo_num]);
 		(*philos)[i].context = context;
-		(*philos)[i].count_eat = 0;
+		(*philos)[i].philo_count_eat = 0;
 		(*philos)[i].philo_is_dead = 0;
 		i++;
 	}

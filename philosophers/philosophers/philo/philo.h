@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 16:23:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/06 22:24:49 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/07 17:09:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,21 @@ typedef struct s_philo
 	int				*fork[2];
 	pthread_mutex_t	*fork_mutex[2];
 	t_context		context;
-	int				count_eat;
+	int				philo_count_eat;
 	int				philo_is_dead;
 }	t_philo;
 
-int			check_valid_input(char **argv);
-int			philo_atoi(char *num);
 long long	get_millisecond(void);
 int			ft_free_both(void *ptr1, void *ptr2);
+int			philo_atoi(char *num);
+int			check_valid_input(char **argv);
+
 int			init_context(t_context *context, char **argv);
+int			init_resources(t_resource *resources, t_context context);
 int			init_philos(t_philo **philos, t_context context, \
 			t_resource resources);
-int			init_resources(t_resource *resources, t_context context);
-void		start_simulation(t_context context, t_philo *philos);
+
+void		simulation(t_context context, t_philo *philos, \
+			t_resource resources);
 
 #endif
