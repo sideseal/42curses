@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:41:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/06 22:24:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/11 23:20:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,10 @@ long long	get_millisecond(void)
 	return (millisecond);
 }
 
-int	ft_free_both(void *ptr1, void *ptr2)
+int	philo_abort(char *string)
 {
-	if (ptr1 != 0)
-		free(ptr1);
-	if (ptr2 != 0)
-		free(ptr2);
-	return (-1);
+	printf("%s\n", string);
+	return (1);
 }
 
 int	philo_atoi(char *num)
