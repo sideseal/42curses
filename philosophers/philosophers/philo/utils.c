@@ -6,26 +6,40 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:41:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/11 23:20:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/12 23:50:28 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_millisecond(void)
+long long	get_current_time(void)
 {
 	struct timeval	time;
 	long long		millisecond;
 
-	gettimeofday(&time, 0);
+	if (gettimeofday(&time, 0) < 0)
+		return (-1);
 	millisecond = time.tv_sec * (long long)1000 + time.tv_usec / 1000;
 	return (millisecond);
 }
 
-int	philo_abort(char *string)
+void	philo_print(t_philo *philo, char *str)
 {
-	printf("%s\n", string);
-	return (1);
+	int	timestamp;
+
+	timestamp = (int)(get_current_time() - philo->shared->start_time);
+	pthread_mutex_lock(&(philo->shared->shared_mutex));
+	printf("%d %d %s\n", timestamp, philo->philo_name, str);
+	pthread_mutex_unlock(&(philo->shared->shared_mutex));
+}
+
+void	philo_sleep(long long wait_time)
+{
+	long long	sleep_start;
+
+	sleep_start = get_current_time();
+	while (get_current_time() - sleep_start < wait_time)
+		usleep(10);
 }
 
 int	philo_atoi(char *num)

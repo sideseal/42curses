@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/23 16:34:49 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/11 23:05:14 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/12 16:59:32 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ BLDDIR = ./build/
 
 SRCS = main.c \
 	   init.c \
+	   clear.c \
 	   philo.c \
 	   utils.c \
 

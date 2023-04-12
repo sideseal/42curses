@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 16:23:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/11 23:22:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/12 22:33:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+# define USAGE_MESSAGE "Usage: ./philo number_of_philosophers time_to_die \
+time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
+
 typedef struct s_param
 {
 	int	philo_num;
@@ -31,32 +34,42 @@ typedef struct s_param
 
 typedef struct s_shared
 {
+	t_param			param;
 	int				*forks;
 	pthread_mutex_t	*forks_mutex;
-	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	shared_mutex;
+	int				philo_is_dead;
+	long long		start_time;
 }	t_shared;
 
 typedef struct s_philo
 {
-	t_shared		shared;
+	t_shared		*shared;
 	int				*fork[2];
 	pthread_mutex_t	*fork_mutex[2];
-	t_param			param;
 	int				philo_name;
 	pthread_t		philo_thread;
 	int				philo_count_eat;
-	int				philo_is_dead;
+	long long		philo_last_eat;
 }	t_philo;
 
-long long	get_millisecond(void);
-int			philo_abort(char *string);
+long long	get_current_time(void);
+void		philo_print(t_philo *philo, char *str);
+void		philo_sleep(long long wait_time);
 int			philo_atoi(char *num);
 int			check_valid_input(char **argv);
 
 int			init_param(t_param *param, char **argv);
 int			init_shared(t_shared *shared, t_param param);
-int			init_philos(t_philo **philos, t_param param, t_shared shared);
+int			init_philos(t_philo **philos, t_param param, t_shared *shared);
 
-void		simulation(t_param param, t_philo *philos, t_shared shared);
+int			clear_forks_mutex(t_shared *shared, int index);
+int			clear_all_mutex(t_shared *shared);
+void		detach_all_thread(t_philo *philos, t_shared shared);
 
+void		pick_up_forks(t_philo *philo);
+void		put_down_forks(t_philo *philo);
+void		eating(t_philo *philo);
+void		sleeping(t_philo *philo);
+void		thinking(t_philo *philo);
 #endif
