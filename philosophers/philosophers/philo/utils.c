@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:41:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/12 23:50:28 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/13 21:11:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 long long	get_current_time(void)
 {
-	struct timeval	time;
+	struct timeval	time_val;
 	long long		millisecond;
 
-	if (gettimeofday(&time, 0) < 0)
-		return (-1);
-	millisecond = time.tv_sec * (long long)1000 + time.tv_usec / 1000;
+	gettimeofday(&time_val, 0);
+	millisecond = time_val.tv_sec * (long long)1000 + time_val.tv_usec / 1000;
 	return (millisecond);
 }
 
@@ -29,17 +28,21 @@ void	philo_print(t_philo *philo, char *str)
 
 	timestamp = (int)(get_current_time() - philo->shared->start_time);
 	pthread_mutex_lock(&(philo->shared->shared_mutex));
-	printf("%d %d %s\n", timestamp, philo->philo_name, str);
+	if (!philo->shared->philo_is_dead)
+		printf("%d %d %s\n", timestamp, philo->philo_name, str);
 	pthread_mutex_unlock(&(philo->shared->shared_mutex));
 }
 
 void	philo_sleep(long long wait_time)
 {
 	long long	sleep_start;
+	long long	sleep_total;
 
 	sleep_start = get_current_time();
-	while (get_current_time() - sleep_start < wait_time)
-		usleep(10);
+	sleep_total = wait_time + sleep_start;
+	usleep(wait_time * 0.9);
+	while (get_current_time() < sleep_total)
+		usleep(500);
 }
 
 int	philo_atoi(char *num)
@@ -78,8 +81,8 @@ int	check_valid_input(char **argv)
 	while (argv[i] != 0)
 	{
 		if (philo_atoi(argv[i]) == -1)
-			return (0);
+			return (-1);
 		i++;
 	}
-	return (1);
+	return (0);
 }

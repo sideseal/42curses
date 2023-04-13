@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:58:19 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/12 22:33:41 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/13 21:10:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,15 @@ int	clear_all_mutex(t_shared *shared)
 	return (-1);
 }
 
-// 여기에서 free까지?
-// error case 체크?
-// return value?
-void	detach_all_thread(t_philo *philos, t_shared shared)
+int	clear_and_detach_all_thread(t_philo *philos, t_shared *shared)
 {
 	int	i;
 
 	i = 0;
-	while (i < shared.param.philo_num)
+	while (i < shared->param.philo_num)
 	{
 		pthread_detach(philos[i].philo_thread);
 		i++;
 	}
+	return (clear_all_mutex(shared));
 }
