@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:14:10 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/13 23:14:32 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:49:49 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	put_down_forks(t_philo *philo)
 void	eating(t_philo *philo)
 {
 	philo->philo_last_eat = get_current_time();
-	philo->philo_count_eat++;
 	philo_print(philo, "is eating");
 	philo_sleep(philo->shared->param.philo_time_eat);
 }

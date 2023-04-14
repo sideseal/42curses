@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/13 21:11:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:29:29 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	init_philos(t_shared *shared, t_param param, t_philo **philos)
 			&(shared->forks_mutex[(i + 1) % param.philo_num]);
 		(*philos)[i].philo_thread = 0;
 		(*philos)[i].philo_name = i + 1;
-		(*philos)[i].philo_count_eat = 0;
+		(*philos)[i].philo_count_eat = param.philo_must_eat;
 		(*philos)[i].philo_last_eat = get_current_time();
 		if ((*philos)[i].philo_last_eat < 0)
 			return (clear_all_mutex(shared));

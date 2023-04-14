@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:42:05 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/13 23:06:45 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/14 20:30:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ static void	*_routine(void *arg)
 	}
 	if (philo->philo_name % 2)
 		philo_sleep(philo->shared->param.philo_time_eat / 2);
-	while (!philo->shared->philo_is_dead)
+	while (philo->philo_count_eat-- != 0)
 	{
-		if (philo->philo_count_eat == philo->shared->param.philo_must_eat)
-			break ;
 		thinking(philo);
 		pick_up_forks(philo);
 		eating(philo);
@@ -50,60 +48,17 @@ static void	*_routine(void *arg)
 	return ((void *)0);
 }
 
-static void	_stop_simulation_by_cond(t_philo *philos, t_shared *shared)
-{
-	int	i;
-	int	timestamp;
-	int	flag;
-
-	flag = 1;
-	while (flag)
-	{
-		i = -1;
-		while (++i < shared->param.philo_num)
-		{
-			if (shared->param.philo_must_eat > 0)
-			{
-				int	temp = 0;
-				for (int j = 0; j < shared->param.philo_num; j++)
-				{
-					if (philos[j].philo_count_eat == shared->param.philo_must_eat)
-						temp++;
-				}
-				if (temp == shared->param.philo_num)
-				{
-					flag = 0;
-					break ;
-				}
-			}
-			if (get_current_time() - philos[i].philo_last_eat >= shared->param.philo_time_die)
-			{
-				pthread_mutex_lock(&(shared->shared_mutex));
-				for (int j = 0; j < shared->param.philo_num; j++)
-					philos[i].shared->philo_is_dead = 1;
-				pthread_mutex_unlock(&(shared->shared_mutex));
-				pthread_mutex_lock(&(shared->shared_mutex));
-				timestamp = (int)(get_current_time() - philos[i].shared->start_time);
-				printf("%d %d died\n", timestamp, philos[i].philo_name);
-				pthread_mutex_unlock(&(shared->shared_mutex));
-				flag = 0;
-				break ;
-			}
-		}
-		usleep(5000);
-	}
-}
-
 static int	_simulation(t_philo *philos, t_shared shared)
 {
 	int	i;
 
+	//pthread_mutex_lock(&(shared.shared_mutex));
 	i = -1;
 	while (++i < shared.param.philo_num)
 		if (pthread_create(&(philos[i].philo_thread), NULL, \
 			_routine, (void *)&(philos[i])) != 0)
 			return (clear_and_detach_all_thread(philos, &shared));
-	_stop_simulation_by_cond(philos, &shared);
+	//pthread_mutex_unlock(&(shared.shared_mutex));
 	i = -1;
 	while (++i < shared.param.philo_num)
 		if (pthread_join(philos[i].philo_thread, NULL) != 0)
