@@ -6,13 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:58:19 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/13 21:10:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/15 01:01:17 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	clear_forks_mutex(t_shared *shared, int index)
+int	clear_shared_mutex(t_shared *shared, int index)
 {
 	int	i;
 
@@ -20,6 +20,7 @@ int	clear_forks_mutex(t_shared *shared, int index)
 	while (i < index)
 	{
 		pthread_mutex_destroy(&(shared->forks_mutex)[i]);
+		pthread_mutex_destroy(&(shared->philo_mutex)[i]);
 		i++;
 	}
 	return (-1);
@@ -33,6 +34,7 @@ int	clear_all_mutex(t_shared *shared)
 	while (i < shared->param.philo_num)
 	{
 		pthread_mutex_destroy(&(shared->forks_mutex)[i]);
+		pthread_mutex_destroy(&(shared->philo_mutex)[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&(shared->shared_mutex));

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:41:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/13 21:11:59 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/15 01:40:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	philo_sleep(long long wait_time)
 	sleep_total = wait_time + sleep_start;
 	usleep(wait_time * 0.9);
 	while (get_current_time() < sleep_total)
-		usleep(500);
+		usleep(wait_time * 2);
 }
 
 int	philo_atoi(char *num)
