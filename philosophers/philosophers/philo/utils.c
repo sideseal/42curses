@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 20:41:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/15 01:40:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/16 23:32:14 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,13 @@ long long	get_current_time(void)
 	struct timeval	time_val;
 	long long		millisecond;
 
-	gettimeofday(&time_val, 0);
+	if (gettimeofday(&time_val, 0) < 0)
+		return (-1);
 	millisecond = time_val.tv_sec * (long long)1000 + time_val.tv_usec / 1000;
 	return (millisecond);
 }
 
-void	philo_print(t_philo *philo, char *str)
-{
-	int	timestamp;
-
-	timestamp = (int)(get_current_time() - philo->shared->start_time);
-	pthread_mutex_lock(&(philo->shared->shared_mutex));
-	if (!philo->shared->philo_is_dead)
-		printf("%d %d %s\n", timestamp, philo->philo_name, str);
-	pthread_mutex_unlock(&(philo->shared->shared_mutex));
-}
-
-void	philo_sleep(long long wait_time)
-{
-	long long	sleep_start;
-	long long	sleep_total;
-
-	sleep_start = get_current_time();
-	sleep_total = wait_time + sleep_start;
-	usleep(wait_time * 0.9);
-	while (get_current_time() < sleep_total)
-		usleep(wait_time * 2);
-}
-
-int	philo_atoi(char *num)
+int	atoi_only_unsigned(char *num)
 {
 	int			i;
 	int			flag;
@@ -80,7 +58,7 @@ int	check_valid_input(char **argv)
 	i = 1;
 	while (argv[i] != 0)
 	{
-		if (philo_atoi(argv[i]) == -1)
+		if (atoi_only_unsigned(argv[i]) == -1)
 			return (-1);
 		i++;
 	}

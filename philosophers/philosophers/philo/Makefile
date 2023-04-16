@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/23 16:34:49 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/15 01:34:15 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/17 00:03:47 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ clean:
 	$(RM) $(RMFLAGS) $(BLDDIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(RMFLAGS) $(NAME)
 
 re: fclean
 	$(MAKE) all
