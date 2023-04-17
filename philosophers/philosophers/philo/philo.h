@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 16:23:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/17 00:36:40 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/17 20:20:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_shared
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	*philo_mutex;
 	pthread_mutex_t	shared_mutex;
+	int				philo_eat_finish;
 	int				philo_is_dead;
 	int				eat_finish;
 	long long		start_time;

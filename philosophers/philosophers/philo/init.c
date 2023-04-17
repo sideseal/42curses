@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/17 00:37:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/17 20:20:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	init_shared(t_shared *shared, t_param param)
 	}
 	if (pthread_mutex_init(&(shared->shared_mutex), 0))
 		return (clear_all_shared_mutex(shared));
+	shared->philo_eat_finish = 0;
 	shared->philo_is_dead = 0;
 	shared->eat_finish = 0;
 	shared->start_time = get_current_time();
