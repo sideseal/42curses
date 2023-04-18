@@ -5,102 +5,82 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 21:08:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/17 20:20:27 by gychoi           ###   ########.fr       */
+/*   Created: 2023/04/18 19:11:22 by gychoi            #+#    #+#             */
+/*   Updated: 2023/04/18 20:39:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_malloc_elems(t_shared *shared, t_philo **philos, char *arg)
+void	init_struct_args(t_args *args, char **argv)
 {
-	int	num;
-
-	*philos = 0;
-	shared->forks = 0;
-	shared->forks_mutex = 0;
-	shared->philo_mutex = 0;
-	num = atoi_only_unsigned(arg);
-	*philos = malloc(sizeof(t_philo) * num);
-	shared->forks = malloc(sizeof(int) * num);
-	shared->forks_mutex = malloc(sizeof(pthread_mutex_t) * num);
-	shared->philo_mutex = malloc(sizeof(pthread_mutex_t) * num);
-	if (*philos == 0 || shared->forks == 0 \
-		|| shared->forks_mutex == 0 || shared->philo_mutex == 0)
-		return (-1);
-	if (memset(*philos, 0, sizeof(t_philo) * num) == 0 \
-		|| memset(shared->forks, 0, sizeof(int) * num) == 0 \
-		|| memset(shared->forks_mutex, 0, sizeof(pthread_mutex_t) * num) == 0 \
-		|| memset(shared->philo_mutex, 0, sizeof(pthread_mutex_t) * num) == 0)
-		return (-1);
-	return (0);
-}
-
-int	init_param(t_param *param, char **argv)
-{
-	param->philo_num = atoi_only_unsigned(argv[1]);
-	param->philo_time_die = atoi_only_unsigned(argv[2]);
-	param->philo_time_eat = atoi_only_unsigned(argv[3]);
-	param->philo_time_sleep = atoi_only_unsigned(argv[4]);
+	args->philo_num = atoi_only_unsigned(argv[1]);
+	args->philo_time_die = atoi_only_unsigned(argv[2]);
+	args->philo_time_eat = atoi_only_unsigned(argv[3]);
+	args->philo_time_sleep = atoi_only_unsigned(argv[4]);
 	if (argv[5] != 0)
-		param->philo_must_eat = atoi_only_unsigned(argv[5]);
+		args->philo_must_eat = atoi_only_unsigned(argv[5]);
 	else
-		param->philo_must_eat = -1;
-	return (0);
+		args->philo_must_eat = -1;
 }
 
-int	init_shared(t_shared *shared, t_param param)
+void	init_struct_share(t_share *share, t_args args)
+{
+	share->args = args;
+	share->fork_locks = share->fork_locks;
+	share->share_lock = share->share_lock;
+	share->stop = FALSE;
+	share->philo_start_time = 0;
+}
+
+void	init_struct_philo(t_philo **philos, t_share *share, t_args args)
 {
 	int	i;
 
-	shared->param = param;
-	i = -1;
-	while (++i < param.philo_num)
-		if (pthread_mutex_init(&(shared->forks_mutex)[i], 0))
-			return (clear_mutex_array(shared->forks_mutex, i));
-	i = -1;
-	while (++i < param.philo_num)
+	i = 0;
+	while (i < args.philo_num)
 	{
-		if (pthread_mutex_init(&(shared->philo_mutex)[i], 0))
-		{
-			clear_mutex_array(shared->forks_mutex, param.philo_num);
-			return (clear_mutex_array(shared->philo_mutex, i));
-		}
-	}
-	if (pthread_mutex_init(&(shared->shared_mutex), 0))
-		return (clear_all_shared_mutex(shared));
-	shared->philo_eat_finish = 0;
-	shared->philo_is_dead = 0;
-	shared->eat_finish = 0;
-	shared->start_time = get_current_time();
-	if (shared->start_time < 0)
-		return (-1);
-	return (0);
-}
-
-int	init_philos(t_shared *shared, t_param param, t_philo **philos)
-{
-	int	i;
-
-	i = -1;
-	while (++i < param.philo_num)
-	{
-		(*philos)[i].shared = shared;
-		(*philos)[i].fork[0] = &(shared->forks[i]);
-		(*philos)[i].fork_mutex[0] = &(shared->forks_mutex[i]);
-		if (param.philo_num > 1)
-		{
-			(*philos)[i].fork[1] = &(shared->forks[(i + 1) % param.philo_num]);
-			(*philos)[i].fork_mutex[1] = \
-				&(shared->forks_mutex[(i + 1) % param.philo_num]);
-		}
-		(*philos)[i].philo_mutex = &(shared->philo_mutex[i]);
+		(*philos)[i].share = share;
+		(*philos)[i].fork_lock[0] = &(share->fork_locks[i]);
+		if (args.philo_num == 1)
+			(*philos)[i].fork_lock[1] = 0;
+		else
+			(*philos)[i].fork_lock[1] = \
+			&(share->fork_locks[(i + 1) % args.philo_num]);
 		(*philos)[i].philo_thread = 0;
-		(*philos)[i].philo_name = i + 1;
-		(*philos)[i].philo_count_eat = param.philo_must_eat;
-		(*philos)[i].philo_last_eat = get_current_time();
-		if ((*philos)[i].philo_last_eat < 0)
-			return (clear_all_shared_mutex(shared));
+		(*philos)[i].philo_id = i + 1;
+		(*philos)[i].philo_count_eat = args.philo_must_eat;
+		(*philos)[i].philo_time_last_eat = 0;
+		i++;
 	}
-	return (0);
+}
+
+int	init_all_mutex(t_share *share, int philo_num)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo_num)
+	{
+		if (pthread_mutex_init(&(share->fork_locks)[i], 0) != 0)
+			return (clear_mutex_array(share->fork_locks, i));
+		i++;
+	}
+	if (pthread_mutex_init(&(share->share_lock), 0) != 0)
+		return (clear_all_mutex(share));
+	return (TRUE);
+}
+
+int	init_all_malloc(t_share *share, t_philo **philos, int philo_num)
+{
+	*philos = 0;
+	share->fork_locks = 0;
+	*philos = malloc(sizeof(t_philo) * philo_num);
+	share->fork_locks = malloc(sizeof(pthread_mutex_t) * philo_num);
+	if (*philos == 0 || share->fork_locks == 0)
+		return (FALSE);
+	if (!memset(*philos, 0, sizeof(t_philo) * philo_num) \
+		|| !memset(share->fork_locks, 0, sizeof(pthread_mutex_t) * philo_num))
+		return (FALSE);
+	return (TRUE);
 }
