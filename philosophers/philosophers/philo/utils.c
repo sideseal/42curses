@@ -6,41 +6,37 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:25:38 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/18 21:20:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/19 23:46:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_print(t_philo *philo, char *str)
+int	check_philo_dead(t_philo *philo)
 {
 	int			timestamp;
-	long long	current_time;
+	long long	curr;
 
 	pthread_mutex_lock(&(philo->share->share_lock));
-	current_time = get_current_time();
-	if (current_time < 0)
-		philo->share->stop = 1;
-	timestamp = (int)(current_time - philo->share->philo_start_time);
-	if (!philo->share->stop)
-		printf("%d %d %s\n", timestamp, philo->philo_id, str);
-	pthread_mutex_unlock(&(philo->share->share_lock));
-}
-
-void	philo_sleep(long long wait_time, t_philo *philo)
-{
-	long long	sleep_start;
-	long long	sleep_total;
-
-	sleep_start = get_current_time();
-	sleep_total = wait_time + sleep_start;
-	usleep(wait_time * 0.7);
-	while (get_current_time() < sleep_total)
+	if (philo->share->stop)
 	{
-		if (philo->share->stop)
-			break ;
-		usleep(500);
+		pthread_mutex_unlock(&(philo->share->share_lock));
+		return (TRUE);
 	}
+	pthread_mutex_unlock(&(philo->share->share_lock));
+	curr = get_current_time();
+	if (curr - philo->philo_time_last_eat > philo->share->args.philo_time_die)
+	{
+		pthread_mutex_lock(&(philo->share->share_lock));
+		curr = get_current_time();
+		timestamp = (int)(curr - philo->share->philo_start_time);
+		if (!philo->share->stop)
+			printf("%d %d died\n", timestamp, philo->philo_id);
+		philo->share->stop = 1;
+		pthread_mutex_unlock(&(philo->share->share_lock));
+		return (TRUE);
+	}
+	return (FALSE);
 }
 
 long long	get_current_time(void)
@@ -48,9 +44,8 @@ long long	get_current_time(void)
 	struct timeval	time_val;
 	long long		millisecond;
 
-	if (gettimeofday(&time_val, 0) < 0)
-		return (-1);
-	millisecond = time_val.tv_sec * (long long)1000 + time_val.tv_usec / 1000;
+	gettimeofday(&time_val, 0);
+	millisecond = time_val.tv_sec * 1000LL + time_val.tv_usec / 1000LL;
 	return (millisecond);
 }
 
@@ -90,7 +85,7 @@ int	valid_input(char **argv)
 	i = 1;
 	while (argv[i] != 0)
 	{
-		if (atoi_only_unsigned(argv[i]) < 0)
+		if (atoi_only_unsigned(argv[i]) <= 0)
 			return (FALSE);
 		i++;
 	}

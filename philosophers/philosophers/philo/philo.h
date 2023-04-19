@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:13:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/18 21:21:16 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/19 23:24:36 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 # define TRUE 1
 # define FALSE 0
-# define USAGE_MESSAGE "Usage: ./philo number_of_philosophers time_to_die \
-time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
+# define USAGE1 "Usage: ./philo number_of_philosophers time_to_die time_to_eat"
+# define USAGE2 " time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 
 typedef struct s_args
 {
@@ -53,8 +53,7 @@ typedef struct s_philo
 	long long		philo_time_last_eat;
 }	t_philo;
 
-void		philo_print(t_philo *philo, char *str);
-void		philo_sleep(long long wait_time, t_philo *philo);
+int			check_philo_dead(t_philo *philo);
 long long	get_current_time(void);
 int			atoi_only_unsigned(char *n);
 int			valid_input(char **argv);

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:11:22 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/18 20:39:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/19 22:49:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_struct_philo(t_philo **philos, t_share *share, t_args args)
 		(*philos)[i].share = share;
 		(*philos)[i].fork_lock[0] = &(share->fork_locks[i]);
 		if (args.philo_num == 1)
-			(*philos)[i].fork_lock[1] = 0;
+			(*philos)[i].fork_lock[1] = &(share->fork_locks[i]);
 		else
 			(*philos)[i].fork_lock[1] = \
 			&(share->fork_locks[(i + 1) % args.philo_num]);
