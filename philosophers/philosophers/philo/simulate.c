@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/19 23:45:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/19 23:58:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ static int	_philo_sleep(long long wait_time, t_philo *philo)
 		usleep(500);
 	}
 	return (TRUE);
+}
+
+void	*died_lonely(t_philo *philo)
+{
+	pthread_mutex_lock(philo->fork_lock[0]);
+	_philo_print(philo, "has taken a fork");
+	_philo_sleep(philo->share->args.philo_time_die, philo);
+	_philo_print(philo, "died");
+	pthread_mutex_unlock(philo->fork_lock[0]);
+	return ((void *)0);
 }
 
 static int	_eating(t_philo *philo)
@@ -70,7 +80,8 @@ static void	*_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	philo->philo_time_last_eat = get_current_time();
-	// should take only one philo
+	if (philo->share->args.philo_num == 1)
+		return (died_lonely(philo));
 	if (philo->philo_id & 1)
 	{
 		_philo_print(philo, "is thinking");
