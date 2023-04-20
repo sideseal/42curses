@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:14:02 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/19 23:24:48 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/20 18:33:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	_abort(char *string, t_share *share, t_philo **philos)
 {
+	free(share->forks);
 	free(share->fork_locks);
 	free(*philos);
 	printf("\x1b[31m" "Abort: " "\x1b[0m");
@@ -45,6 +46,7 @@ int	main(int argc, char **argv)
 	if (simulate(philos, &share) == FALSE)
 		return (_abort("execute simulation failed", &share, &philos));
 	clear_all_mutex(&share);
+	free(share.forks);
 	free(share.fork_locks);
 	free(philos);
 	return (0);

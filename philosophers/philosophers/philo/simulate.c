@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/19 23:58:59 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/20 19:37:25 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,67 @@ void	*died_lonely(t_philo *philo)
 	return ((void *)0);
 }
 
+int	pick_up_forks(t_philo *philo)
+{
+	int	take;
+	int	fork;
+
+	take = 0;
+	while (1)
+	{
+		pthread_mutex_lock(&philo->share->share_lock);
+		fork = philo->share->forks[0];
+		pthread_mutex_unlock(&philo->share->share_lock);
+		if (fork == 0)
+		{
+			pthread_mutex_lock(philo->fork_lock[0]);
+			philo->share->forks[0] = 1;
+			_philo_print(philo, "has taken a fork");
+			take = 1;
+		}
+		if (take == 1)
+			break ;
+		if (check_philo_dead(philo) == TRUE)
+		{
+			pthread_mutex_unlock(philo->fork_lock[0]);
+			return (FALSE);
+		}
+		usleep(100);
+	}
+	take = 0;
+	while (1)
+	{
+		pthread_mutex_lock(&philo->share->share_lock);
+		fork = philo->share->forks[1];
+		pthread_mutex_unlock(&philo->share->share_lock);
+		if (fork == 0)
+		{
+			pthread_mutex_lock(philo->fork_lock[1]);
+			philo->share->forks[1] = 1;
+			_philo_print(philo, "has taken a fork");
+			take = 1;
+		}
+		if (take == 1)
+			break ;
+		if (check_philo_dead(philo) == TRUE)
+		{
+			pthread_mutex_unlock(philo->fork_lock[0]);
+			pthread_mutex_unlock(philo->fork_lock[1]);
+			return (FALSE);
+		}
+		usleep(100);
+	}
+	return (TRUE);
+}
+
 static int	_eating(t_philo *philo)
 {
-	pthread_mutex_lock(philo->fork_lock[0]);
-	_philo_print(philo, "has taken a fork");
-	pthread_mutex_lock(philo->fork_lock[1]);
-	_philo_print(philo, "has taken a fork");
+	if (pick_up_forks(philo) == FALSE)
+		return (FALSE);
+//	pthread_mutex_lock(philo->fork_lock[0]);
+//	_philo_print(philo, "has taken a fork");
+//	pthread_mutex_lock(philo->fork_lock[1]);
+//	_philo_print(philo, "has taken a fork");
 	if (check_philo_dead(philo) == TRUE)
 	{
 		pthread_mutex_unlock(philo->fork_lock[1]);
@@ -69,7 +124,9 @@ static int	_eating(t_philo *philo)
 		pthread_mutex_unlock(philo->fork_lock[0]);
 		return (FALSE);
 	}
+	philo->share->forks[1] = 0;
 	pthread_mutex_unlock(philo->fork_lock[1]);
+	philo->share->forks[0] = 0;
 	pthread_mutex_unlock(philo->fork_lock[0]);
 	return (TRUE);
 }
@@ -95,7 +152,7 @@ static void	*_routine(void *arg)
 		if (_philo_sleep(philo->share->args.philo_time_sleep, philo) == FALSE)
 			break ;
 		_philo_print(philo, "is thinking");
-		usleep(100);
+		usleep(500);
 	}
 	return ((void *)0);
 }

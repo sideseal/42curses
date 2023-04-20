@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:11:22 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/19 22:49:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/20 18:29:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,19 @@ void	init_struct_philo(t_philo **philos, t_share *share, t_args args)
 	while (i < args.philo_num)
 	{
 		(*philos)[i].share = share;
+		(*philos)[i].forks[0] = &(share->forks[i]);
 		(*philos)[i].fork_lock[0] = &(share->fork_locks[i]);
 		if (args.philo_num == 1)
+		{
+			(*philos)[i].forks[1] = &(share->forks[i]);
 			(*philos)[i].fork_lock[1] = &(share->fork_locks[i]);
+		}
 		else
+		{
+			(*philos)[i].forks[1] = &(share->forks[(i + 1) % args.philo_num]);
 			(*philos)[i].fork_lock[1] = \
 			&(share->fork_locks[(i + 1) % args.philo_num]);
+		}
 		(*philos)[i].philo_thread = 0;
 		(*philos)[i].philo_id = i + 1;
 		(*philos)[i].philo_count_eat = args.philo_must_eat;
@@ -74,12 +81,15 @@ int	init_all_mutex(t_share *share, int philo_num)
 int	init_all_malloc(t_share *share, t_philo **philos, int philo_num)
 {
 	*philos = 0;
+	share->forks = 0;
 	share->fork_locks = 0;
 	*philos = malloc(sizeof(t_philo) * philo_num);
+	share->forks = malloc(sizeof(int) * philo_num);
 	share->fork_locks = malloc(sizeof(pthread_mutex_t) * philo_num);
 	if (*philos == 0 || share->fork_locks == 0)
 		return (FALSE);
 	if (!memset(*philos, 0, sizeof(t_philo) * philo_num) \
+		|| !memset(share->forks, 0, sizeof(int) * philo_num) \
 		|| !memset(share->fork_locks, 0, sizeof(pthread_mutex_t) * philo_num))
 		return (FALSE);
 	return (TRUE);

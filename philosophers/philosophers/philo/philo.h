@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:13:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/19 23:24:36 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/20 18:47:12 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_args
 typedef struct s_share
 {
 	t_args			args;
+	int				*forks;
 	pthread_mutex_t	*fork_locks;
 	pthread_mutex_t	share_lock;
 	int				stop;
@@ -46,6 +47,7 @@ typedef struct s_share
 typedef struct s_philo
 {
 	t_share			*share;
+	int				*forks[2];
 	pthread_mutex_t	*fork_lock[2];
 	pthread_t		philo_thread;
 	int				philo_id;
