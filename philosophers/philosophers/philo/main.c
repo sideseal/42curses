@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:14:02 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/20 18:33:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 01:12:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 	t_share	share;
 	t_philo	*philos;
 
-	//atexit(CHECK_LEAK);
+//	atexit(CHECK_LEAK);
 	if (argc < 5 || argc > 6 || valid_input(argv) == FALSE)
 		return (printf(USAGE1 USAGE2) * 0 + 1);
 	init_struct_args(&args, argv);
