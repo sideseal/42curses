@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:11:22 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/20 18:29:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 21:22:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	init_struct_philo(t_philo **philos, t_share *share, t_args args)
 {
 	int	i;
 
-	i = 0;
-	while (i < args.philo_num)
+	i = -1;
+	while (++i < args.philo_num)
 	{
 		(*philos)[i].share = share;
 		(*philos)[i].forks[0] = &(share->forks[i]);
@@ -58,7 +58,7 @@ void	init_struct_philo(t_philo **philos, t_share *share, t_args args)
 		(*philos)[i].philo_id = i + 1;
 		(*philos)[i].philo_count_eat = args.philo_must_eat;
 		(*philos)[i].philo_time_last_eat = 0;
-		i++;
+		(*philos)[i].error = FALSE;
 	}
 }
 

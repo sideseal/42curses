@@ -6,40 +6,46 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 19:05:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 22:12:29 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	pick_up_fork(t_philo *philo, int order)
+static int	_pick_up_fork(t_philo *philo, int order)
 {
 	int			take;
 	long long	last_eat;
+	long long	time_die;
 
 	take = FALSE;
 	last_eat = philo->philo_time_last_eat;
-	while (get_current_time() - last_eat < philo->share->args.philo_time_die)
+	time_die = philo->share->args.philo_time_die;
+	while (get_current_time(philo) - last_eat < time_die)
 	{
-		pthread_mutex_lock(philo->fork_lock[order]);
+		lock(philo->fork_lock[order], philo);
 		if (*(philo->forks[order]) == 0)
 		{
 			*(philo->forks[order]) = 1;
 			take = TRUE;
 		}
-		pthread_mutex_unlock(philo->fork_lock[order]);
+		unlock(philo->fork_lock[order], philo);
 		if (take == TRUE)
 			return (TRUE);
-		usleep(100);
+		if (usleep(100) < 0)
+		{
+			philo->error = TRUE;
+			return (FALSE);
+		}
 	}
 	return (FALSE);
 }
 
-void	put_down_fork(t_philo *philo, int order)
+static void	_put_down_fork(t_philo *philo, int order)
 {
-	pthread_mutex_lock(philo->fork_lock[order]);
+	lock(philo->fork_lock[order], philo);
 	*(philo->forks[order]) = 0;
-	pthread_mutex_unlock(philo->fork_lock[order]);
+	unlock(philo->fork_lock[order], philo);
 }
 
 static int	_eating(t_philo *philo)
@@ -47,22 +53,22 @@ static int	_eating(t_philo *philo)
 	int	eating;
 
 	eating = FALSE;
-	if (pick_up_fork(philo, 0) == TRUE)
+	if (_pick_up_fork(philo, 0) == TRUE)
 	{
 		philo_print(philo, "has taken a fork");
-		if (pick_up_fork(philo, 1) == TRUE)
+		if (_pick_up_fork(philo, 1) == TRUE)
 		{
 			philo_print(philo, "has taken a fork");
-			philo->philo_time_last_eat = get_current_time();
-			philo_print(philo, "is eating");
 			eating = TRUE;
+			philo->philo_time_last_eat = get_current_time(philo);
+			philo_print(philo, "is eating");
 			if (philo_sleep(philo->share->args.philo_time_eat, philo) == FALSE)
 				eating = FALSE;
-			put_down_fork(philo, 1);
+			_put_down_fork(philo, 1);
 		}
 		else
 			philo_dead(philo);
-		put_down_fork(philo, 0);
+		_put_down_fork(philo, 0);
 	}
 	else
 		philo_dead(philo);
@@ -74,15 +80,15 @@ static void	*_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&(philo->share->share_lock));
-	pthread_mutex_unlock(&(philo->share->share_lock));
-	philo->philo_time_last_eat = get_current_time();
+	lock(&(philo->share->share_lock), philo);
+	unlock(&(philo->share->share_lock), philo);
+	philo->philo_time_last_eat = get_current_time(philo);
 	if (philo->philo_id & 1)
 	{
 		philo_print(philo, "is thinking");
 		philo_sleep(philo->share->args.philo_time_eat, philo);
 	}
-	while (philo->philo_count_eat-- != 0)
+	while (philo->philo_count_eat-- != 0 && philo->error != TRUE)
 	{
 		if (_eating(philo) == FALSE)
 			break ;
@@ -90,32 +96,36 @@ static void	*_routine(void *arg)
 		if (philo_sleep(philo->share->args.philo_time_sleep, philo) == FALSE)
 			break ;
 		philo_print(philo, "is thinking");
-		usleep(500);
+		if (usleep(500) < 0)
+			philo->error = TRUE;
 	}
-	return ((void *)0);
+	return ((void *)&(philo->error));
 }
 
 int	simulate(t_philo *philos, t_share *share)
 {
-	int	i;
+	int		i;
+	int		flag;
+	void	*retval;
 
-	pthread_mutex_lock(&(share->share_lock));
-	i = 0;
-	while (i < share->args.philo_num)
+	lock(&(share->share_lock), 0);
+	i = -1;
+	while (++i < share->args.philo_num)
 	{
 		if (pthread_create(&(philos[i].philo_thread), 0, _routine, \
 			(void *)&(philos[i])) != 0)
 			return (clear_and_detach_all_thread(philos, share));
-		i++;
 	}
-	share->philo_start_time = get_current_time();
-	pthread_mutex_unlock(&(share->share_lock));
-	i = 0;
-	while (i < share->args.philo_num)
+	share->philo_start_time = get_current_time(0);
+	unlock(&(share->share_lock), 0);
+	flag = TRUE;
+	i = -1;
+	while (++i < share->args.philo_num)
 	{
-		if (pthread_join(philos[i].philo_thread, 0) != 0)
+		if (pthread_join(philos[i].philo_thread, &retval) != 0)
 			return (clear_and_detach_all_thread(philos, share));
-		i++;
+		if (*(int *)retval == TRUE)
+			flag = FALSE;
 	}
-	return (TRUE);
+	return (flag);
 }

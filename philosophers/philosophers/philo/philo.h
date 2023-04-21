@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:13:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 18:27:19 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 21:19:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,14 @@ typedef struct s_philo
 	int				philo_id;
 	int				philo_count_eat;
 	long long		philo_time_last_eat;
+	int				error;
 }	t_philo;
 
 void		philo_print(t_philo *philo, char *str);
 int			philo_sleep(long long wait_time, t_philo *philo);
 void		philo_dead(t_philo *philo);
 int			check_philo_dead(t_philo *philo);
-long long	get_current_time(void);
+long long	get_current_time(t_philo *philo);
 
 int			clear_mutex_array(pthread_mutex_t *mutex_array, int index);
 int			clear_all_mutex(t_share *share);
@@ -71,6 +72,8 @@ void		init_struct_philo(t_philo **philos, t_share *share, t_args args);
 int			init_all_mutex(t_share *share, int philo_num);
 int			init_all_malloc(t_share *share, t_philo **philos, int philo_num);
 
+void		lock(pthread_mutex_t *mutex, t_philo *philo);
+void		unlock(pthread_mutex_t *mutex, t_philo *philo);
 int			atoi_only_unsigned(char *n);
 int			valid_input(char **argv);
 

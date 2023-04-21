@@ -6,11 +6,29 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 17:06:56 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 17:07:04 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 21:07:47 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	lock(pthread_mutex_t *mutex, t_philo *philo)
+{
+	if (pthread_mutex_lock(mutex) != 0)
+	{
+		if (philo != 0)
+			philo->error = TRUE;
+	}
+}
+
+void	unlock(pthread_mutex_t *mutex, t_philo *philo)
+{
+	if (pthread_mutex_unlock(mutex) != 0)
+	{
+		if (philo != 0)
+			philo->error = TRUE;
+	}
+}
 
 int	atoi_only_unsigned(char *n)
 {
