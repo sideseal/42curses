@@ -6,14 +6,16 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:12:34 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/21 00:57:26 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/21 19:25:35 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-#CFLAGS += -fsanitize=thread -g
+ifdef CHECK_TSAN
+	CFLAGS += -fsanitize=thread -g
+endif
 DFLAGS = -MMD
 RM = rm
 RMFLAGS = -rf
@@ -24,7 +26,8 @@ SRCS = main.c \
 	   init.c \
 	   clear.c \
 	   utils.c \
-	   simulate.c \
+	   validate.c \
+	   simulate.c
 
 OBJS = $(addprefix $(BLDDIR), $(patsubst %.c, %.o, $(SRCS)))
 DEPS = $(OBJS:.o=.d)
@@ -43,6 +46,9 @@ $(BLDDIR):
 .PHONY: all clean fclean re
 
 all: $(NAME)
+
+check: fclean
+	@make $(NAME) CHECK_TSAN=1
 
 clean:
 	$(RM) $(RMFLAGS) $(BLDDIR)
