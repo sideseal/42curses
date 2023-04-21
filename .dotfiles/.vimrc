@@ -146,8 +146,8 @@ noremap <leader>6 6gt
 noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
-noremap <leader>h :tabmove -1
-noremap <leader>l :tabmove +1
+noremap <leader>h :tabmove -1<CR>
+noremap <leader>l :tabmove +1<CR>
 noremap <leader>0 :tablast<CR>
 
 " let mapleader = "w"
@@ -216,7 +216,6 @@ let g:markdown_fenced_languages = ['html', 'python', 'c', 'js=javascript', 'sh=b
 hi link markdownItalic Normal
 hi link markdownError Normal
 set maxmempattern=5000
-
 
 autocmd BufWritePre ~/.vimrc :1,10s/^\" Last Modified: \zs.*$/\=strftime('%Y-%m-%d %H:%M:%S')/
 
