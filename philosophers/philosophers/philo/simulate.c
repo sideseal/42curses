@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 22:12:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 23:22:12 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ static void	*_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	lock(&(philo->share->share_lock), philo);
-	unlock(&(philo->share->share_lock), philo);
 	philo->philo_time_last_eat = get_current_time(philo);
 	if (philo->philo_id & 1)
 	{

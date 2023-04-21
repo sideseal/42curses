@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:25:38 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 21:42:40 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/21 22:40:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_philo_dead(t_philo *philo)
 		return (TRUE);
 	last_eat = philo->philo_time_last_eat;
 	time_die = philo->share->args.philo_time_die;
-	if (get_current_time(philo) - last_eat > time_die)
+	if (get_current_time(philo) - last_eat >= time_die)
 	{
 		philo_dead(philo);
 		return (TRUE);
