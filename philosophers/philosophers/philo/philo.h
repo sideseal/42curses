@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:13:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 23:00:32 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/22 20:45:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_philo
 void		philo_print(t_philo *philo, char *str);
 int			philo_sleep(long long wait_time, t_philo *philo);
 void		philo_dead(t_philo *philo);
-int			check_philo_dead(t_philo *philo);
 long long	get_current_time(t_philo *philo);
 
 int			clear_mutex_array(pthread_mutex_t *mutex_array, int index);
