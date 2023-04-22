@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/22 21:59:35 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/23 03:32:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	_pick_up_fork(t_philo *philo, int order)
 		unlock(philo->fork_lock[order], philo);
 		if (take == TRUE)
 			return (TRUE);
-		if (usleep(100) < 0)
+		if (usleep(10) < 0)
 		{
 			philo->error = TRUE;
 			return (FALSE);
@@ -44,8 +44,10 @@ static int	_pick_up_fork(t_philo *philo, int order)
 static void	_put_down_fork(t_philo *philo, int order)
 {
 	lock(philo->fork_lock[order], philo);
-	*(philo->forks[order]) = 0;
+	if (*(philo->forks[order]) == 1)
+		*(philo->forks[order]) = 0;
 	unlock(philo->fork_lock[order], philo);
+	usleep(60);
 }
 
 static int	_eating(t_philo *philo)
@@ -80,7 +82,9 @@ static void	*_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	philo->philo_time_last_eat = get_current_time(philo);
+	lock(&(philo->share->share_lock), philo);
+	philo->philo_time_last_eat = philo->share->philo_start_time;
+	unlock(&(philo->share->share_lock), philo);
 	if (philo->philo_id & 1)
 	{
 		philo_print(philo, "is thinking");
@@ -94,8 +98,7 @@ static void	*_routine(void *arg)
 		if (philo_sleep(philo->share->args.philo_time_sleep, philo) == FALSE)
 			break ;
 		philo_print(philo, "is thinking");
-		if (usleep(500) < 0)
-			philo->error = TRUE;
+		philo_sleep(philo->share->args.philo_time_eat, philo);
 	}
 	return ((void *)&(philo->error));
 }
@@ -125,5 +128,6 @@ int	simulate(t_philo *philos, t_share *share)
 		if (*(int *)retval == TRUE)
 			flag = FALSE;
 	}
+	// clear all mutex
 	return (flag);
 }
