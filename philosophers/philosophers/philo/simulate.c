@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 23:22:12 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/22 21:59:35 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	simulate(t_philo *philos, t_share *share)
 			(void *)&(philos[i])) != 0)
 			return (clear_and_detach_all_thread(philos, share));
 	}
-	share->philo_start_time = get_current_time(0);
+	share->philo_start_time = get_current_time(0); // need exception
 	unlock(&(share->share_lock), 0);
 	flag = TRUE;
 	i = -1;
