@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:25:38 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/23 03:30:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/23 14:50:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	philo_sleep(long long wait_time, t_philo *philo)
 	{
 		if (_check_philo_dead(philo) == TRUE)
 			return (FALSE);
-		if (usleep(120) < 0)
+		if (usleep(500) < 0)
 		{
 			philo->error = TRUE;
 			return (FALSE);

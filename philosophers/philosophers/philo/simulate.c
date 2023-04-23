@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/23 03:32:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/23 15:12:15 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	_pick_up_fork(t_philo *philo, int order)
 		unlock(philo->fork_lock[order], philo);
 		if (take == TRUE)
 			return (TRUE);
-		if (usleep(10) < 0)
+		if (usleep(100) < 0)
 		{
 			philo->error = TRUE;
 			return (FALSE);
@@ -44,10 +44,8 @@ static int	_pick_up_fork(t_philo *philo, int order)
 static void	_put_down_fork(t_philo *philo, int order)
 {
 	lock(philo->fork_lock[order], philo);
-	if (*(philo->forks[order]) == 1)
-		*(philo->forks[order]) = 0;
+	*(philo->forks[order]) = 0;
 	unlock(philo->fork_lock[order], philo);
-	usleep(60);
 }
 
 static int	_eating(t_philo *philo)
@@ -85,12 +83,14 @@ static void	*_routine(void *arg)
 	lock(&(philo->share->share_lock), philo);
 	philo->philo_time_last_eat = philo->share->philo_start_time;
 	unlock(&(philo->share->share_lock), philo);
-	if (philo->philo_id & 1)
+	if (philo->philo_time_last_eat < 0)
+		philo->error = TRUE;
+	if (philo->error != TRUE && philo->philo_id & 1)
 	{
 		philo_print(philo, "is thinking");
 		philo_sleep(philo->share->args.philo_time_eat, philo);
 	}
-	while (philo->philo_count_eat-- != 0 && philo->error != TRUE)
+	while (philo->error != TRUE && philo->philo_count_eat-- != 0)
 	{
 		if (_eating(philo) == FALSE)
 			break ;
@@ -98,7 +98,8 @@ static void	*_routine(void *arg)
 		if (philo_sleep(philo->share->args.philo_time_sleep, philo) == FALSE)
 			break ;
 		philo_print(philo, "is thinking");
-		philo_sleep(philo->share->args.philo_time_eat, philo);
+		if (philo->share->args.philo_num & 1)
+			philo_sleep(philo->share->args.philo_time_eat, philo);
 	}
 	return ((void *)&(philo->error));
 }
@@ -106,10 +107,11 @@ static void	*_routine(void *arg)
 int	simulate(t_philo *philos, t_share *share)
 {
 	int		i;
-	int		flag;
-	void	*retval;
+	int		status;
+	void	*error;
 
 	lock(&(share->share_lock), 0);
+	share->philo_start_time = get_current_time(0);
 	i = -1;
 	while (++i < share->args.philo_num)
 	{
@@ -117,17 +119,16 @@ int	simulate(t_philo *philos, t_share *share)
 			(void *)&(philos[i])) != 0)
 			return (clear_and_detach_all_thread(philos, share));
 	}
-	share->philo_start_time = get_current_time(0); // need exception
 	unlock(&(share->share_lock), 0);
-	flag = TRUE;
+	status = TRUE;
 	i = -1;
 	while (++i < share->args.philo_num)
 	{
-		if (pthread_join(philos[i].philo_thread, &retval) != 0)
+		if (pthread_join(philos[i].philo_thread, &error) != 0)
 			return (clear_and_detach_all_thread(philos, share));
-		if (*(int *)retval == TRUE)
-			flag = FALSE;
+		if (*(int *)error == TRUE)
+			status = FALSE;
 	}
-	// clear all mutex
-	return (flag);
+	clear_all_mutex(share);
+	return (status);
 }

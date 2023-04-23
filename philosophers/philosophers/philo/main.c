@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:14:02 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 19:28:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/23 15:20:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	main(int argc, char **argv)
 	init_struct_philo(&philos, &share, args);
 	if (simulate(philos, &share) == FALSE)
 		return (_abort("execute simulation failed", &share, &philos));
-	clear_all_mutex(&share);
 	free(share.forks);
 	free(share.fork_locks);
 	free(philos);
