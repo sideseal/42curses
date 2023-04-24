@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 20:25:23 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/23 15:12:15 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/24 15:24:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static int	_eating(t_philo *philo)
 		{
 			philo_print(philo, "has taken a fork");
 			eating = TRUE;
+			philo->philo_count_eat--;
 			philo->philo_time_last_eat = get_current_time(philo);
 			philo_print(philo, "is eating");
 			if (philo_sleep(philo->share->args.philo_time_eat, philo) == FALSE)
@@ -90,9 +91,9 @@ static void	*_routine(void *arg)
 		philo_print(philo, "is thinking");
 		philo_sleep(philo->share->args.philo_time_eat, philo);
 	}
-	while (philo->error != TRUE && philo->philo_count_eat-- != 0)
+	while (philo->error != TRUE)
 	{
-		if (_eating(philo) == FALSE)
+		if (_eating(philo) == FALSE || philo->philo_count_eat == 0)
 			break ;
 		philo_print(philo, "is sleeping");
 		if (philo_sleep(philo->share->args.philo_time_sleep, philo) == FALSE)

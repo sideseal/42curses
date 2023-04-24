@@ -6,16 +6,14 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:12:34 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/21 19:25:35 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/24 15:39:00 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-ifdef CHECK_TSAN
-	CFLAGS += -fsanitize=thread -g
-endif
+CFLAGS += # -fsanitize=thread -g
 DFLAGS = -MMD
 RM = rm
 RMFLAGS = -rf
