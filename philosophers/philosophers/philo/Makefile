@@ -6,12 +6,12 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:12:34 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/24 15:39:00 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/24 15:58:20 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += # -fsanitize=thread -g
 DFLAGS = -MMD
@@ -44,9 +44,6 @@ $(BLDDIR):
 .PHONY: all clean fclean re
 
 all: $(NAME)
-
-check: fclean
-	@make $(NAME) CHECK_TSAN=1
 
 clean:
 	$(RM) $(RMFLAGS) $(BLDDIR)

@@ -147,7 +147,7 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>h :tabmove -1<CR>
-noremap <leader>l :tabmove +1<CR>
+nnoremap <leader>l :tabmove +1<CR>
 noremap <leader>0 :tablast<CR>
 
 " let mapleader = "w"
