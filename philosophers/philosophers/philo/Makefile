@@ -6,14 +6,14 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:12:34 by gychoi            #+#    #+#              #
-#    Updated: 2023/04/24 15:58:20 by gychoi           ###   ########.fr        #
+#    Updated: 2023/04/25 18:45:50 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += # -fsanitize=thread -g
+CFLAGS += # -fsanitize=undefined -fsanitize=thread -g
 DFLAGS = -MMD
 RM = rm
 RMFLAGS = -rf

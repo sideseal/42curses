@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:11:22 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/21 23:25:00 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/04/25 18:45:19 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	init_all_malloc(t_share *share, t_philo **philos, int philo_num)
 	*philos = malloc(sizeof(t_philo) * philo_num);
 	share->forks = malloc(sizeof(int) * philo_num);
 	share->fork_locks = malloc(sizeof(pthread_mutex_t) * philo_num);
-	if (*philos == 0 || share->fork_locks == 0)
+	if (*philos == 0 || share->forks == 0 || share->fork_locks == 0)
 		return (FALSE);
 	if (!memset(*philos, 0, sizeof(t_philo) * philo_num) \
 		|| !memset(share->forks, 0, sizeof(int) * philo_num) \
