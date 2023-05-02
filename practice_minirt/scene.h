@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 20:23:30 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/02 21:50:18 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/02 21:11:22 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/02 21:51:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#ifndef SCENE_H
+# define SCENE_H
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
+t_canvas	canvas(int width, int height);
+t_camera	camera(t_canvas *canvas, t_vec origin);
 
-	dst = data->addr + (y * data->length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
-int	write_color(int t, t_vec *pixel_color)
-{
-	return (t << 24 | (int)(255 * pixel_color->x) << 16 | (int)(255 * pixel_color->y) << 8 | (int)(255 * pixel_color->z));
-}
+#endif

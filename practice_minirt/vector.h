@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 20:23:30 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/02 21:50:18 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/02 20:14:45 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/02 20:49:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#ifndef VECTOR_H
+# define VECTOR_H
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
+t_vec	vec(double x, double y, double z);
+t_vec	vec_add(t_vec v1, t_vec v2);
+t_vec	vec_sub(t_vec v1, t_vec v2);
+t_vec	vec_mul(t_vec v1, double t);
+t_vec	vec_div(t_vec v1, double t);
+double	vec_len(t_vec v1);
+double	vec_dot(t_vec v1, t_vec v2);
+t_vec	vec_cross(t_vec v1, t_vec v2);
+t_vec	vec_unit(t_vec v1);
 
-	dst = data->addr + (y * data->length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
-int	write_color(int t, t_vec *pixel_color)
-{
-	return (t << 24 | (int)(255 * pixel_color->x) << 16 | (int)(255 * pixel_color->y) << 8 | (int)(255 * pixel_color->z));
-}
+#endif

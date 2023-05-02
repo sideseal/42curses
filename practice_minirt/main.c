@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:42:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/04/27 20:40:58 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/02 19:51:01 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	main(void)
 	t_data	image;
 
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 500, 500, "Hello");
-	image.img = mlx_new_image(vars.mlx, 500, 500);
+	vars.win = mlx_new_window(vars.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "test");
+	image.img = mlx_new_image(vars.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	image.addr = mlx_get_data_addr(image.img, &image.bpp, &image.length, &image.endian);
 	for (int i = 0; i < 500; i++)
 	{
