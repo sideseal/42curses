@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 19:15:16 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/02 21:51:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/04 17:58:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 
 # define SCREEN_WIDTH 500
 # define SCREEN_HEIGHT 500
+# define TRUE 1
+# define FALSE 0
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int		write_color(int t, t_vec *pixel_color);
+int		write_color(int t, t_color3 pixel_color);
 
 int		key_hook(int keycode, t_vars *vars);
 int		exit_hook(void);

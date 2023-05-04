@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/02 21:00:36 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/04 17:54:10 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,10 @@ SRCS = main.c \
 	   draw.c \
 	   hooks.c \
 	   ray.c \
+	   hit.c \
+	   scene.c \
 	   vector.c \
+	   object.c \
 
 OBJDIR = ./objs/
 OBJS = $(addprefix $(OBJDIR), $(patsubst %.c, %.o, $(SRCS)))
@@ -36,7 +39,7 @@ $(NAME): $(OBJS) | $(MLX)
 	$(CC) $(CFLAGS) $(MLXLIB) $(INCLUDE) $(OBJS) -o $@
 	@install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
 
-$(OBJDIR)%.o: %.c $(OBJDIR)
+$(OBJDIR)%.o: %.c  | $(OBJDIR)
 	$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDE) -c $< -o $@
 
 $(MLX):

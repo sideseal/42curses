@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 20:23:30 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/04 16:44:30 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/04 17:50:01 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/04 18:01:07 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+t_sphere	sphere(t_point3 center, double radius)
 {
-	char	*dst;
+	t_sphere	sphere;
 
-	dst = data->addr + (y * data->length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
-
-
-// t : transparency
-int	write_color(int t, t_color3 pixel_color)
-{
-	return (t << 24 | (int)(255 * pixel_color.x) << 16 | (int)(255 * pixel_color.y) << 8 | (int)(255 * pixel_color.z));
+	sphere.center = center;
+	sphere.radius = radius;
+	sphere.radius2 = radius * radius;
+	return (sphere);
 }

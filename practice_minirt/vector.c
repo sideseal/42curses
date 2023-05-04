@@ -6,78 +6,129 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:50:12 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/02 21:50:40 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/04 17:54:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-t_vec	vec(double x, double y, double z)
-{
-	t_vec	ret;
+// d를 scalar로 바꾸자.
 
-	ret.x = x;
-	ret.y = y;
-	ret.z = z;
-	return (ret);
+t_vec3	vec3(double x, double y, double z)
+{
+	t_vec3	vec;
+
+	vec.x = x;
+	vec.y = y;
+	vec.z = z;
+	return (vec);
 }
 
-t_vec	vec_add(t_vec v1, t_vec v2)
+t_point3	point3(double x, double y, double z)
 {
-	t_vec	ret;
+	t_point3	point;
 
-	ret.x = v1.x + v2.x;
-	ret.y = v1.y + v2.y;
-	ret.z = v1.z + v2.z;
-	return (ret);
+	point.x = x;
+	point.y = y;
+	point.z = z;
+	return (point);
 }
 
-t_vec	vec_sub(t_vec v1, t_vec v2)
+t_point3	color3(double r, double g, double b)
 {
-	t_vec	ret;
+	t_color3	color;
 
-	ret.x = v1.x - v2.x;
-	ret.y = v1.y - v2.y;
-	ret.z = v1.z - v2.z;
-	return (ret);
+	color.x = r;
+	color.y = g;
+	color.z = b;
+	return (color);
 }
 
-t_vec	vec_mul(t_vec v1, double t)
+void	vset(t_vec3 *vec, double x, double y, double z)
 {
-	t_vec	ret;
-
-	ret.x = v1.x * t;
-	ret.y = v1.y * t;
-	ret.z = v1.z * t;
-	return (ret);
+	vec->x = x;
+	vec->y = y;
+	vec->z = z;
 }
 
-t_vec	vec_div(t_vec v1, double t)
-{
-	t_vec	ret;
-
-	ret.x = v1.x * (1 / t);
-	ret.y = v1.y * (1 / t);
-	ret.z = v1.z * (1 / t);
-	return (ret);
-}
-
-double	vec_len(t_vec v1)
+// vlength2
+//double	vec_len_pow(t_vec3 vec)
+//{
+//	return (pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2));
+//}
+//
+double	vlen(t_vec3 vec)
 {
 	double	ret;
 
-	ret = pow(v1.x, 2.0) + pow(v1.y, 2.0) + pow(v1.z, 2.0);
+	ret = pow(vec.x, 2.0) + pow(vec.y, 2.0) + pow(vec.z, 2.0);
 	return (sqrt(ret));
 }
 
-double	vec_dot(t_vec v1, t_vec v2)
+t_vec3	vadd_v(t_vec3 ret, t_vec3 vec)
+{
+	ret.x += vec.x;
+	ret.y += vec.y;
+	ret.z += vec.z;
+	return (ret);
+}
+
+t_vec3	vadd_d(t_vec3 ret, double x, double y, double z)
+{
+	ret.x += x;
+	ret.y += y;
+	ret.z += z;
+	return (ret);
+}
+
+t_vec3	vsub_v(t_vec3 ret, t_vec3 vec)
+{
+	ret.x -= vec.x;
+	ret.y -= vec.y;
+	ret.z -= vec.z;
+	return (ret);
+}
+
+t_vec3	vsub_d(t_vec3 ret, double x, double y, double z)
+{
+	ret.x -= x;
+	ret.y -= y;
+	ret.z -= z;
+	return (ret);
+}
+
+t_vec3	vmul_v(t_vec3 ret, t_vec3 vec)
+{
+	ret.x *= vec.x;
+	ret.y *= vec.y;
+	ret.z *= vec.z;
+	return (ret);
+}
+
+t_vec3	vmul_d(t_vec3 ret, double t)
+{
+	ret.x *= t;
+	ret.y *= t;
+	ret.z *= t;
+	return (ret);
+}
+
+t_vec3	vdiv_d(t_vec3 ret, double t)
+{
+	ret.x *= (1 / t);
+	ret.y *= (1 / t);
+	ret.z *= (1 / t);
+	return (ret);
+}
+
+double	vdot(t_vec3 v1, t_vec3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
-t_vec	vec_cross(t_vec v1, t_vec v2)
+t_vec3	vcross(t_vec3 v1, t_vec3 v2)
 {
-	t_vec	ret;
+	t_vec3	ret;
 
 	ret.x = v1.y * v2.z + v1.z * v2.y;
 	ret.y = v1.z * v2.x + v1.x * v2.z;
@@ -85,21 +136,29 @@ t_vec	vec_cross(t_vec v1, t_vec v2)
 	return (ret);
 }
 
-t_vec	vec_unit(t_vec v1)
+t_vec3	vunit(t_vec3 ret)
 {
 	double	len;
-	double	ret_x;
-	double	ret_y;
-	double	ret_z;
 
-	len = vec_len(v1);
+	len = vlen(ret);
 	if (len == 0)
 	{
-		// error
+		printf("Error: division by zero\n");
 		exit(1);
 	}
-	ret_x = v1.x / len;
-	ret_y = v1.y / len;
-	ret_z = v1.z / len;
-	return (vec(ret_x, ret_y, ret_z));
+	ret.x /= len;
+	ret.y /= len;
+	ret.z /= len;
+	return (ret);
+}
+
+t_vec3	vmin(t_vec3 ret, t_vec3 vec)
+{
+	if (ret.x > vec.x)
+		ret.x = vec.x;
+	if (ret.y > vec.y)
+		ret.y = vec.y;
+	if (ret.z > vec.z)
+		ret.z = vec.z;
+	return (ret);
 }

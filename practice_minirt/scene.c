@@ -5,13 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/02 21:12:20 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/02 21:26:31 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/04 16:10:34 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/04 17:20:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
+// canvas가 왜 필요할까?
 t_canvas	canvas(int width, int height)
 {
 	t_canvas	canvas;
@@ -22,21 +23,27 @@ t_canvas	canvas(int width, int height)
 	return (canvas);
 }
 
-t_camera	camera(t_canvas canvas, t_point orig)
+t_camera	camera(t_canvas canvas, t_point3 origin)
 {
 	t_camera	cam;
 	double		focal_len;
-	double		viewport_height;
+	double		vp_height;
 
-	viewport_height = 2.0;
+	vp_height = 2.0;
 	focal_len = 1.0;
-	cam.orig = orig;
-	cam.viewport_h = viewport_height;
-	cam.viewport_w = viewport_height * canvas.aspect_ratio;
+	cam.origin = origin;
+	cam.vp_height = vp_height;
+	cam.vp_width = vp_height * canvas.aspect_ratio;
 	cam.focal_len = focal_len;
-	cam.horizontal = vec(cam.viewport_w, 0, 0);
-	cam.vertical = vec(0, cam.viewport_h, 0);
-	cam.left_bottom = cam.orig - cam.horizontal / 2 - cam.vertical / 2 - vec(0, 0, cam.focal_len);
-	cam.left_bottom = (t_point)vec_sub(vec_sub(vec_sub((t_vec)cam.orig, vec_div(cam.horizontal, 2)), vec_div(cam.vertical, 2)), vec(0, 0, cam.focal_len));
+	// changed
+	cam.horizontal = vec3(cam.vp_width, 0, 0);
+	cam.vertical = vec3(0, cam.vp_height, 0);
+	cam.left_bottom = \
+		vsub_v( \
+			vsub_v( \
+				vsub_v( \
+					cam.origin, vdiv_d(cam.horizontal, 2)), \
+				vdiv_d(cam.vertical, 2)), \
+			vec3(0, 0, focal_len));
 	return (cam);
 }
