@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 20:14:45 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/04 16:29:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:44:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_vec3		vec3(double x, double y, double z);
 t_point3	point3(double x, double y, double z);
 t_point3	color3(double r, double g, double b);
 void		vset(t_vec3 *vec, double x, double y, double z);
+double		vlen_pow(t_vec3 vec);
 double		vlen(t_vec3 vec);
 t_vec3		vadd_v(t_vec3 ret, t_vec3 vec);
 t_vec3		vadd_d(t_vec3 ret, double x, double y, double z);

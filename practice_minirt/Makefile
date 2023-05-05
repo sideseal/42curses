@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/04 17:54:10 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/05 21:17:54 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ MLXLIB = -L./mlx -lmlx -framework OpenGL -framework AppKit -Imlx
 MLX = $(MLXDIR)libmlx.a
 
 SRCS = main.c \
+	   utils.c \
 	   draw.c \
 	   hooks.c \
 	   ray.c \
@@ -28,6 +29,7 @@ SRCS = main.c \
 	   scene.c \
 	   vector.c \
 	   object.c \
+	   list.c \
 
 OBJDIR = ./objs/
 OBJS = $(addprefix $(OBJDIR), $(patsubst %.c, %.o, $(SRCS)))

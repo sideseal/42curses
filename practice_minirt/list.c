@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/02 21:11:22 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/05 20:26:48 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/05 20:24:43 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/05 20:26:22 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "header.h"
 
-t_canvas	canvas(int width, int height);
-t_camera	camera(t_canvas canvas, t_point3 origin);
-t_sphere	*sphere(t_point3 center, double radius);
-t_object	*object(t_object_type type, void *element);
-void		oadd(t_object **list, t_object *new);
-t_object	*olast(t_object *list);
+void	oadd(t_object **list, t_object *new)
+{
+	t_object	*cur;
 
-#endif
+	if (*list == NULL)
+	{
+		*list = new;
+		return ;
+	}
+	cur = *list;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = new;
+}
+
+t_object	*olast(t_object *list)
+{
+	if (list == NULL)
+		return (NULL);
+	while (list->next)
+		list = list->next;
+	return (list);
+}

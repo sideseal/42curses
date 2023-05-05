@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 19:15:16 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/04 17:58:41 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/05 21:53:14 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@
 # define TRUE 1
 # define FALSE 0
 
+double	clamp(double x, double min, double max);
+double	rand_num(int anti);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int		trgb_anti(t_color3 *color, int anti, int t);
 int		write_color(int t, t_color3 pixel_color);
 
 int		key_hook(int keycode, t_vars *vars);

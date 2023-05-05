@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 20:23:30 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/04 16:44:30 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/05 21:53:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,18 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+int	trgb_anti(t_color3 *color, int anti, int t)
+{
+	double	scale;
 
+	if (anti == 0)
+		anti = 1;
+	scale = 1 / (double)anti;
+	color->x = clamp((color->x * scale), 0, 0.999);
+	color->y = clamp((color->y * scale), 0, 0.999);
+	color->z = clamp((color->z * scale), 0, 0.999);
+	return (write_color(t, *color));
+}
 
 // t : transparency
 int	write_color(int t, t_color3 pixel_color)

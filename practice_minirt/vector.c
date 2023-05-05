@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:50:12 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/04 17:54:59 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/05 18:06:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void	vset(t_vec3 *vec, double x, double y, double z)
 }
 
 // vlength2
-//double	vec_len_pow(t_vec3 vec)
-//{
-//	return (pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2));
-//}
-//
+double	vlen_pow(t_vec3 vec)
+{
+	return (pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2));
+}
+
 double	vlen(t_vec3 vec)
 {
 	double	ret;
