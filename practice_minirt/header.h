@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 19:15:16 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/05 21:53:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/07 22:52:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 # include "ray.h"
 # include "scene.h"
 
-# define SCREEN_WIDTH 500
-# define SCREEN_HEIGHT 500
+# define SCREEN_WIDTH 400
+# define SCREEN_HEIGHT 300
 # define TRUE 1
 # define FALSE 0
+# define EPSILON 1e-6
+# define LUMEN 3
 
 double	clamp(double x, double min, double max);
 double	rand_num(int anti);

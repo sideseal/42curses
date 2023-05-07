@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:53:47 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/05 21:10:49 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/07 22:04:28 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ t_bool	hit_object(t_object *world, t_ray ray, t_hit_record *rec)
 
 	hit_result = FALSE;
 	if (world->type == SP)
-		hit_result = hit_sphere((t_sphere *)world->element, ray, rec);
+		hit_result = hit_sphere((t_object *)world, ray, rec);
 	return (hit_result);
 }
 
-t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec)
+t_bool	hit_sphere(t_object *sp_obj, t_ray ray, t_hit_record *rec)
 {
+	t_sphere	*sp;
 	t_vec3	oc;
 	double	a;
 	double	b;
@@ -60,6 +61,7 @@ t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec)
 	double	sqrtd;
 	double	root;
 
+	sp = sp_obj->element;
 	oc = vsub_v(ray.origin, sp->center);
 	a = vlen_pow(ray.direction);
 	b = vdot(oc, ray.direction);
@@ -81,5 +83,6 @@ t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec)
 	//set_face_normal(ray, rec);
 	rec->front_face = vdot(ray.direction, rec->normal) < 0;
 	rec->normal = (rec->front_face) ? rec->normal : vmul_d(rec->normal, -1);
+	rec->albedo = sp_obj->albedo;
 	return (TRUE);
 }

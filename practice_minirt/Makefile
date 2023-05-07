@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/05 21:17:54 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/07 22:10:48 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = main.c \
 	   ray.c \
 	   hit.c \
 	   scene.c \
+	   phong.c \
 	   vector.c \
 	   object.c \
 	   list.c \

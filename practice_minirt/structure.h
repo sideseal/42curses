@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:48:58 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/05 18:14:56 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/07 21:39:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 typedef int t_bool;
 typedef int t_object_type;
 # define SP 0
+# define LIGHT_POINT 1
 
 typedef struct s_vec3 t_vec3;
 typedef struct s_vec3 t_point3;
@@ -33,6 +34,7 @@ typedef struct s_object
 	t_object_type	type;
 	void			*element;
 	void			*next;
+	t_color3		albedo;
 }	t_object;
 
 typedef struct s_ray
@@ -81,6 +83,13 @@ typedef struct s_sphere
 	double		radius2;
 }	t_sphere;
 
+typedef struct s_light
+{
+	t_point3	origin;
+	t_color3	light_color;
+	double		bright_ratio;
+}	t_light;
+
 typedef struct s_hit_record
 {
 	t_point3	p;
@@ -89,6 +98,18 @@ typedef struct s_hit_record
 	double		tmax;
 	double		t;
 	t_bool		front_face;
+	t_color3	albedo;
 }	t_hit_record;
+
+typedef struct s_scene
+{
+	t_canvas		canvas;
+	t_camera		camera;
+	t_object		*world;
+	t_object		*light;
+	t_color3		ambient;
+	t_ray			ray;
+	t_hit_record	rec;
+}	t_scene;
 
 #endif

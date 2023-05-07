@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:00:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/05 20:55:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/07 22:51:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,25 @@ t_ray	ray_primary(t_camera cam, double u, double v)
 	return (ray);
 }
 
-t_color3	ray_color(t_ray ray, t_object *world)
+t_hit_record	record_init(void)
+{
+	t_hit_record	record;
+
+	record.tmin = EPSILON;
+	record.tmax = INFINITY;
+	return (record);
+}
+
+t_color3	ray_color(t_scene *scene)
 {
 	double			t;
 	t_vec3			n;
 	t_hit_record	rec;
 
-	rec.tmin = 0;
-	rec.tmax = INFINITY;
-	if (hit(world, ray, &rec))
-		return (vmul_d(vadd_v(rec.normal, color3(1, 1, 1)), 0.5));
-	t = 0.5 * (ray.direction.y + 1.0);
+	scene->rec = record_init();
+	if (hit(scene->world, scene->ray, &scene->rec))
+		return (phong_lighting(scene));
+	t = 0.5 * (scene->ray.direction.y + 1.0);
 	return (vadd_v \
 			(vmul_d(color3(1, 1, 1), 1.0 - t), vmul_d(color3(0.5, 0.7, 1.0), t) \
 			));
