@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pracrt.h                                           :+:      :+:    :+:   */
+/*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 22:07:41 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/11 22:53:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRACRT_H
-# define PRACRT_H
+#ifndef OBJECT_H
+# define OBJECT_H
 
-# include "mlx.h"
-# include "libft.h"
-# include "libvec.h"
-# include "structure.h"
-# include "object.h"
+typedef struct s_sphere
+{
+	t_point3	center;
+	double		radius;
+}	t_sphere;
 
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 600
-# define TRUE 1
-# define FALSE 0
-# define EPSILON 1e-6
+t_sphere	*sphere(t_point3 center, double radius);
 
 #endif

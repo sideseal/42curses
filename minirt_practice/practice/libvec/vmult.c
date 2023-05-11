@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pracrt.h                                           :+:      :+:    :+:   */
+/*   vmult.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:52:16 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/11 20:52:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRACRT_H
-# define PRACRT_H
+#include "libvec.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "libvec.h"
-# include "structure.h"
-# include "object.h"
-
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 600
-# define TRUE 1
-# define FALSE 0
-# define EPSILON 1e-6
-
-#endif
+t_vec3	vmult(t_vec3 ret, t_vec3 vec)
+{
+	ret.x *= vec.x;
+	ret.y *= vec.y;
+	ret.z *= vec.z;
+	return (ret);
+}

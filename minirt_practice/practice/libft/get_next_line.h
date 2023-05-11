@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pracrt.h                                           :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Created: 2022/08/12 16:24:36 by gychoi            #+#    #+#             */
+/*   Updated: 2022/12/13 15:45:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRACRT_H
-# define PRACRT_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include "mlx.h"
-# include "libft.h"
-# include "libvec.h"
-# include "structure.h"
-# include "object.h"
-
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <unistd.h>
+# include <stdlib.h>
 
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 600
-# define TRUE 1
-# define FALSE 0
-# define EPSILON 1e-6
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+char	*get_next_line(int fd);
+char	*gnl_strdup(char *s1);
+char	*gnl_strjoin(char *s1, char *s2);
+
+typedef struct s_gnl
+{
+	int				fd;
+	char			*backup;
+	struct s_gnl	*next;
+}	t_gnl;
+
+t_gnl	*gnl_lstset(t_gnl **head, int fd);
+t_gnl	*gnl_lstnew(int fd);
+void	*gnl_lstclear(t_gnl **node, int fd);
 
 #endif

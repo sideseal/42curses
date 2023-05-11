@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pracrt.h                                           :+:      :+:    :+:   */
+/*   vlen.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:49:01 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/11 20:49:50 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRACRT_H
-# define PRACRT_H
+#include "libvec.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "libvec.h"
-# include "structure.h"
-# include "object.h"
+double	vlen(t_vec3 vec)
+{
+	double	ret;
 
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
+	ret = pow(vec.x, 2.0) + pow(vec.y, 2.0) + pow(vec.z, 2.0);
+	return (sqrt(ret));
+}
 
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 600
-# define TRUE 1
-# define FALSE 0
-# define EPSILON 1e-6
-
-#endif
+double	vlen_pow(t_vec3 vec)
+{
+	return (pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2));
+}

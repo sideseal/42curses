@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pracrt.h                                           :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Created: 2022/09/08 15:11:57 by gychoi            #+#    #+#             */
+/*   Updated: 2022/09/13 13:35:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRACRT_H
-# define PRACRT_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-# include "mlx.h"
-# include "libft.h"
-# include "libvec.h"
-# include "structure.h"
-# include "object.h"
-
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <unistd.h>
+# include <stdarg.h>
 
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 600
-# define TRUE 1
-# define FALSE 0
-# define EPSILON 1e-6
+int	print_char(char c);
+int	print_string(char *str);
+int	print_address(void *p);
+int	print_number(int num, char *base, int type);
+int	ft_printf(const char *format, ...);
 
 #endif

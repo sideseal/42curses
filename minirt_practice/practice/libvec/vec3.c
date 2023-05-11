@@ -1,33 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pracrt.h                                           :+:      :+:    :+:   */
+/*   vec3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:45:50 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/11 20:47:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRACRT_H
-# define PRACRT_H
+#include "libvec.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "libvec.h"
-# include "structure.h"
-# include "object.h"
+t_vec3	vec3(double x, double y, double z)
+{
+	t_vec3	vec;
 
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
+	vec.x = x;
+	vec.y = y;
+	vec.z = z;
+	return (vec);
+}
 
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 600
-# define TRUE 1
-# define FALSE 0
-# define EPSILON 1e-6
+t_point3	point3(double x, double y, double z)
+{
+	t_point3	point;
 
-#endif
+	point.x = x;
+	point.y = y;
+	point.z = z;
+	return (point);
+}
+
+t_point3	color3(double r, double g, double b)
+{
+	t_color3	color;
+
+	color.x = r;
+	color.y = g;
+	color.z = b;
+	return (color);
+}

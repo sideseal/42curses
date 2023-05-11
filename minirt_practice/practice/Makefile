@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/09 16:58:33 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/11 22:54:21 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,20 +20,35 @@ MLXDIR = ./mlx/
 MLXLIB = -L./mlx -lmlx -framework OpenGL -framework AppKit -Imlx
 MLX = $(MLXDIR)libmlx.a
 
-SRCS = main.c \
+LFTDIR = ./libft/
+LFTLIB = -L./libft -lft
+LIBFT = $(LFTDIR)libft.a
+
+LVCDIR = ./libvec/
+LVCLIB = -L./libvec -lvec
+LIBVEC = $(LVCDIR)libvec.a
+
+SRCS = pracrt.c \
+	   object.c \
 
 OBJDIR = ./objs/
 OBJS = $(addprefix $(OBJDIR), $(patsubst %.c, %.o, $(SRCS)))
 DEPS = $(OBJS:.o=.d)
 
-INCLUDE = -I$(MLXDIR)
+INCLUDE = -I./ -I$(LFTDIR) -I$(LVCDIR) -I$(MLXDIR)
 
-$(NAME): $(OBJS) | $(MLX)
-	$(CC) $(CFLAGS) $(MLXLIB) $(INCLUDE) $(OBJS) -o $@
+$(NAME): $(OBJS) | $(LIBFT) $(LIBVEC) $(MLX)
+	$(CC) $(CFLAGS) $(MLXLIB) $(LFTLIB) $(LVCLIB) $(INCLUDE) $(OBJS) -o $@
 	@install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
 
 $(OBJDIR)%.o: %.c  | $(OBJDIR)
 	$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDE) -c $< -o $@
+
+$(LIBFT):
+	@make -C $(LFTDIR)
+
+$(LIBVEC):
+	@make -C $(LVCDIR)
 
 $(MLX):
 	@make -C $(MLXDIR)
@@ -48,10 +63,14 @@ $(OBJDIR):
 all: $(NAME)
 
 clean:
+	@make -C $(LFTDIR) clean
+	@make -C $(LVCDIR) clean
 	@make -C $(MLXDIR) clean
 	$(RM) $(OBJDIR)
 
 fclean: clean
+	$(RM) $(LIBFT)
+	$(RM) $(LIBVEC)
 	$(RM) $(MLX)
 	$(RM) $(NAME)
 
