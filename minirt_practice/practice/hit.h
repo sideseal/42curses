@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.c                                           :+:      :+:    :+:   */
+/*   hit.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 22:05:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/12 18:19:31 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/12 18:12:02 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/12 18:20:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pracrt.h"
-#include "object.h"
+#ifndef HIT_H
+# define HIT_H
 
-t_sphere	*sphere(t_point3 center, double radius)
+typedef struct s_hit
 {
-	t_sphere	*sphere;
+	double		dist;
+	t_point3	point;
+	t_vec3		normal;
+}	t_hit;
 
-	sphere = malloc(sizeof(t_sphere));
-	if (!sphere)
-		return (NULL);
-	sphere->center = center;
-	sphere->radius = radius;
-	return (sphere);
-}
+#endif

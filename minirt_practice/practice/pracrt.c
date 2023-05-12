@@ -6,11 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:54:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/12 18:08:40 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pracrt.h"
+#include "object.h"
+#include "structure.h"
 
 int	key_hook(int keycode, t_vars *vars)
 {

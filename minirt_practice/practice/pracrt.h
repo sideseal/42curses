@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 22:38:32 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/12 18:08:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "mlx.h"
 # include "libft.h"
 # include "libvec.h"
-# include "structure.h"
-# include "object.h"
 
 # include <math.h>
 # include <stdio.h>
