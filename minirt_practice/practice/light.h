@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit.h                                              :+:      :+:    :+:   */
+/*   light.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 18:12:02 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/13 21:12:13 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/13 21:30:49 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/13 22:09:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HIT_H
-# define HIT_H
+#ifndef LIGHT_H
+# define LIGHT_H
 
-# include "object.h"
-# include "ray.h"
-
-typedef struct s_hit
+typedef struct s_light
 {
-	double		d;
-	t_point3	point;
-	t_vec3		normal;
-}	t_hit;
+	t_point3	pos;
+}	t_light;
 
-t_hit	intersect_ray_collision(t_ray ray, t_sphere *sphere);
+t_light	light(t_vec3 pos);
 
 #endif
