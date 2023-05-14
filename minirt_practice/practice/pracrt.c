@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/13 23:06:41 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:58:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "structure.h"
 #include "ray.h"
 #include "light.h"
+#include "list.h"
 
 int	key_hook(int keycode, t_vars *vars)
 {
@@ -31,9 +32,26 @@ int	exit_hook(void)
 	exit(0);
 }
 
-int	write_color(t_color3 pixel_color, float t)
+double	clamp(double x, double min, double max)
 {
-	return ((int)t << 24 | (int)(255 * pixel_color.x) << 16 | (int)(255 * pixel_color.y) << 8 | (int)(255 * pixel_color.z));
+	if (x < min)
+		return (min);
+	if (x > max)
+		return (max);
+	return (x);
+}
+
+int	write_color(t_color3 *pixel_color, double t)
+{
+	return ((int)t << 24 | (int)(255 * pixel_color->x) << 16 | (int)(255 * pixel_color->y) << 8 | (int)(255 * pixel_color->z));
+}
+
+int	trgb(t_color3 *color, double t)
+{
+	color->x = clamp(color->x, 0, 0.999);
+	color->y = clamp(color->y, 0, 0.999);
+	color->z = clamp(color->z, 0, 0.999);
+	return (write_color(color, t));
 }
 
 void	my_mlx_pixel_put(t_image *image, int x, int y, int color)
@@ -67,29 +85,52 @@ int	main(int argc, char **argv)
 	image.addr = mlx_get_data_addr(image.img, &image.bpp, &image.length, &image.endian);
 
 	t_color3	world_pixel;
-	t_sphere	*sp;
+	t_color3	pixel;
 	t_ray		pixel_ray;
 	t_vec3		raydir;
+	t_vec3		eyepos;
 	t_light		lt;
 
-	sp = sphere(point3(0.0f, 0.0f, 0.5f) , 0.5f, color3(1, 1, 1));
-	sp->amb = vec3(0.0f, 0.0f, 0.0f);
-	sp->diff = vec3(0.0f, 0.0f, 1.0f);
-	sp->spec = vec3(1.0f, 1.0f, 1.0f);
-	sp->alpha = 9.0f;
-	sp->ks = 0.8f;
+	lt = light(point3(0.0f, 1.0f, -1.0f));
 
-	lt = light(vec3(0.0f, 0.0f, -1.0f));
+	t_obj_list	*list;
 
+	t_sphere	*sp1;
+	sp1 = sphere(point3(0.5f, 0.0f, 0.5f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
+	sp1->obj.amb = color3(0.2f, 0.2f, 0.2f);
+	sp1->obj.dif = color3(1.0f, 0.2f, 0.2f);
+	sp1->obj.spec = color3(0.5f, 0.5f, 0.5f);
+	sp1->obj.alpha = 10.0f;
+
+	t_sphere	*sp2;
+	sp2 = sphere(point3(0.0f, 0.0f, 1.0f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
+	sp2->obj.amb = color3(0.2f, 0.2f, 0.2f);
+	sp2->obj.dif = color3(0.2f, 1.0f, 0.2f);
+	sp2->obj.spec = color3(0.5f, 0.5f, 0.5f);
+	sp2->obj.alpha = 10.0f;
+
+	t_sphere	*sp3;
+	sp3 = sphere(point3(-0.5f, 0.0f, 1.5f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
+	sp3->obj.amb = color3(0.2f, 0.2f, 0.2f);
+	sp3->obj.dif = color3(0.2f, 0.2f, 1.0f);
+	sp3->obj.spec = color3(0.5f, 0.5f, 0.5f);
+	sp3->obj.alpha = 10.0f;
+
+	list = obj_list(SP, sp3);
+	oadd(&list, obj_list(SP, sp2));
+	oadd(&list, obj_list(SP, sp1));
+
+	eyepos = point3(0.0f, 0.0f, -1.5f);
 	for (int j = SCREEN_HEIGHT - 1; j >= 0; j--)
 	{
 		printf("rendering... %.2f%%", (float)(SCREEN_HEIGHT - j) / SCREEN_HEIGHT * 100);
 		for (int i = 0; i < SCREEN_WIDTH; i++)
 		{
 			world_pixel = transform_screen_to_world(i, j);
-			raydir = vec3(0, 0, 1);
-			pixel_ray = ray(world_pixel, raydir);
-			my_mlx_pixel_put(&image, i, j, write_color(trace_ray(pixel_ray, sp, lt), 1.0));
+			//raydir = vec3(0, 0, 1);
+			pixel_ray = ray(world_pixel, vunit(vsub(world_pixel, eyepos)));
+			pixel = trace_ray(pixel_ray, list, lt);
+			my_mlx_pixel_put(&image, i, j, trgb(&pixel, 1.0));
 		}
 		printf("\033[1A\n");
 	}

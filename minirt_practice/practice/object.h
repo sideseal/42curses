@@ -6,25 +6,40 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:07:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/13 21:35:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:46:40 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OBJECT_H
 # define OBJECT_H
 
+typedef struct s_object
+{
+	t_color3	amb;
+	t_color3	dif;
+	t_color3	spec;
+	double		alpha;
+	double		ks;
+	double		reflection;
+	double		transparancy;
+	t_color3	color;
+}	t_object;
+
 typedef struct s_sphere
 {
 	t_point3	center;
 	double		radius;
-	t_color3	color;
-	t_vec3		amb;
-	t_vec3		diff;
-	t_vec3		spec;
-	double		alpha;
-	double		ks;
+	t_object	obj;
 }	t_sphere;
 
+typedef struct s_triangle
+{
+	t_point3	v0;
+	t_point3	v1;
+	t_point3	v2;
+}	t_triangle;
+
 t_sphere	*sphere(t_point3 center, double radius, t_color3 color);
+t_triangle	*triangle(t_point3 v0, t_point3 v1, t_point3 v2);
 
 #endif
