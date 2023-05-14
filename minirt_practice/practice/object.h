@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:07:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/14 21:46:40 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/14 22:52:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_triangle
 	t_point3	v0;
 	t_point3	v1;
 	t_point3	v2;
+	t_object	obj;
 }	t_triangle;
 
 t_sphere	*sphere(t_point3 center, double radius, t_color3 color);

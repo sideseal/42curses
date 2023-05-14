@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/14 21:58:23 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/14 23:25:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,36 +91,28 @@ int	main(int argc, char **argv)
 	t_vec3		eyepos;
 	t_light		lt;
 
-	lt = light(point3(0.0f, 1.0f, -1.0f));
-
 	t_obj_list	*list;
 
 	t_sphere	*sp1;
-	sp1 = sphere(point3(0.5f, 0.0f, 0.5f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
-	sp1->obj.amb = color3(0.2f, 0.2f, 0.2f);
-	sp1->obj.dif = color3(1.0f, 0.2f, 0.2f);
-	sp1->obj.spec = color3(0.5f, 0.5f, 0.5f);
-	sp1->obj.alpha = 10.0f;
+	sp1 = sphere(point3(0.6f, 0.0f, 0.5f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
+	sp1->obj.amb = color3(0.1f, 0.1f, 0.1f);
+	sp1->obj.dif = color3(1.0f, 0.1f, 0.1f);
+	sp1->obj.spec = color3(1.0f, 1.0f, 1.0f);
+	sp1->obj.alpha = 50.0f;
 
-	t_sphere	*sp2;
-	sp2 = sphere(point3(0.0f, 0.0f, 1.0f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
-	sp2->obj.amb = color3(0.2f, 0.2f, 0.2f);
-	sp2->obj.dif = color3(0.2f, 1.0f, 0.2f);
-	sp2->obj.spec = color3(0.5f, 0.5f, 0.5f);
-	sp2->obj.alpha = 10.0f;
+	t_triangle	*tr1;
+	tr1 = triangle(point3(-2.0f, -2.0f, 2.0f), point3(-2.0f, 2.0f, 2.0f), point3(2.0f, 2.0f, 2.0f));
+	tr1->obj.amb = color3(0.2f, 0.2f, 0.2f);
+	tr1->obj.dif = color3(0.5f, 0.5f, 0.5f);
+	tr1->obj.spec = color3(0.5f, 0.5f, 0.5f);
+	tr1->obj.alpha = 5.0f;
 
-	t_sphere	*sp3;
-	sp3 = sphere(point3(-0.5f, 0.0f, 1.5f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
-	sp3->obj.amb = color3(0.2f, 0.2f, 0.2f);
-	sp3->obj.dif = color3(0.2f, 0.2f, 1.0f);
-	sp3->obj.spec = color3(0.5f, 0.5f, 0.5f);
-	sp3->obj.alpha = 10.0f;
-
-	list = obj_list(SP, sp3);
-	oadd(&list, obj_list(SP, sp2));
-	oadd(&list, obj_list(SP, sp1));
+	list = obj_list(SP, sp1);
+	oadd(&list, obj_list(TR, tr1));
 
 	eyepos = point3(0.0f, 0.0f, -1.5f);
+	lt = light(point3(0.0f, 1.0f, -1.0f));
+
 	for (int j = SCREEN_HEIGHT - 1; j >= 0; j--)
 	{
 		printf("rendering... %.2f%%", (float)(SCREEN_HEIGHT - j) / SCREEN_HEIGHT * 100);

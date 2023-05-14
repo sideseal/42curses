@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:11:47 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/14 21:56:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/14 23:32:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,40 @@ t_hit	intersect_ray_collision_sphere(t_ray ray, t_sphere *sphere)
 	return (hitobj);
 }
 
-t_hit	intersect_ray_collision_triangle(t_ray ray, t_triangle *triangle, t_point3 *point, t_point3 *face_normal, double *t, double *u, double *v)
+int	check_ray_collision_triangle(t_ray ray, t_triangle *triangle, t_point3 *point, t_point3 *face_normal, double *t, double *u, double *v)
 {
+	*face_normal = vunit(vcross(vsub(triangle->v1, triangle->v0), vsub(triangle->v2, triangle->v0))); // division zero 주의
+	if (vdot(vmults(ray.dir, 1), *face_normal) < 0.0f)
+		return (FALSE);
+	if (fabs(vdot(ray.dir, *face_normal)) < EPSILON)
+		return (FALSE);
+	*t = (vdot(triangle->v0, *face_normal) - vdot(ray.start, *face_normal)) / (vdot(ray.dir, *face_normal));
+	if (*t < 0.0f) // 광선이 반대 방향으로 나가는 경우
+		return (FALSE);
+	*point = vadd(ray.start, vmults(ray.dir, *t));
+	return (TRUE);
+}
 
+t_hit	intersect_ray_collision_triangle(t_ray ray, t_triangle *triangle)
+{
+	t_hit		hitobj;
+	t_point3	point;
+	t_point3	face_normal;
+	double		t;
+	double		u;
+	double		v;
+
+	point = point3(0.0f, 0.0f, 0.0f);
+	face_normal = point3(0.0f, 0.0f, 0.0f);
+	hitobj = hit(-1.0f, point3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f));
+	if (check_ray_collision_triangle(ray, triangle, &point, &face_normal, &t, &u, &v))
+	{
+		hitobj.d = t;
+		hitobj.point = point;
+		hitobj.normal = face_normal;
+		printf("%f, %f, %f\n", hitobj.point.x, hitobj.point.y, hitobj.point.z);
+	}
+	return (hitobj);
 }
 
 t_hit	find_closest_collision(t_ray ray, t_obj_list *list)
@@ -61,12 +92,7 @@ t_hit	find_closest_collision(t_ray ray, t_obj_list *list)
 	t_hit		hitobj;
 	t_sphere	*sphere;
 	t_triangle	*triangle;
-	t_point3	point;
-	t_point3	face_normal;
 	double		closest;
-	double		t;
-	double		u;
-	double		v;
 
 	closest_hit = hit(-1.0f, point3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f));
 	closest = INFINITY;
@@ -89,7 +115,16 @@ t_hit	find_closest_collision(t_ray ray, t_obj_list *list)
 		if (list->type == TR)
 		{
 			triangle = list->element;
-			//hitobj = intersect_ray_collision_triangle(ray, triangle, &point, &face_normal, &t, &u, &v);
+			hitobj = intersect_ray_collision_triangle(ray, triangle);
+			if (hitobj.d >= 0.0f)
+			{
+				if (hitobj.d < closest)
+				{
+					closest = hitobj.d;
+					closest_hit = hitobj;
+					closest_hit.obj = triangle->obj;
+				}
+			}
 		}
 		list = list->next;
 	}

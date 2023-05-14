@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/13 23:10:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/14 23:14:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@
 # define SCREEN_HEIGHT 600
 # define TRUE 1
 # define FALSE 0
-# define EPSILON 1e-6
+# define EPSILON 1e-6f
 
 #endif
