@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:53:59 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 20:54:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/15 03:58:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_vec3	vcross(t_vec3 v1, t_vec3 v2)
 {
 	t_vec3	ret;
 
-	ret.x = v1.y * v2.z + v1.z * v2.y;
-	ret.y = v1.z * v2.x + v1.x * v2.z;
-	ret.z = v1.x * v2.y + v1.y * v2.x;
+	ret.x = v1.y * v2.z - v1.z * v2.y;
+	ret.y = v1.z * v2.x - v1.x * v2.z;
+	ret.z = v1.x * v2.y - v1.y * v2.x;
 	return (ret);
 }

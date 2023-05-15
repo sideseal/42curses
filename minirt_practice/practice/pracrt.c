@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/14 23:25:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/15 23:30:50 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,24 +94,39 @@ int	main(int argc, char **argv)
 	t_obj_list	*list;
 
 	t_sphere	*sp1;
-	sp1 = sphere(point3(0.6f, 0.0f, 0.5f) , 0.4f, color3(0.5f, 0.5f, 0.5f));
-	sp1->obj.amb = color3(0.1f, 0.1f, 0.1f);
-	sp1->obj.dif = color3(1.0f, 0.1f, 0.1f);
-	sp1->obj.spec = color3(1.0f, 1.0f, 1.0f);
-	sp1->obj.alpha = 50.0f;
+	sp1 = sphere(point3(1.0f, 0.0f, 1.5f) , 0.4f);
+	sp1->obj.amb = color3(0.2f, 0.2f, 0.2f);
+	sp1->obj.dif = color3(1.0f, 0.2f, 0.2f);
+	sp1->obj.spec = color3(0.5f, 0.5f, 0.5f);
+	sp1->obj.alpha = 10.0f;
 
 	t_triangle	*tr1;
 	tr1 = triangle(point3(-2.0f, -2.0f, 2.0f), point3(-2.0f, 2.0f, 2.0f), point3(2.0f, 2.0f, 2.0f));
-	tr1->obj.amb = color3(0.2f, 0.2f, 0.2f);
-	tr1->obj.dif = color3(0.5f, 0.5f, 0.5f);
-	tr1->obj.spec = color3(0.5f, 0.5f, 0.5f);
-	tr1->obj.alpha = 5.0f;
+	tr1->obj.amb = color3(0.0f, 1.0f, 1.0f);
+	tr1->obj.dif = color3(0.0f, 0.0f, 0.0f);
+	tr1->obj.spec = color3(0.0f, 0.0f, 0.0f);
+
+//	t_triangle	*tr2;
+//	tr2 = triangle(point3(-2.0f, -1.0f, 0.0f), point3(2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 0.0f));
+//	tr2->obj.amb = color3(0.2f, 0.2f, 0.2f);
+//	tr2->obj.dif = color3(0.8f, 0.8f, 0.8f);
+//	tr2->obj.spec = color3(1.0f, 1.0f, 1.0f);
+//	tr2->obj.alpha = 50.0f;
+
+//	t_square	*sq1;
+//	sq1 = square(point3(-2.0f, -1.0f, 0.0f), point3(-2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 0.0f));
+//	sq1->obj.amb = color3(0.2f, 0.2f, 0.2f);
+//	sq1->obj.dif = color3(0.8f, 0.8f, 0.8f);
+//	sq1->obj.spec = color3(1.0f, 1.0f, 1.0f);
+//	sq1->obj.alpha = 50.0f;
 
 	list = obj_list(SP, sp1);
 	oadd(&list, obj_list(TR, tr1));
 
+	// need to implement viewport for rotate/translate
 	eyepos = point3(0.0f, 0.0f, -1.5f);
-	lt = light(point3(0.0f, 1.0f, -1.0f));
+	//lt = light(point3(0.0f, -0.8f, 0.3f));
+	lt = light(point3(0.0f, 1.0f, 0.5f));
 
 	for (int j = SCREEN_HEIGHT - 1; j >= 0; j--)
 	{
@@ -128,6 +143,13 @@ int	main(int argc, char **argv)
 	}
 
 	mlx_put_image_to_window(vars.mlx, vars.win, image.img, 0, 0);
+
+//	void	*xpm;
+//	int	img_width;
+//	int	img_height;
+//	xpm = mlx_xpm_file_to_image(vars.mlx, "../image/cutecowboycat.xpm", &img_width, &img_height);
+//	mlx_put_image_to_window(vars.mlx, vars.win, xpm, 0, 0);
+
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_hook(vars.win, 17, 0, exit_hook, 0);
 	mlx_loop(vars.mlx);

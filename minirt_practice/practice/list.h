@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 19:45:40 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/14 21:50:58 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/15 19:43:55 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define SP 0
 # define TR 1
+# define SQ 2
 typedef int	obj_type;
 
 typedef struct s_obj_list

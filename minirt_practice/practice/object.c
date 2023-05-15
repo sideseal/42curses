@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:05:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/14 21:46:52 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/15 23:30:43 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_object	object(t_color3 color)
 	return (obj);
 }
 
-t_sphere	*sphere(t_point3 center, double radius, t_color3 color)
+t_sphere	*sphere(t_point3 center, double radius)
 {
 	t_sphere	*sphere;
 
@@ -37,7 +37,7 @@ t_sphere	*sphere(t_point3 center, double radius, t_color3 color)
 		return (NULL);
 	sphere->center = center;
 	sphere->radius = radius;
-	sphere->obj = object(color);
+	sphere->obj = object(color3(0.5f, 0.5f, 0.5f));
 	return (sphere);
 }
 
@@ -51,5 +51,19 @@ t_triangle	*triangle(t_point3 v0, t_point3 v1, t_point3 v2)
 	triangle->v0 = v0;
 	triangle->v1 = v1;
 	triangle->v2 = v2;
+	triangle->obj = object(color3(0.5f, 0.5f, 0.5f));
 	return (triangle);
+}
+
+t_square	*square(t_point3 v0, t_point3 v1, t_point3 v2, t_point3 v3)
+{
+	t_square	*square;
+
+	square = malloc(sizeof(t_triangle) * 2);
+	if (!square)
+		return (NULL);
+	square->triangle1 = triangle(v0, v1, v2);
+	square->triangle2 = triangle(v0, v2, v3);
+	square->obj = object(color3(0.5f, 0.5f, 0.5f));
+	return (square);
 }
