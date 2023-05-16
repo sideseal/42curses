@@ -6,11 +6,18 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:52:36 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/11 20:52:48 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/16 16:44:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libvec.h"
+
+t_vec2	v2mults(t_vec2 ret, double t)
+{
+	ret.u *= t;
+	ret.v *= t;
+	return (ret);
+}
 
 t_vec3	vmults(t_vec3 ret, double t)
 {

@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 21:03:28 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/11 21:07:33 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/16 16:11:24 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS = vadd.c \
 	   vcross.c \
 	   vdivs.c \
 	   vdot.c \
+	   vec2.c \
 	   vec3.c \
 	   vlen.c \
 	   vmax.c \

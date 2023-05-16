@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:11:47 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/15 23:34:47 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/16 20:25:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,7 @@ t_hit	intersect_ray_collision_triangle(t_ray ray, t_triangle *triangle)
 		hitobj.d = t;
 		hitobj.point = point;
 		hitobj.normal = face_normal;
-		hitobj.w0 = u;
-		hitobj.w1 = v;
+		hitobj.uv = v2add(v2add(v2mults(triangle->uv0, u), v2mults(triangle->uv1, v)), v2mults(triangle->uv2, (1.0f - u - v)));
 		//printf("%f, %f, %f\n", hitobj.normal.x, hitobj.normal.y, hitobj.normal.z);
 	}
 	return (hitobj);
@@ -178,6 +177,7 @@ t_hit	find_closest_collision(t_ray ray, t_obj_list *list)
 					closest = hitobj.d;
 					closest_hit = hitobj;
 					closest_hit.obj = square->obj;
+					closest_hit.uv = hitobj.uv;
 				}
 			}
 		}

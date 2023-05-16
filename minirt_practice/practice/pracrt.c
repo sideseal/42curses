@@ -6,16 +6,18 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/15 23:30:50 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/16 21:46:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pracrt.h"
 #include "object.h"
 #include "structure.h"
+#include "utils.h"
 #include "ray.h"
 #include "light.h"
 #include "list.h"
+#include "texture.h"
 
 int	key_hook(int keycode, t_vars *vars)
 {
@@ -30,15 +32,6 @@ int	key_hook(int keycode, t_vars *vars)
 int	exit_hook(void)
 {
 	exit(0);
-}
-
-double	clamp(double x, double min, double max)
-{
-	if (x < min)
-		return (min);
-	if (x > max)
-		return (max);
-	return (x);
 }
 
 int	write_color(t_color3 *pixel_color, double t)
@@ -91,6 +84,52 @@ int	main(int argc, char **argv)
 	t_vec3		eyepos;
 	t_light		lt;
 
+	t_vec3	*temp_image = malloc(sizeof(t_color3) * 4 * 4);
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			t_color3	color = color3(0.0f, 0.0f, 0.0f);
+			if (i % 4 == 0)
+			{
+				color.x = 1.0f;
+				color.y = 0.0f;
+				color.z = 0.0f;
+			}
+			else if (i % 4 == 1)
+			{
+				color.x = 0.0f;
+				color.y = 1.0f;
+				color.z = 0.0f;
+			}
+			else if (i % 4 == 2)
+			{
+				color.x = 0.0f;
+				color.y = 0.0f;
+				color.z = 1.0f;
+			}
+			else
+			{
+				color.x = 1.0f;
+				color.y = 1.0f;
+				color.z = 1.0f;
+			}
+
+			color.x *= (1.0f + j) * 0.25f;
+			color.y *= (1.0f + j) * 0.25f;
+			color.z *= (1.0f + j) * 0.25f;
+
+			temp_image[i + j * 4] = color;
+		}
+	}
+	t_texture	*texture = generate_sample_texture_image(4, 4, temp_image);
+
+	t_tpoints	txt;
+	txt.uv0 = vec2(0.0f, 0.0f);
+	txt.uv1 = vec2(1.0f, 0.0f);
+	txt.uv2 = vec2(1.0f, 1.0f);
+	txt.uv3 = vec2(0.0f, 1.0f);
+
 	t_obj_list	*list;
 
 	t_sphere	*sp1;
@@ -100,11 +139,25 @@ int	main(int argc, char **argv)
 	sp1->obj.spec = color3(0.5f, 0.5f, 0.5f);
 	sp1->obj.alpha = 10.0f;
 
-	t_triangle	*tr1;
-	tr1 = triangle(point3(-2.0f, -2.0f, 2.0f), point3(-2.0f, 2.0f, 2.0f), point3(2.0f, 2.0f, 2.0f));
-	tr1->obj.amb = color3(0.0f, 1.0f, 1.0f);
-	tr1->obj.dif = color3(0.0f, 0.0f, 0.0f);
-	tr1->obj.spec = color3(0.0f, 0.0f, 0.0f);
+//	t_sphere	*sp1;
+//	sp1 = sphere(point3(0.0f, 0.0f, 0.6f) , 0.4f);
+//	sp1->obj.amb = color3(0.2f, 0.0f, 0.0f);
+//	sp1->obj.dif = color3(1.0f, 0.1f, 0.1f);
+//	sp1->obj.spec = color3(1.5f, 1.5f, 1.5f);
+//	sp1->obj.alpha = 50.0f;
+//
+//	t_sphere	*sp2;
+//	sp2 = sphere(point3(0.4f, 0.0f, 0.6f) , 0.4f);
+//	sp2->obj.amb = color3(0.2f, 0.0f, 0.0f);
+//	sp2->obj.dif = color3(1.0f, 0.1f, 0.1f);
+//	sp2->obj.spec = color3(1.5f, 1.5f, 1.5f);
+//	sp2->obj.alpha = 50.0f;
+
+//	t_triangle	*tr1;
+//	tr1 = triangle(point3(-2.0f, -2.0f, 2.0f), point3(-2.0f, 2.0f, 2.0f), point3(2.0f, 2.0f, 2.0f));
+//	tr1->obj.amb = color3(0.0f, 1.0f, 1.0f);
+//	tr1->obj.dif = color3(0.0f, 0.0f, 0.0f);
+//	tr1->obj.spec = color3(0.0f, 0.0f, 0.0f);
 
 //	t_triangle	*tr2;
 //	tr2 = triangle(point3(-2.0f, -1.0f, 0.0f), point3(2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 0.0f));
@@ -113,20 +166,29 @@ int	main(int argc, char **argv)
 //	tr2->obj.spec = color3(1.0f, 1.0f, 1.0f);
 //	tr2->obj.alpha = 50.0f;
 
+	t_square	*sq1;
+	sq1 = square(point3(-2.0f, 2.0f, 2.0f), point3(2.0f, 2.0f, 2.0f), point3(2.0f, -2.0f, 2.0f), point3(-2.0f, -2.0f, 2.0f), &txt);
+	sq1->obj.amb = color3(0.2f, 0.2f, 0.2f);
+	sq1->obj.dif = color3(0.8f, 0.8f, 0.8f);
+	sq1->obj.spec = color3(1.0f, 1.0f, 1.0f);
+	sq1->obj.alpha = 50.0f;
+	sq1->obj.amb_texture = texture;
+
 //	t_square	*sq1;
-//	sq1 = square(point3(-2.0f, -1.0f, 0.0f), point3(-2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 0.0f));
+//	sq1 = square(point3(-2.0f, -1.0f, 0.0f), point3(-2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 4.0f), point3(2.0f, -1.0f, 0.0f), &txt);
 //	sq1->obj.amb = color3(0.2f, 0.2f, 0.2f);
 //	sq1->obj.dif = color3(0.8f, 0.8f, 0.8f);
 //	sq1->obj.spec = color3(1.0f, 1.0f, 1.0f);
 //	sq1->obj.alpha = 50.0f;
+//	sq1->obj.amb_texture = texture;
 
 	list = obj_list(SP, sp1);
-	oadd(&list, obj_list(TR, tr1));
+	oadd(&list, obj_list(SQ, sq1));
 
 	// need to implement viewport for rotate/translate
 	eyepos = point3(0.0f, 0.0f, -1.5f);
-	//lt = light(point3(0.0f, -0.8f, 0.3f));
-	lt = light(point3(0.0f, 1.0f, 0.5f));
+	lt = light(point3(0.8f, 1.0f, -1.0f));
+	//lt = light(point3(0.0f, 1.0f, 0.5f));
 
 	for (int j = SCREEN_HEIGHT - 1; j >= 0; j--)
 	{

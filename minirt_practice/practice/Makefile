@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/14 19:47:58 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/16 20:35:03 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,13 @@ LVCLIB = -L./libvec -lvec
 LIBVEC = $(LVCDIR)libvec.a
 
 SRCS = pracrt.c \
+	   utils.c \
 	   object.c \
 	   list.c \
 	   ray.c \
 	   hit.c \
 	   light.c \
+	   texture.c \
 
 OBJDIR = ./objs/
 OBJS = $(addprefix $(OBJDIR), $(patsubst %.c, %.o, $(SRCS)))

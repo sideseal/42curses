@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit.h                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 18:12:02 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 16:38:07 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/16 20:33:19 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/16 20:34:25 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HIT_H
-# define HIT_H
+#include "utils.h"
 
-# include "object.h"
-# include "ray.h"
-# include "list.h"
-
-typedef struct s_hit
+double	clamp(double x, double min, double max)
 {
-	double		d;
-	t_point3	point;
-	t_vec3		normal;
-	t_object	obj;
-	t_vec2		uv;
-}	t_hit;
+	if (x < min)
+		return (min);
+	if (x > max)
+		return (max);
+	return (x);
+}
 
-t_hit	find_closest_collision(t_ray ray, t_obj_list *list);
-
-#endif
