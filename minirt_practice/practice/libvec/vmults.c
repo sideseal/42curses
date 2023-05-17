@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 20:52:36 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 16:44:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:10:04 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 t_vec2	v2mults(t_vec2 ret, double t)
 {
-	ret.u *= t;
-	ret.v *= t;
+	ret.x *= t;
+	ret.y *= t;
 	return (ret);
 }
 

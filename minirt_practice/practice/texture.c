@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:34:01 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 22:06:48 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/17 17:33:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,17 @@ t_color3	get_wrapped(t_texture *texture, int i, int j)
 
 t_point3	sample_point(t_texture *texture, t_vec2 *uv)
 {
-	return (get_clamped(texture, 0, 0));
+	t_vec2	xy;
+	int		i;
+	int		j;
+	t_vec2	temp;
+
+	temp = *uv;
+	xy = v2sub(v2mult(temp, vec2((double)texture->width, (double)texture->height)), vec2(0.5f, 0.5f));
+	i = round(xy.x);
+	j = round(xy.y);
+
+	return (get_clamped(texture, i, j));
 }
 
 t_point3	sample_linear(t_vec2 *uv)
@@ -81,6 +91,7 @@ t_texture	*generate_sample_texture_image(int width, int height, t_vec3 *sample_i
 			image[(i + width * j) * 3 + 1] = color.y * 255;
 			image[(i + width * j) * 3 + 2] = color.z * 255;
 		}
+	texture->image = image;
 	return (texture);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:11:47 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 20:25:52 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/17 17:26:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,13 @@ t_hit	intersect_ray_collision_sphere(t_ray ray, t_sphere *sphere)
 
 int	check_ray_collision_triangle(t_ray ray, t_triangle *triangle, t_point3 *point, t_point3 *face_normal, double *t, double *u, double *v)
 {
-	t_vec3	normal0;
-	t_vec3	normal1;
-	t_vec3	normal2;
+	t_vec3	cross0;
+	t_vec3	cross1;
+	t_vec3	cross2;
+	double	area0;
+	double	area1;
+	double	area2;
+	double	area_sum;
 
 	// division zero 주의
 	*face_normal = vunit(vcross(vsub(triangle->v1, triangle->v0), vsub(triangle->v2, triangle->v0)));
@@ -66,15 +70,23 @@ int	check_ray_collision_triangle(t_ray ray, t_triangle *triangle, t_point3 *poin
 	if (*t < 0.0f)
 		return (FALSE);
 	*point = vadd(ray.start, vmults(ray.dir, *t));
-	normal0 = vunit(vcross(vsub(*point, triangle->v2), vsub(triangle->v1, triangle->v2)));
-	normal1 = vunit(vcross(vsub(*point, triangle->v0), vsub(triangle->v2, triangle->v0)));
-	normal2 = vunit(vcross(vsub(triangle->v1, triangle->v0), vsub(*point, triangle->v0)));
-	if (vdot(normal0, *face_normal) < 0.0f)
+	cross0 = vcross(vsub(*point, triangle->v2), vsub(triangle->v1, triangle->v2));
+	cross1 = vcross(vsub(*point, triangle->v0), vsub(triangle->v2, triangle->v0));
+	cross2 = vcross(vsub(triangle->v1, triangle->v0), vsub(*point, triangle->v0));
+	if (vdot(cross0, *face_normal) < 0.0f)
 		return (FALSE);
-	if (vdot(normal1, *face_normal) < 0.0f)
+	if (vdot(cross1, *face_normal) < 0.0f)
 		return (FALSE);
-	if (vdot(normal2, *face_normal) < 0.0f)
+	if (vdot(cross2, *face_normal) < 0.0f)
 		return (FALSE);
+	area0 = vlen(cross0) * 0.5f;
+	area1 = vlen(cross1) * 0.5f;
+	area2 = vlen(cross2) * 0.5f;
+	area_sum = area0 + area1 + area2;
+
+	*u = area0 / area_sum;
+	*v = area1 / area_sum;
+
 	return (TRUE);
 }
 

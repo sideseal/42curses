@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 21:46:52 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/17 17:36:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int argc, char **argv)
 			temp_image[i + j * 4] = color;
 		}
 	}
+
 	t_texture	*texture = generate_sample_texture_image(4, 4, temp_image);
 
 	t_tpoints	txt;
@@ -138,6 +139,7 @@ int	main(int argc, char **argv)
 	sp1->obj.dif = color3(1.0f, 0.2f, 0.2f);
 	sp1->obj.spec = color3(0.5f, 0.5f, 0.5f);
 	sp1->obj.alpha = 10.0f;
+	sp1->obj.amb_texture = NULL;
 
 //	t_sphere	*sp1;
 //	sp1 = sphere(point3(0.0f, 0.0f, 0.6f) , 0.4f);
@@ -168,10 +170,10 @@ int	main(int argc, char **argv)
 
 	t_square	*sq1;
 	sq1 = square(point3(-2.0f, 2.0f, 2.0f), point3(2.0f, 2.0f, 2.0f), point3(2.0f, -2.0f, 2.0f), point3(-2.0f, -2.0f, 2.0f), &txt);
-	sq1->obj.amb = color3(0.2f, 0.2f, 0.2f);
-	sq1->obj.dif = color3(0.8f, 0.8f, 0.8f);
-	sq1->obj.spec = color3(1.0f, 1.0f, 1.0f);
-	sq1->obj.alpha = 50.0f;
+	sq1->obj.amb = color3(1.0f, 1.0f, 1.0f);
+	sq1->obj.dif = color3(0.0f, 0.0f, 0.0f);
+	sq1->obj.spec = color3(0.0f, 0.0f, 0.0f);
+//	sq1->obj.alpha = 50.0f;
 	sq1->obj.amb_texture = texture;
 
 //	t_square	*sq1;
