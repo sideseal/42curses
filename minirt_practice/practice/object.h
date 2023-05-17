@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:07:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 21:46:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/17 21:28:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ typedef struct s_object
 	double		alpha;
 	double		ks;
 	double		reflection;
-	double		transparancy;
-	t_color3	color;
+	double		transparency;
+//	t_color3	color;
 	t_texture	*amb_texture;
+	t_texture	*dif_texture;
 }	t_object;
 
 typedef struct s_sphere
@@ -55,6 +56,6 @@ typedef struct s_square
 
 t_sphere	*sphere(t_point3 center, double radius);
 t_triangle	*triangle(t_point3 v0, t_point3 v1, t_point3 v2);
-t_square	*square(t_point3 v0, t_point3 v1, t_point3 v2, t_point3 v3, t_tpoints *texture);
+t_square	*square(t_point3 v0, t_point3 v1, t_point3 v2, t_point3 v3);
 
 #endif

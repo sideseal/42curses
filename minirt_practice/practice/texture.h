@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:34:21 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/16 22:06:23 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/17 18:39:07 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_texture
 t_color3	get_clamped(t_texture *texture, int i, int j);
 t_color3	get_wrapped(t_texture *texture, int i, int j);
 t_point3	sample_point(t_texture *texture, t_vec2 *uv);
+t_point3	sample_linear(t_texture *texture, t_vec2 *uv);
 t_texture	*generate_sample_texture_image(int width, int height, t_vec3 *sample_image);
+t_texture	*generate_texture_image(int width, int height, void *texture);
 
 #endif
