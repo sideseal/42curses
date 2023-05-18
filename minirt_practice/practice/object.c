@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:05:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/17 21:29:04 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:28:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_object	object(t_color3 color)
 	obj.ks = 1.0f;
 	obj.reflection = 0.0f;
 	obj.transparency = 0.0f;
-//	obj.color = color;
 	obj.amb_texture = NULL;
 	obj.dif_texture = NULL;
 	return (obj);
@@ -60,7 +59,7 @@ t_triangle	*triangle(t_point3 v0, t_point3 v1, t_point3 v2)
 	return (triangle);
 }
 
-t_square	*square(t_point3 v0, t_point3 v1, t_point3 v2, t_point3 v3)
+t_square	*square(t_point3 v0, t_point3 v1, t_point3 v2, t_point3 v3, t_vec2 uv0, t_vec2 uv1, t_vec2 uv2, t_vec2 uv3)
 {
 	t_square	*square;
 
@@ -70,11 +69,12 @@ t_square	*square(t_point3 v0, t_point3 v1, t_point3 v2, t_point3 v3)
 	square->triangle1 = triangle(v0, v1, v2);
 	square->triangle2 = triangle(v0, v2, v3);
 	square->obj = object(color3(0.5f, 0.5f, 0.5f));
-	square->triangle1->uv0 = vec2(0.0f, 0.0f);
-	square->triangle1->uv1 = vec2(1.0f, 0.0f);
-	square->triangle1->uv2 = vec2(1.0f, 1.0f);
-	square->triangle2->uv0 = vec2(0.0f, 0.0f);
-	square->triangle2->uv1 = vec2(1.0f, 1.0f);
-	square->triangle2->uv2 = vec2(0.0f, 1.0f);
+	// for test sampling
+	square->triangle1->uv0 = uv0;
+	square->triangle1->uv1 = uv1;
+	square->triangle1->uv2 = uv2;
+	square->triangle2->uv0 = uv0;
+	square->triangle2->uv1 = uv2;
+	square->triangle2->uv2 = uv3;
 	return (square);
 }

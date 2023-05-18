@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:11:47 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/17 17:26:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/18 20:57:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ t_hit	intersect_ray_collision_sphere(t_ray ray, t_sphere *sphere)
 	{
 		d1 = -b / 2.0 + sqrt(nabla);
 		d2 = -b / 2.0 - sqrt(nabla);
-		hitobj.d = d2;
-		if (d1 < d2)
-			hitobj.d = d1;
+		hitobj.d = fmin(d1, d2);
+		if (hitobj.d < 0.0f)
+			hitobj.d = fmax(d1, d2);
 		hitobj.point = vadd(ray.start, vmults(ray.dir, hitobj.d));
 		hitobj.normal = vunit(vsub(hitobj.point, sphere->center));
 	}

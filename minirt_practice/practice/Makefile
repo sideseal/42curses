@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/16 20:35:03 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/18 20:09:00 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ LIBVEC = $(LVCDIR)libvec.a
 
 SRCS = pracrt.c \
 	   utils.c \
+	   camera.c \
 	   object.c \
 	   list.c \
 	   ray.c \
