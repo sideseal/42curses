@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/18 22:01:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/19 22:16:34 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ t_color3	transform_screen_to_world(int x, int y)
 	double	yscale;
 	double	aspect;
 
-	xscale = 2.0f / (SCREEN_WIDTH);
-	yscale = 2.0f / (SCREEN_HEIGHT);
+	xscale = 2.0f / (SCREEN_WIDTH - 1);
+	yscale = 2.0f / (SCREEN_HEIGHT - 1);
 	aspect = (double)SCREEN_WIDTH / SCREEN_HEIGHT;
 	return (color3((x * xscale - 1.0f) * aspect, -y * yscale + 1.0f, 0.0f));
 }
@@ -265,10 +265,10 @@ int	main(int argc, char **argv)
 	list = obj_list(SP, sp1);
 	oadd(&list, obj_list(SP, sp2));
 	oadd(&list, obj_list(SQ, sq1));
-	oadd(&list, obj_list(SQ, sq2));
-	oadd(&list, obj_list(SQ, sq3));
-	oadd(&list, obj_list(SQ, sq4));
-	oadd(&list, obj_list(SQ, sq5));
+//	oadd(&list, obj_list(SQ, sq2));
+//	oadd(&list, obj_list(SQ, sq3));
+//	oadd(&list, obj_list(SQ, sq4));
+//	oadd(&list, obj_list(SQ, sq5));
 //	oadd(&list, obj_list(SQ, sq6));
 
 	// need to implement viewport for rotate/translate
