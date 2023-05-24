@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   vmults.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:52:36 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/17 16:10:04 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "libvec.h"
 
-typedef struct s_camera
+t_vec2	v2mults(t_vec2 ret, double t)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	ret.x *= t;
+	ret.y *= t;
+	return (ret);
+}
 
-#endif
+t_vec3	vmults(t_vec3 ret, double t)
+{
+	ret.x *= t;
+	ret.y *= t;
+	ret.z *= t;
+	return (ret);
+}

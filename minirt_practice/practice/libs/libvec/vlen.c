@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   vlen.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:49:01 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/15 17:30:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "libvec.h"
 
-typedef struct s_camera
+double	vlen(t_vec3 vec)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	double	ret;
 
-#endif
+	ret = pow(vec.x, 2.0f) + pow(vec.y, 2.0f) + pow(vec.z, 2.0f);
+	return (sqrt(ret));
+}
+
+double	vlen_pow(t_vec3 vec)
+{
+	return (pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2));
+}

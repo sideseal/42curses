@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   print_char.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2022/09/09 20:08:49 by gychoi            #+#    #+#             */
+/*   Updated: 2022/09/13 14:26:07 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "ft_printf.h"
 
-typedef struct s_camera
+int	print_char(char c)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	int	printed;
 
-#endif
+	printed = (int)write(1, &c, 1);
+	if (printed < 0)
+		return (-1);
+	return (printed);
+}

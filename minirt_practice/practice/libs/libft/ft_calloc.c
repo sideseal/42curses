@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/09 14:06:14 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/11 13:29:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "libft.h"
 
-typedef struct s_camera
+void	*ft_calloc(size_t count, size_t size)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	void	*ptr;
 
-#endif
+	ptr = malloc(count * size);
+	if (!ptr)
+		return (NULL);
+	ft_bzero(ptr, count * size);
+	return (ptr);
+}

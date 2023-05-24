@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2022/07/08 17:51:03 by gychoi            #+#    #+#             */
+/*   Updated: 2022/07/14 20:25:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "libft.h"
 
-typedef struct s_camera
+char	*ft_strrchr(const char *s, int c)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	size_t	len;
 
-#endif
+	len = ft_strlen(s);
+	while (len + 1)
+	{
+		if (s[len] == (char)c)
+			return ((char *)s + len);
+		len--;
+	}
+	return (NULL);
+}

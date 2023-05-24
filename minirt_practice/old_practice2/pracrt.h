@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   pracrt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/09 17:05:13 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/17 21:49:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#ifndef PRACRT_H
+# define PRACRT_H
 
-typedef struct s_camera
-{
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+# include "mlx.h"
+# include "libft.h"
+# include "libvec.h"
+
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+
+# define SCREEN_WIDTH 1280
+# define SCREEN_HEIGHT 720
+# define TRUE 1
+# define FALSE 0
+# define EPSILON 1e-6f
 
 #endif

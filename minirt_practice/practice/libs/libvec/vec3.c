@@ -1,27 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   vec3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:45:50 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/11 20:47:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "libvec.h"
 
-typedef struct s_camera
+t_vec3	vec3(double x, double y, double z)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	t_vec3	vec;
 
-#endif
+	vec.x = x;
+	vec.y = y;
+	vec.z = z;
+	return (vec);
+}
+
+t_point3	point3(double x, double y, double z)
+{
+	t_point3	point;
+
+	point.x = x;
+	point.y = y;
+	point.z = z;
+	return (point);
+}
+
+t_point3	color3(double r, double g, double b)
+{
+	t_color3	color;
+
+	color.x = r;
+	color.y = g;
+	color.z = b;
+	return (color);
+}

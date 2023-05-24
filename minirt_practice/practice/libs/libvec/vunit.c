@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.h                                           :+:      :+:    :+:   */
+/*   vunit.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 21:28:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 21:38:06 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/11 20:54:17 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/24 17:39:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CAMERA_H
-# define CAMERA_H
+#include "libvec.h"
+#include <unistd.h>
 
-typedef struct s_camera
+t_vec3	vunit(t_vec3 ret)
 {
-	t_point3	origin;
-	double		viewport_h;
-	double		viewport_w;
-	t_vec3		horizontal;
-	t_vec3		vertical;
-	double		focal_len;
-	t_point3	left_bottom;
-}	t_camera;
+	double	len;
 
-#endif
+	len = vlen(ret);
+	if (len == 0)
+		write(2, "warning: division by zero\n", 26);
+	ret.x /= len;
+	ret.y /= len;
+	ret.z /= len;
+	return (ret);
+}

@@ -5,36 +5,38 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/24 17:35:46 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/24 19:25:31 by gychoi           ###   ########.fr        #
+#    Created: 2023/04/27 17:29:17 by gychoi            #+#    #+#              #
+#    Updated: 2023/05/18 20:09:00 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = test
+NAME = pracRT
 CC = cc
-CFLAGS = -O3 -g -Wall -Wextra -Werror
+CFLAGS = -O2 -g
 DFLAGS = -MMD
 RM = rm -rf
 
-LIBDIR = libs/
-
-MLXDIR = $(LIBDIR)mlx/
-MLXLIB = -L$(LIBDIR)mlx -lmlx -framework OpenGL -framework AppKit -Imlx
+MLXDIR = ./mlx/
+MLXLIB = -L./mlx -lmlx -framework OpenGL -framework AppKit -Imlx
 MLX = $(MLXDIR)libmlx.a
 
-LFTDIR = $(LIBDIR)libft/
-LFTLIB = -L$(LIBDIR)libft -lft
+LFTDIR = ./libft/
+LFTLIB = -L./libft -lft
 LIBFT = $(LFTDIR)libft.a
 
-LVCDIR = $(LIBDIR)libvec/
-LVCLIB = -L$(LIBDIR)libvec -lvec
+LVCDIR = ./libvec/
+LVCLIB = -L./libvec -lvec
 LIBVEC = $(LVCDIR)libvec.a
 
-SRCS = draw.c \
-	   hooks.c \
-	   init.c \
-	   pracrt.c \
-	   render.c \
+SRCS = pracrt.c \
+	   utils.c \
+	   camera.c \
+	   object.c \
+	   list.c \
+	   ray.c \
+	   hit.c \
+	   light.c \
+	   texture.c \
 
 OBJDIR = ./objs/
 OBJS = $(addprefix $(OBJDIR), $(patsubst %.c, %.o, $(SRCS)))
@@ -44,7 +46,7 @@ INCLUDE = -I./ -I$(LFTDIR) -I$(LVCDIR) -I$(MLXDIR)
 
 $(NAME): $(OBJS) | $(LIBFT) $(LIBVEC) $(MLX)
 	$(CC) $(CFLAGS) $(MLXLIB) $(LFTLIB) $(LVCLIB) $(INCLUDE) $(OBJS) -o $@
-	@install_name_tool -change libmlx.dylib $(MLXDIR)libmlx.dylib $(NAME)
+	@install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
 
 $(OBJDIR)%.o: %.c  | $(OBJDIR)
 	$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDE) -c $< -o $@
