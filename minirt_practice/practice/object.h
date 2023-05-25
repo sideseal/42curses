@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.h                                             :+:      :+:    :+:   */
+/*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 18:03:00 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/25 19:49:12 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/25 20:04:13 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/25 20:19:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INIT_H
-# define INIT_H
+#ifndef OBJECT_H
+# define OBJECT_H
 
-# include "mlx.h"
-# include "pracrt.h"
-# include "struct.h"
+# include "libvec.h"
 
-typedef struct s_img
+typedef struct s_sphere
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		len;
-	int		endian;
-}	t_img;
+	t_point3	center;
+	double		radius;
+}	t_sphere;
 
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-}	t_mlx;
-
-t_mlx	init_mlx(void);
-t_img	init_img(t_mlx mlx);
+t_sphere	sphere(t_point3 center, double radius);
 
 #endif

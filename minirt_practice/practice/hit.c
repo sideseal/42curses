@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 17:58:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/24 18:57:38 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/25 20:03:37 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/25 22:26:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCT_H
-# define STRUCT_H
+#include "hit.h"
 
-typedef struct s_img
+t_bool	hit_sphere(t_sphere sp, t_ray ray, t_hit_record rec)
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		len;
-	int		endian;
-}	t_img;
+	t_vec3	cp;
+	double	a;
+	double	b;
+	double	c;
+	double	disc;
+	double	root;
 
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-}	t_mlx;
-
-#endif
+	cp = vsub(ray.origin, sp.center);
+	a = vdot(ray.dir, ray.dir);
+	b = 2.0 * vdot(cp, ray.dir);
+	c = vdot(cp, cp) - (sp.radius * sp.radius);
+	disc = b * b - 4 * a * c;
+	if (disc < 0)
+		return (FALSE);
+	// ...
+}

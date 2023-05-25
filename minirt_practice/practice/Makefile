@@ -6,11 +6,11 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 17:35:46 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/24 19:25:31 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/25 20:19:11 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = test
+NAME = Test
 CC = cc
 CFLAGS = -O3 -g -Wall -Wextra -Werror
 DFLAGS = -MMD
@@ -30,10 +30,14 @@ LVCDIR = $(LIBDIR)libvec/
 LVCLIB = -L$(LIBDIR)libvec -lvec
 LIBVEC = $(LVCDIR)libvec.a
 
-SRCS = draw.c \
+SRCS = camera.c \
+	   draw.c \
+	   hit.c \
 	   hooks.c \
 	   init.c \
+	   object.c \
 	   pracrt.c \
+	   ray.c \
 	   render.c \
 
 OBJDIR = ./objs/

@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.h                                             :+:      :+:    :+:   */
+/*   hit.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 18:03:00 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/25 19:49:12 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/25 20:03:47 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/25 22:24:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INIT_H
-# define INIT_H
+#ifndef HIT_H
+# define HIT_H
 
-# include "mlx.h"
+# include "libvec.h"
+# include "object.h"
 # include "pracrt.h"
-# include "struct.h"
+# include "ray.h"
 
-typedef struct s_img
+typedef struct s_hit_record
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		len;
-	int		endian;
-}	t_img;
+	t_point3	p;
+	t_vec3		normal;
+	double		tmin;
+	double		tmax;
+	double		t;
+	t_bool		front_face;
+}	t_hit_record;
 
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-}	t_mlx;
-
-t_mlx	init_mlx(void);
-t_img	init_img(t_mlx mlx);
+t_bool	hit_sphere(t_sphere sp, t_ray ray, t_hit_record rec);
 
 #endif
