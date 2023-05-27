@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 22:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/19 22:16:34 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/27 17:20:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,8 @@ int	main(int argc, char **argv)
 	sp1->obj.dif = color3(1.0f, 0.0f, 0.0f);
 	sp1->obj.spec = color3(1.0f, 1.0f, 1.0f);
 	sp1->obj.alpha = 50.0f;
-	sp1->obj.reflection = 0.5f;
-	sp1->obj.transparency = 1.0f;
+	sp1->obj.reflection = 1.0f;
+	sp1->obj.transparency = 0.0f;
 
 	t_sphere	*sp2;
 	sp2 = sphere(point3(1.2f,-0.1f, 0.5f) , 0.4f);
@@ -192,7 +192,7 @@ int	main(int argc, char **argv)
 	sp2->obj.dif = color3(0.0f, 0.0f, 1.0f);
 	sp2->obj.spec = color3(1.0f, 1.0f, 1.0f);
 	sp2->obj.alpha = 50.0f;
-	sp2->obj.reflection = 0.5f;
+	sp2->obj.reflection = 0.3f;
 	sp2->obj.transparency = 0.3f;
 
 //	t_triangle	*tr1;
@@ -254,22 +254,22 @@ int	main(int argc, char **argv)
 	sq5->obj.amb_texture = texture;
 	sq5->obj.dif_texture = texture;
 
-//	t_square	*sq6;
-//	sq6 = square(point3(10.0f, -10.0f, -5.0f), point3(-10.0f, -10.0f, -5.0f), point3(-10.0f, 10.0f, -5.0f), point3(10.0f, 10.0f, -5.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f), vec2(0.0f, 0.0f), vec2(1.0f, 0.0f));
-//	sq6->obj.amb = color3(1.0f, 1.0f, 1.0f);
-//	sq6->obj.dif = color3(0.0f, 0.0f, 0.0f);
-//	sq6->obj.spec = color3(0.0f, 0.0f, 0.0f);
-//	sq6->obj.amb_texture = texture;
-//	sq6->obj.dif_texture = texture;
+	t_square	*sq6;
+	sq6 = square(point3(10.0f, -10.0f, -5.0f), point3(-10.0f, -10.0f, -5.0f), point3(-10.0f, 10.0f, -5.0f), point3(10.0f, 10.0f, -5.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f), vec2(0.0f, 0.0f), vec2(1.0f, 0.0f));
+	sq6->obj.amb = color3(1.0f, 1.0f, 1.0f);
+	sq6->obj.dif = color3(0.0f, 0.0f, 0.0f);
+	sq6->obj.spec = color3(0.0f, 0.0f, 0.0f);
+	sq6->obj.amb_texture = texture;
+	sq6->obj.dif_texture = texture;
 
 	list = obj_list(SP, sp1);
 	oadd(&list, obj_list(SP, sp2));
 	oadd(&list, obj_list(SQ, sq1));
-//	oadd(&list, obj_list(SQ, sq2));
-//	oadd(&list, obj_list(SQ, sq3));
-//	oadd(&list, obj_list(SQ, sq4));
-//	oadd(&list, obj_list(SQ, sq5));
-//	oadd(&list, obj_list(SQ, sq6));
+	oadd(&list, obj_list(SQ, sq2));
+	oadd(&list, obj_list(SQ, sq3));
+	oadd(&list, obj_list(SQ, sq4));
+	oadd(&list, obj_list(SQ, sq5));
+	oadd(&list, obj_list(SQ, sq6));
 
 	// need to implement viewport for rotate/translate
 	eyepos = point3(0.0f, 0.0f, -1.5f);

@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 17:35:46 by gychoi            #+#    #+#              #
-#    Updated: 2023/05/25 20:19:11 by gychoi           ###   ########.fr        #
+#    Updated: 2023/05/27 21:54:05 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS = camera.c \
 	   hooks.c \
 	   init.c \
 	   object.c \
+	   object_utils.c \
 	   pracrt.c \
 	   ray.c \
 	   render.c \

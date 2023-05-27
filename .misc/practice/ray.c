@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 20:48:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/25 21:59:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/27 22:03:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,14 @@ t_ray	ray_primary(t_camera cam, double u, double v)
 	return (ray);
 }
 
-t_color3	ray_color(t_ray r, t_sphere sp)
+t_color3	ray_color(t_ray r, t_object *world)
 {
 	double			t;
-	t_vec3			n;
 	t_hit_record	rec;
 
 	rec.tmin = 0;
 	rec.tmax = INFINITY;
-	t = hit_sphere(sp, r, rec);
-	if (t > 0.0)
+	if (hit(world, r, &rec))
 		return (vmults(vadd(rec.normal, color3(1.0, 1.0, 1.0)), 0.5));
 	t = 0.5 * (r.dir.y + 1.0);
 	return (vadd(vmults(color3(1, 1, 1), 1.0 - t), vmults(color3(0.5, 0.7, 1.0), t)));

@@ -6,17 +6,50 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 20:03:37 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/26 22:01:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/27 22:00:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hit.h"
 
+t_bool	hit(t_object *world, t_ray ray, t_hit_record *rec)
+{
+	t_bool			hit_anything;
+	t_hit_record	temp_rec;
+
+	temp_rec = *rec;
+	hit_anything = FALSE;
+	while (world)
+	{
+		if (hit_obj(world, ray, &temp_rec))
+		{
+			hit_anything = TRUE;
+			temp_rec.tmax = temp_rec.t;
+			*rec = temp_rec;
+		}
+		world = world->next;
+	}
+	return (hit_anything);
+}
+
+t_bool	hit_obj(t_object *world, t_ray ray, t_hit_record *rec)
+{
+	t_bool	hit_result;
+
+	hit_result = FALSE;
+	if (world->type == SP)
+		hit_result = hit_sphere(world->element, ray, rec);
+	return (hit_result);
+}
+
 void	set_face_normal(t_ray r, t_hit_record *rec)
 {
-	rec->front_face = 
+	rec->front_face = vdot(r.dir, rec->normal) < 0;
+	if (!rec->front_face)
+		rec->normal = vmults(rec->normal, -1);
+}
 
-t_bool	hit_sphere(t_sphere sp, t_ray ray, t_hit_record *rec)
+t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec)
 {
 	t_vec3	cp;
 	double	a;
@@ -26,11 +59,11 @@ t_bool	hit_sphere(t_sphere sp, t_ray ray, t_hit_record *rec)
 	double	sqrtd;
 	double	root;
 
-	cp = vsub(ray.origin, sp.center);
+	cp = vsub(ray.origin, sp->center);
 	a = vlen_pow(ray.dir);
 	half_b = vdot(cp, ray.dir);
-	c = vlen_pow(cp) - (sp.radius * sp.radius);
-	disc = b * b - a * c;
+	c = vlen_pow(cp) - (sp->radius * sp->radius);
+	disc = half_b * half_b - a * c;
 	if (disc < 0)
 		return (FALSE);
 	sqrtd = sqrt(disc);
@@ -43,7 +76,7 @@ t_bool	hit_sphere(t_sphere sp, t_ray ray, t_hit_record *rec)
 	}
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = vdivs(vsub(rec->p, sp.center), sp.radius);
+	rec->normal = vdivs(vsub(rec->p, sp->center), sp->radius);
 	set_face_normal(ray, rec);
 	return (TRUE);
 }

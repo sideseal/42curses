@@ -1,37 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   object_utils.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 20:04:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/27 21:52:25 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/27 21:53:42 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/27 22:02:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECT_H
-# define OBJECT_H
+#ifndef OBJECT_UTILS
+# define OBJECT_UTILS
 
-# include "libvec.h"
+# include "object.h"
 
-typedef int	t_object_type;
-# define SP 0
-
-typedef struct s_object
-{
-	t_object_type	type;
-	void			*element;
-	void			*next;
-}	t_object;
-
-typedef struct s_sphere
-{
-	t_point3	center;
-	double		radius;
-}	t_sphere;
-
-t_object	*object(t_object_type type, void *element);
-t_sphere	*sphere(t_point3 center, double radius);
+void		oadd(t_object **list, t_object *new);
+t_object	*olast(t_object *list);
 
 #endif
