@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit.h                                              :+:      :+:    :+:   */
+/*   light.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 20:03:47 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/27 22:00:54 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/28 20:07:07 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/28 20:57:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HIT_H
-# define HIT_H
+#ifndef LIGHT_H
+# define LIGHT_H
 
 # include "libvec.h"
-# include "object.h"
-# include "pracrt.h"
-# include "ray.h"
+# include "scene.h"
 
-typedef struct s_hit_record
+# define LIGHT_POINT 1
+
+typedef struct s_light
 {
-	t_point3	p;
-	t_vec3		normal;
-	double		tmin;
-	double		tmax;
-	double		t;
-	t_bool		front_face;
-}	t_hit_record;
+	t_point3	origin;
+	t_color3	light_color;
+	double		bright_ratio;
+}	t_light;
 
-t_bool	hit(t_object *world, t_ray ray, t_hit_record *rec);
-t_bool	hit_obj(t_object *world, t_ray ray, t_hit_record *rec);
-t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec);
+t_color3	phong_lighting(t_scene *scene);
+t_light		*light_point(t_point3 light_origin, t_color3 light_color, double bright_ratio);
 
 #endif

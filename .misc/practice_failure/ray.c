@@ -6,12 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 20:48:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/27 22:03:00 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/28 20:59:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hit.h"
-#include "object.h"
 #include "ray.h"
 
 t_ray	ray_primary(t_camera cam, double u, double v)
@@ -29,12 +28,12 @@ t_ray	ray_primary(t_camera cam, double u, double v)
 	return (ray);
 }
 
-t_color3	ray_color(t_ray r, t_object *world)
+t_color3	ray_color(t_scene *scene)
 {
 	double			t;
 	t_hit_record	rec;
 
-	rec.tmin = 0;
+	rec.tmin = EPSILON;
 	rec.tmax = INFINITY;
 	if (hit(world, r, &rec))
 		return (vmults(vadd(rec.normal, color3(1.0, 1.0, 1.0)), 0.5));

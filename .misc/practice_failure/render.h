@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 20:04:13 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/27 21:52:25 by gychoi           ###   ########.fr       */
+/*   Created: 2023/05/24 18:17:00 by gychoi            #+#    #+#             */
+/*   Updated: 2023/05/28 21:08:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECT_H
-# define OBJECT_H
+#ifndef RENDER_H
+# define RENDER_H
 
-# include "libvec.h"
+#include "camera.h"
+#include "draw.h"
+#include "hit.h"
+#include "init.h"
+#include "libvec.h"
+#include "mlx.h"
+#include "object.h"
+#include "object_utils.h"
+#include "pracrt.h"
+#include "ray.h"
 
-typedef int	t_object_type;
-# define SP 0
-
-typedef struct s_object
+typedef struct s_scene
 {
-	t_object_type	type;
-	void			*element;
-	void			*next;
-}	t_object;
+	t_camera		camera;
+	t_object		*world;
+	t_object		*light;
+	t_color3		ambient;
+	t_ray			ray;
+	t_hit_record	rec;
+}	t_scene;
 
-typedef struct s_sphere
-{
-	t_point3	center;
-	double		radius;
-}	t_sphere;
-
-t_object	*object(t_object_type type, void *element);
-t_sphere	*sphere(t_point3 center, double radius);
+void	render(t_mlx mlx, t_img img);
 
 #endif

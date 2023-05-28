@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 22:10:35 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/07 22:46:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/28 22:57:12 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ t_color3	point_light_get(t_scene *scene, t_light *light)
 	ambient = scene->ambient;
 	light_dir = vsub_v(light->origin, scene->rec.p);
 	light_len = vlen(light_dir);
+	light_dir = vunit(light_dir);
 	light_ray = ray(vadd_v(scene->rec.p, vmul_d(light_dir, EPSILON)), light_dir);
 	if (in_shadow(scene->world, light_ray, light_len))
 		return (color3(0, 0, 0));
-	light_dir = vunit(light_dir);
 	kd = fmax(vdot(scene->rec.normal, light_dir), 0.0);
 	diffuse = vmul_d(light->light_color, kd);
 

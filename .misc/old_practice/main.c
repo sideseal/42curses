@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:42:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/07 22:53:32 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/28 22:58:16 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_scene	*scene_init(void)
 	scene->camera = camera(scene->canvas, point3(0, 0, 0));
 	world = object(SP, sphere(point3(-2, 0, -5), 2), color3(0.5, 0, 0));
 	oadd(&world, object(SP, sphere(point3(2, 0, -5), 2), color3(0, 0.5, 0)));
-	oadd(&world, object(SP, sphere(point3(0, -1000, 0), 990), color3(1, 1, 1)));
+	oadd(&world, object(SP, sphere(point3(0, -1000, 0), 995), color3(1, 1, 1)));
 	scene->world = world;
 	lights = object(LIGHT_POINT, light_point(point3(0, 20, 0), color3(1, 1, 1), 0.5), color3(0, 0, 0));
 	scene->light = lights;

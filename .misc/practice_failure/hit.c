@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 20:03:37 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/27 22:00:42 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/28 20:16:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_bool	hit_obj(t_object *world, t_ray ray, t_hit_record *rec)
 
 	hit_result = FALSE;
 	if (world->type == SP)
-		hit_result = hit_sphere(world->element, ray, rec);
+		hit_result = hit_sphere(world->element, world->albedo, ray, rec);
 	return (hit_result);
 }
 
@@ -49,7 +49,7 @@ void	set_face_normal(t_ray r, t_hit_record *rec)
 		rec->normal = vmults(rec->normal, -1);
 }
 
-t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec)
+t_bool	hit_sphere(t_sphere *sp, t_color3 albedo, t_ray ray, t_hit_record *rec)
 {
 	t_vec3	cp;
 	double	a;
@@ -77,6 +77,7 @@ t_bool	hit_sphere(t_sphere *sp, t_ray ray, t_hit_record *rec)
 	rec->t = root;
 	rec->p = ray_at(ray, root);
 	rec->normal = vdivs(vsub(rec->p, sp->center), sp->radius);
+	rec->albedo = albedo;
 	set_face_normal(ray, rec);
 	return (TRUE);
 }

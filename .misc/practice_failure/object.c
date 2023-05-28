@@ -6,14 +6,14 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 20:04:03 by gychoi            #+#    #+#             */
-/*   Updated: 2023/05/27 22:01:40 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/05/28 20:10:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "object.h"
 #include <stdlib.h>
 
-t_object	*object(t_object_type type, void *element)
+t_object	*object(t_object_type type, void *element, t_color3 albedo)
 {
 	t_object	*new;
 
@@ -23,6 +23,7 @@ t_object	*object(t_object_type type, void *element)
 	new->type = type;
 	new->element = element;
 	new->next = NULL;
+	new->albedo = albedo;
 	return (new);
 }
 
