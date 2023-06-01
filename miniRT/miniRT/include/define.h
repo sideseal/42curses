@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 21:29:50 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 23:28:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef DEFINE_H
+# define DEFINE_H
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
-# include "typedef.h"
+# define WIDTH 800
+# define HEIGHT 600
 
-void	print_error(const char *string);
+# define EPSILON 1e-6
+# define LUMEN 3
 
-t_bool	check_file_ext(char	*file);
-
-t_data	*init_data(void);
+# define TRUE 1
+# define FALSE 0
 
 #endif

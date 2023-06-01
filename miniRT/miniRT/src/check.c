@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 21:17:18 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 23:14:15 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#include "minirt.h"
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
-# include "typedef.h"
+t_bool	check_file_ext(char	*file)
+{
+	int	len;
 
-void	print_error(const char *string);
-
-t_bool	check_file_ext(char	*file);
-
-t_data	*init_data(void);
-
-#endif
+	len = ft_strlen(file);
+	if (len < 4)
+		return (FALSE);
+	if (file[len - 3] != '.' || file[len - 2] != 'r' || file[len - 1] != 't')
+		return (FALSE);
+	return (TRUE);
+}

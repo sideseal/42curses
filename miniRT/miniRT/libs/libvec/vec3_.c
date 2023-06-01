@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   vec3_.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 16:23:48 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 16:24:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#include "libvec.h"
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
-# include "typedef.h"
+t_vec3	vec3_(double ai, double bj, double ck)
+{
+	t_vec3	vec;
 
-void	print_error(const char *string);
-
-t_bool	check_file_ext(char	*file);
-
-t_data	*init_data(void);
-
-#endif
+	vec.ai = ai;
+	vec.bj = bj;
+	vec.ck = ck;
+	return (vec);
+}

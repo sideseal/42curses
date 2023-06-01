@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   elem_min.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 16:46:33 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 16:47:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#include "libvec.h"
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
-# include "typedef.h"
-
-void	print_error(const char *string);
-
-t_bool	check_file_ext(char	*file);
-
-t_data	*init_data(void);
-
-#endif
+t_vec3	elem_min(t_vec3 u, t_vec3 v)
+{
+	if (v.ai < u.ai)
+		u.ai = v.ai;
+	if (v.bj < u.bj)
+		u.bj = v.bj;
+	if (v.ck < u.ck)
+		u.ck = v.ck;
+	return (u);
+}

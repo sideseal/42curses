@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 23:02:38 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 23:13:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef STRUCT_H
+# define STRUCT_H
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
 # include "typedef.h"
 
-void	print_error(const char *string);
+struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+};
 
-t_bool	check_file_ext(char	*file);
+struct s_scene
+{
+};
 
-t_data	*init_data(void);
+struct s_data
+{
+	void		*mlx;
+	void		*win;
+	t_img		img;
+	t_scene		*scene;
+};
 
 #endif

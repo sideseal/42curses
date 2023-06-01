@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   extern.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 20:21:34 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 23:26:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef EXTERN_H
+# define EXTERN_H
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
-# include "typedef.h"
+# include <fcntl.h>
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-void	print_error(const char *string);
-
-t_bool	check_file_ext(char	*file);
-
-t_data	*init_data(void);
+# include "libft.h"
+# include "libvec.h"
+# include "mlx.h"
 
 #endif

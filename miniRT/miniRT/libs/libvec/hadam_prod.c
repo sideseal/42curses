@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   hadam_prod.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 23:23:16 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/01 16:44:48 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/01 16:45:55 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#include "libvec.h"
 
-# include "define.h"
-# include "extern.h"
-# include "struct.h"
-# include "typedef.h"
-
-void	print_error(const char *string);
-
-t_bool	check_file_ext(char	*file);
-
-t_data	*init_data(void);
-
-#endif
+t_vec3	hadam_prod(t_vec3 u, t_vec3 v)
+{
+	return (vec3_(u.ai * v.ai, u.bj * v.bj, u.ck * v.ck));
+}
