@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 16:27:39 by gychoi            #+#    #+#              #
-#    Updated: 2023/06/01 23:27:52 by gychoi           ###   ########.fr        #
+#    Updated: 2023/06/02 21:16:54 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LVCDIR = $(LIBDIR)libvec/
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -O2
-DFLAGS = -MMD -MP
+DFLAGS = -MMD -MP -g
 CPPFLAGS = -Iinclude/ -I$(LFTDIR) -I$(MLXDIR) -I$(LVCDIR)
 LDFLAGS = -L$(MLXDIR) -L$(LFTDIR) -L$(LVCDIR)
 LDLIBS = -lmlx -lft -lvec
@@ -32,8 +32,15 @@ LIBVEC = $(LVCDIR)libvec.a
 
 SRCDIR = src/
 SOURCE = check.c \
+		 free.c \
+		 hook.c \
 		 init.c \
 		 main.c \
+		 read.c \
+		 redef_libf.c \
+		 redef_mlx.c \
+		 render.c \
+		 set.c \
 
 SRCS = $(addprefix $(SRCDIR), $(SOURCE))
 

@@ -92,6 +92,7 @@ typedef struct		mlx_ptr_s
 
 // proto
 
+
 int	mlx_shaders(glsl_info_t *glsl);
 char    **mlx_int_str_to_wordtab(char *str);
 int     mlx_int_str_str(char *str,char *find,int len);

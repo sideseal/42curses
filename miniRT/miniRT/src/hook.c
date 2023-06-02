@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   typedef.h                                          :+:      :+:    :+:   */
+/*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/01 22:04:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/02 16:57:25 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/02 20:20:33 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/02 21:14:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPEDEF_H
-# define TYPEDEF_H
+#include "minirt.h"
+static void	check_leaks(void)
+{
+	// 지우는거 잊지 말기
+	system("leaks --list -- miniRT");
+}
 
-typedef int t_bool;
-typedef int t_object_type;
+int	exit_hook(t_data *data)
+{
+	mlx_destroy_window(data->mlx, data->win);
+	atexit(check_leaks);
+	exit(0);
+}
 
-typedef struct s_canvas t_canvas;
-typedef struct s_camera t_camera;
-typedef struct s_data t_data;
-typedef struct s_hit t_hit;
-typedef struct s_img t_img;
-typedef struct s_object t_object;
-typedef struct s_ray t_ray;
-typedef struct s_scene t_scene;
-
-#endif
+int	key_hook(int keycode, t_data *data)
+{
+	if (keycode == ESC)
+	{
+		mlx_destroy_window(data->mlx, data->win);
+		atexit(check_leaks);
+		exit(0);
+	}
+	return (0);
+}

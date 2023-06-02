@@ -46,6 +46,8 @@
 
 #define	MLX_H
 
+// mlx_init_loop.m
+void	*mlx_del(void *ptr);
 
 void	*mlx_init();
 /*
