@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:02:38 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/02 17:00:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/03 21:14:20 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 # define STRUCT_H
 
 # include "typedef.h"
+
+struct s_ambient
+{
+	t_color3	color;
+	double		lighting_ratio;
+};
 
 struct s_object
 {
@@ -62,7 +68,7 @@ struct s_scene
 	t_camera	camera;
 	t_ray		ray;
 	t_hit		hit;
-	t_color3	ambient;
+	t_ambient	ambient;
 	t_object	*lights;
 	t_object	*objects;
 };

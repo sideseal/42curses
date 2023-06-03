@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 22:04:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/02 16:57:25 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/03 20:54:49 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 typedef int t_bool;
 typedef int t_object_type;
 
+typedef struct s_ambient t_ambient;
 typedef struct s_canvas t_canvas;
 typedef struct s_camera t_camera;
 typedef struct s_data t_data;

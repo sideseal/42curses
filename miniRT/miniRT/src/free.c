@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 17:03:50 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/02 21:40:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/03 22:48:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,19 @@ void	free_struct(t_data *data)
 	_free_mlx(data);
 	// free_objects
 	free(data);
+}
+
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	if (tokens == NULL)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
 }

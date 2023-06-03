@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 16:27:39 by gychoi            #+#    #+#              #
-#    Updated: 2023/06/02 21:16:54 by gychoi           ###   ########.fr        #
+#    Updated: 2023/06/03 23:05:58 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ LIBVEC = $(LVCDIR)libvec.a
 
 SRCDIR = src/
 SOURCE = check.c \
+		 error.c \
 		 free.c \
 		 hook.c \
 		 init.c \
