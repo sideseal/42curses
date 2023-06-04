@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 17:42:59 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/03 23:24:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/04 23:09:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,19 @@ t_canvas	set_canvas(int height)
 
 void	set_ambient(char **tokens, t_data *data)
 {
-	size_t	count;
+	int	error;
 
-	count = count_tokens(tokens);
-	if (count != 3)
-		print_read_error("mismatched element counts", data, tokens);
-	if (check_elem_fmt(tokens) == FALSE)
-		print_read_error("wrong element values", data, tokens);
+	error = FALSE;
+	if (check_element_count(tokens) == FALSE)
+		print_read_error("mismatched element counts", NULL, data, tokens);
+	if (check_element_value(tokens[1], FLOAT) == FALSE)
+		print_read_error("wrong element values", tokens[1], data, tokens);
+	if (check_element_csv(tokens[2], INT) == FALSE)
+		print_read_error("wrong element values", tokens[2], data, tokens);
+	data->scene.ambient.lighting_ratio = rt_atof(tokens[1], &error);
+	if (error == TRUE)
+		print_read_error("cannot set element values", tokens[1], data, tokens);
+	// make set_csv 글로벌하게...
 }
 
 void	set_camera(char **tokens, t_data *data)
@@ -60,10 +66,7 @@ void	set_object(char **tokens, t_data *data)
 // objects
 void	set_data(char **tokens, t_data *data)
 {
-	size_t	count;
-
-	count = count_tokens(tokens);
-	if (count < 1)
+	if (count_tokens(tokens) < 1)
 		return ;
 	if (ft_strncmp(tokens[0], "A", 2) == 0)
 		set_ambient(tokens, data);
@@ -75,6 +78,8 @@ void	set_data(char **tokens, t_data *data)
 			|| ft_strncmp(tokens[0], "pl", 3) == 0 \
 			|| ft_strncmp(tokens[0], "cy", 3) == 0)
 		set_object(tokens, data);
+	else if (ft_strncmp(tokens[0], "#", 1) == 0)
+		return ;
 	else
-		print_read_error("mismateched type", data, tokens);
+		print_read_error("mismateched type", tokens[0], data, tokens);
 }

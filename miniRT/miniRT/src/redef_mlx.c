@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 15:56:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/02 21:07:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/04 21:46:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	*rt_mlx_new_image(t_data *data, int width, int height)
 	return (ret);
 }
 
-void	*rt_mlx_new_window(t_data *data, int size_x, int size_y, char *title)
+void	*rt_mlx_new_window(t_data *data, int sx, int sy, char *title)
 {
 	void	*ret;
 
-	ret = mlx_new_window(data->mlx, size_x, size_y, title);
+	ret = mlx_new_window(data->mlx, sx, sy, title);
 	if (ret == NULL)
 		print_error("mlx_new_window ", data);
 	return (ret);

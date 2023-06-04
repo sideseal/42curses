@@ -6,7 +6,7 @@
 /*   By: gychoi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:20:52 by gychoi            #+#    #+#             */
-/*   Updated: 2022/07/14 20:00:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/04 19:19:16 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static size_t	word_count(char const *s, char c)
 	{
 		while (s[i] != '\0' && s[i] == c)
 			i++;
+		if (s[i] == '\0')
+			break ;
 		if (s[i] != '\0' && s[i] != c)
 			count ++;
 		while (s[i] != '\0' && s[i] != c)
