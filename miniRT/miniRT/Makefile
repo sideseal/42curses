@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 16:27:39 by gychoi            #+#    #+#              #
-#    Updated: 2023/06/04 22:51:29 by gychoi           ###   ########.fr        #
+#    Updated: 2023/06/05 21:38:26 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,11 +33,15 @@ LIBVEC = $(LVCDIR)libvec.a
 SRCDIR = src/
 SOURCE = check.c \
 		 check_utils.c \
+		 cylinder.c \
 		 error.c \
 		 free.c \
 		 hook.c \
 		 init.c \
+		 light.c \
 		 main.c \
+		 object.c \
+		 plane.c \
 		 read.c \
 		 redef_libf.c \
 		 redef_libf_utils.c \
@@ -45,6 +49,7 @@ SOURCE = check.c \
 		 render.c \
 		 set.c \
 		 set_utils.c \
+		 sphere.c \
 
 SRCS = $(addprefix $(SRCDIR), $(SOURCE))
 

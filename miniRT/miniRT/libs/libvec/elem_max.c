@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:54:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 16:55:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:10:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 t_vec3	elem_max(t_vec3 u, t_vec3 v)
 {
-	if (u.ai < v.ai)
-		u.ai = v.ai;
-	if (u.bj < v.bj)
-		u.bj = v.bj;
-	if (u.ck < v.ck)
-		u.ck = v.ck;
+	if (u.x < v.x)
+		u.x = v.x;
+	if (u.y < v.y)
+		u.y = v.y;
+	if (u.z < v.z)
+		u.z = v.z;
 	return (u);
 }

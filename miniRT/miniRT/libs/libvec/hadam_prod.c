@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:44:48 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 16:45:55 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:11:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 t_vec3	hadam_prod(t_vec3 u, t_vec3 v)
 {
-	return (vec3_(u.ai * v.ai, u.bj * v.bj, u.ck * v.ck));
+	return (vec3_(u.x * v.x, u.y * v.y, u.z * v.z));
 }

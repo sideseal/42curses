@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 15:56:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/04 21:46:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:13:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	rt_mlx_pixel_put(t_img *img, int x, int y, t_color3 color)
 	char	*dst;
 	int		pixel;
 
-	pixel = (int)(255.999 * color.r) << 16 | \
-			(int)(255.999 * color.g) << 8 | \
-			(int)(255.999 * color.b);
+	pixel = (int)(255.999 * color.x) << 16 | \
+			(int)(255.999 * color.y) << 8 | \
+			(int)(255.999 * color.z);
 	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
 	*(unsigned int *)dst = pixel;
 }

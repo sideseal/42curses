@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:46:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 16:47:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:11:07 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 t_vec3	elem_min(t_vec3 u, t_vec3 v)
 {
-	if (v.ai < u.ai)
-		u.ai = v.ai;
-	if (v.bj < u.bj)
-		u.bj = v.bj;
-	if (v.ck < u.ck)
-		u.ck = v.ck;
+	if (v.x < u.x)
+		u.x = v.x;
+	if (v.y < u.y)
+		u.y = v.y;
+	if (v.z < u.z)
+		u.z = v.z;
 	return (u);
 }

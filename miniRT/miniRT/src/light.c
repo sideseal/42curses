@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec3_.c                                            :+:      :+:    :+:   */
+/*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/01 16:23:48 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 22:12:56 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/05 19:51:27 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/05 19:55:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libvec.h"
+#include "minirt.h"
 
-t_vec3	vec3_(double ai, double bj, double ck)
+t_light	*light_(t_point3 orig, t_color3 color, double bright, t_data *data)
 {
-	t_vec3	vec;
+	t_light	*light;
 
-	vec.x = ai;
-	vec.y = bj;
-	vec.z = ck;
-	return (vec);
+	light = rt_malloc(sizeof(t_light), data);
+	light->origin = orig;
+	light->color = color;
+	light->bright_ratio = bright;
+	return (light);
 }

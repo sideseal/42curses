@@ -6,13 +6,31 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 21:06:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/04 22:42:23 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 16:57:25 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-long long	toll(const char *str, long long sign, size_t idx, int *error)
+int	rt_atoi(const char *str, int *error, int *sign)
+{
+	size_t		idx;
+	long long	ret;
+
+	idx = 0;
+	if (str[idx] == '+' || str[idx] == '-')
+	{
+		if (str[idx] == '-')
+			*sign = -1;
+		++idx;
+	}
+	ret = toll(str, *sign, idx, error);
+	if (str[idx] == 0 || ret > INT_MAX || ret < INT_MIN)
+		*error = TRUE;
+	return ((int)ret);
+}
+
+long long	toll(const char *str, int sign, size_t idx, int *error)
 {
 	long long	acc;
 	long long	llmax;
@@ -21,9 +39,9 @@ long long	toll(const char *str, long long sign, size_t idx, int *error)
 	llmax = LONG_LONG_MAX;
 	while (str[idx] && str[idx] != '.')
 	{
-		if (ft_isdigit(str[idx]) == 0)
+		if (ft_isdigit(str[idx]) == FALSE)
 		{
-			*error = 1;
+			*error = TRUE;
 			return (*error);
 		}
 		if ((acc > llmax / 10) \
@@ -54,7 +72,7 @@ long long	tollp(const char *str, size_t idx, int *precision, int *error)
 		if (acc > llmax / 10 || (acc == llmax / 10 && str[idx] - '0' \
 		> (llmax % 10)) || !ft_isdigit(str[idx]) || *precision >= 15)
 		{
-			*error = 1;
+			*error = TRUE;
 			return (*error);
 		}
 		acc = acc * 10 + str[idx] - '0';

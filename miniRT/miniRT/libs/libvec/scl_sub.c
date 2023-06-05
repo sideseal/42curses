@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:50:03 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 16:50:28 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:12:35 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 t_vec3	scl_sub(double t, t_vec3 v)
 {
-	return (vec3_(t - v.ai, t - v.bj, t - v.ck));
+	return (vec3_(t - v.x, t - v.y, t - v.z));
 }

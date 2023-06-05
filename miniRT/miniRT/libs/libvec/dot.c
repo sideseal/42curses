@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:41:21 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 16:42:12 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:10:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 double	dot(t_vec3 u, t_vec3 v)
 {
-	return (u.ai * v.ai + u.bj * v.bj + u.ck * v.ck);
+	return (u.x * v.x + u.y * v.y + u.z * v.z);
 }

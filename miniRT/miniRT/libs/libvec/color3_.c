@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:26:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/01 16:26:48 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 22:09:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_color3	color3_(double r, double g, double b)
 {
 	t_color3	vec;
 
-	vec.r = r;
-	vec.g = g;
-	vec.b = b;
+	vec.x = r;
+	vec.y = g;
+	vec.z = b;
 	return (vec);
 }

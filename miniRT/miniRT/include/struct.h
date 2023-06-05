@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:02:38 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/03 21:14:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 21:45:17 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,31 @@ struct s_ambient
 	double		lighting_ratio;
 };
 
-struct s_object
+struct s_camera
 {
-	void			*element;
-	void			*next;
-	t_color3		albedo;
-	t_object_type	type;
+	double		viewport_w;
+	double		viewport_h;
+	t_point3	origin;
+	t_point3	lower_left_corner;
+	t_vec3		ai;
+	t_vec3		bj;
 };
 
-struct s_ray
+struct s_canvas
 {
-	t_vec3		dir;
-	t_point3	origin;
+	int		width;
+	int		height;
+	double	aspect_ratio;
+};
+
+struct s_cylinder
+{
+	double		height;
+	double		radius;
+	double		radius_sq;
+	t_vec3		normal;
+	t_point3	top_center;
+	t_point3	base_center;
 };
 
 struct s_hit
@@ -45,21 +58,40 @@ struct s_hit
 	t_color3	albedo;
 };
 
-struct s_canvas
+struct s_img
 {
-	int		width;
-	int		height;
-	double	aspect_ratio;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
 };
 
-struct s_camera
+struct s_light
 {
-	double		viewport_w;
-	double		viewport_h;
 	t_point3	origin;
-	t_point3	lower_left_corner;
-	t_vec3		ai;
-	t_vec3		bj;
+	t_color3	color;
+	double		bright_ratio;
+};
+
+struct s_object
+{
+	void			*element;
+	void			*next;
+	t_color3		albedo;
+	t_obj_type		type;
+};
+
+struct s_plane
+{
+	t_vec3		normal;
+	t_point3	point;
+};
+
+struct s_ray
+{
+	t_vec3		dir;
+	t_point3	origin;
 };
 
 struct s_scene
@@ -73,13 +105,11 @@ struct s_scene
 	t_object	*objects;
 };
 
-struct s_img
+struct s_sphere
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
+	double		radius;
+	double		radius_sq;
+	t_point3	center;
 };
 
 struct s_data

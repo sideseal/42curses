@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/04 23:01:58 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/05 21:55:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,18 @@ void		print_error(char *msg, void *data);
 void		print_custom_error(char *msg, void *data);
 void		print_read_error(char *msg, char *loc, void *data, char **tokens);
 
-t_bool		check_element_count(char **tokens);
-t_bool		check_element_csv(char *csv, int type);
-t_bool		check_element_value(char *elem, int type);
+t_bool		check_element_attr(char *elem, int type_p);
+t_bool		check_element_count(char **tokens, size_t size);
+t_bool		check_element_csv(char *csv, int type_p, int type_d);
+t_bool		check_element_value(char *elem, int type_p, int type_d);
 t_bool		check_file_ext(char	*file);
 
 size_t		count_char(char *line, char c);
-t_bool		is_int(char *elem);
-t_bool		is_float(char *elem);
+t_bool		is_int_fmt(char *elem);
+t_bool		is_float_fmt(char *elem);
 
 t_data		*init_data(void);
+t_light		*init_light(t_data *data);
 
 char		**parse_line(t_data *data, char *line);
 
@@ -44,19 +46,32 @@ size_t		count_tokens(char **tokens);
 
 t_canvas	set_canvas(int height);
 void		set_data(char **tokens, t_data *data);
+t_bool		set_data_value(char *elem, void *value, int type);
+t_bool		set_data_csv(char *elem, void *csv, int type_s, int type_d);
 
 void		render(t_data *data);
 
 void		free_struct(t_data *data);
 void		free_tokens(char **tokens);
 
+t_light		*light_(t_point3 orig, t_color3 color, double bright, t_data *data);
+
+t_object	*object_(t_obj_type type, void *elem, t_color3 albd, t_data *data);
+void		append(t_object **list, t_object *object);
+
+t_cylinder	*cylinder_(t_point3 center, t_vec3 normal, t_vec2 dh, t_data *dat);
+
+t_plane		*plane_(t_point3 point, t_vec3 normal, t_data *data);
+
+t_sphere	*sphere_(t_point3 center, double radius, t_data *data);
+
 double		rt_atof(const char *str, int *error);
-int			rt_atoi(const char *str, int *error);
+int			rt_atoi(const char *str, int *error, int *sign);
 void		rt_close(int fd, t_data *data);
 int			rt_open(char *file, int flag, t_data *data);
 void		*rt_malloc(size_t size, t_data *data);
 
-long long	toll(const char *str, long long sign, size_t idx, int *error);
+long long	toll(const char *str, int sign, size_t idx, int *error);
 long long	tollp(const char *str, size_t idx, int *precision, int *error);
 
 char		*rt_mlx_get_data_addr(t_data *data);

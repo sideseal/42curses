@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec3_.c                                            :+:      :+:    :+:   */
+/*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/01 16:23:48 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 22:12:56 by gychoi           ###   ########.fr       */
+/*   Created: 2023/06/05 21:37:06 by gychoi            #+#    #+#             */
+/*   Updated: 2023/06/05 21:46:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libvec.h"
+#include "minirt.h"
 
-t_vec3	vec3_(double ai, double bj, double ck)
+t_sphere	*sphere_(t_point3 center, double radius, t_data *data)
 {
-	t_vec3	vec;
+	t_sphere	*sphere;
 
-	vec.x = ai;
-	vec.y = bj;
-	vec.z = ck;
-	return (vec);
+	sphere = rt_malloc(sizeof(t_sphere), data);
+	sphere->center = center;
+	sphere->radius = radius;
+	sphere->radius_sq = radius * radius;
+	return (sphere);
 }
