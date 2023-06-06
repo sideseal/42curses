@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 23:02:38 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 21:45:17 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 20:27:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ struct s_ambient
 
 struct s_camera
 {
+	double		h_fov;
 	double		viewport_w;
 	double		viewport_h;
-	t_point3	origin;
+	t_point3	look_from;
+	t_vec3		look_at;
 	t_point3	lower_left_corner;
 	t_vec3		ai;
 	t_vec3		bj;

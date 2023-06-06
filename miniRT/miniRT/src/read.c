@@ -6,21 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 20:58:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/04 19:55:52 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 17:59:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-size_t	count_tokens(char **tokens)
-{
-	size_t	count;
-
-	count = 0;
-	while (tokens[count])
-		count++;
-	return (count);
-}
 
 static char	**_tokenize(t_data *data, char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 21:29:50 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 21:16:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 16:34:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define LONG_LONG_MAX 9223372036854775807LL
 # define EPSILON 1e-6
 # define LUMEN 3
+
+# define INITIAL_VALUE -42
 
 # define TRUE 1
 # define FALSE 0

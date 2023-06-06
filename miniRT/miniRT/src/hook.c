@@ -6,11 +6,12 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 20:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/02 21:14:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 20:53:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
 static void	check_leaks(void)
 {
 	// 지우는거 잊지 말기

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 17:03:50 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 21:33:34 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 20:52:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 static void	_free_mlx(t_data *data)
 {
-//	free(data->win);
-//	free(data->img.img);
-//	free(data->img.addr);
 	mlx_destroy_image(data->mlx, data->img.img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_del(data->mlx);

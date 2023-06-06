@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 19:52:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 23:11:32 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 21:04:29 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void	print_scene(t_scene scene)
 {
 	t_ambient	ambient;
+	t_camera	camera;
 	t_light		*light;
 	t_object	*objects;
 	t_cylinder	*cylinder;
@@ -28,11 +29,17 @@ void	print_scene(t_scene scene)
 	printf("lighting ratio: %f\n", ambient.lighting_ratio);
 	printf("color: %f, %f, %f\n", ambient.color.x, ambient.color.y, ambient.color.z);
 	printf("----------\n");
+	camera = scene.camera;
+	printf("Camera\n");
+	printf("coordinate: %f, %f, %f\n", camera.look_from.x, camera.look_from.y, camera.look_from.z);
+	printf("normal: %f, %f, %f\n", camera.look_at.x, camera.look_at.y, camera.look_at.z);
+	printf("fov: %f\n", camera.h_fov);
+	printf("----------\n");
 	light = scene.lights->element;
 	printf("Light\n");
 	printf("coordinate: %f, %f, %f\n", light->origin.x, light->origin.y, light->origin.z);
 	printf("bright ratio: %f\n", light->bright_ratio);
-	printf("color: %f, %f, %f\n", light->color.x, light->color.y, light->color.z);
+	printf("color: %f, %f, %f\n", scene.lights->albedo.x, scene.lights->albedo.y, scene.lights->albedo.z);
 	printf("----------\n");
 	objects = scene.objects;
 	while (objects)

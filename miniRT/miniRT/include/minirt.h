@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 20:10:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 21:55:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 20:56:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,31 @@ t_bool		check_element_value(char *elem, int type_p, int type_d);
 t_bool		check_file_ext(char	*file);
 
 size_t		count_char(char *line, char c);
+size_t		count_tokens(char **tokens);
 t_bool		is_int_fmt(char *elem);
 t_bool		is_float_fmt(char *elem);
 
 t_data		*init_data(void);
-t_light		*init_light(t_data *data);
-
-char		**parse_line(t_data *data, char *line);
 
 void		read_file(t_data *data, char *file);
 
-size_t		count_tokens(char **tokens);
-
-t_canvas	set_canvas(int height);
 void		set_data(char **tokens, t_data *data);
 t_bool		set_data_value(char *elem, void *value, int type);
 t_bool		set_data_csv(char *elem, void *csv, int type_s, int type_d);
+
+t_cylinder	*set_cylinder(char **tokens, t_data *data);
+t_plane		*set_plane(char **tokens, t_data *data);
+t_sphere	*set_sphere(char **tokens, t_data *data);
+void		set_object_cylinder(char **tokens, t_data *data);
+void		set_object_plane(char **tokens, t_data *data);
+void		set_object_sphere(char **tokens, t_data *data);
 
 void		render(t_data *data);
 
 void		free_struct(t_data *data);
 void		free_tokens(char **tokens);
+
+t_camera	camera_(t_canvas canvas, t_point3 from, t_vec3 at, double h_fov);
 
 t_light		*light_(t_point3 orig, t_color3 color, double bright, t_data *data);
 

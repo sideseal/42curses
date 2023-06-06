@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 16:27:39 by gychoi            #+#    #+#              #
-#    Updated: 2023/06/05 21:38:26 by gychoi           ###   ########.fr        #
+#    Updated: 2023/06/06 20:54:26 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ LIBFT = $(LFTDIR)libft.a
 LIBVEC = $(LVCDIR)libvec.a
 
 SRCDIR = src/
-SOURCE = check.c \
+SOURCE = camera.c \
+		 check.c \
 		 check_utils.c \
 		 cylinder.c \
 		 error.c \
@@ -48,6 +49,8 @@ SOURCE = check.c \
 		 redef_mlx.c \
 		 render.c \
 		 set.c \
+		 set_object_1.c \
+		 set_object_2.c \
 		 set_utils.c \
 		 sphere.c \
 

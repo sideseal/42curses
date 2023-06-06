@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 20:03:45 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 16:57:49 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 17:59:16 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ size_t	count_char(char *line, char c)
 			count++;
 		index++;
 	}
+	return (count);
+}
+
+size_t	count_tokens(char **tokens)
+{
+	size_t	count;
+
+	count = 0;
+	while (tokens[count])
+		count++;
 	return (count);
 }
 

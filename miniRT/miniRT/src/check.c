@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 21:17:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 20:28:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 20:50:04 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ t_bool	check_element_attr(char *elem, int type_p)
 			rt_atof(elem, &error) < INT_MIN || error == TRUE)
 			return (FALSE);
 	if (type_p == FOV)
-		if (180 < ft_atoi(elem) || ft_atoi(elem) < 0)
+		if (180 < rt_atof(elem, &error) || \
+			rt_atof(elem, &error) < 0 || error == TRUE)
 			return (FALSE);
 	if (type_p == LIGHT)
 		if (1.0 < rt_atof(elem, &error) || \
@@ -78,7 +79,6 @@ t_bool	check_element_csv(char *csv, int type_p, int type_d)
 
 t_bool	check_element_value(char *elem, int type_p, int type_d)
 {
-	// check property
 	if (type_d == INT)
 		if (is_int_fmt(elem) == FALSE)
 			return (FALSE);

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 22:27:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/06/05 19:32:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/06/06 20:50:43 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,29 @@ t_bool	set_data_value(char *elem, void *value, int type)
 
 t_bool	set_data_csv(char *elem, void *csv, int type_s, int type_d)
 {
-	int		error;
-	char	**csv_tokens;
+	int		err;
+	char	**tokens;
 
-	// color 제외하곤 모두 float. 수정 필요
-	error = FALSE;
-	csv_tokens = ft_split(elem, ',');
+	err = FALSE;
+	tokens = ft_split(elem, ',');
 	if ((type_s == COLOR) && (type_d == FLOAT))
-		*(t_color3 *)csv = color3_(rt_atof(csv_tokens[0], &error), \
-			rt_atof(csv_tokens[1], &error), rt_atof(csv_tokens[2], &error));
+		*(t_color3 *)csv = color3_(rt_atof(tokens[0], &err) / 255, \
+			rt_atof(tokens[1], &err) / 255, rt_atof(tokens[2], &err) / 255);
 	if ((type_s == COLOR) && (type_d == INT))
-		*(t_color3 *)csv = color3_(ft_atoi(csv_tokens[0]), \
-			ft_atoi(csv_tokens[1]), ft_atoi(csv_tokens[2]));
+		*(t_color3 *)csv = color3_(ft_atoi(tokens[0]) / 255, \
+			ft_atoi(tokens[1]) / 255, ft_atoi(tokens[2]) / 255);
 	if ((type_s == POINT) && (type_d == FLOAT))
-		*(t_point3 *)csv = point3_(rt_atof(csv_tokens[0], &error), \
-			rt_atof(csv_tokens[1], &error), rt_atof(csv_tokens[2], &error));
+		*(t_point3 *)csv = point3_(rt_atof(tokens[0], &err), \
+			rt_atof(tokens[1], &err), rt_atof(tokens[2], &err));
 	if ((type_s == POINT) && (type_d == INT))
-		*(t_point3 *)csv = point3_(ft_atoi(csv_tokens[0]), \
-			ft_atoi(csv_tokens[1]), ft_atoi(csv_tokens[2]));
+		*(t_point3 *)csv = point3_(ft_atoi(tokens[0]), \
+			ft_atoi(tokens[1]), ft_atoi(tokens[2]));
 	if ((type_s == VEC) && (type_d == FLOAT))
-		*(t_vec3 *)csv = vec3_(rt_atof(csv_tokens[0], &error), \
-			rt_atof(csv_tokens[1], &error), rt_atof(csv_tokens[2], &error));
+		*(t_vec3 *)csv = vec3_(rt_atof(tokens[0], &err), \
+			rt_atof(tokens[1], &err), rt_atof(tokens[2], &err));
 	if ((type_s == VEC) && (type_d == INT))
-		*(t_vec3 *)csv = vec3_(ft_atoi(csv_tokens[0]), \
-			ft_atoi(csv_tokens[1]), ft_atoi(csv_tokens[2]));
-	free_tokens(csv_tokens);
-	return (!error);
+		*(t_vec3 *)csv = vec3_(ft_atoi(tokens[0]), \
+			ft_atoi(tokens[1]), ft_atoi(tokens[2]));
+	free_tokens(tokens);
+	return (!err);
 }
