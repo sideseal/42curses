@@ -2,6 +2,6 @@
 	path = minishell
 	url = https://github.com/sideseal/minishell.git
 
-[submodule "miniRT/miniRT_practice"]
-	path = miniRT/miniRT_practice
-	url = https://github.com/sideseal/miniRT_practice.git
+[submodule "miniRT/miniRT"]
+	path = miniRT/miniRT
+	url = https://github.com/sideseal/miniRT.git
