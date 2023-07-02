@@ -219,6 +219,39 @@ set maxmempattern=5000
 
 autocmd BufWritePre ~/.vimrc :1,10s/^\" Last Modified: \zs.*$/\=strftime('%Y-%m-%d %H:%M:%S')/
 
+" go to library functions
+" gf & ctrl-O
+"set path+=/usr/local/include/**2
+"set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/**2
+"set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include/**2
+"set path+=/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/**2
+"set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/**2
+"set path+=/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/**2
+
+" Update path with the preprocessor's #include search paths. The C search
+" paths are a subset of the C++ search paths, so they don't have to be
+" additionally included.
+if has('unix') && executable('gcc')
+  let s:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
+  let s:lines = systemlist(s:expr)
+  if v:shell_error ==# 0
+    for s:line in s:lines
+      if match(s:line, '^ ') ==# -1 | continue | endif
+      let s:include = substitute(s:line, '^ ', '', '')
+      " Remove ' (framework directory)' suffix (applicable on macOS).
+      if match(s:include, ' (framework directory)$') && !isdirectory(s:include)
+        let s:include = substitute(s:include, ' (framework directory)$', '', '')
+      endif
+      if !isdirectory(s:include) | continue | endif
+      " Escape the path, including additional handling for spaces and commas.
+      let s:include = fnameescape(s:include)
+      let s:include = substitute(s:include, ',', '\\\\,', 'g')
+      let s:include = substitute(s:include, '\ ', '\\\\ ', 'g')
+      execute 'set path+=' . s:include
+    endfor
+  endif
+endif
+
 " 0. Tips to remember
 " 10^w< 	-> decrease buffer size (vertically)
 " 10^w>		-> increase buffer size (vertically)
