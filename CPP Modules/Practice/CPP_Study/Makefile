@@ -1,6 +1,6 @@
 NAME = output
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror -O0
 CXXFLAGS += -std=c++98 -MMD -MP
 CPPFLAGS = -I.
 RM = rm -rf
@@ -8,19 +8,22 @@ RM = rm -rf
 SRCS = test.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
--include $(DEPS)
 
 ifdef DEBUG
 	CXXFLAGS += -g
 endif
 
-all: $(NAME)
-
 %.o: %.cpp
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 $(NAME): $(OBJS)
-	$(LINK.cpp) $^ $(LOADLIBS) $(LDLIBS) -o $@
+	$(LINK.cpp) $^ $(LOADLIBS) $(LDLIBS) $(OUTPUT_OPTION)
+
+-include $(DEPS)
+
+.PHONY: all debug clean fclean re
+
+all: $(NAME)
 
 debug: fclean
 	$(MAKE) all DEBUG=1
@@ -33,5 +36,3 @@ fclean: clean
 
 re: fclean
 	$(MAKE) all
-
-.PHONY: all clean fclean re
