@@ -1,34 +1,23 @@
 #include <iostream>
 using namespace std;
 
-int add(int a, int b)
+void	many(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k)
 {
-	int result = a + b;
-	return (result);
+	int result = a + b + c + d + e + f + g + h + i + j + k;
+	cout << result << endl;
 }
 
-float add(float a, float b)
+void	setHp(int* hp)
 {
-	float result = a + b;
-	return (result);
-}
-
-int add(int a)
-{
-	int result = a + 1;
-	return (result);
+	*hp = 100;
+	return ;
 }
 
 int	main()
 {
-	int	a = 3;
-	int	b = 5;
-	float c = 1.5f;
-	float d = 2.1f;
-	int result1 = add(a, b);
-	float result2 = add(c, d);
-	int result3 = add(a);
+	int	hp = 3;
 
-	cout << result1 << ", " << result2 << ", " << result3 << endl;
+	many(1, 2, hp, 4, 5, 6, 7, 8, 9, 10, 11);
+	setHp(&hp);
 	return (0);
 }
