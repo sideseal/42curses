@@ -1,6 +1,6 @@
 NAME = output
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -O0
+CXXFLAGS = -Wall -Wextra -Werror
 CXXFLAGS += -std=c++98 -MMD -MP
 CPPFLAGS = -I.
 RM = rm -rf
