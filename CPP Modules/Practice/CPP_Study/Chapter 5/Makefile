@@ -1,11 +1,11 @@
-NAME = output
+NAME = snail
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror
 CXXFLAGS += -std=c++98 -MMD -MP
 CPPFLAGS = -I.
 RM = rm -rf
 
-SRCS = test.cpp
+SRCS = snail.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
