@@ -90,11 +90,11 @@ nnoremap <ESC><ESC> :noh<return>
 " filetype indent plugin on
 set autoindent
 set smartindent
-set cindent
+" set cindent
 set smarttab
-" set tabstop=4
-" set shiftwidth=4
-" wet noexpandtab
+set tabstop=4
+set shiftwidth=4
+" set noexpandtab
 set fileencodings=utf-8,euc-kr
 set fencs=ucs-bom,utf-8,euc-kr
 set guifont=D2Coding:h12:cHANGEUL:qDEFAULT
