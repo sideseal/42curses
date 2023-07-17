@@ -19,7 +19,7 @@ int main()
 		knights[i] = new Knight();
 	}
 
-	for (int i = 0; i <= KNIGHT_COUNT; i++)
+	for (int i = 0; i < KNIGHT_COUNT; i++)
 	{
 		knights[i]->PrintInfo();
 		delete knights[i];

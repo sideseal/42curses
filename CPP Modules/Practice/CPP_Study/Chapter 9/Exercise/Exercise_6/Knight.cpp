@@ -61,6 +61,9 @@ void Knight::OnDamaged(Knight* attacker)
 	int damage = attacker->GetAttackDamage();
 	AddHp(-damage);
 
+	if (IsDead())
+		return;
+
 	// ¹Ý°Ý!
 	attacker->OnDamaged(this);	
 }

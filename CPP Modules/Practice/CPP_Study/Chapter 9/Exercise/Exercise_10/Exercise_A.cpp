@@ -41,14 +41,14 @@ int main()
 		arrows[i]->AttackTarget();
 
 		// 기사가 죽었으면 소멸시켜준다
-		if (knight != nullptr)
-		{
-			if (knight->IsDead())
-			{
-				delete knight;
-				knight = nullptr;
-			}
-		}	
+//		if (knight != nullptr)
+//		{
+//			if (knight->IsDead())
+//			{
+//				delete knight;
+//				knight = nullptr;
+//			}
+//		}	
 
 		delete arrows[i];
 		arrows[i] = nullptr;

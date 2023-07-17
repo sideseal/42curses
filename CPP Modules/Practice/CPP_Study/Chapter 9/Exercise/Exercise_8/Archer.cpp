@@ -13,7 +13,7 @@ Archer::Archer(int hp) : Player(hp)
 Archer::~Archer()
 {
 	// Áñ°Å¿ü´Ù ³» Æê :(
-	if (_pet != nullptr)
+	if (_pet != 0)
 		delete _pet;
 }
 
