@@ -1,50 +1,35 @@
 #include <iostream>
 using namespace std;
 
-class Position
+template<typename T>
+class RandomBox
 {
-	public:
-		Position operator+(const Position& arg)
-		{
-			Position pos;
+public:
+	RandomBox()
+	{
+		for (int i = 0; i < 10; i++)
+			_data[i] = i;
+	}
 
-			pos._x = _x + arg._x;
-			pos._y = _y + arg._y;
-			return (pos);
-		}
+	T GetRandomData()
+	{
+		int idx = rand() % 10;
+		return _data[idx];
+	}
 
-		bool operator==(const Position& arg)
-		{
-			return (_x == arg._x && _y == arg._y);
-		}
-		void operator=(int arg)
-		{
-			_x = arg;
-			_y = arg;
-		}
-
-	public:
-		int	_x;
-		int	_y;
+public:
+	T _data[10];
 };
 
 int	main(void)
 {
+	srand(static_cast<unsigned int>(time(nullptr)));
 
-	Position	pos1;
-
-	pos1._x = 1;
-	pos1._y = 1;
-
-	Position	pos2;
-	
-	pos2._x = 2;
-	pos2._y = 2;
-
-	Position	pos3 = pos1 + pos2;
-	cout << pos3._x << " " << pos3._y << endl;
-	
-	Position	pos5;
-	pos3 = (pos5 = 5);
+	RandomBox	<int>r1;
+	RandomBox	<float>r2;
+	int a = r1.GetRandomData();
+	float b = r2.GetRandomData();
+	cout << a << endl;
+	cout << b << endl;
 	return (0);
 }
