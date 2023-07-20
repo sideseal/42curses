@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:08:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/19 22:19:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/20 21:31:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@
 class	PhoneBook
 {
 	public:
+		PhoneBook();
 		void	PrintExit(void);
 		void	PrintUsage(void);
 		void	PrintInvalid(void);
 		void	UsePhoneBook(void);
-		void	UpdatePhoneBook(Contact contact, int index);
+		void	UpdatePhoneBook(void);
 		void	SearchPhoneBook(void);
 
 	private:
-		Contact	_contacts[8];
+		static int	_index;
+		Contact		_contacts[8];
 };
 
 #endif

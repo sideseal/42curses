@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:09:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/19 23:01:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/20 21:46:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 # define CONTACT_H
 
 # include <iostream>
+# include <iomanip>
 # include <string>
 
 class	Contact
 {
 	public:
-		Contact();
-		void	Print() {
-			std::cout << _index << std::endl;
-			std::cout << _firstName << std::endl;
-			std::cout << _lastName << std::endl;
-			std::cout << _nickname << std::endl;
-			std::cout << _darkestSecret << std::endl;
-		} // need to delete
-		void	MakeContact(int index);
+		Contact(void);
+		Contact(int index);
+		void	DisplayBriefContact(void);
+		void	DisplayContact(void);
+		void	MakeContact(void);
 
 	private:
 		int			_index;

@@ -6,11 +6,19 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:08:37 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/19 23:00:36 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/20 21:51:10 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.h"
+
+int PhoneBook::_index = 0;
+
+PhoneBook::PhoneBook(void)
+{
+	for (int i = 0; i < 8; i++)
+		_contacts[i] = Contact(i);
+}
 
 void	PhoneBook::PrintExit(void)
 {
@@ -27,9 +35,15 @@ void	PhoneBook::PrintInvalid(void)
 	std::cout << "Error: Invalid input" << std::endl;
 }
 
+static void	convertToUppercase(std::string& str)
+{
+	size_t	length = str.length();
+	for (size_t i = 0; i < length; i++)
+		str[i] = std::toupper(str[i]);
+}
+
 void	PhoneBook::UsePhoneBook(void)
 {
-	int			index = 0;
 	std::string	input;
 
 	PrintUsage();
@@ -38,6 +52,7 @@ void	PhoneBook::UsePhoneBook(void)
 
 		std::cout << "> " << std::flush;
 		std::getline(std::cin, input);
+		convertToUppercase(input);
 		if (input == "EXIT")
 		{
 			PrintExit();
@@ -45,11 +60,7 @@ void	PhoneBook::UsePhoneBook(void)
 		}
 		else if (input == "ADD")
 		{
-			Contact	contact;
-
-			contact.MakeContact(index);
-			UpdatePhoneBook(contact, index);
-			index = (index + 1) % 8;
+			UpdatePhoneBook();
 			PrintUsage();
 		}
 		else if (input == "SEARCH")
@@ -64,14 +75,25 @@ void	PhoneBook::UsePhoneBook(void)
 	}
 }
 
-void	PhoneBook::UpdatePhoneBook(Contact contact, int index)
+void	PhoneBook::UpdatePhoneBook(void)
 {
-	_contacts[index] = contact;
+	_contacts[_index].MakeContact();
+	_index = (_index + 1) % 8;
 }
 
-bool	isOneDigitNumber(const std::string& str)
+static bool	isOneDigitNumber(const std::string& str)
 {
 	return ((str.length() == 1) && std::isdigit(static_cast<unsigned char>(str[0])));
+}
+
+static void	showContactList(Contact* _contacts)
+{
+	std::cout << "| " << std::setw(10) << "index" << " ";
+	std::cout << "| " << std::setw(10) << "first name" << " ";
+	std::cout << "| " << std::setw(10) << "last name" << " ";
+	std::cout << "| " << std::setw(10) << "nickname" << " |" << std::endl;
+	for (size_t i = 0; i < 8; i++)
+		_contacts[i].DisplayBriefContact();
 }
 
 void	PhoneBook::SearchPhoneBook(void)
@@ -79,11 +101,11 @@ void	PhoneBook::SearchPhoneBook(void)
 	int			index;
 	bool		flag;
 	std::string	input;
-	Contact		contact;
 
 	flag = true;
 	while (flag)
 	{
+		showContactList(_contacts);
 		while (true)
 		{
 			std::cout << "Index: " << std::flush;
@@ -92,13 +114,14 @@ void	PhoneBook::SearchPhoneBook(void)
 			{
 				index = input[0] - '0';
 				if (0 <= index && index <= 7)
+				{
+					_contacts[index].DisplayContact();
 					break;
+				}
 			}
 			std::cout << "Error: Invalid index." << std::endl;
 		}
 		input.clear();
-		contact = _contacts[index];
-		contact.Print();
 		while (true)
 		{
 			std::cout << "Search for more contacts? [y/n]" << std::endl;
@@ -108,6 +131,7 @@ void	PhoneBook::SearchPhoneBook(void)
 			else if (input == "n")
 			{
 				flag = false;
+				std::cout << std::endl;
 				break;
 			}
 			else
