@@ -6,13 +6,14 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:09:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/20 21:46:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/21 18:56:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONTACT_H
 # define CONTACT_H
 
+# include <cstdlib>
 # include <iostream>
 # include <iomanip>
 # include <string>

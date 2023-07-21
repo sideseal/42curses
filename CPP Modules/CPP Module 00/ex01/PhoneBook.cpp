@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:08:37 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/20 21:51:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/21 19:08:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	PhoneBook::UsePhoneBook(void)
 
 		std::cout << "> " << std::flush;
 		std::getline(std::cin, input);
+		if (!std::cin.good())
+			exit(1);
 		convertToUppercase(input);
 		if (input == "EXIT")
 		{
@@ -110,6 +112,8 @@ void	PhoneBook::SearchPhoneBook(void)
 		{
 			std::cout << "Index: " << std::flush;
 			std::getline(std::cin, input);
+			if (!std::cin.good())
+				exit(1);
 			if (!input.empty() && isOneDigitNumber(input))
 			{
 				index = input[0] - '0';
@@ -126,6 +130,8 @@ void	PhoneBook::SearchPhoneBook(void)
 		{
 			std::cout << "Search for more contacts? [y/n]" << std::endl;
 			std::getline(std::cin, input);
+			if (!std::cin.good())
+				exit(1);
 			if (input == "y")
 				break;
 			else if (input == "n")

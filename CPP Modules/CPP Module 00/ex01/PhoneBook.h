@@ -6,15 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:08:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/20 21:31:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/21 18:56:16 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHONEBOOK_H
 # define PHONEBOOK_H
 
-# include <iostream>
-# include <string>
 # include "Contact.h"
 
 class	PhoneBook
