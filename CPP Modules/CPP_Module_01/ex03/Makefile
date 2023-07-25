@@ -5,12 +5,12 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/07/24 22:46:55 by gychoi            #+#    #+#              #
-#    Updated: 2023/07/24 22:46:56 by gychoi           ###   ########.fr        #
+#    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
+#    Updated: 2023/07/25 21:20:54 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Zombie
+NAME = violence
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror
 CXXFLAGS += -std=c++98 -MMD -MP
@@ -18,9 +18,9 @@ CPPFLAGS = -I.
 RM = rm -rf
 
 SRCS = main.cpp \
-	   Zombie.cpp \
-	   newZombie.cpp \
-	   randomChump.cpp
+	   HumanA.cpp \
+	   HumanB.cpp \
+	   Weapon.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 

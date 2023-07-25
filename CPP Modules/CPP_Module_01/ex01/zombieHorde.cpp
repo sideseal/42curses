@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*   zombieHorde.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 20:24:28 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/24 23:04:36 by gychoi           ###   ########.fr       */
+/*   Created: 2023/07/24 22:46:13 by gychoi            #+#    #+#             */
+/*   Updated: 2023/07/25 18:40:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-#ifndef __ZOMBIE_H__
-#define __ZOMBIE_H__
+#include "Zombie.hpp"
 
-#include <iostream>
-#include <string>
-
-class	Zombie
+Zombie*	zombieHorde(int N, std::string name)
 {
-	public:
-		Zombie(const std::string& name);
-		void	announce(void);
+	Zombie*				horde = new Zombie[N];
+	std::ostringstream	oss;
 
-	private:
-		std::string	_name;
-};
-
-Zombie*	newZombie(std::string name);
-void	randomChump(std::string name);
-
-#endif
+	for (int i = 0; i < N; i++)
+	{
+		oss << name << i;
+		horde[i].setName(oss.str());
+		oss.clear();
+		oss.str("");
+	}
+	return (horde);
+}

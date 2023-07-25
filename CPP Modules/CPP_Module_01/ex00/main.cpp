@@ -5,17 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 18:09:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/19 21:32:47 by gychoi           ###   ########.fr       */
+/*   Created: 2023/07/24 20:24:22 by gychoi            #+#    #+#             */
+/*   Updated: 2023/07/25 17:06:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.h"
+#include "Zombie.hpp"
+
+#ifdef LEAKS_CHECK
+#include <cstdlib>
+void	check_leaks(void)
+{
+	system("leaks --list -- zombie");
+}
+#define ATEXIT_CHECK() atexit(check_leaks)
+#else
+#define ATEXIT_CHECK()
+#endif
 
 int	main(void)
 {
-	PhoneBook	phoneBook;
+	ATEXIT_CHECK();
+	Zombie*	zombie = newZombie("HeapZombie");
 
-	phoneBook.UsePhoneBook();
+	zombie->announce();
+	randomChump("StackZombie");
+	delete zombie;
 	return (0);
 }

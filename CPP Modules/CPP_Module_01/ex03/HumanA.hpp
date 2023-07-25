@@ -1,39 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Contact.h                                          :+:      :+:    :+:   */
+/*   HumanA.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 18:09:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/21 18:56:24 by gychoi           ###   ########.fr       */
+/*   Created: 2023/07/25 21:33:27 by gychoi            #+#    #+#             */
+/*   Updated: 2023/07/25 22:27:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONTACT_H
-# define CONTACT_H
+#pragma once
+#ifndef __HUMANA_H__
+#define __HUMANA_H__
 
-# include <cstdlib>
-# include <iostream>
-# include <iomanip>
-# include <string>
+#include "Weapon.hpp"
 
-class	Contact
+class	HumanA
 {
 	public:
-		Contact(void);
-		Contact(int index);
-		void	DisplayBriefContact(void);
-		void	DisplayContact(void);
-		void	MakeContact(void);
+		HumanA(const std::string& name, const Weapon& weapon);
+		void	attack(void);
 
 	private:
-		int			_index;
-		std::string	_firstName;
-		std::string	_lastName;
-		std::string	_nickname;
-		std::string	_phoneNumber;
-		std::string	_darkestSecret;
+		const Weapon&		_weapon;
+		const std::string	_name;
 };
 
 #endif
