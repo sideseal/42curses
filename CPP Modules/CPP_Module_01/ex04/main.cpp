@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 17:05:36 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/28 00:54:07 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/28 03:43:36 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ std::string	editString(const std::string& str, const std::string& pattern, const
 	std::size_t	strLength = str.length();
 	std::size_t	patternLength = pattern.length();
 
-	if (!patternLength || !strLength)
+	if (!patternLength || !strLength || static_cast<int>(strLength - patternLength) < 0)
 		return (str);
 	while (pos <= strLength - patternLength)
 	{
