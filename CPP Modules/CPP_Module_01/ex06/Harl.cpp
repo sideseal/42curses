@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 01:14:21 by gychoi            #+#    #+#             */
-/*   Updated: 2023/07/28 02:35:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/07/28 17:04:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	Harl::warning(void)
 void	Harl::error(void)
 {
 	std::cout << "[ ERROR ]" << std::endl;
-	std::cout << "This is unacceptable! I want to speak to the manager now." << std::endl;
+	std::cout << "This is unacceptable! I want to speak to the manager now." << '\n' <<  std::endl;
 }
 
 void	Harl::complain(std::string level)
