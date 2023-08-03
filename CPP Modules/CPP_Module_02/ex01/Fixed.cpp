@@ -6,11 +6,11 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/02 22:28:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 01:45:23 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
+#include <cmath>
 #include "Fixed.hpp"
 
 Fixed::Fixed(void) : _rawBits(0)
@@ -39,7 +39,8 @@ Fixed::Fixed(float const floatValue)
 Fixed&	Fixed::operator=(Fixed const& fixed)
 {
 	std::cout << "Copy assignment operator called" << std::endl;
-	_rawBits = fixed.getRawBits();
+	if (this != &fixed)
+		setRawBits(fixed.getRawBits());
 	return (*this);
 }
 
@@ -60,15 +61,15 @@ void	Fixed::setRawBits(int const raw)
 
 int	Fixed::toInt(void) const
 {
-	return (getRawBits() >> _fractionalBits);
+	return (_rawBits / (1 <<_fractionalBits));
 }
 
 float	Fixed::toFloat(void) const
 {
-	return (static_cast<float>(getRawBits() / (1 << _fractionalBits)));
+	return (static_cast<float>(_rawBits) / (1 << _fractionalBits));
 }
 
-std::ostream&	operator<<(std::ostream& os, const Fixed& fixed)
+std::ostream&	operator<<(std::ostream& os, Fixed const& fixed)
 {
 	os << fixed.toFloat();
 	return (os);

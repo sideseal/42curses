@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:45:49 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/04 01:45:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 01:43:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,28 @@ class	Fixed
 		void	setRawBits(int const raw);
 		int		toInt(void) const;
 		float	toFloat(void) const;
+
+		bool	operator>(Fixed const& fixed) const;
+		bool	operator<(Fixed const& fixed) const;
+		bool	operator>=(Fixed const& fixed) const;
+		bool	operator<=(Fixed const& fixed) const;
+		bool	operator==(Fixed const& fixed) const;
+		bool	operator!=(Fixed const& fixed) const;
+
+		Fixed	operator+(Fixed const& fixed) const;
+		Fixed	operator-(Fixed const& fixed) const;
+		Fixed	operator*(Fixed const& fixed) const;
+		Fixed	operator/(Fixed const& fixed) const;
+
+		Fixed&	operator++(void);
+		Fixed&	operator--(void);
+		Fixed	operator++(int);
+		Fixed	operator--(int);
+
+		static Fixed&		min(Fixed& a, Fixed& b);
+		static Fixed&		max(Fixed& a, Fixed& b);
+		static Fixed const&	min(Fixed const& a, Fixed const& b);
+		static Fixed const&	max(Fixed const& a, Fixed const& b);
 };
 
 std::ostream&	operator<<(std::ostream& os, Fixed const& fixed);
