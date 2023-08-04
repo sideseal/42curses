@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/04 01:46:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 13:28:54 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,52 +67,74 @@ std::ostream&	operator<<(std::ostream& os, Fixed const& fixed)
 
 bool	Fixed::operator>(Fixed const& fixed) const
 {
-	return (_rawBits > fixed._rawBits);
+	return (_rawBits > fixed.getRawBits());
 }
 
 bool	Fixed::operator<(Fixed const& fixed) const
 {
-	return (_rawBits < fixed._rawBits);
+	return (_rawBits < fixed.getRawBits());
 }
 
 bool	Fixed::operator>=(Fixed const& fixed) const
 {
-	return (_rawBits >= fixed._rawBits);
+	return (_rawBits >= fixed.getRawBits());
 }
 
 bool	Fixed::operator<=(Fixed const& fixed) const
 {
-	return (_rawBits <= fixed._rawBits);
+	return (_rawBits <= fixed.getRawBits());
 }
 
 bool	Fixed::operator==(Fixed const& fixed) const
 {
-	return (_rawBits == fixed._rawBits);
+	return (_rawBits == fixed.getRawBits());
 }
 
 bool	Fixed::operator!=(Fixed const& fixed) const
 {
-	return (_rawBits != fixed._rawBits);
+	return (_rawBits != fixed.getRawBits());
 }
+
+typedef long long	int64;
 
 Fixed	Fixed::operator+(Fixed const& fixed) const
 {
-	return (Fixed(toFloat() + fixed.toFloat()));
+	Fixed	ret;
+	int64	b1 = _rawBits;
+	int64	b2 = fixed.getRawBits();
+
+	ret.setRawBits(static_cast<int>(b1 + b2));
+	return (ret);
 }
 
 Fixed	Fixed::operator-(Fixed const& fixed) const
 {
-	return (Fixed(toFloat() - fixed.toFloat()));
+	Fixed	ret;
+	int64	b1 = _rawBits;
+	int64	b2 = fixed.getRawBits();
+
+	ret.setRawBits(static_cast<int>(b1 - b2));
+	return (ret);
 }
 
 Fixed	Fixed::operator*(Fixed const& fixed) const
 {
-	return (Fixed(toFloat() * fixed.toFloat()));
+	Fixed	ret;
+	int64	b1 = _rawBits;
+	int64	b2 = fixed.getRawBits();
+
+	ret.setRawBits(static_cast<int>((b1 * b2) / (1 << _fractionalBits)));
+	return (ret);
 }
 
 Fixed	Fixed::operator/(Fixed const& fixed) const
 {
-	return (Fixed(toFloat() / fixed.toFloat()));
+	Fixed	ret;
+	int64	b1 = _rawBits;
+	int64	b2 = fixed.getRawBits();
+
+	ret.setRawBits(static_cast<int>((b1 * (1 << _fractionalBits) / b2)));
+	return (ret);
 }
 
 Fixed&	Fixed::operator++(void)
