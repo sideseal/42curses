@@ -6,18 +6,18 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 01:21:18 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/04 01:48:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 18:05:12 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Point.hpp"
 
-Point::Point(void) : _x(0), _y(0) {}
+Point::Point(void) : _x(Fixed(0)), _y(Fixed(0)) {}
 
 Point::Point(float const x, float const y)
 {
-	const_cast<Fixed&>(_x) = x;
-	const_cast<Fixed&>(_y) = y;
+	const_cast<Fixed&>(_x) = Fixed(x);
+	const_cast<Fixed&>(_y) = Fixed(y);
 }
 
 Point::Point(Point const& point)

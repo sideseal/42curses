@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:11 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/04 13:30:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 17:47:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ Fixed&	Fixed::operator--(void)
 	return (*this);
 }
 
-Fixed	Fixed::operator++(int)
+Fixed const	Fixed::operator++(int)
 {
 	Fixed	temp(*this);
 
@@ -157,7 +157,7 @@ Fixed	Fixed::operator++(int)
 	return (temp);
 }
 
-Fixed	Fixed::operator--(int)
+Fixed const	Fixed::operator--(int)
 {
 	Fixed	temp(*this);
 

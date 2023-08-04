@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:45:49 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/04 13:31:54 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 17:50:30 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ class	Fixed
 		Fixed	operator*(Fixed const& fixed) const;
 		Fixed	operator/(Fixed const& fixed) const;
 
-		Fixed&	operator++(void);
-		Fixed&	operator--(void);
-		Fixed	operator++(int);
-		Fixed	operator--(int);
+		Fixed&		operator++(void);
+		Fixed&		operator--(void);
+		Fixed const	operator++(int);
+		Fixed const	operator--(int);
 
 		static Fixed&		min(Fixed& a, Fixed& b);
 		static Fixed&		max(Fixed& a, Fixed& b);

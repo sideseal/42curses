@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:45:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/04 01:46:12 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/04 17:56:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,13 @@ static void	_testArithmetic(void)
 	Fixed n(0);
 	std::cout << "m: " << m << "(42)" << ", n: " << n << "(0)" << std::endl;
 	std::cout << "m * n : " << m * n << std::endl;
-	std::cout << "m / n : " << m / n << std::endl;
+	std::cout << "m / n : Be aware of Division by zero" << std::endl;
+//	std::cout << "m / n : " << m / n << std::endl;
+	std::cout << "++m : " << ++m << std::endl;
+	std::cout << "++(++m) : " << ++(++m) << std::endl;
+	std::cout << "m++, m : " << m++ << ", " << m << std::endl;
+	std::cout << "(m++)++ : You can not duplicate post-increment/post-decrement" << std::endl;
+//	std::cout << (m++)++ << std::endl;
 }
 
 static bool	_testFixedNumber(int argc, char* argv[])
