@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/08/09 18:52:48 by gychoi           ###   ########.fr        #
+#    Updated: 2023/08/09 18:53:22 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ CPPFLAGS = -I.
 RM = rm -rf
 
 SRCS = main.cpp \
-	   ClapTrap.cpp
+	   ClapTrap.cpp \
+	   ScavTrap.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
