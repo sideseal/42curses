@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:25 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/07 19:17:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/09 16:56:49 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,15 @@ class	ClapTrap
 		ClapTrap& operator=(ClapTrap const& target);
 		~ClapTrap(void);
 
+		std::string		getName(void) const;
+		int				getHit(void) const;
+		unsigned int	getEnergy(void) const;
+		unsigned int	getAttack(void) const;
+
 		void	attack(std::string const& target);
+		// attackCombo?
 		void	takeDamage(unsigned int amount);
 		void	beRepaired(unsigned int amount);
 };
 
-#endif	// CLAPTRAP_H
+#endif	/* __CLAPTRAP_H__ */

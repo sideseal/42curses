@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/07 22:02:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/09 16:52:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,36 +25,48 @@ void	testCaseTwo(std::string input)
 	for (int i = 0; i < 11; i++)
 	{
 		std::cout << "Round " << i + 1 << std::endl;
+
+		unsigned int	prevEnergy = clapOne.getEnergy();
 		clapOne.attack(input);
-		clapUser.takeDamage(0);
+		if (prevEnergy != 0)
+			clapUser.takeDamage(clapOne.getAttack());
 		std::cout << std::endl;
-		clapUser.attack("clapOne");
-		clapOne.takeDamage(0);
+
+		prevEnergy = clapUser.getEnergy();
+		clapUser.attack(clapOne.getName());
+		if (prevEnergy != 0)
+			clapOne.takeDamage(clapUser.getAttack());
 		std::cout << std::endl;
 	}
 }
 
 void	testCaseOne(void)
 {
+	std::cout << "Case 1 : Tug of War" << std::endl;
 	ClapTrap	clapOne("ClapOne");
 	ClapTrap	clapTwo("ClapTwo");
 
-	std::cout << "Case 1 : Tug of War" << std::endl;
 	for (int i = 0; i < 11; i++)
 	{
 		std::cout << "Round " << i + 1 << std::endl;
-		clapOne.attack("clapTwo");
-		clapTwo.takeDamage(0);
+
+		unsigned int	prevEnergy = clapOne.getEnergy();
+		clapOne.attack(clapTwo.getName());
+		if (prevEnergy != 0)
+			clapTwo.takeDamage(clapOne.getAttack());
 		std::cout << std::endl;
-		clapTwo.attack("clapOne");
-		clapOne.takeDamage(0);
+
+		prevEnergy = clapTwo.getEnergy();
+		clapTwo.attack(clapOne.getName());
+		if (prevEnergy != 0)
+			clapOne.takeDamage(clapTwo.getAttack());
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 
+	std::cout << "Case 2 : Self-harm" << std::endl;
 	ClapTrap	clapThree("ClapThree");
 
-	std::cout << "Case 2 : Self-harm" << std::endl;
 	for (int i = 0; i < 6; i++)
 	{
 		std::cout << "Round " << i + 1 << std::endl;
@@ -63,9 +75,9 @@ void	testCaseOne(void)
 	}
 	std::cout << std::endl;
 
+	std::cout << "Case 3 : Over-heal" << std::endl;
 	ClapTrap	clapFour("ClapFour");
 
-	std::cout << "Case 3 : Over-heal" << std::endl;
 	for (int i = 0; i < 11; i++)
 	{
 		std::cout << "Round " << i + 1 << std::endl;
@@ -74,45 +86,44 @@ void	testCaseOne(void)
 	}
 	std::cout << std::endl;
 
-	ClapTrap	clapFive("ClapFive");
-	ClapTrap	clapSix("ClapSix");
+	std::cout << "Case 4 : Already Exhausted" << std::endl;
+	ClapTrap	clapFive(clapFour);
 
-	std::cout << "Case 4 : Sadism" << std::endl;
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		std::cout << "Round " << i + 1 << std::endl;
-		clapFive.attack("clapSix");
-		clapSix.takeDamage(0);
-		clapSix.beRepaired(10);
-		std::cout << std::endl;
-		clapSix.attack("clapFive");
 		clapFive.takeDamage(0);
 		clapFive.beRepaired(10);
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 
-	ClapTrap	clapSeven(clapFive);
+	std::cout << "Case 5 : Already Destroyed" << std::endl;
+	ClapTrap	clapSix;
+	clapSix = clapThree;
 
-	std::cout << "Case 5 : Already Exhausted" << std::endl;
 	for (int i = 0; i < 3; i++)
 	{
-		clapSeven.takeDamage(0);
-		clapSeven.beRepaired(10);
+		std::cout << "Round " << i + 1 << std::endl;
+		clapSix.takeDamage(0);
+		clapSix.beRepaired(10);
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 
-	ClapTrap	clapEight;
-	clapEight = clapThree;
+	std::cout << "Case 6 : Ultra Violence" << std::endl;
+	ClapTrap	clapSeven("ClapSeven");
 
-	std::cout << "Case 6 : Already Destroyed" << std::endl;
-	for (int i = 0; i < 3; i++)
-	{
-		clapEight.takeDamage(0);
-		clapEight.beRepaired(10);
-		std::cout << std::endl;
-	}
+	clapSeven.takeDamage(3333333333);
+	std::cout << "Current " << clapSeven.getName() << " points of health is " << clapSeven.getHit() << std::endl;
+	std::cout << '\n' << std::endl;
+
+	std::cout << "Case 7 : Ultra Recovery" << std::endl;
+	ClapTrap	clapEight("ClapEight");
+
+	clapEight.beRepaired(3333333333);
+	std::cout << "Current " << clapEight.getName() << " points of health is " << clapEight.getHit() << std::endl;
+	std::cout << std::endl;
 }
 
 int	main(int argc, char* argv[])
