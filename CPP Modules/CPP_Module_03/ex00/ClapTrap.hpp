@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:25 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/09 18:45:17 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 01:04:38 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class	ClapTrap
 		void	attack(std::string const& target);
 		void	takeDamage(unsigned int amount);
 		void	beRepaired(unsigned int amount);
+		void	introduce(void);
 };
 
 #endif	/* __CLAPTRAP_H__ */

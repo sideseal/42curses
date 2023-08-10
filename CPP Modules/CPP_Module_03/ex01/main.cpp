@@ -6,136 +6,84 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/09 16:52:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 02:19:10 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 #include <iostream>
-#include <string>
-
-void	testCaseTwo(std::string input)
-{
-	if (input.empty())
-		std::cout << "WARNING: The name of the ClapTrap being created is not visible." << std::endl;
-	ClapTrap	clapUser(input);
-	ClapTrap	clapOne("ClapOne");
-
-	std::cout << "Case : Tug of War" << std::endl;
-	for (int i = 0; i < 11; i++)
-	{
-		std::cout << "Round " << i + 1 << std::endl;
-
-		unsigned int	prevEnergy = clapOne.getEnergy();
-		clapOne.attack(input);
-		if (prevEnergy != 0)
-			clapUser.takeDamage(clapOne.getAttack());
-		std::cout << std::endl;
-
-		prevEnergy = clapUser.getEnergy();
-		clapUser.attack(clapOne.getName());
-		if (prevEnergy != 0)
-			clapOne.takeDamage(clapUser.getAttack());
-		std::cout << std::endl;
-	}
-}
 
 void	testCaseOne(void)
 {
-	std::cout << "Case 1 : Tug of War" << std::endl;
+	ScavTrap	scavOne("ScavOne");
 	ClapTrap	clapOne("ClapOne");
-	ClapTrap	clapTwo("ClapTwo");
+	int			round = 0;
 
-	for (int i = 0; i < 11; i++)
+	while (scavOne.getEnergy() && clapOne.getEnergy())
 	{
-		std::cout << "Round " << i + 1 << std::endl;
+		std::cout << "Round " << round++ + 1 << std::endl;
 
-		unsigned int	prevEnergy = clapOne.getEnergy();
-		clapOne.attack(clapTwo.getName());
+		scavOne.beRepaired(15);
+		clapOne.beRepaired(15);
+		unsigned int	prevEnergy = scavOne.getEnergy();
+		scavOne.attack(clapOne.getName());
 		if (prevEnergy != 0)
-			clapTwo.takeDamage(clapOne.getAttack());
-		std::cout << std::endl;
-
-		prevEnergy = clapTwo.getEnergy();
-		clapTwo.attack(clapOne.getName());
+			clapOne.takeDamage(scavOne.getAttack());
+		prevEnergy = clapOne.getEnergy();
+		clapOne.attack(scavOne.getName());
 		if (prevEnergy != 0)
-			clapOne.takeDamage(clapTwo.getAttack());
+			scavOne.takeDamage(clapOne.getAttack());
 		std::cout << std::endl;
 	}
-	std::cout << std::endl;
-
-	std::cout << "Case 2 : Self-harm" << std::endl;
-	ClapTrap	clapThree("ClapThree");
-
-	for (int i = 0; i < 6; i++)
-	{
-		std::cout << "Round " << i + 1 << std::endl;
-		clapThree.takeDamage(2);
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Case 3 : Over-heal" << std::endl;
-	ClapTrap	clapFour("ClapFour");
-
-	for (int i = 0; i < 11; i++)
-	{
-		std::cout << "Round " << i + 1 << std::endl;
-		clapFour.beRepaired(10);
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Case 4 : Already Exhausted" << std::endl;
-	ClapTrap	clapFive(clapFour);
-
-	for (int i = 0; i < 3; i++)
-	{
-		std::cout << "Round " << i + 1 << std::endl;
-		clapFive.takeDamage(0);
-		clapFive.beRepaired(10);
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Case 5 : Already Destroyed" << std::endl;
-	ClapTrap	clapSix;
-	clapSix = clapThree;
-
-	for (int i = 0; i < 3; i++)
-	{
-		std::cout << "Round " << i + 1 << std::endl;
-		clapSix.takeDamage(0);
-		clapSix.beRepaired(10);
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Case 6 : Ultra Violence" << std::endl;
-	ClapTrap	clapSeven("ClapSeven");
-
-	clapSeven.takeDamage(3333333333);
-	std::cout << "Current " << clapSeven.getName() << " points of health is " << clapSeven.getHit() << std::endl;
-	std::cout << '\n' << std::endl;
-
-	std::cout << "Case 7 : Ultra Recovery" << std::endl;
-	ClapTrap	clapEight("ClapEight");
-
-	clapEight.beRepaired(3333333333);
-	std::cout << "Current " << clapEight.getName() << " points of health is " << clapEight.getHit() << std::endl;
-	std::cout << std::endl;
 }
 
-int	main(int argc, char* argv[])
+void	testCaseTwo(void)
 {
-	if (argc < 2)
-		testCaseOne();
-	else if (argc == 2)
-		testCaseTwo(argv[1]);
-	else
+	ScavTrap	scavTwo("ScavTwo");
+	int			round = 0;
+
+	while (round < 5)
 	{
-		std::cout << "Only one argument is allowed." << std::endl;
-		return (EXIT_FAILURE);
+		std::cout << "Round " << round++ + 1 << std::endl;
+
+		scavTwo.guardGate();
+		scavTwo.beRepaired(10);
+		std::cout << std::endl;
 	}
+}
+
+void	testCaseThree(void)
+{
+	ScavTrap	scavThree("ScavThree");
+	ScavTrap	scavFour(scavThree);
+	int			round = 0;
+
+	while (scavThree.getEnergy() && scavFour.getEnergy())
+	{
+		std::cout << "Round " << round++ + 1 << std::endl;
+
+		std::cout << "INFO: Original scavThree attacks." << std::endl;
+		unsigned int	prevEnergy = scavThree.getEnergy();
+		scavThree.attack(scavFour.getName());
+		if (prevEnergy != 0)
+			scavFour.takeDamage(scavThree.getAttack());
+		std::cout << "INFO: cavThree clone attacks." << std::endl;
+		prevEnergy = scavFour.getEnergy();
+		scavFour.attack(scavThree.getName());
+		if (prevEnergy != 0)
+			scavThree.takeDamage(scavFour.getAttack());
+		std::cout << std::endl;
+	}
+}
+
+int	main(void)
+{
+	std::cout << "Case 1: Unnessesary Violence" << std::endl;
+	testCaseOne();
+	std::cout << '\n' << "Case 2: Guard the Gate" << std::endl;
+	testCaseTwo();
+	std::cout << '\n' << "Case 3: Fight with reflection" << std::endl;
+	testCaseThree();
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:59:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/09 16:47:35 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 01:05:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,28 @@
 
 ClapTrap::ClapTrap(void) : _hit(10), _energy(10), _attack(0)
 {
-	std::cout << "ClapTrap Default constructor called" << std::endl;
+	std::cout << "ClapTrap default constructor called" << std::endl;
+	introduce();
 }
 
 ClapTrap::ClapTrap(std::string const& name) : _hit(10), _energy(10), _attack(0)
 {
-	std::cout << "ClapTrap Parameterized constructor called" << std::endl;
+	std::cout << "ClapTrap parameterized constructor called" << std::endl;
 	const_cast<std::string&>(_name) = name;
+	introduce();
 }
 
 ClapTrap::ClapTrap(ClapTrap const& target)
 {
-	std::cout << "ClapTrap Copy constructor called" << std::endl;
+	std::cout << "ClapTrap copy constructor called" << std::endl;
 	if (this != &target)
 		*this = target;
+	introduce();
 }
 
 ClapTrap&	ClapTrap::operator=(ClapTrap const& target)
 {
-	std::cout << "ClapTrap Copy assignment operator called" << std::endl;
+	std::cout << "ClapTrap copy assignment operator called" << std::endl;
 	if (this != &target)
 	{
 		const_cast<std::string&>(_name) = target._name;
@@ -50,7 +53,7 @@ ClapTrap&	ClapTrap::operator=(ClapTrap const& target)
 
 ClapTrap::~ClapTrap(void)
 {
-	std::cout << "ClapTrap Destructor called" << std::endl;
+	std::cout << "ClapTrap destructor called" << std::endl;
 }
 
 /*
@@ -108,12 +111,12 @@ void	ClapTrap::takeDamage(unsigned int amount)
 				std::cout << "ClapTrap " << _name << " has been destroyed. All energy is drained" << std::endl;
 				_energy = 0;
 			}
-			return ;
 		}
-		_hit -= amount;
+		else
+			_hit -= amount;
 	}
 	else
-		std::cout << "ClapTrap " << _name << "is already destroyed" << std::endl;
+		std::cout << "ClapTrap " << _name << " is already destroyed" << std::endl;
 }
 
 void	ClapTrap::beRepaired(unsigned int amount)
@@ -132,4 +135,9 @@ void	ClapTrap::beRepaired(unsigned int amount)
 	}
 	else
 		std::cout << "ClapTrap " << _name << " is out of energy. Cannot move!" << std::endl;
+}
+
+void	ClapTrap::introduce(void)
+{
+	std::cout << "["<< getName() << "]: " << "Welcome to Fyrestone! I am CL4P-TP, you may call me by my locally designated name, 'Claptrap'." << std::endl;
 }
