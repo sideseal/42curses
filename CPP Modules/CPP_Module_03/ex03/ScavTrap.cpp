@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 18:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 23:43:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 23:52:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * Constructor & Destructor
  */
 
-ScavTrap::ScavTrap(void)
+ScavTrap::ScavTrap(void) : ClapTrap()
 {
 	std::cout << "ScavTrap default constructor called" << std::endl;
 	_hit = 100;
@@ -70,23 +70,23 @@ void	ScavTrap::attack(std::string const& target)
 {
 	if (_energy > 0)
 	{
-		std::cout << "ScavTrap " << _name << " attacks " << target << " causing " << _attack << " points of damage!" << std::endl;
+		std::cout << "ScavTrap " << getName() << " attacks " << target << " causing " << _attack << " points of damage!" << std::endl;
 		_energy--;
 	}
 	else
-		std::cout << "ScavTrap " << _name << " is out of energy. Cannot move!" << std::endl;
+		std::cout << "ScavTrap " << getName() << " is out of energy. Cannot move!" << std::endl;
 }
 
 void	ScavTrap::guardGate(void)
 {
 	if (_energy > 0)
 	{
-		std::cout << "ScavTrap " << _name << " is guarding the gate" << std::endl;
+		std::cout << "ScavTrap " << getName() << " is guarding the gate" << std::endl;
 		std::cout << "[" << getName() << "]: " << "Guarding gates is FUN!" << std::endl;
 		_energy--;
 	}
 	else
-		std::cout << "ScavTrap " << _name << " is out of energy. Cannot move!" << std::endl;
+		std::cout << "ScavTrap " << getName() << " is out of energy. Cannot move!" << std::endl;
 }
 
 void	ScavTrap::introduce(void)

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 18:53:28 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 20:20:07 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 22:00:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #include "ClapTrap.hpp"
 
-class	ScavTrap : public ClapTrap
+class	ScavTrap : public virtual ClapTrap
 {
 	public:
 		ScavTrap(void);

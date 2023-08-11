@@ -6,13 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:25 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 01:04:04 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 20:19:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __CLAPTRAP_H__
-#define __CLAPTRAP_H__
+#ifndef __CLAPTRAP_HPP__
+#define __CLAPTRAP_HPP__
 
 #include <string>
 
@@ -42,4 +42,4 @@ class	ClapTrap
 		virtual void	introduce(void);
 };
 
-#endif	/* __CLAPTRAP_H__ */
+#endif	/* __CLAPTRAP_HPP__ */

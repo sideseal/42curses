@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 02:19:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/11 22:10:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,25 @@ void	testCaseThree(void)
 	}
 }
 
+void	testCaseFour(void)
+{
+	ScavTrap	scavFive("ScavFive");
+	ScavTrap	scavSix("ScavSix");
+	ClapTrap*	cp = &scavSix;
+
+	scavFive.attack(cp->getName());
+	cp->attack(scavFive.getName());
+	std::cout << std::endl;
+}
+
+void	testCaseFive(void)
+{
+	ClapTrap*	clapTwo = new ScavTrap();
+
+	clapTwo->attack("dummy");
+	delete clapTwo;
+}
+
 int	main(void)
 {
 	std::cout << "Case 1: Unnessesary Violence" << std::endl;
@@ -85,5 +104,9 @@ int	main(void)
 	testCaseTwo();
 	std::cout << '\n' << "Case 3: Fight with reflection" << std::endl;
 	testCaseThree();
+	std::cout << '\n' << "Case 4: Up-Casting" << std::endl;
+	testCaseFour();
+	std::cout << '\n' << "Case 5: Dynamic allocation with Up-Casting" << std::endl;
+	testCaseFive();
 	return (EXIT_SUCCESS);
 }
