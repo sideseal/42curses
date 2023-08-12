@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 22:33:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 20:18:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	testCaseThree(void)
 	ClapTrap*	cp = &fragFour;
 
 	fragThree.attack(cp->getName());
+	cp->takeDamage(fragThree.getAttack());
 	cp->attack(fragThree.getName());
+	fragThree.takeDamage(cp->getAttack());
 	std::cout << std::endl;
 }
 

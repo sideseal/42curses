@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 21:23:34 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 23:49:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 20:37:01 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 class	DiamondTrap: public ScavTrap, public FragTrap
 {
 	private:
-		std::string const	_name;
+		std::string const	name;
 
 	public:
 		DiamondTrap(void);

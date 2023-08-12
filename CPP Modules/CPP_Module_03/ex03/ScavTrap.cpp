@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 18:54:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 23:52:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 20:33:36 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ ScavTrap::ScavTrap(void) : ClapTrap()
 	introduce();
 }
 
-ScavTrap::ScavTrap(std::string const& name) : ClapTrap(name)
+ScavTrap::ScavTrap(std::string const& _name) : ClapTrap(_name)
 {
 	std::cout << "ScavTrap parameterized constructor called" << std::endl;
-	const_cast<std::string&>(_name) = name;
+	const_cast<std::string&>(name) = _name;
 	_hit = 100;
 	_energy = 50;
 	_attack = 20;
@@ -49,7 +49,7 @@ ScavTrap&	ScavTrap::operator=(ScavTrap const& target)
 	std::cout << "ScavTrap copy assignment operator called" << std::endl;
 	if (this != &target)
 	{
-		const_cast<std::string&>(_name) = target._name;
+		const_cast<std::string&>(name) = target.name;
 		_hit = target._hit;
 		_energy = target._energy;
 		_attack = target._attack;

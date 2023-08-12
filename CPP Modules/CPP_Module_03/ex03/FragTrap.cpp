@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 20:20:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 23:53:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 20:33:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ FragTrap::FragTrap(void) : ClapTrap()
 	introduce();
 }
 
-FragTrap::FragTrap(std::string const& name) : ClapTrap(name)
+FragTrap::FragTrap(std::string const& _name) : ClapTrap(_name)
 {
 	std::cout << "FragTrap parameterized constructor called" << std::endl;
-	const_cast<std::string&>(_name) = name;
+	const_cast<std::string&>(name) = _name;
 	_hit = 100;
 	_energy = 100;
 	_attack = 30;
@@ -49,7 +49,7 @@ FragTrap&	FragTrap::operator=(FragTrap const& target)
 	std::cout << "FragTrap copy assignment operator called" << std::endl;
 	if (this != &target)
 	{
-		const_cast<std::string&>(_name) = target._name;
+		const_cast<std::string&>(name) = target.name;
 		_hit = target._hit;
 		_energy = target._energy;
 		_attack = target._attack;

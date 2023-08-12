@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:59:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/12 00:20:04 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 20:32:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ ClapTrap::ClapTrap(void) : _hit(10), _energy(10), _attack(0)
 	introduce();
 }
 
-ClapTrap::ClapTrap(std::string const& name) : _hit(10), _energy(10), _attack(0)
+ClapTrap::ClapTrap(std::string const& _name) : _hit(10), _energy(10), _attack(0)
 {
 	std::cout << "ClapTrap parameterized constructor called" << std::endl;
-	const_cast<std::string&>(_name) = name;
+	const_cast<std::string&>(name) = _name;
 	introduce();
 }
 
@@ -43,7 +43,7 @@ ClapTrap&	ClapTrap::operator=(ClapTrap const& target)
 	std::cout << "ClapTrap copy assignment operator called" << std::endl;
 	if (this != &target)
 	{
-		const_cast<std::string&>(_name) = target._name;
+		const_cast<std::string&>(name) = target.name;
 		_hit = target._hit;
 		_energy = target._energy;
 		_attack = target._attack;
@@ -62,7 +62,7 @@ ClapTrap::~ClapTrap(void)
 
 std::string	ClapTrap::getName(void) const
 {
-	return (_name);
+	return (name);
 }
 
 int	ClapTrap::getHit(void) const
@@ -88,11 +88,11 @@ void	ClapTrap::attack(std::string const& target)
 {
 	if (_energy > 0)
 	{
-		std::cout << "ClapTrap " << _name << " attacks " << target << " causing " << _attack << " points of damage!" << std::endl;
+		std::cout << "ClapTrap " << name << " attacks " << target << " causing " << _attack << " points of damage!" << std::endl;
 		_energy--;
 	}
 	else
-		std::cout << "ClapTrap " << _name << " is out of energy. Cannot move!" << std::endl;
+		std::cout << "ClapTrap " << name << " is out of energy. Cannot move!" << std::endl;
 }
 
 void	ClapTrap::takeDamage(unsigned int amount)

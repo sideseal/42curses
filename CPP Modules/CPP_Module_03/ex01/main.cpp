@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:14 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 22:10:18 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 19:45:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	testCaseThree(void)
 		scavThree.attack(scavFour.getName());
 		if (prevEnergy != 0)
 			scavFour.takeDamage(scavThree.getAttack());
-		std::cout << "INFO: cavThree clone attacks." << std::endl;
+		std::cout << "INFO: scavThree clone attacks." << std::endl;
 		prevEnergy = scavFour.getEnergy();
 		scavFour.attack(scavThree.getName());
 		if (prevEnergy != 0)

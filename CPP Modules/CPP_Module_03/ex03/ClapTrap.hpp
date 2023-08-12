@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 17:49:25 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/11 23:48:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/12 20:37:52 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 class	ClapTrap
 {
 	protected:
-		std::string const	_name;
+		std::string const	name;
 		int					_hit;
 		unsigned int		_energy;
 		unsigned int		_attack;
