@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:05:36 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/15 20:37:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/16 22:31:01 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,33 @@ Cat::Cat(void)
 	std::cout << "[Cat] : Default constructor called" << std::endl;
 }
 
+Cat::~Cat(void)
+{
+	std::cout << "[Cat] : Destructor called" << std::endl;
+}
+
 Cat::Cat(std::string name) : name(name)
 {
 	Animal::type = "Cat";
 	std::cout << "[Cat] : Parameterize constructor called" << std::endl;
 }
 
-Cat::~Cat(void)
+Cat::Cat(Cat const& target) : Animal(target)
 {
-	std::cout << "[Cat] : Destructor called" << std::endl;
-}
-
-Cat::Cat(Cat const& target)
-{
-	if (this != &target)
-		*this = target;
 	std::cout << "[Cat] : Copy constructor called" << std::endl;
+	if (this != &target) {
+		*this = target;
+		Animal::type = "Cat";
+	}
 }
 
 Cat&	Cat::operator=(Cat const& target)
 {
+	std::cout << "[Cat] : Copy assignment operator called" << std::endl;
 	if (this != &target) {
 		this->name = target.name;
-		this->type = target.type;
+		Animal::operator=(target);
 	}
-	std::cout << "[Cat] : Copy assignment operator called" << std::endl;
 	return *this;
 }
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:12:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 22:38:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/16 21:51:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,34 +114,6 @@ void	testFive(void)
 	std::cout << dogTwo.getType() << ", " << dogTwo.getName() << std::endl;
 }
 
-void	testSix(void)
-{
-	Animal*	animalOne = new Cat("Kim Deok bae");
-	Cat		catOne(*static_cast<Cat*>(animalOne));
-
-	std::cout << animalOne->getType() << std::endl;
-	std::cout << catOne.getType() << ", " << catOne.getName() << std::endl;
-
-	Animal*	animalTwo = new Animal();
-	Cat*	catTwo = static_cast<Cat*>(animalTwo);
-	Cat		catThree(*catTwo);
-
-	std::cout << animalTwo->getType() << std::endl;
-	std::cout << catThree.getType() << ", " << catThree.getName() << std::endl;
-
-	Animal*	animalThree = new Animal();
-	Cat		catFour("nyancat");
-
-	catFour = *static_cast<Cat*>(animalThree);
-
-	std::cout << animalThree->getType() << std::endl;
-	std::cout << catFour.getType() << ", " << catFour.getName() << std::endl;
-
-	delete animalOne;
-	delete animalTwo;
-	delete animalThree;
-}
-
 int	main(void)
 {
 	ATEXIT_CHECK();
@@ -157,7 +129,5 @@ int	main(void)
 	testFour();
 	makeTestName("Test 5 : Copy constructor");
 	testFive();
-	makeTestName("Test 6 : Getting weird with copy constructor");
-	testSix();
 	return 0;
 }

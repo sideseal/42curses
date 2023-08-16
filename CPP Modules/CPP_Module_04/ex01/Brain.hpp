@@ -1,36 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cat.hpp                                            :+:      :+:    :+:   */
+/*   Brain.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/15 16:05:09 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 22:32:30 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/16 19:34:27 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/16 19:41:24 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __CAT_HPP__
-# define __CAT_HPP__
-# include "Animal.hpp"
+#ifndef __BRAIN_HPP__
+# define __BRAIN_HPP__
 
-class	Cat : public Animal
+class	Brain
 {
 	private:
-		std::string	name;
+		std::string	ideas[100];
 
 	public:
-		Cat(void);
-		virtual ~Cat(void);
-		explicit Cat(std::string name);
-		Cat(Cat const& target);
-		Cat&	operator=(Cat const& target);
-
-		virtual std::string	getType(void) const;
-		std::string			getName(void) const;
-
-		virtual void	makeSound(void) const;
+		Brain(void);
+		~Brain(void);
+		Brain(Brain const& target);
+		Brain&	operator=(Brain const& target);
 };
 
-#endif	/* __CAT_HPP__ */
+#endif	/* __BRAIN_HPP__ */

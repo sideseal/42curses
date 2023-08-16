@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cat.hpp                                            :+:      :+:    :+:   */
+/*   Dog.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/15 16:05:09 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 22:32:30 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/15 16:04:29 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/16 22:23:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __CAT_HPP__
-# define __CAT_HPP__
+#ifndef __DOG_HPP__
+# define __DOG_HPP__
 # include "Animal.hpp"
 
-class	Cat : public Animal
+class	Dog : public Animal
 {
 	private:
 		std::string	name;
+		Brain*		brain;
 
 	public:
-		Cat(void);
-		virtual ~Cat(void);
-		explicit Cat(std::string name);
-		Cat(Cat const& target);
-		Cat&	operator=(Cat const& target);
+		Dog(void);
+		virtual ~Dog(void);
+		explicit Dog(std::string name);
+		Dog(Dog const& target);
+		Dog&	operator=(Dog const& target);
 
 		virtual std::string	getType(void) const;
 		std::string			getName(void) const;
@@ -33,4 +34,4 @@ class	Cat : public Animal
 		virtual void	makeSound(void) const;
 };
 
-#endif	/* __CAT_HPP__ */
+#endif	/* __DOG_HPP__ */

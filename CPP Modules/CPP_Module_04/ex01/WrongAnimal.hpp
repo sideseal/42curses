@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cat.hpp                                            :+:      :+:    :+:   */
+/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/15 16:05:09 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 22:32:30 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/15 16:03:58 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/15 18:57:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __CAT_HPP__
-# define __CAT_HPP__
-# include "Animal.hpp"
+#ifndef __WRONGANIMAL_HPP__
+# define __WRONGANIMAL_HPP__
+# include <string>
 
-class	Cat : public Animal
+class	WrongAnimal
 {
-	private:
-		std::string	name;
+	protected:
+		std::string	type;
 
 	public:
-		Cat(void);
-		virtual ~Cat(void);
-		explicit Cat(std::string name);
-		Cat(Cat const& target);
-		Cat&	operator=(Cat const& target);
+		WrongAnimal(void);
+		virtual ~WrongAnimal(void);
+		WrongAnimal(WrongAnimal const& target);
+		WrongAnimal&	operator=(WrongAnimal const& target);
 
 		virtual std::string	getType(void) const;
-		std::string			getName(void) const;
 
-		virtual void	makeSound(void) const;
+		void	makeSound(void) const;
 };
 
-#endif	/* __CAT_HPP__ */
+#endif	/* __WRONGANIMAL_HPP__ */

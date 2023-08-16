@@ -1,51 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog.cpp                                            :+:      :+:    :+:   */
+/*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/15 16:04:57 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 22:20:05 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/15 16:05:36 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/16 22:22:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Dog.hpp"
+#include "Cat.hpp"
 #include <iostream>
 
 /******************************
  * Constructor and Destructor *
  ******************************/
 
-Dog::Dog(void)
+Cat::Cat(void)
 {
-	Animal::type = "Dog";
-	std::cout << "[Dog] : Default constructor called" << std::endl;
+	Animal::type = "Cat";
+	std::cout << "[Cat] : Default constructor called" << std::endl;
 }
 
-Dog::~Dog(void)
+Cat::~Cat(void)
 {
-	std::cout << "[Dog] : Destructor called" << std::endl;
+	std::cout << "[Cat] : Destructor called" << std::endl;
 }
 
-Dog::Dog(std::string name) : name(name)
+Cat::Cat(std::string name) : name(name)
 {
-	Animal::type = "Dog";
-	std::cout << "[Dog] : Parameterize constructor called" << std::endl;
+	Animal::type = "Cat";
+	std::cout << "[Cat] : Parameterize constructor called" << std::endl;
 }
 
-Dog::Dog(Dog const& target) : Animal(target)
+Cat::Cat(Cat const& target) : Animal(target)
 {
-	std::cout << "[Dog] : Copy constructor called" << std::endl;
+	std::cout << "[Cat] : Copy constructor called" << std::endl;
 	if (this != &target) {
 		*this = target;
-		Animal::type = "Dog";
+		Animal::type = "Cat";
 	}
 }
 
-Dog&	Dog::operator=(Dog const& target)
+Cat&	Cat::operator=(Cat const& target)
 {
-	std::cout << "[Dog] : Copy assignment operator called" << std::endl;
+	std::cout << "[Cat] : Copy assignment operator called" << std::endl;
 	if (this != &target) {
 		this->name = target.name;
 		Animal::operator=(target);
@@ -57,12 +57,12 @@ Dog&	Dog::operator=(Dog const& target)
  *      Getter  function      *
  ******************************/
 
-std::string	Dog::getType(void) const
+std::string	Cat::getType(void) const
 {
 	return this->type;
 }
 
-std::string	Dog::getName(void) const
+std::string	Cat::getName(void) const
 {
 	return this->name;
 }
@@ -71,7 +71,7 @@ std::string	Dog::getName(void) const
  *   Public Member function   *
  ******************************/
 
-void	Dog::makeSound(void) const
+void	Cat::makeSound(void) const
 {
-	std::cout << "[" << getType() << "] : Bark!" << std::endl;
+	std::cout << "[" << getType() << "] : Don't bark." << std::endl;
 }

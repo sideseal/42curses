@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:04:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/15 20:17:42 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/16 22:24:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ class	Dog : public Animal
 
 	public:
 		Dog(void);
-		explicit Dog(std::string name);
 		virtual ~Dog(void);
+		explicit Dog(std::string name);
 		Dog(Dog const& target);
 		Dog&	operator=(Dog const& target);
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:05:09 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 22:32:30 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/16 22:01:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ class	Cat : public Animal
 {
 	private:
 		std::string	name;
+		Brain*		brain;
 
 	public:
 		Cat(void);
