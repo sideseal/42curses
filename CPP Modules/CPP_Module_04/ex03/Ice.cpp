@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:18:39 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 22:39:22 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 00:51:20 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Ice::Ice(void) : AMateria("ice") {}
 
 Ice::~Ice(void) {}
 
-Ice::Ice(Ice const& target)
+Ice::Ice(Ice const& target) : AMateria("ice")
 {
 	if (this != &target)
 		*this = target;
@@ -40,7 +40,7 @@ Ice&	Ice::operator=(Ice const& target)
 
 AMateria*	Ice::clone(void) const
 {
-	return (new Ice(*this));
+	return new Ice();
 }
 
 void	Ice::use(ICharacter& target)

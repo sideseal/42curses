@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:49:45 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 23:34:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 00:54:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class	Character : public ICharacter
 		virtual void				equip(AMateria* m);
 		virtual void				unequip(int idx);
 		virtual void				use(int idx, ICharacter& target);
+		void						showInventory(void);
 };
 
 #endif

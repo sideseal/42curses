@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:05:25 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 22:14:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/17 23:42:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ AMateria::AMateria(AMateria const& target)
 AMateria&	AMateria::operator=(AMateria const& target)
 {
 	if (this != &target)
-		(void)(target);
+		static_cast<void>(target);
 	return *this;
 }
 
@@ -46,6 +46,5 @@ std::string const&	AMateria::getType(void) const
 
 void	AMateria::use(ICharacter& target)
 {
-	(void)(target);
-	// ...
+	static_cast<void>(target);
 }

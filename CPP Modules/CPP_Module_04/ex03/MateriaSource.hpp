@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 23:17:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 23:37:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 01:09:01 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class	MateriaSource : public IMateriaSource
 
 		virtual void		learnMateria(AMateria*);
 		virtual AMateria*	createMateria(std::string const& type);
+		void				showMateria(void);
 };
 
 #endif	/* __MATERIASOURCE_HPP__ */
