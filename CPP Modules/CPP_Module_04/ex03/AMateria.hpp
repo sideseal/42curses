@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Brain.hpp                                          :+:      :+:    :+:   */
+/*   AMateria.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/16 19:34:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 20:41:41 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/17 22:00:08 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/17 22:11:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __BRAIN_HPP__
-# define __BRAIN_HPP__
+#ifndef __AMATERIA_HPP__
+# define __AMATERIA_HPP__
 # include <string>
 
-class	Brain
+class	ICharacter;
+
+class	AMateria
 {
-	private:
-		std::string	ideas[100];
+	protected:
+		std::string	type;
 
 	public:
-		Brain(void);
-		~Brain(void);
-		Brain(Brain const& target);
-		Brain&	operator=(Brain const& target);
+		AMateria(void);
+		virtual ~AMateria(void);
+		AMateria(std::string const& type);
+		AMateria(AMateria const& target);
+		AMateria&	operator=(AMateria const& target);
 
-		std::string	getIdea(std::size_t idx);
-		void		setIdea(std::size_t idx, std::string const& idea);
+		std::string const&	getType(void) const;
+		virtual AMateria*	clone(void) const = 0;
+		virtual void		use(ICharacter& target);
 };
 
-#endif	/* __BRAIN_HPP__ */
+#endif	/* __AMATERIA_HPP__ */

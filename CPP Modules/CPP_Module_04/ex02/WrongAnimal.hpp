@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Brain.hpp                                          :+:      :+:    :+:   */
+/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/16 19:34:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 20:41:41 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/15 16:03:58 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/15 18:57:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __BRAIN_HPP__
-# define __BRAIN_HPP__
+#ifndef __WRONGANIMAL_HPP__
+# define __WRONGANIMAL_HPP__
 # include <string>
 
-class	Brain
+class	WrongAnimal
 {
-	private:
-		std::string	ideas[100];
+	protected:
+		std::string	type;
 
 	public:
-		Brain(void);
-		~Brain(void);
-		Brain(Brain const& target);
-		Brain&	operator=(Brain const& target);
+		WrongAnimal(void);
+		virtual ~WrongAnimal(void);
+		WrongAnimal(WrongAnimal const& target);
+		WrongAnimal&	operator=(WrongAnimal const& target);
 
-		std::string	getIdea(std::size_t idx);
-		void		setIdea(std::size_t idx, std::string const& idea);
+		virtual std::string	getType(void) const;
+
+		void	makeSound(void) const;
 };
 
-#endif	/* __BRAIN_HPP__ */
+#endif	/* __WRONGANIMAL_HPP__ */

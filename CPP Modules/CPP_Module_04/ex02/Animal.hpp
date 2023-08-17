@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Brain.hpp                                          :+:      :+:    :+:   */
+/*   Animal.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/16 19:34:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 20:41:41 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/15 16:02:38 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/17 21:28:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __BRAIN_HPP__
-# define __BRAIN_HPP__
+#ifndef __ANIMAL_HPP__
+# define __ANIMAL_HPP__
 # include <string>
 
-class	Brain
+class	Animal
 {
-	private:
-		std::string	ideas[100];
+	protected:
+		std::string	type;
 
 	public:
-		Brain(void);
-		~Brain(void);
-		Brain(Brain const& target);
-		Brain&	operator=(Brain const& target);
+		Animal(void);
+		virtual ~Animal(void);
+		Animal(Animal const& target);
+		Animal&	operator=(Animal const& target);
 
-		std::string	getIdea(std::size_t idx);
-		void		setIdea(std::size_t idx, std::string const& idea);
+		virtual std::string	getType(void) const;
+
+		virtual void	makeSound(void) const = 0;
 };
 
-#endif	/* __BRAIN_HPP__ */
+#endif	/* __ANIMAL_HPP__ */

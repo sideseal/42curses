@@ -6,14 +6,14 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:12:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/16 21:51:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/17 21:24:43 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Animal.hpp"
-#include "WrongAnimal.hpp"
-#include "Dog.hpp"
 #include "Cat.hpp"
+#include "Dog.hpp"
+#include "WrongAnimal.hpp"
 #include "WrongCat.hpp"
 #include <iostream>
 
@@ -37,97 +37,118 @@ void	makeTestName(std::string const& str)
 
 void	subjectTest(void)
 {
-	const Animal*	meta = new Animal();
 	const Animal*	j = new Dog();
 	const Animal*	i = new Cat();
 
-	std::cout << j->getType() << " " << std::endl;
-	std::cout << i->getType() << " " << std::endl;
-	i->makeSound();
-	j->makeSound();
-	meta->makeSound();
-
-	delete meta;
 	delete j;
 	delete i;
 }
 
-void	testOne(void)
+void	testOne(Animal const* animalArr[])
 {
-	WrongAnimal const*	cat = new WrongCat("grumpy");
-	WrongAnimal const*	meta = new WrongAnimal();
+	Cat const*		catPtr = 0;
+	Dog const*		dogPtr = 0;
 
-	std::cout << cat->getType() << std::endl;
-	std::cout << meta->getType() << std::endl;
-	cat->makeSound();
-	meta->makeSound();
-
-	delete cat;
-	delete meta;
-}
-
-void	testTwo(void)
-{
-	Cat const*	cat = new Cat("kitty");
-	WrongAnimal const* wrongAnimal = dynamic_cast<WrongAnimal const*>(cat);
-
-	if (!wrongAnimal)
-		std::cout << "[INFO] : Cannot convert Cat to WrongAnimal" << std::endl;
+	if (animalArr[0]->getType() == "Cat") {
+		catPtr = static_cast<Cat const*>(animalArr[0]);
+		std::cout << catPtr->getType() << std::endl;
+		catPtr->makeSound();
+	}
+	else if (animalArr[0]->getType() == "Dog") {
+		dogPtr = static_cast<Dog const*>(animalArr[0]);
+		std::cout << dogPtr->getType() << std::endl;
+		dogPtr->makeSound();
+	}
 	else
-		std::cout << "[INFO] : [OK]" << std::endl;
-	delete cat;
+		std::cout << "[INFO] : Weird animal detects in the animalArr" << std::endl;
+
+	if (animalArr[1]->getType() == "Cat") {
+		catPtr = static_cast<Cat const*>(animalArr[1]);
+		std::cout << catPtr->getType() << std::endl;
+		catPtr->makeSound();
+	}
+	else if (animalArr[1]->getType() == "Dog") {
+		dogPtr = static_cast<Dog const*>(animalArr[1]);
+		std::cout << dogPtr->getType() << std::endl;
+		dogPtr->makeSound();
+	}
+	else
+		std::cout << "[INFO] : Weird animal detects in the animalArr" << std::endl;
 }
 
-void	testThree(void)
+void	testTwo(Cat* catPtr, Dog* dogPtr)
 {
-	Animal*	animal = new Dog("narong");
-	Dog*	dog = static_cast<Dog*>(animal);
-
-	std::cout << animal->getType() << std::endl;
-	std::cout << dog->getType() << ", " << dog->getName() << std::endl;
-	delete dog;
+	catPtr->learning("I hate Dog");
+	std::cout << catPtr->getMemory() << std::endl;
+	dogPtr->learning("I like Cat!");
+	std::cout << dogPtr->getMemory() << std::endl;
+	catPtr->thinking(catPtr->getMemory() - 1);
+	dogPtr->thinking(dogPtr->getMemory() - 1);
+	catPtr->learning("I really hate Dog");
+	std::cout << catPtr->getMemory() << std::endl;
+	dogPtr->learning("I really like Cat!");
+	std::cout << dogPtr->getMemory() << std::endl;
+	catPtr->thinking(catPtr->getMemory() - 1);
+	dogPtr->thinking(dogPtr->getMemory() - 1);
 }
 
-void	testFour(void)
+void	testThree(Cat* cat, Dog* dog, Cat* catFriend, Dog* dogFriend)
 {
-	Dog*		dog = new Dog("ppoppi");
-	WrongCat*	wrongCat = reinterpret_cast<WrongCat*>(dog);
-
-	std::cout << wrongCat->getType() << ", " << wrongCat->getName() << std::endl;
-	wrongCat->makeSound();
-	delete dog;
-}
-
-void	testFive(void)
-{
-	Cat	catOne("toto");
-	Cat	catTwo(catOne);
-
-	std::cout << catOne.getType() << ", " << catOne.getName() << std::endl;
-	std::cout << catTwo.getType() << ", " << catTwo.getName() << std::endl;
-
-	Dog	dogOne("ddochi");
-	Dog	dogTwo("rani");
-
-	dogOne = dogTwo;
-	std::cout << dogOne.getType() << ", " << dogOne.getName() << std::endl;
-	std::cout << dogTwo.getType() << ", " << dogTwo.getName() << std::endl;
+	std::cout << "[INFO] : Inside cat's brain..." << std::endl;
+	for (std::size_t i = 0; i < cat->getMemory(); i++)
+		cat->thinking(i);
+	std::cout << cat->getMemory() << std::endl;
+	std::cout << "[INFO] : Inside dog's brain..." << std::endl;
+	for (std::size_t i = 0; i < dog->getMemory(); i++)
+		dog->thinking(i);
+	std::cout << dog->getMemory() << std::endl;
+	catFriend->learning("Actually, I like Dog!");
+	dogFriend->learning("Actually, I hate Cat");
+	*cat = *catFriend;
+	*dog = *dogFriend;
+	std::cout << "[INFO] : Inside cat's brain..." << std::endl;
+	for (std::size_t i = 0; i < cat->getMemory(); i++)
+		cat->thinking(i);
+	std::cout << cat->getMemory() << std::endl;
+	std::cout << "[INFO] : Inside dog's brain..." << std::endl;
+	for (std::size_t i = 0; i < dog->getMemory(); i++)
+		dog->thinking(i);
+	std::cout << dog->getMemory() << std::endl;
 }
 
 int	main(void)
 {
+	Animal const*	animalArr[10];
+
+	for (std::size_t i = 0; i < 10; i++) {
+		switch (i & 1)
+		{
+			case 0:
+				animalArr[i] = new Cat();
+				break;
+			case 1:
+				animalArr[i] = new Dog();
+				break;
+		}
+	}
+
 	ATEXIT_CHECK();
-	makeTestName("Test : subject Test");
+	makeTestName("Test : Subject Test");
 	subjectTest();
-	makeTestName("Test 1 : Wrong Animals");
-	testOne();
-	makeTestName("Test 2 : Dynamic casting with irrelevant classes");
-	testTwo();
-	makeTestName("Test 3 : Up-casting & Down-casting");
-	testThree();
-	makeTestName("Test 4 : Getting weird with reinterpret casting");
-	testFour();
-	makeTestName("Test 5 : Copy constructor");
-	testFive();
+	makeTestName("Test 1 : Animal Array Test");
+	testOne(animalArr);
+	makeTestName("Test 2 : Brain Test");
+	Cat*	cat = const_cast<Cat*>(static_cast<Cat const*>(animalArr[0]));
+	Dog*	dog = const_cast<Dog*>(static_cast<Dog const*>(animalArr[1]));
+	testTwo(cat, dog);
+	makeTestName("Test 3 : Deep Copy Test");
+	Cat*	catFriend = const_cast<Cat*>(static_cast<Cat const*>(animalArr[2]));
+	Dog*	dogFriend = const_cast<Dog*>(static_cast<Dog const*>(animalArr[3]));
+	testThree(cat, dog, catFriend, dogFriend);
+
+	std::cout << std::endl;
+	for (std::size_t i = 0; i < 10; i++) {
+		delete animalArr[i];
+	}
 	return 0;
 }

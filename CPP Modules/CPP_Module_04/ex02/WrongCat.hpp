@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Brain.hpp                                          :+:      :+:    :+:   */
+/*   WrongCat.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/16 19:34:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 20:41:41 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/15 16:05:48 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/16 21:46:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __BRAIN_HPP__
-# define __BRAIN_HPP__
-# include <string>
+#ifndef __WRONGCAT_HPP__
+# define __WRONGCAT_HPP__
+# include "WrongAnimal.hpp"
 
-class	Brain
+class	WrongCat : public WrongAnimal
 {
 	private:
-		std::string	ideas[100];
+		std::string	name;
 
 	public:
-		Brain(void);
-		~Brain(void);
-		Brain(Brain const& target);
-		Brain&	operator=(Brain const& target);
+		WrongCat(void);
+		virtual ~WrongCat(void);
+		explicit WrongCat(std::string name);
+		WrongCat(WrongCat const& target);
+		WrongCat&	operator=(WrongCat const& target);
 
-		std::string	getIdea(std::size_t idx);
-		void		setIdea(std::size_t idx, std::string const& idea);
+		virtual std::string	getType(void) const;
+		std::string			getName(void) const;
+
+		void	makeSound(void) const;
 };
 
-#endif	/* __BRAIN_HPP__ */
+#endif	/* __WRONGCAT_HPP__ */

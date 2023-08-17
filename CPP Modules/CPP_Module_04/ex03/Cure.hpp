@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Brain.hpp                                          :+:      :+:    :+:   */
+/*   Cure.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/16 19:34:27 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 20:41:41 by gychoi           ###   ########.fr       */
+/*   Created: 2023/08/17 22:36:58 by gychoi            #+#    #+#             */
+/*   Updated: 2023/08/17 22:38:10 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __BRAIN_HPP__
-# define __BRAIN_HPP__
-# include <string>
+#ifndef __CURE_HPP__
+# define __CURE_HPP__
+# include "AMateria.hpp"
+# include "ICharacter.hpp"
 
-class	Brain
+class	Cure : public AMateria
 {
-	private:
-		std::string	ideas[100];
-
 	public:
-		Brain(void);
-		~Brain(void);
-		Brain(Brain const& target);
-		Brain&	operator=(Brain const& target);
+		Cure(void);
+		virtual ~Cure(void);
+		Cure(Cure const& target);
+		Cure&	operator=(Cure const& target);
 
-		std::string	getIdea(std::size_t idx);
-		void		setIdea(std::size_t idx, std::string const& idea);
+		virtual AMateria*	clone(void) const;
+		virtual void		use(ICharacter &target);
 };
 
-#endif	/* __BRAIN_HPP__ */
+#endif	/* __CURE_HPP__ */
