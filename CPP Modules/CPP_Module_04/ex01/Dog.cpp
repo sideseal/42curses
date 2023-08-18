@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:04:57 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 21:22:04 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:20:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * Constructor and Destructor *
  ******************************/
 
-Dog::Dog(void)
+Dog::Dog(void) : memory(0)
 {
 	std::cout << "[Dog] : Default constructor called" << std::endl;
 	Animal::type = "Dog";
@@ -30,7 +30,7 @@ Dog::~Dog(void)
 	delete this->brain;
 }
 
-Dog::Dog(std::string name) : name(name)
+Dog::Dog(std::string name) : name(name), memory(0)
 {
 	std::cout << "[Dog] : Parameterize constructor called" << std::endl;
 	Animal::type = "Dog";

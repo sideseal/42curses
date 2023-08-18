@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 17:12:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/17 21:53:55 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:16:11 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ void	testSix(void)
 	Cat		catThree(*catTwo);
 
 	std::cout << animalTwo->getType() << std::endl;
-	std::cout << catThree.getType() << ", " << catThree.getName() << std::endl;
+//	std::cout << catThree.getType() << ", " << catThree.getName() << std::endl;
+	std::cout << catThree.getType() << std::endl;
 
 	Animal*	animalThree = new Animal();
 	Cat		catFour("nyancat");
@@ -135,7 +136,8 @@ void	testSix(void)
 	catFour = *static_cast<Cat*>(animalThree);
 
 	std::cout << animalThree->getType() << std::endl;
-	std::cout << catFour.getType() << ", " << catFour.getName() << std::endl;
+//	std::cout << catFour.getType() << catFour.getName() << std::endl;
+	std::cout << catFour.getType() << std::endl;
 
 	delete animalOne;
 	delete animalTwo;

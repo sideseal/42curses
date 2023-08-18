@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 23:21:28 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/18 01:11:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:31:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ MateriaSource::~MateriaSource(void)
 MateriaSource::MateriaSource(MateriaSource const& target)
 {
 	if (this != &target)
+	{
+		for (std::size_t i = 0; i < 4; i++)
+			this->list[i] = 0;
 		*this = target;
+	}
 }
 
 MateriaSource&	MateriaSource::operator=(MateriaSource const& target)
@@ -44,6 +48,8 @@ MateriaSource&	MateriaSource::operator=(MateriaSource const& target)
 			delete this->list[i];
 			if (target.list[i])
 				this->list[i] = target.list[i]->clone();
+			else
+				this->list[i] = 0;
 		}
 	}
 	return *this;

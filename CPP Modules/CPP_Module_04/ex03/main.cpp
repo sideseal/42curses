@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:10:48 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/18 03:55:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:45:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <cstdlib>
 void	check_leaks(void)
 {
-	system("leaks a.out");
+	system("leaks --list -- a.out");
 }
 # define ATEXIT_CHECK() atexit(check_leaks)
 #else
@@ -163,7 +163,30 @@ void	testTwo(void)
 
 void	testThree(void)
 {
-	// ...
+	IMateriaSource* src = new MateriaSource();
+	src->learnMateria(new Ice());
+	src->learnMateria(new Cure());
+
+	ICharacter* me = new Character("me");
+
+	AMateria* tmp;
+	tmp = src->createMateria("ice");
+	me->equip(tmp);
+	tmp = src->createMateria("cure");
+	me->equip(tmp);
+
+	ICharacter* bob = new Character("bob");
+
+	AMateria const*	trash = static_cast<Character*>(me)->getItem(1);
+	me->unequip(1);
+	delete trash;
+
+	me->use(0, *bob);
+	me->use(1, *bob);
+
+	delete bob;
+	delete me;
+	delete src;
 }
 
 int	main(void)

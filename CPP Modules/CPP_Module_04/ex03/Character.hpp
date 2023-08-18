@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:49:45 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/18 00:54:48 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:44:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ class	Character : public ICharacter
 		Character(Character const& target);
 		Character&	operator=(Character const& target);
 
-		virtual std::string const&	getName() const;
+		virtual std::string const&	getName(void) const;
+		AMateria const*				getItem(std::size_t idx) const;
 
 		virtual void				equip(AMateria* m);
 		virtual void				unequip(int idx);

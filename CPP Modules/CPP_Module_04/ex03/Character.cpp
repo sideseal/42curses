@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:54:45 by gychoi            #+#    #+#             */
-/*   Updated: 2023/08/18 03:54:16 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:43:55 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,11 @@ Character::Character(std::string const& name) : name(name)
 Character::Character(Character const& target)
 {
 	if (this != &target)
+	{
+		for (std::size_t i = 0; i < 4; i++)
+			this->inventory[i] = 0;
 		*this = target;
+	}
 }
 
 Character&	Character::operator=(Character const& target)
@@ -46,7 +50,8 @@ Character&	Character::operator=(Character const& target)
 	if (this != &target)
 	{
 		this->name = target.name;
-		for (std::size_t i = 0; i < 4; i++) {
+		for (std::size_t i = 0; i < 4; i++)
+		{
 			delete this->inventory[i];
 			if (target.inventory[i])
 				this->inventory[i] = target.inventory[i]->clone();
@@ -64,6 +69,11 @@ Character&	Character::operator=(Character const& target)
 std::string const&	Character::getName(void) const
 {
 	return this->name;
+}
+
+AMateria const*	Character::getItem(std::size_t idx) const
+{
+	return this->inventory[idx];
 }
 
 /******************************
