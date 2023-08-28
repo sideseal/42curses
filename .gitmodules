@@ -4,3 +4,6 @@
 [submodule "miniRT/miniRT"]
 	path = miniRT/miniRT
 	url = https://github.com/sideseal/miniRT.git
+[submodule "webserv/webserv"]
+	path = webserv/webserv
+	url = https://github.com/HyeonjanX/webserv.git
