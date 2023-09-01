@@ -253,6 +253,16 @@ if has('unix') && executable('gcc')
   endif
 endif
 
+
+
+command! -nargs=0 W call SaveExceptHeader()
+
+function! SaveExceptHeader()
+    let file_path = expand('%:p')
+    let cmd = 'w !grep -v ''^1,8'' ' . shellescape(file_path)
+    execute cmd
+endfunction
+
 " 0. Tips to remember
 " 10^w< 	-> decrease buffer size (vertically)
 " 10^w>		-> increase buffer size (vertically)
