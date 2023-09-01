@@ -22,6 +22,7 @@ set number
 set nuw=5
 set relativenumber
 set title
+set cc=80
 set showtabline=2
 set laststatus=2
 " statusline settings >_<
