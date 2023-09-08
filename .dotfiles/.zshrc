@@ -137,7 +137,7 @@ alias wmv="~/misc/utils/wmv/wmv.zsh"
 alias rld="exec zsh"
 alias nn="norminette -R CheckForbiddenSourceHeader"
 alias hh="norminette -R CheckDefine"
-alias githubshit="cat ~/.gitconfig | grep password | cut -d '=' -f 2 | tr -d ' '| pbcopy"
+alias ILoveGithub="cat ~/.gitconfig | grep password | cut -d '=' -f 2 | tr -d ' '| pbcopy"
 
 echo "Hello, gychoi! ^_^\n"
 
