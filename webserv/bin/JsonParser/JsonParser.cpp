@@ -126,6 +126,10 @@ JsonValue	JsonParser::parseJsonHelper
 		= new std::multimap<std::string, JsonValue>;
 
 	// 중괄호 내의 모든 동일한 레벨의 요소들을 jsonMap에 모두 추가
+	// 만약 string key value pair 쌍이면, 해당 줄을 추가하고,
+	// 만약 또 다른 중괄호면, 재귀로 들어가서 이 작업을 수행...
+	// key value pair 쌍이 아닌 중괄호 주소는 언제 저장할까?
+	// 맨 밑 json에서 수행...
 	do {
 		std::pair<std::string, JsonValue> const	keyValuePair
 			= retriveKeyValuePair(text, it);
