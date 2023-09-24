@@ -1,0 +1,31 @@
+{
+	"server":
+	{
+		"listen": "8080",
+		"server_name": "localhost",
+		"root": "./html",
+		"client_max_body_size": "1m",
+		"error_page": "404 /404.html",
+		"location":
+		{
+			"limit_except": "GET POST",
+			"autoindex": "on",
+			"index": "index.html index.htm",
+			"return": "301 /new-path/"
+		}
+	},
+	"server":
+	{
+		"listen": "8081",
+		"server_name": "example.com",
+		"root": "./root",
+		"client_max_body_size": "3m",
+		"error_page": "502 /502.html",
+		"location":
+		{
+			"limit_except": "GET",
+			"autoindex": "off",
+			"index": "hello.html hello.htm"
+		}
+	}
+}

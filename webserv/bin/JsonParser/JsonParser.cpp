@@ -31,7 +31,7 @@ void	JsonParser::freeJsonList(JsonValue& jsonValue)
 {
 	if (jsonValue.json)
 	{
-		for (std::map<std::string, JsonValue>::iterator it
+		for (std::multimap<std::string, JsonValue>::iterator it
 			= jsonValue.json->begin();
 			it != jsonValue.json->end(); ++it)
 			freeJsonList(it->second);
@@ -46,6 +46,7 @@ void	JsonParser::readFile
 	std::ifstream	file(filepath.c_str());
 	std::string		line;
 
+	// 주석인 경우에는 추가하지 말기
 	while (std::getline(file, line))
 	{
 		output.append(line);
@@ -120,15 +121,16 @@ JsonValue	JsonParser::parseJsonHelper
 	assert(*it == '{');
 	it++;
 
-	JsonValue							result;
-	std::map<std::string, JsonValue>*	jsonMap
-		= new std::map<std::string, JsonValue>;
+	JsonValue								result;
+	std::multimap<std::string, JsonValue>*	jsonMap
+		= new std::multimap<std::string, JsonValue>;
 
 	// 중괄호 내의 모든 동일한 레벨의 요소들을 jsonMap에 모두 추가
 	do {
 		std::pair<std::string, JsonValue> const	keyValuePair
 			= retriveKeyValuePair(text, it);
-		(*jsonMap)[keyValuePair.first] = keyValuePair.second;
+		jsonMap->insert(
+				std::make_pair(keyValuePair.first, keyValuePair.second));
 
 		while (*it == ' ' || *it == '\n' || *it == '\t')
 			it++;

@@ -5,13 +5,14 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <cassert>
 
 typedef std::string::iterator	text_it;
 
 struct JsonValue
 {
-	std::string							str;
-	std::map<std::string, JsonValue>*	json;
+	std::string								str;
+	std::multimap<std::string, JsonValue>*	json;
 };
 
 class JsonParser
