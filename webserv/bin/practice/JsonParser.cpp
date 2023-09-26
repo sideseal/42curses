@@ -46,7 +46,6 @@ void	JsonParser::readFile
 	std::ifstream	file(filepath.c_str());
 	std::string		line;
 
-	// 주석인 경우에는 추가하지 말기
 	while (std::getline(file, line))
 	{
 		output.append(line);
