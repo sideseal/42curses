@@ -1,6 +1,9 @@
 #include "JsonParser.hpp"
 
-static bool	_isPrimitive(std::string const& str);
+static bool			_isPrimitive(std::string const& str);
+static std::string	_getStringByDelimeter
+(std::string const& text, std::string::iterator& start,
+ std::string::iterator &end, char delim);
 
 JsonParser::JsonParser(void) : _json(0) {}
 
@@ -51,64 +54,54 @@ Json	JsonParser::parseValue
 		std::cerr << "Error: Empty Value" << std::endl;
 		std::exit(1);
 	}
-	// 처음부터 substr 문자열을 가져와도 될 듯
-	value = text.substr(start - text.begin(), end - start);
-	// 여기부터
 	if (*start == '"')
 	{
-		++start;
-		while (start != end)
-		{
-			value += *start;
-			++start;
-		}
-		if (*start != '"')
-		{
-			// throw error
-			std::cerr << "Error: Mismatched Double Quote" << std::endl;
-			std::exit(1);
-		}
-		++start;
+		value = _getStringBydelimeter(text, start, end, '"');
 		json.str = value;
 	}
 	else if (*start == '[')
 	{
-		std::size_t	match = 1;
-
 		// 1. ,로 스플릿
 		// 2. 좌우 트림
 		// 3. 요소 검사 (원시값, 문자열, 에러)
-		++start;
-		while (start != end)
-		{
-			if (*start == '[')
-				match++;
-			else if (*start == ']')
-				match--;
-			value += *start;
-		}
-		if (*start != ']' || match != 1)
-		{
-			// throw error
-			std::cerr << "Error: Mismatched Bracket" << std::endl;
-			std::exit(1);
-		}
-		++start;
-		json.str = value;
-	}
-	else if (_isPrimitive(value))
-	{
-		json.str = value;
+		value = _getStringByDelimeter(text, start, end, ']');
 	}
 	else
 	{
-		// throw error
-		std::cerr << "Error: Wrong Value" << std::endl;
-		std::exit(1);
+		value = text.substr(start - text.begin(), end - start);
+		if (_isPrimitive(value))
+			json.str = value;
+		else
+		{
+			// throw error
+			std::cerr << "Error: Wrong Value" << std::endl;
+			std::exit(1);
+		}
 	}
 	return json;
 };
 
+static std::string	_getStringByDelimeter
+(std::string const& text, std::string::iterator& start,
+ std::string::iterator &end, char delim)
+{
+	std::string	retstr;
+
+	++start;
+	while (start != end - 1)
+	{
+		retstr += *start;
+		++start;
+	}
+	if (*start != delim)
+	{
+		//throw error
+		std::cerr << "Error: Mismatched Value Delimeter" << std::endl;
+		std::exit(1);
+	}
+	++start;
+	return retstr;
+}
 
 static bool	_isPrimitive(std::string const& str)
 {
