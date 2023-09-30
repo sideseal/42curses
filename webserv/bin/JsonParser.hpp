@@ -4,41 +4,38 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <map>
+#include <cassert>
 
-struct Json
-{
-	std::string							str;
-	std::multimap<std::string, Json>*	ptr;
-};
+#include "JsonData.hpp"
 
 class JsonParser
 {
 	private:
-		Json*	_json;
+		JsonData*	_json;
 
 	public:
 		JsonParser(void);
 		~JsonParser(void);
 
 	public:
-		Json*	getJson(void);
-		Json	getEmptyJson(void);
-		void	freeJson(Json& json);
+		JsonData*	getJson(void);
 
 	public:
-		void				readFile(
-								std::string const& filepath,
-								std::string& output
-							);
-		Json				parseValue(
-								std::string const& text,
-								std::string::iterator& start,
-								std::string::iterator& end
-							);
-
+		void								readFile(
+												std::string const& filepath,
+												std::string& output
+											);
+		std::pair<std::string, JsonData>	retriveKeyValuePair(
+												std::string const& text,
+												std::string::iterator& it
+											);
+		JsonData							parseObject(
+												std::string const& text,
+												std::string::iterator& it
+											);
+		JsonData							parseJson(
+												std::string const& filepath
+											);
 };
-
-
 
 #endif	/* __JSONPARSER_HPP__ */
