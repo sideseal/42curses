@@ -1,13 +1,15 @@
 #include "JsonParser.hpp"
 
-static bool			_isPrimitive
+static jsonType		_getPrimitiveType
 (std::string const& str);
 static std::string	_getStringData
 (std::string const& text, std::string::iterator& it);
-static std::string	_parseKey
+static std::string	_parseStringKey
 (std::string const& text, std::string::iterator& it);
-static std::string	_parseValue
+static std::string	_parseStringValue
 (std::string const& text, std::string::iterator& it);
+static std::string	_parsePrimitive
+(std::string const& text, std::string::iterator& it, jsonType& type);
 static bool	_checkLineEnd
 (std::string const& text, std::string::iterator& it);
 
@@ -43,7 +45,7 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	while (std::isspace(*it))
 		it++;
 	if (*it == '\"')
-		key = _parseKey(text, it);
+		key = _parseStringKey(text, it);
 
 	while (std::isspace(*it))
 		it++;
@@ -55,16 +57,83 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	else if (*it == '\"')
 	{
 		data._type = TYPE_STRING;
-		data._str = _parseValue(text, it);
+		data._str = _parseStringValue(text, it);
 	}
+	else if (*it == '[')
+	{
+		data._type = TYPE_ARRAY;
+		data._arr = parseArray(text, it);
+	}
+	else
+	{
+		data._str = _parsePrimitive(text, it, data._type);
+	}
+	// temp
+	if (*it == ',')
+		it++;
 //	std::cout << "data: " << data._str << ", " << data._obj << std::endl;
-	if (_checkLineEnd(text, it) == false)
+//	맨 마지막 체크는 가장 나중에 하자...
+//	if (_checkLineEnd(text, it) == false)
+//	{
+//		// throw error
+//		std::cerr << "Error: Malformed JSON format" << std::endl;
+//		std::exit(1);
+//	}
+	return std::make_pair(key, data);
+}
+
+std::vector<JsonData>	JsonParser::parseArray
+(std::string const& text, std::string::iterator& it)
+{
+	std::vector<JsonData>	arr;
+
+	it++;
+	while (it != text.end())
+	{
+		JsonData	data;
+
+		while (std::isspace(*it))
+			it++;
+		if (*it == '\"')
+		{
+			data._type = TYPE_STRING;
+			data._str = _parseStringValue(text, it);
+		}
+		else if (*it == '[')
+		{
+			data._type = TYPE_ARRAY;
+			data._arr = parseArray(text, it);
+		}
+		else if (*it == '{')
+		{
+			data = parseObject(text, it);
+		}
+		else
+		{
+			data._str = _parsePrimitive(text, it, data._type);
+		}
+		arr.push_back(data);
+
+		while (std::isspace(*it))
+			it++;
+		if (*it != ',' && *it != ']')
+		{
+			// throw error
+			std::cerr << "Error: Malformed Array" << std::endl;
+			std::exit(1);
+		}
+		if (*it == ']')
+			break;
+		it++;
+	}
+	if (it == text.end())
 	{
 		// throw error
-		std::cerr << "Error: Malformed JSON format" << std::endl;
+		std::cerr << "Error: Malformed Array" << std::endl;
 		std::exit(1);
 	}
-	return std::make_pair(key, data);
+	it++;
+	return arr;
 }
 
 #include <chrono>
@@ -85,7 +154,7 @@ JsonData	JsonParser::parseObject
 	jsonObject = new std::multimap<std::string, JsonData>;
 	do {
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+//		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 		std::pair<std::string, JsonData> const keyValuePair
 			= retriveKeyValuePair(text, it);
@@ -117,74 +186,100 @@ JsonData	JsonParser::parseJson(std::string const& filepath)
  * Helper Functions                                                            *
  * ****************************************************************************/
 
-static bool	_checkLineEnd
-(std::string const& text, std::string::iterator& it)
-{
-	std::string::iterator	cur;
+//static bool	_checkLineEnd
+//(std::string const& text, std::string::iterator& it)
+//{
+//	std::string::iterator	cur;
+//
+//	if (it == text.end())
+//	{
+//		// throw error
+//		std::cerr << "Error: Malformed Json format" << std::endl;
+//		std::exit(1);
+//	}
+//	cur = it + 1;
+//	while (std::isspace(*cur))
+//		cur++;
+////	std::cout << "*it: " << *it << " *cur: " << *cur << std::endl;
+//	if (*cur == '\"')
+//	{
+//		// continuous form - string
+//		// next(cur) is key
+//		if (*it != ',')
+//		{
+//			// throw error
+//			std::cerr << "Error: Malformed Json format" << std::endl;
+//			std::exit(1);
+//		}
+//		else
+//			it++;
+//	}
+//	else if (*cur == ',')
+//	{
+//		// continuous form - object
+//		// maybe before(it) is array or object
+//		// so means out of block!
+//		if (*it != '}')
+//		{
+//			// throw error
+//			std::cerr << "Error: Malformed Json format" << std::endl;
+//			std::exit(1);
+//		}
+//	}
+//	else if (*cur == '}')
+//	{
+//		// last block
+//		if (*it == '}' || std::isspace(*it))
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			// throw error
+//			std::cerr << "Error: Malformed Json format" << std::endl;
+//			std::exit(1);
+//		}
+//	}
+//	else if (cur == text.end())
+//	{
+//		// last string
+//		if (*it != '}')
+//		{
+//			// throw error
+//			std::cerr << "Error: Malformed Json format" << std::endl;
+//			std::exit(1);
+//		}
+//	}
+//	return true;
+//}
 
-	if (it == text.end())
+static std::string	_parsePrimitive
+(std::string const& text, std::string::iterator& it, jsonType& type)
+{
+	std::string	value;
+
+	while (*it != ',' && *it != '}' && *it != ']' && !std::isspace(*it))
+	{
+		if (*it == '\"')
+		{
+			// throw error
+			std::cerr << "Error: Malformed Primitive Format" << std::endl;
+			std::exit(1);
+		}
+		value += *it;
+		it++;
+	}
+	type = _getPrimitiveType(value);
+	if (type == TYPE_ERROR)
 	{
 		// throw error
-		std::cerr << "Error: Malformed Json format" << std::endl;
+		std::cerr << "Error: Malformed primitive format" << std::endl;
 		std::exit(1);
 	}
-	cur = it + 1;
-	while (std::isspace(*cur))
-		cur++;
-//	std::cout << "*it: " << *it << " *cur: " << *cur << std::endl;
-	if (*cur == '\"')
-	{
-		// continuous form - string
-		// next(cur) is key
-		if (*it != ',')
-		{
-			// throw error
-			std::cerr << "Error: Malformed Json format" << std::endl;
-			std::exit(1);
-		}
-		else
-			it++;
-	}
-	else if (*cur == ',')
-	{
-		// continuous form - object
-		// maybe before(it) is array or object
-		// so means out of block!
-		if (*it != '}')
-		{
-			// throw error
-			std::cerr << "Error: Malformed Json format" << std::endl;
-			std::exit(1);
-		}
-	}
-	else if (*cur == '}')
-	{
-		// last block
-		if (*it == '}' || std::isspace(*it))
-		{
-			return true;
-		}
-		else
-		{
-			// throw error
-			std::cerr << "Error: Malformed Json forat" << std::endl;
-			std::exit(1);
-		}
-	}
-	else if (cur == text.end())
-	{
-		// last string
-		if (*it != '}')
-		{
-			// throw error
-			std::cerr << "Error: Malformed Json format" << std::endl;
-			std::exit(1);
-		}
-	}
-	return true;
+	return value;
 }
 
-static std::string	_parseKey
+static std::string	_parseStringKey
 (std::string const& text, std::string::iterator& it)
 {
 	std::string	key;
@@ -203,7 +298,7 @@ static std::string	_parseKey
 	return key;
 }
 
-static std::string	_parseValue
+static std::string	_parseStringValue
 (std::string const& text, std::string::iterator& it)
 {
 	std::string				value;
@@ -271,17 +366,19 @@ static std::string	_getStringData
 	return str;
 }
 
-static bool	_isPrimitive(std::string const& str)
+static jsonType	_getPrimitiveType(std::string const& str)
 {
 	char*	endptr;
 
 	static_cast<void>(strtol(str.c_str(), &endptr, 10));
-	if (endptr == NULL)
-		return true;
+	if (*endptr == '\0')
+		return TYPE_INTEGER;
 	static_cast<void>(strtod(str.c_str(), &endptr));
-	if (endptr == NULL)
-		return true;
-	if (str == "true" || str == "false" || str == "null")
-		return true;
-	return false;
+	if (*endptr == '\0')
+		return TYPE_FLOAT;
+	if (str == "true" || str == "false")
+		return TYPE_BOOLEAN;
+	if (str == "null")
+		return TYPE_NULL;
+	return TYPE_ERROR;
 }

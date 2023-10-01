@@ -29,6 +29,10 @@ class JsonParser
 												std::string const& text,
 												std::string::iterator& it
 											);
+		std::vector<JsonData>				parseArray(
+												std::string const& text,
+												std::string::iterator& it
+											);
 		JsonData							parseObject(
 												std::string const& text,
 												std::string::iterator& it

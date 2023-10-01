@@ -1,17 +1,31 @@
 
 
 {
-	"yo": "yo",
-	"test": {
-		"hello": "hello",
-		"man": "man",
-		"wow": "wow"
+	"s1": "v1",
+	"obj1": {
+		"obj s1": "obj v1",
+		"obj s2": "obj v2",
+		"obj p1": 42
 	},
-	"wow": "wowowo",
-	"h": "we",
-	"wer": {
-		"eie": "ewieruieui",
-		"we": "ddd"
-	},
-	"ei": "ei"
+	"arr1": [
+		"arr s1",
+		{
+		"inside arr1 obj s1": "inside arr1 obj v1",
+		"inside arr1 obj p1": 42.42,
+		"inside arr1 obj arr1": [
+			"inside arr1 obj arr1 v1", false,
+			{
+				"inside arr1 obj arr1 obj s1": "inside arr1 obj arr1 obj v1",
+				"so long...": {
+					"so long s1": true
+				}
+			},
+			"inside arr1 obj arr1 v2"
+			]
+		},
+		["inside arr1 arr2 s1", 42.4242]
+	],
+	"p1": true,
+	"p2": null,
+	"wierd\"name\": wowo": "wierd \"value\"\"dddd"
 }

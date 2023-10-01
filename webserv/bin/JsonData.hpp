@@ -7,12 +7,14 @@
 
 enum jsonType
 {
-	TYPE_NUMBER,
+	TYPE_INTEGER,
+	TYPE_FLOAT,
 	TYPE_STRING,
 	TYPE_BOOLEAN,
 	TYPE_ARRAY,
 	TYPE_OBJECT,
-	TYPE_NULL
+	TYPE_NULL,
+	TYPE_ERROR
 };
 
 class JsonData
@@ -20,7 +22,7 @@ class JsonData
 	public:
 		jsonType								_type;
 		std::string								_str;
-		std::vector<std::string>				_arr;
+		std::vector<JsonData>					_arr;
 		std::multimap<std::string, JsonData>*	_obj;
 
 	public:
