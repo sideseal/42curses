@@ -12,8 +12,6 @@ static std::string	_parsePrimitive
 (std::string const& text, std::string::iterator& it, jsonType& type);
 static bool	_checkLineEnd
 (std::string const& text, std::string::iterator& it);
-static bool	_checkElementEnd
-(std::string const& text, std::string::iterator& it);
 
 JsonParser::JsonParser(void) : _json(0) {}
 
@@ -47,13 +45,7 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	while (std::isspace(*it))
 		it++;
 	if (*it == '\"')
-	{
 		key = _parseStringKey(text, it);
-	}
-	else if (*it == '}')
-	{
-		return std::make_pair(key, data);
-	}
 	else
 	{
 		// throw error
@@ -88,16 +80,17 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 		std::cerr << "Error: Object must have valid value" << std::endl;
 		std::exit(1);
 	}
-
+	while (std::isspace(*it))
+		it++;
+//	std::cout << data._type << ", " << data._str << ", " << data._obj  << std::endl;
 	if (_checkLineEnd(text, it) == false)
 	{
 		// throw error
-		std::cerr << "Error: Malformed line end" << std::endl;
+		std::cerr << "Error: Malformed JSON format" << std::endl;
 		std::exit(1);
 	}
-	it++;
-	//std::cout << "before it: " << *it << std::endl;
-	while (*it == ',' || std::isspace(*it))
+	// temp
+	if (*it == ',')
 		it++;
 	return std::make_pair(key, data);
 }
@@ -115,11 +108,7 @@ std::vector<JsonData>	JsonParser::parseArray
 
 		while (std::isspace(*it))
 			it++;
-		if (*it == '{')
-		{
-			data = parseObject(text, it);
-		}
-		else if (*it == '\"')
+		if (*it == '\"')
 		{
 			data._type = TYPE_STRING;
 			data._str = _parseStringValue(text, it);
@@ -129,40 +118,65 @@ std::vector<JsonData>	JsonParser::parseArray
 			data._type = TYPE_ARRAY;
 			data._arr = parseArray(text, it);
 		}
-		else if (*it == ']')
+		else if (*it == '{')
 		{
-			break;
-		}
-		else if (std::isalnum(*it))
-		{
-			data._str = _parsePrimitive(text, it, data._type);
+			data = parseObject(text, it);
 		}
 		else
 		{
-			// throw error
-			std::cerr << "Error: Malformed Array 1" << std::endl;
-			std::exit(1);
+			if (*it == ',')
+			{
+				// throw error
+				std::cerr << "Error: Malformed Array" << std::endl;
+				std::exit(1);
+			}
+			data._str = _parsePrimitive(text, it, data._type);
 		}
+		arr.push_back(data);
 
-		if (_checkElementEnd(text, it) == false)
+		while (std::isspace(*it))
+			it++;
+		if (*it != ',' && *it != ']')
 		{
 			// throw error
-			std::cerr << "Error: Malformed line end" << std::endl;
+			std::cerr << "Error: Malformed Array" << std::endl;
 			std::exit(1);
 		}
-		it++;
-		while (*it == ',' || std::isspace(*it))
+		if (*it == ']')
+		{
 			it++;
-		arr.push_back(data);
+			break;
+		}
+		it++;
+	}
+	// 여기에서 배얼의 끝 체크 요소가 들어가야 할까?
+	if (it == text.end())
+	{
+		// throw error
+		std::cerr << "Error: Malformed Array" << std::endl;
+		std::exit(1);
+	}
+	while (std::isspace(*it))
+		it++;
+	nxt = it + 1;
+	while (std::isspace(*nxt))
+		nxt++;
+	if (*nxt == ']' && !std::isspace(*it))
+	{
+		std::cerr << "Error: malformed Array" << std::endl;
+		std::exit(1);
 	}
 	return arr;
 }
 
+#include <chrono>
+#include <thread>
+
 JsonData	JsonParser::parseObject
 (std::string const& text, std::string::iterator& it)
 {
-	JsonData										jsonData;
-	std::vector<std::pair< std::string, JsonData> >	jsonObject;
+	JsonData								jsonData;
+	std::multimap<std::string, JsonData>*	jsonObject;
 
 	while (std::isspace(*it))
 		++it;
@@ -170,15 +184,21 @@ JsonData	JsonParser::parseObject
 	assert(*it == '{');
 	it++;
 
+	jsonObject = new std::multimap<std::string, JsonData>;
 	do {
-		std::pair<std::string, JsonData> keyValuePair
+
+//		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+		std::pair<std::string, JsonData> const keyValuePair
 			= retriveKeyValuePair(text, it);
-		jsonObject.push_back(keyValuePair);
+		jsonObject->insert
+			(std::make_pair(keyValuePair.first, keyValuePair.second));
 
 		while (std::isspace(*it))
 			it++;
 	} while (*it != '}');
 
+	it++;
 	jsonData._type = TYPE_OBJECT;
 	jsonData._obj = jsonObject;
 
@@ -199,145 +219,36 @@ JsonData	JsonParser::parseJson(std::string const& filepath)
  * Helper Functions                                                            *
  * ****************************************************************************/
 
-static bool	_checkElementEnd
-(std::string const& text, std::string::iterator& it)
-{
-	std::string::iterator	cur;
-	bool					comma = false;
-
-	if (it == text.end())
-	{
-		// throw error
-		std::cerr << "Error: Malformed Array format EOF" << std::endl;
-		std::exit(1);
-	}
-	cur = it + 1;
-//	std::cout << "ARR *it: " << *it << " ARR *cur: " << *cur << std::endl;
-	while (*cur == ',' || std::isspace(*cur))
-	{
-		if (*cur == ',')
-		{
-			if (comma == false)
-				comma = true;
-			else
-			{
-				// throw error
-				std::cerr << "Error: Duplicate comma" << std::endl;
-				std::exit(1);
-			}
-		}
-		cur++;
-	}
-//	std::cout << "ARR after iter cur: " << *cur << std::endl;
-	if (*cur == '\"')
-	{
-		if (comma == true)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: No comma before key" << std::endl;
-			std::exit(1);
-		}
-	}
-	else if (*cur == '{')
-	{
-		if (comma == true)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: No comma before block" << std::endl;
-			std::exit(1);
-		}
-	}
-	else if (*cur == '[')
-	{
-		if (comma == true)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: No comma before array" << std::endl;
-			std::exit(1);
-		}
-	}
-	else if (std::isalnum(*cur))
-	{
-		if (comma == true)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: No comma before primitive" << std::endl;
-			std::exit(1);
-		}
-	}
-	else if (*cur == ']')
-	{
-		if (comma == false)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: Comma before end array" << std::endl;
-			std::exit(1);
-		}
-	}
-	return false;
-}
-
 static bool	_checkLineEnd
 (std::string const& text, std::string::iterator& it)
 {
 	std::string::iterator	cur;
-	bool					comma = false;
 
 	if (it == text.end())
 	{
 		// throw error
-		std::cerr << "Error: Malformed Json format EOF" << std::endl;
+		std::cerr << "Error: Malformed Json format" << std::endl;
 		std::exit(1);
 	}
 	cur = it + 1;
-//	std::cout << "*it: " << *it << " *cur: " << *cur << std::endl;
-	while (*cur == ',' || std::isspace(*cur))
-	{
-		if (*cur == ',')
-		{
-			if (comma == false)
-				comma = true;
-			else
-			{
-				// throw error
-				std::cerr << "Error: Duplicate comma" << std::endl;
-				std::exit(1);
-			}
-		}
+	while (std::isspace(*cur))
 		cur++;
-	}
-//	std::cout << "after iter cur: " << *cur << std::endl;
-	if (*cur == '\"')
+//	std::cout << "*it: " << *it << " *cur: " << *cur << std::endl;
+	if (*cur == '\"' && *it == ',')
 	{
-		if (comma == true)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: No comma before key" << std::endl;
-			std::exit(1);
-		}
+		return true;
 	}
-	else if (*cur == '}')
+	else if (*cur == ',' && *it == '}')
 	{
-		if (comma == false)
-			return true;
-		else
-		{
-			// throw error
-			std::cerr << "Error: Comma before end block" << std::endl;
-			std::exit(1);
-		}
+		return true;
+	}
+	else if (*cur == '}' && *it == '}')
+	{
+		return true;
+	}
+	else if (cur == text.end() && *it == '}')
+	{
+		return true;
 	}
 	return false;
 }
@@ -358,7 +269,6 @@ static std::string	_parsePrimitive
 		value += *it;
 		it++;
 	}
-	it--;
 	type = _getPrimitiveType(value);
 	if (type == TYPE_ERROR)
 	{
@@ -384,7 +294,7 @@ static std::string	_parseStringKey
 		std::cerr << "Error: Colon not found after key" << std::endl;
 		std::exit(1);
 	}
-	it++;
+	++it;
 	return key;
 }
 
@@ -395,9 +305,9 @@ static std::string	_parseStringValue
 	std::string::iterator	cur;
 
 	value = _getStringData(text, it);
-//	it++;
-//	while (std::isspace(*it))
-//		it++;
+	it++;
+	while (std::isspace(*it))
+		it++;
 	return value;
 }
 

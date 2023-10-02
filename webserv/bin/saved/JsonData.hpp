@@ -20,10 +20,10 @@ enum jsonType
 class JsonData
 {
 	public:
-		jsonType										_type;
-		std::string										_str;
-		std::vector<JsonData>							_arr;
-		std::vector< std::pair<std::string, JsonData> >	_obj;
+		jsonType								_type;
+		std::string								_str;
+		std::vector<JsonData>					_arr;
+		std::multimap<std::string, JsonData>*	_obj;
 
 	public:
 		JsonData(void);

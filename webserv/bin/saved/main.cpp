@@ -1,12 +1,7 @@
 #include "JsonParser.hpp"
 
-void	printJsonArray(std::vector<JsonData> const& jsonArray, int depth);
+void	printJsonArray(std::vector<JsonData>& jsonArray, int depth);
 void	printJson(JsonData const& jsonData, int depth);
-
-void	check_leaks(void)
-{
-	system("leaks a.out");
-}
 
 std::string	convertType(jsonType type)
 {
@@ -31,7 +26,7 @@ std::string	convertType(jsonType type)
 	}
 }
 
-void	printJsonArray(std::vector<JsonData> const& jsonArray, int depth)
+void	printJsonArray(std::vector<JsonData>& jsonArray, int depth)
 {
 	std::cout << "[" << std::endl;
 
@@ -40,7 +35,7 @@ void	printJsonArray(std::vector<JsonData> const& jsonArray, int depth)
 		for (int j = 0; j < depth + 1; ++j)
 			std::cout << "\t";
 
-		if (!jsonArray[i]._obj.empty())
+		if (jsonArray[i]._obj != NULL)
 		{
 			std::cout << "{" << std::endl;
 			printJson(jsonArray[i], depth + 1);
@@ -71,32 +66,31 @@ void	printJsonArray(std::vector<JsonData> const& jsonArray, int depth)
 
 void	printJson(JsonData const& jsonData, int depth = 0)
 {
-	std::vector< std::pair<std::string, JsonData> > const& jsonObject
-		= jsonData._obj;
+	std::multimap<std::string, JsonData>::iterator it = jsonData._obj->begin();
 
-	for (size_t i = 0; i < jsonObject.size(); ++i)
+	for (; it != jsonData._obj->end(); ++it)
 	{
-		for (int j = 0; j < depth; ++j)
+		for (int i = 0; i < depth; ++i)
 			std::cout << "\t";
 
-		std::cout << jsonObject[i].first << ": ";
+		std::cout << it->first << ": ";
 
-		if (!jsonObject[i].second._obj.empty())
+		if (it->second._obj != NULL)
 		{
 			std::cout << "{" << std::endl;
-			printJson(jsonObject[i].second, depth + 1);
-			for (int j = 0; j < depth; ++j)
+			printJson(it->second, depth + 1);
+			for (int i = 0; i < depth; ++i)
 				std::cout << "\t";
-			std::cout << "}" << " (" << convertType(jsonObject[i].second._type) << ")";
+			std::cout << "}" << " (" << convertType(it->second._type) << ")";
 		}
-		else if (!jsonObject[i].second._arr.empty())
+		else if (!it->second._arr.empty())
 		{
-			printJsonArray(jsonObject[i].second._arr, depth);
-			std::cout << " (" << convertType(jsonObject[i].second._type) << ")";
+			printJsonArray(it->second._arr, depth);
+			std::cout << " (" << convertType(it->second._type) << ")";
 		}
 		else
 		{
-			std::cout << jsonObject[i].second._str << " (" << convertType(jsonObject[i].second._type) << ")";
+			std::cout << it->second._str << " (" << convertType(it->second._type) << ")";
 		}
 		std::cout << std::endl;
 	}
@@ -108,7 +102,6 @@ int	main(int argc, char *argv[])
 	JsonData	json;
 	std::string	text;
 
-//	atexit(check_leaks);
 	if (argc == 2)
 	{
 		std::string	output;
