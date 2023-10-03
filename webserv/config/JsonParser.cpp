@@ -19,7 +19,7 @@ JsonData const&	JsonParser::getJson(void) const
 	return this->_json;
 }
 
-JsonData	JsonParser::parseJson(std::string const& filepath)
+JsonData&	JsonParser::parseJson(std::string const& filepath)
 {
 	std::string				text;
 	std::string::iterator	start;

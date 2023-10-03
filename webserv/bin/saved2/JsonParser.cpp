@@ -1,49 +1,34 @@
 #include "JsonParser.hpp"
 
-static void	_errorExit(std::string const& msg);
+static jsonType		_getPrimitiveType
+(std::string const& str);
+static std::string	_getStringData
+(std::string const& text, std::string::iterator& it);
+static std::string	_parseStringKey
+(std::string const& text, std::string::iterator& it);
+static std::string	_parseStringValue
+(std::string const& text, std::string::iterator& it);
+static std::string	_parsePrimitive
+(std::string const& text, std::string::iterator& it, jsonType& type);
+static bool	_checkLineEnd
+(std::string const& text, std::string::iterator& it);
+static bool	_checkElementEnd
+(std::string const& text, std::string::iterator& it);
 
-/* *************************************************************************** *
- * Constructor & Destructor                                                    *
- * ****************************************************************************/
-
-JsonParser::JsonParser(void) {}
+JsonParser::JsonParser(void) : _json(0) {}
 
 JsonParser::~JsonParser(void) {}
 
-/* *************************************************************************** *
- * Public Member Functions                                                     *
- * ****************************************************************************/
-
-JsonData const&	JsonParser::getJson(void) const
+JsonData*	JsonParser::getJson(void)
 {
 	return this->_json;
 }
-
-JsonData	JsonParser::parseJson(std::string const& filepath)
-{
-	std::string				text;
-	std::string::iterator	start;
-
-	readFile(filepath, text);
-	start = text.begin();
-	this->_json = parseObject(text, start);
-	return this->_json;
-}
-
-/* *************************************************************************** *
- * Private Member Functions                                                    *
- * ****************************************************************************/
 
 void	JsonParser::readFile
 (std::string const& filepath, std::string& output)
 {
 	std::ifstream	file(filepath.c_str());
 	std::string		line;
-
-	if (!file.is_open())
-	{
-		_errorExit("Error: cannot open file " + filepath);
-	}
 
 	while (std::getline(file, line, '\0'))
 	{
@@ -57,17 +42,13 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	std::string	key;
 	JsonData	data;
 
-	if (it == text.end())
-	{
-		_errorExit("Error: Incomplete object");
-	}
+	assert(it != text.end());
 
 	while (std::isspace(*it))
 		it++;
-
 	if (*it == '\"')
 	{
-		key = parseStringKey(text, it);
+		key = _parseStringKey(text, it);
 	}
 	else if (*it == '}')
 	{
@@ -75,7 +56,9 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	}
 	else
 	{
-		_errorExit("Error: Invalid object key");
+		// throw error
+		std::cerr << "Error: Object must have valid key" << std::endl;
+		std::exit(1);
 	}
 
 	while (std::isspace(*it))
@@ -88,7 +71,7 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	else if (*it == '\"')
 	{
 		data._type = TYPE_STRING;
-		data._str = parseStringValue(text, it);
+		data._str = _parseStringValue(text, it);
 	}
 	else if (*it == '[')
 	{
@@ -97,22 +80,25 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	}
 	else if (std::isalnum(*it))
 	{
-		data._str = parsePrimitive(it, data._type);
+		data._str = _parsePrimitive(text, it, data._type);
 	}
 	else
 	{
-		_errorExit("Error: Invalid object value");
+		// throw error
+		std::cerr << "Error: Object must have valid value" << std::endl;
+		std::exit(1);
 	}
 
-	if (checkKeyValueEnd(text, it) == false)
+	if (_checkLineEnd(text, it) == false)
 	{
-		_errorExit("Error: Malformed object format");
+		// throw error
+		std::cerr << "Error: Malformed line end" << std::endl;
+		std::exit(1);
 	}
-
 	it++;
+	//std::cout << "before it: " << *it << std::endl;
 	while (*it == ',' || std::isspace(*it))
 		it++;
-
 	return std::make_pair(key, data);
 }
 
@@ -136,7 +122,7 @@ std::vector<JsonData>	JsonParser::parseArray
 		else if (*it == '\"')
 		{
 			data._type = TYPE_STRING;
-			data._str = parseStringValue(text, it);
+			data._str = _parseStringValue(text, it);
 		}
 		else if (*it == '[')
 		{
@@ -149,25 +135,26 @@ std::vector<JsonData>	JsonParser::parseArray
 		}
 		else if (std::isalnum(*it))
 		{
-			data._str = parsePrimitive(it, data._type);
+			data._str = _parsePrimitive(text, it, data._type);
 		}
 		else
 		{
-			_errorExit("Error: Invalid array element");
+			// throw error
+			std::cerr << "Error: Malformed Array 1" << std::endl;
+			std::exit(1);
 		}
 
-		if (checkElementEnd(text, it) == false)
+		if (_checkElementEnd(text, it) == false)
 		{
-			_errorExit("Error: Malformed array format");
+			// throw error
+			std::cerr << "Error: Malformed line end" << std::endl;
+			std::exit(1);
 		}
-
 		it++;
 		while (*it == ',' || std::isspace(*it))
 			it++;
-
 		arr.push_back(data);
 	}
-
 	return arr;
 }
 
@@ -180,21 +167,16 @@ JsonData	JsonParser::parseObject
 	while (std::isspace(*it))
 		++it;
 
-	if (*it != '{')
-	{
-		_errorExit("Error: Object must start with open curly bracket");
-	}
+	assert(*it == '{');
 	it++;
 
 	do {
 		std::pair<std::string, JsonData> keyValuePair
 			= retriveKeyValuePair(text, it);
-
 		jsonObject.push_back(keyValuePair);
 
 		while (std::isspace(*it))
 			it++;
-
 	} while (*it != '}');
 
 	jsonData._type = TYPE_OBJECT;
@@ -203,7 +185,21 @@ JsonData	JsonParser::parseObject
 	return jsonData;
 }
 
-bool	JsonParser::checkElementEnd
+JsonData	JsonParser::parseJson(std::string const& filepath)
+{
+	std::string				text;
+	std::string::iterator	start;
+
+	readFile(filepath, text);
+	start = text.begin();
+	return parseObject(text, start);
+}
+
+/* *************************************************************************** *
+ * Helper Functions                                                            *
+ * ****************************************************************************/
+
+static bool	_checkElementEnd
 (std::string const& text, std::string::iterator& it)
 {
 	std::string::iterator	cur;
@@ -211,86 +207,87 @@ bool	JsonParser::checkElementEnd
 
 	if (it == text.end())
 	{
-		_errorExit("Error: Incomplete array");
+		// throw error
+		std::cerr << "Error: Malformed Array format EOF" << std::endl;
+		std::exit(1);
 	}
-
 	cur = it + 1;
+//	std::cout << "ARR *it: " << *it << " ARR *cur: " << *cur << std::endl;
 	while (*cur == ',' || std::isspace(*cur))
 	{
 		if (*cur == ',')
 		{
 			if (comma == false)
-			{
 				comma = true;
-			}
 			else
 			{
-				_errorExit("Error: Duplicate comma");
+				// throw error
+				std::cerr << "Error: Duplicate comma" << std::endl;
+				std::exit(1);
 			}
 		}
 		cur++;
 	}
-
+//	std::cout << "ARR after iter cur: " << *cur << std::endl;
 	if (*cur == '\"')
 	{
 		if (comma == true)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Missing comma before element");
+			// throw error
+			std::cerr << "Error: No comma before key" << std::endl;
+			std::exit(1);
 		}
 	}
 	else if (*cur == '{')
 	{
 		if (comma == true)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Missing comma before element");
+			// throw error
+			std::cerr << "Error: No comma before block" << std::endl;
+			std::exit(1);
 		}
 	}
 	else if (*cur == '[')
 	{
 		if (comma == true)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Missing comma before element");
+			// throw error
+			std::cerr << "Error: No comma before array" << std::endl;
+			std::exit(1);
 		}
 	}
 	else if (std::isalnum(*cur))
 	{
 		if (comma == true)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Missing comma before element");
+			// throw error
+			std::cerr << "Error: No comma before primitive" << std::endl;
+			std::exit(1);
 		}
 	}
 	else if (*cur == ']')
 	{
 		if (comma == false)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Found comma before end of array");
+			// throw error
+			std::cerr << "Error: Comma before end array" << std::endl;
+			std::exit(1);
 		}
 	}
-
 	return false;
 }
 
-bool	JsonParser::checkKeyValueEnd
+static bool	_checkLineEnd
 (std::string const& text, std::string::iterator& it)
 {
 	std::string::iterator	cur;
@@ -298,54 +295,55 @@ bool	JsonParser::checkKeyValueEnd
 
 	if (it == text.end())
 	{
-		_errorExit("Error: Incomplete object");
+		// throw error
+		std::cerr << "Error: Malformed Json format EOF" << std::endl;
+		std::exit(1);
 	}
-
 	cur = it + 1;
+//	std::cout << "*it: " << *it << " *cur: " << *cur << std::endl;
 	while (*cur == ',' || std::isspace(*cur))
 	{
 		if (*cur == ',')
 		{
 			if (comma == false)
-			{
 				comma = true;
-			}
 			else
 			{
-				_errorExit("Error: Duplicate comma");
+				// throw error
+				std::cerr << "Error: Duplicate comma" << std::endl;
+				std::exit(1);
 			}
 		}
 		cur++;
 	}
-
+//	std::cout << "after iter cur: " << *cur << std::endl;
 	if (*cur == '\"')
 	{
 		if (comma == true)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Missing comma before key");
+			// throw error
+			std::cerr << "Error: No comma before key" << std::endl;
+			std::exit(1);
 		}
 	}
 	else if (*cur == '}')
 	{
 		if (comma == false)
-		{
 			return true;
-		}
 		else
 		{
-			_errorExit("Error: Found comma before end of object");
+			// throw error
+			std::cerr << "Error: Comma before end block" << std::endl;
+			std::exit(1);
 		}
 	}
-
 	return false;
 }
 
-std::string	JsonParser::parsePrimitive
-(std::string::iterator& it, jsonType& type)
+static std::string	_parsePrimitive
+(std::string const& text, std::string::iterator& it, jsonType& type)
 {
 	std::string	value;
 
@@ -353,49 +351,57 @@ std::string	JsonParser::parsePrimitive
 	{
 		if (*it == '\"')
 		{
-			_errorExit("Error: Malformed primitive format");
+			// throw error
+			std::cerr << "Error: Malformed Primitive Format" << std::endl;
+			std::exit(1);
 		}
 		value += *it;
 		it++;
 	}
 	it--;
-
-	type = getPrimitiveType(value);
+	type = _getPrimitiveType(value);
 	if (type == TYPE_ERROR)
 	{
-		_errorExit("Error: Invalid primitive");
+		// throw error
+		std::cerr << "Error: Malformed primitive format" << std::endl;
+		std::exit(1);
 	}
-
 	return value;
 }
 
-std::string	JsonParser::parseStringKey
+static std::string	_parseStringKey
 (std::string const& text, std::string::iterator& it)
 {
 	std::string	key;
 
-	key = getStringData(text, it);
-
+	key = _getStringData(text, it);
 	it++;
 	while (std::isspace(*it))
 		it++;
-
 	if (*it != ':')
 	{
-		_errorExit("Error: Missing colon after key");
+		// throw error
+		std::cerr << "Error: Colon not found after key" << std::endl;
+		std::exit(1);
 	}
 	it++;
-
 	return key;
 }
 
-std::string	JsonParser::parseStringValue
+static std::string	_parseStringValue
 (std::string const& text, std::string::iterator& it)
 {
-	return getStringData(text, it);
+	std::string				value;
+	std::string::iterator	cur;
+
+	value = _getStringData(text, it);
+//	it++;
+//	while (std::isspace(*it))
+//		it++;
+	return value;
 }
 
-std::string	JsonParser::getStringData
+static std::string	_getStringData
 (std::string const& text, std::string::iterator& it)
 {
 	std::string	str;
@@ -410,7 +416,9 @@ std::string	JsonParser::getStringData
 		{
 			if (ch == '\n')
 			{
-				_errorExit("Error: Malformed String Data type");
+				// throw error
+				std::cerr << "Error: Malformed String Data type" << std::endl;
+				std::exit(1);
 			}
 			if (escape)
 			{
@@ -418,43 +426,37 @@ std::string	JsonParser::getStringData
 				escape = false;
 			}
 			else if (ch == '\\')
-			{
 				escape = true;
-			}
 			else if (ch == '\"')
 			{
 				insideQuote = false;
 				break;
 			}
 			else
-			{
 				str += ch;
-			}
 		}
 		else if (ch == '\"')
-		{
 			insideQuote = true;
-		}
 		else if (ch == '\\')
-		{
 			escape = true;
-		}
 		else
 		{
-			_errorExit("Error: Malformed String Data type");
+			// throw error
+			std::cerr << "Error: Malformed String Data type" << std::endl;
+			std::exit(1);
 		}
 		it++;
 	}
-
 	if ((it == text.end()) || insideQuote)
 	{
-		_errorExit("Error: Malformed String Data type");
+		// throw error
+		std::cerr << "Error: Malformed Key value" << std::endl;
+		std::exit(1);
 	}
-
 	return str;
 }
 
-jsonType	JsonParser::getPrimitiveType(std::string const& str)
+static jsonType	_getPrimitiveType(std::string const& str)
 {
 	char*	endptr;
 
@@ -469,14 +471,4 @@ jsonType	JsonParser::getPrimitiveType(std::string const& str)
 	if (str == "null")
 		return TYPE_NULL;
 	return TYPE_ERROR;
-}
-
-/* *************************************************************************** *
- * Helper Functions                                                            *
- * ****************************************************************************/
-
-static void	_errorExit(std::string const& msg)
-{
-	std::cerr << msg << std::endl;
-	std::exit(1);
 }

@@ -23,12 +23,10 @@ class JsonData
 		jsonType										_type;
 		std::string										_str;
 		std::vector<JsonData>							_arr;
-		std::vector<std::pair<std::string, JsonData> >	_obj;
+		std::vector< std::pair<std::string, JsonData> >	_obj;
 
 	public:
 		JsonData(void);
-		JsonData(JsonData const& target);
-		JsonData&	operator=(JsonData const& target);
 		~JsonData(void);
 };
 

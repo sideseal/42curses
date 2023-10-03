@@ -1,7 +1,7 @@
 #include "JsonParser.hpp"
 
-void	printJsonArray(std::vector<JsonData> const& jsonArray, size_t depth);
-void	printJson(JsonData const& jsonData, size_t depth);
+void	printJsonArray(std::vector<JsonData> const& jsonArray, int depth);
+void	printJson(JsonData const& jsonData, int depth);
 
 void	check_leaks(void)
 {
@@ -31,20 +31,20 @@ std::string	convertType(jsonType type)
 	}
 }
 
-void	printJsonArray(std::vector<JsonData> const& jsonArray, size_t depth)
+void	printJsonArray(std::vector<JsonData> const& jsonArray, int depth)
 {
 	std::cout << "[" << std::endl;
 
-	for (size_t i = 0; i < jsonArray.size(); ++i)
+	for (int i = 0; i < jsonArray.size(); ++i)
 	{
-		for (size_t j = 0; j < depth + 1; ++j)
+		for (int j = 0; j < depth + 1; ++j)
 			std::cout << "\t";
 
 		if (!jsonArray[i]._obj.empty())
 		{
 			std::cout << "{" << std::endl;
 			printJson(jsonArray[i], depth + 1);
-			for (size_t j = 0; j < depth + 1; ++j)
+			for (int j = 0; j < depth + 1; ++j)
 				std::cout << "\t";
 			std::cout << "}" << " (" << convertType(jsonArray[i]._type) << ")";
 		}
@@ -63,20 +63,20 @@ void	printJsonArray(std::vector<JsonData> const& jsonArray, size_t depth)
 		std::cout << std::endl;
 	}
 
-	for (size_t i = 0; i < depth; ++i)
+	for (int i = 0; i < depth; ++i)
 		std::cout << "\t";
 
 	std::cout << "]";
 }
 
-void	printJson(JsonData const& jsonData, size_t depth = 0)
+void	printJson(JsonData const& jsonData, int depth = 0)
 {
 	std::vector< std::pair<std::string, JsonData> > const& jsonObject
 		= jsonData._obj;
 
 	for (size_t i = 0; i < jsonObject.size(); ++i)
 	{
-		for (size_t j = 0; j < depth; ++j)
+		for (int j = 0; j < depth; ++j)
 			std::cout << "\t";
 
 		std::cout << jsonObject[i].first << ": ";
@@ -85,7 +85,7 @@ void	printJson(JsonData const& jsonData, size_t depth = 0)
 		{
 			std::cout << "{" << std::endl;
 			printJson(jsonObject[i].second, depth + 1);
-			for (size_t j = 0; j < depth; ++j)
+			for (int j = 0; j < depth; ++j)
 				std::cout << "\t";
 			std::cout << "}" << " (" << convertType(jsonObject[i].second._type) << ")";
 		}
@@ -105,19 +105,25 @@ void	printJson(JsonData const& jsonData, size_t depth = 0)
 int	main(int argc, char *argv[])
 {
 	JsonParser	jsonParser;
+	JsonData	json;
 	std::string	text;
 
 //	atexit(check_leaks);
 	if (argc == 2)
 	{
-		jsonParser.parseJson(argv[1]);
+		std::string	output;
+		jsonParser.readFile(argv[1], text);
 	}
 	else
 	{
 		std::cerr << "Please test with file" << std::endl;
 		return 1;
 	}
+	std::cout << text << std::endl;
+	std::string::iterator start = text.begin();
+
+	json = jsonParser.parseObject(text, start);
 	std::cout << "====== result =====" << std::endl;
-	printJson(jsonParser.getJson());
+	printJson(json);
 	return 0;
 }

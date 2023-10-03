@@ -18,7 +18,7 @@ class JsonParser
 
 	public:
 		JsonData const&						getJson(void) const;
-		JsonData							parseJson(
+		JsonData&							parseJson(
 												std::string const& filepath
 											);
 

@@ -1,5 +1,6 @@
 CC = c++
-CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++98
+#CXXFLAGS = -Wall -Wextra -Werror -pedantic -std=c++98
+CXXFLAGS = -Wall -std=c++98
 LDFLAGS =
 INCLUDE = -I.
 RM = rm -rf
@@ -17,7 +18,7 @@ all: $(NAME)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	mkdir -p obj
-	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@ -MMD -MP $(LDFLAGS)
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@ -MD $(LDFLAGS)
 
 $(NAME): $(OBJECTS)
 	$(CC) $(CXXFLAGS) $(OBJECTS) -o $(NAME) $(LDFLAGS)

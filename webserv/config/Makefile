@@ -17,7 +17,7 @@ all: $(NAME)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	mkdir -p obj
-	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@ -MMD -MP $(LDFLAGS)
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@ -MD $(LDFLAGS)
 
 $(NAME): $(OBJECTS)
 	$(CC) $(CXXFLAGS) $(OBJECTS) -o $(NAME) $(LDFLAGS)

@@ -1,7 +1,4 @@
-#include "JsonParser.hpp"
-
-void	printJsonArray(std::vector<JsonData> const& jsonArray, size_t depth);
-void	printJson(JsonData const& jsonData, size_t depth);
+#include "util.hpp"
 
 void	check_leaks(void)
 {
@@ -102,22 +99,3 @@ void	printJson(JsonData const& jsonData, size_t depth = 0)
 	}
 }
 
-int	main(int argc, char *argv[])
-{
-	JsonParser	jsonParser;
-	std::string	text;
-
-//	atexit(check_leaks);
-	if (argc == 2)
-	{
-		jsonParser.parseJson(argv[1]);
-	}
-	else
-	{
-		std::cerr << "Please test with file" << std::endl;
-		return 1;
-	}
-	std::cout << "====== result =====" << std::endl;
-	printJson(jsonParser.getJson());
-	return 0;
-}
