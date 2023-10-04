@@ -4,17 +4,17 @@
 #include <string>
 #include <vector>
 
-#include "JsonData.hpp"
+#include "JsonParser.hpp"
 
-struct	status_page
+typedef struct s_status_page
 {
 	int			_status;
 	std::string	_page;
 
-	status_page(void): _status(-1) {}
-};
+	s_status_page(void): _status(-1) {}
+}	t_status_page;
 
-struct	location
+typedef struct s_location
 {
 	std::string					m_path; // must be unique
 	std::string					_root;
@@ -23,36 +23,37 @@ struct	location
 	bool						_autoindex;
 	std::vector<std::string>	_limit_except;
 	std::vector<std::string>	_index;
-	std::vector<status_page>	_error_page;
-	status_page					_return;
+	std::vector<t_status_page>	_error_page;
+	s_status_page					_return;
 
-	location(void): _autoindex(false) {}
-};
+	s_location(void): _autoindex(false) {}
+}	t_location;
 
-struct	host
+typedef struct s_host
 {
 	int							m_listen; // must be unique
 	std::string					m_server_name; // must be unique
 	std::string					_root;
 	std::vector<std::string>	_index;
-	std::vector<location>		_locations;
+	std::vector<t_location>		_locations;
 
-	host(void): m_listen(-1) {}
-};
+	s_host(void): m_listen(-1) {}
+}	t_host;
 
 class	Config
 {
 	private:
 		JsonData			_json;
-		std::vector<host>	_hosts;
+		std::vector<t_host>	_hosts;
 
 	public:
 		Config(void);
 		~Config(void);
 
 	public:
-		std::vector<host> const&	getHosts(void) const;
+		std::vector<t_host> const&	getHosts(void) const;
 		void						setJson(JsonData& json);
+		void						setUpHosts(void);
 };
 
 #endif	/* __CONFIG_HPP__ */

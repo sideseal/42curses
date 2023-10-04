@@ -30,6 +30,50 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 	return this->_json;
 }
 
+std::vector<JsonData>	JsonParser::findDataByKey
+(JsonData const& jsonData, std::string const& key)
+{
+	std::vector<std::pair<std::string, JsonData> > const& jsonObject
+		= jsonData._obj;
+	std::vector<JsonData>	results;
+
+	for (std::size_t i = 0; i < jsonObject.size(); ++i)
+	{
+		if (jsonObject[i].first == key)
+		{
+			results.push_back(jsonObject[i].second);
+			continue;
+		}
+
+		if (jsonObject[i].second._type == TYPE_OBJECT
+			&& !jsonObject[i].second._obj.empty())
+		{
+			std::vector<JsonData>	ret;
+
+			ret = findDataByKey(jsonObject[i].second, key);
+			results.insert(results.end(), ret.begin(), ret.end());
+		}
+		else if (jsonObject[i].second._type == TYPE_ARRAY
+				&& !jsonObject[i].second._arr.empty())
+		{
+			std::vector<JsonData>	temp = jsonObject[i].second._arr;
+
+			for (std::size_t j = 0; j < jsonObject[i].second._arr.size(); ++j)
+			{
+				if (temp[j]._type == TYPE_OBJECT
+					|| temp[j]._type == TYPE_ARRAY)
+				{
+					std::vector<JsonData>	ret;
+
+					ret = findDataByKey(temp[j], key);
+					results.insert(results.end(), ret.begin(), ret.end());
+				}
+			}
+		}
+	}
+	return results;
+}
+
 /* *************************************************************************** *
  * Private Member Functions                                                    *
  * ****************************************************************************/
@@ -37,18 +81,26 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 void	JsonParser::readFile
 (std::string const& filepath, std::string& output)
 {
-	std::ifstream	file(filepath.c_str());
-	std::string		line;
+	std::ifstream		file(filepath.c_str(), std::ios::in | std::ios::binary);
+	std::ostringstream	ss;
 
 	if (!file.is_open())
 	{
-		_errorExit("Error: cannot open file " + filepath);
+		_errorExit("Error: Cannot open file " + filepath);
 	}
 
-	while (std::getline(file, line, '\0'))
+
+	ss << file.rdbuf();
+
+	if (file.fail())
 	{
-		output.append(line);
+		file.close();
+		_errorExit("Error: Failed to load to memory");
 	}
+
+	file.close();
+
+	output = ss.str();
 }
 
 std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
@@ -57,15 +109,14 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	std::string	key;
 	JsonData	data;
 
+	while (it != text.end() && std::isspace(*it))
+		it++;
+
 	if (it == text.end())
 	{
 		_errorExit("Error: Incomplete object");
 	}
-
-	while (std::isspace(*it))
-		it++;
-
-	if (*it == '\"')
+	else if (*it == '\"')
 	{
 		key = parseStringKey(text, it);
 	}
@@ -78,10 +129,14 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 		_errorExit("Error: Invalid object key");
 	}
 
-	while (std::isspace(*it))
+	while (it != text.end() && std::isspace(*it))
 		it++;
 
-	if (*it == '{')
+	if (it == text.end())
+	{
+		_errorExit("Error: Incomplete object");
+	}
+	else if (*it == '{')
 	{
 		data = parseObject(text, it);
 	}
@@ -95,9 +150,9 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 		data._type = TYPE_ARRAY;
 		data._arr = parseArray(text, it);
 	}
-	else if (std::isalnum(*it))
+	else if (std::isalnum(*it) || *it == '.' || *it == '-' || *it == '+')
 	{
-		data._str = parsePrimitive(it, data._type);
+		data._str = parsePrimitive(text, it, data._type);
 	}
 	else
 	{
@@ -110,7 +165,10 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	}
 
 	it++;
-	while (*it == ',' || std::isspace(*it))
+	while (it != text.end() && std::isspace(*it))
+		it++;
+
+	if (it != text.end() && *it == ',')
 		it++;
 
 	return std::make_pair(key, data);
@@ -127,8 +185,19 @@ std::vector<JsonData>	JsonParser::parseArray
 	{
 		JsonData	data;
 
-		while (std::isspace(*it))
+		while (it != text.end() && std::isspace(*it))
 			it++;
+
+		if (it == text.end())
+		{
+			_errorExit("Error: Malformed array format");
+		}
+
+		if (*it == ']')
+		{
+			return arr;
+		}
+
 		if (*it == '{')
 		{
 			data = parseObject(text, it);
@@ -143,13 +212,9 @@ std::vector<JsonData>	JsonParser::parseArray
 			data._type = TYPE_ARRAY;
 			data._arr = parseArray(text, it);
 		}
-		else if (*it == ']')
+		else if (std::isalnum(*it) || *it == '.' || *it == '-' || *it == '+')
 		{
-			break;
-		}
-		else if (std::isalnum(*it))
-		{
-			data._str = parsePrimitive(it, data._type);
+			data._str = parsePrimitive(text, it, data._type);
 		}
 		else
 		{
@@ -162,7 +227,10 @@ std::vector<JsonData>	JsonParser::parseArray
 		}
 
 		it++;
-		while (*it == ',' || std::isspace(*it))
+		while (it != text.end() && std::isspace(*it))
+			it++;
+
+		if (it != text.end() && *it == ',')
 			it++;
 
 		arr.push_back(data);
@@ -177,10 +245,10 @@ JsonData	JsonParser::parseObject
 	JsonData										jsonData;
 	std::vector<std::pair< std::string, JsonData> >	jsonObject;
 
-	while (std::isspace(*it))
+	while (it != text.end() && std::isspace(*it))
 		++it;
 
-	if (*it != '{')
+	if (it == text.end() || *it != '{')
 	{
 		_errorExit("Error: Object must start with open curly bracket");
 	}
@@ -192,10 +260,10 @@ JsonData	JsonParser::parseObject
 
 		jsonObject.push_back(keyValuePair);
 
-		while (std::isspace(*it))
+		while (it != text.end() && std::isspace(*it))
 			it++;
 
-	} while (*it != '}');
+	} while (it != text.end() && *it != '}');
 
 	jsonData._type = TYPE_OBJECT;
 	jsonData._obj = jsonObject;
@@ -215,7 +283,7 @@ bool	JsonParser::checkElementEnd
 	}
 
 	cur = it + 1;
-	while (*cur == ',' || std::isspace(*cur))
+	while (cur != text.end() && (*cur == ',' || std::isspace(*cur)))
 	{
 		if (*cur == ',')
 		{
@@ -231,7 +299,11 @@ bool	JsonParser::checkElementEnd
 		cur++;
 	}
 
-	if (*cur == '\"')
+	if (cur == text.end())
+	{
+		_errorExit("Error: Malformed array format");
+	}
+	else if (*cur == '\"')
 	{
 		if (comma == true)
 		{
@@ -264,7 +336,7 @@ bool	JsonParser::checkElementEnd
 			_errorExit("Error: Missing comma before element");
 		}
 	}
-	else if (std::isalnum(*cur))
+	else if (std::isalnum(*cur) || *it == '.' || *it == '-' || *it == '+')
 	{
 		if (comma == true)
 		{
@@ -302,7 +374,7 @@ bool	JsonParser::checkKeyValueEnd
 	}
 
 	cur = it + 1;
-	while (*cur == ',' || std::isspace(*cur))
+	while (cur != text.end() && (*cur == ',' || std::isspace(*cur)))
 	{
 		if (*cur == ',')
 		{
@@ -318,7 +390,11 @@ bool	JsonParser::checkKeyValueEnd
 		cur++;
 	}
 
-	if (*cur == '\"')
+	if (cur == text.end())
+	{
+		_errorExit("Error: Malformed key value pair");
+	}
+	else if (*cur == '\"')
 	{
 		if (comma == true)
 		{
@@ -345,18 +421,20 @@ bool	JsonParser::checkKeyValueEnd
 }
 
 std::string	JsonParser::parsePrimitive
-(std::string::iterator& it, jsonType& type)
+(std::string const& text, std::string::iterator& it, jsonType& type)
 {
 	std::string	value;
 
-	while (*it != ',' && *it != '}' && *it != ']' && !std::isspace(*it))
+	while (it != text.end()
+			&& (std::isalnum(*it) || *it == '.' || *it == '-' || *it == '+'))
 	{
-		if (*it == '\"')
-		{
-			_errorExit("Error: Malformed primitive format");
-		}
 		value += *it;
 		it++;
+	}
+
+	if (it == text.end())
+	{
+		_errorExit("Error: Invalid primitive");
 	}
 	it--;
 
@@ -377,10 +455,10 @@ std::string	JsonParser::parseStringKey
 	key = getStringData(text, it);
 
 	it++;
-	while (std::isspace(*it))
+	while (it != text.end() && std::isspace(*it))
 		it++;
 
-	if (*it != ':')
+	if (it == text.end() || *it != ':')
 	{
 		_errorExit("Error: Missing colon after key");
 	}
@@ -399,54 +477,39 @@ std::string	JsonParser::getStringData
 (std::string const& text, std::string::iterator& it)
 {
 	std::string	str;
-	bool		insideQuote = false;
 	bool		escape = false;
 	char		ch;
 
+	it++;
 	while (it != text.end())
 	{
 		ch = *it;
-		if (insideQuote)
+		if (ch == '\n')
 		{
-			if (ch == '\n')
-			{
-				_errorExit("Error: Malformed String Data type");
-			}
-			if (escape)
-			{
-				str += ch;
-				escape = false;
-			}
-			else if (ch == '\\')
-			{
-				escape = true;
-			}
-			else if (ch == '\"')
-			{
-				insideQuote = false;
-				break;
-			}
-			else
-			{
-				str += ch;
-			}
+			_errorExit("Error: Malformed String Data type");
 		}
-		else if (ch == '\"')
+		if (escape)
 		{
-			insideQuote = true;
+			str += ch;
+			escape = false;
 		}
 		else if (ch == '\\')
 		{
+			str += ch;
 			escape = true;
+		}
+		else if (ch == '\"')
+		{
+			break;
 		}
 		else
 		{
-			_errorExit("Error: Malformed String Data type");
+			str += ch;
 		}
 		it++;
 	}
 
-	if ((it == text.end()) || insideQuote)
+	if (it == text.end())
 	{
 		_errorExit("Error: Malformed String Data type");
 	}

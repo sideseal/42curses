@@ -2,7 +2,9 @@
 #define __JSONPARSER_HPP__
 
 #include <fstream>
+#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "JsonData.hpp"
@@ -20,6 +22,10 @@ class JsonParser
 		JsonData const&						getJson(void) const;
 		JsonData&							parseJson(
 												std::string const& filepath
+											);
+		std::vector<JsonData>				findDataByKey(
+												JsonData const& jsonData,
+												std::string const& key
 											);
 
 	private:
@@ -48,6 +54,7 @@ class JsonParser
 												std::string::iterator& it
 											);
 		std::string							parsePrimitive(
+												std::string const& text,
 												std::string::iterator& it,
 												jsonType& type
 											);
