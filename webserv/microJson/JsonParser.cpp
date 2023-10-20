@@ -1,6 +1,7 @@
 #include "JsonParser.hpp"
 
 static void	_errorExit(std::string const& msg);
+static void	_skipWhiteSpaces(std::string const& txt, std::string::iterator& it);
 
 /* *************************************************************************** *
  * Constructor & Destructor                                                    *
@@ -33,8 +34,8 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 std::vector<JsonData>	JsonParser::findDataByKey
 (JsonData const& jsonData, std::string const& key)
 {
-	std::vector<std::pair<std::string, JsonData> > const& jsonObject
-		= jsonData._obj;
+	std::vector<std::pair<std::string, JsonData> > const&
+							jsonObject = jsonData._obj;
 	std::vector<JsonData>	results;
 
 	for (std::size_t i = 0; i < jsonObject.size(); ++i)
@@ -56,21 +57,20 @@ std::vector<JsonData>	JsonParser::findDataByKey
 		else if (jsonObject[i].second._type == TYPE_ARRAY
 				&& !jsonObject[i].second._arr.empty())
 		{
-			std::vector<JsonData>	temp = jsonObject[i].second._arr;
-
 			for (std::size_t j = 0; j < jsonObject[i].second._arr.size(); ++j)
 			{
-				if (temp[j]._type == TYPE_OBJECT
-					|| temp[j]._type == TYPE_ARRAY)
+				if (jsonObject[i].second._arr[j]._type == TYPE_OBJECT
+					|| jsonObject[i].second._arr[j]._type == TYPE_ARRAY)
 				{
 					std::vector<JsonData>	ret;
 
-					ret = findDataByKey(temp[j], key);
+					ret = findDataByKey(jsonObject[i].second._arr[j], key);
 					results.insert(results.end(), ret.begin(), ret.end());
 				}
 			}
 		}
 	}
+
 	return results;
 }
 
@@ -86,16 +86,15 @@ void	JsonParser::readFile
 
 	if (!file.is_open())
 	{
-		_errorExit("Error: Cannot open file " + filepath);
+		_errorExit("Error: Cannot open " + filepath);
 	}
-
 
 	ss << file.rdbuf();
 
 	if (file.fail())
 	{
 		file.close();
-		_errorExit("Error: Failed to load to memory");
+		_errorExit("Error: Failed to read a file");
 	}
 
 	file.close();
@@ -109,12 +108,11 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 	std::string	key;
 	JsonData	data;
 
-	while (it != text.end() && std::isspace(*it))
-		it++;
+	_skipWhiteSpaces(text, it);
 
 	if (it == text.end())
 	{
-		_errorExit("Error: Incomplete object");
+		_errorExit("Error: EOF encountered while reading object");
 	}
 	else if (*it == '\"')
 	{
@@ -129,12 +127,11 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 		_errorExit("Error: Invalid object key");
 	}
 
-	while (it != text.end() && std::isspace(*it))
-		it++;
+	_skipWhiteSpaces(text, it);
 
 	if (it == text.end())
 	{
-		_errorExit("Error: Incomplete object");
+		_errorExit("Error: EOF encountered while reading object");
 	}
 	else if (*it == '{')
 	{
@@ -164,12 +161,16 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 		_errorExit("Error: Malformed object format");
 	}
 
-	it++;
-	while (it != text.end() && std::isspace(*it))
-		it++;
+	_skipWhiteSpaces(text, it);
 
-	if (it != text.end() && *it == ',')
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF encountered while reading object");
+	}
+	else if (*it == ',')
+	{
 		it++;
+	}
 
 	return std::make_pair(key, data);
 }
@@ -180,25 +181,33 @@ std::vector<JsonData>	JsonParser::parseArray
 	std::vector<JsonData>	arr;
 	std::string::iterator	nxt;
 
+	_skipWhiteSpaces(text, it);
+
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF encountered before reading array");
+	}
+	else if (*it != '[')
+	{
+		_errorExit("Error: Array must start with an open square bracket");
+	}
 	it++;
+
 	while (it != text.end())
 	{
 		JsonData	data;
 
-		while (it != text.end() && std::isspace(*it))
-			it++;
+		_skipWhiteSpaces(text, it);
 
 		if (it == text.end())
 		{
-			_errorExit("Error: Malformed array format");
+			_errorExit("Error: EOF encountered while reading array");
 		}
-
-		if (*it == ']')
+		else if (*it == ']')
 		{
 			return arr;
 		}
-
-		if (*it == '{')
+		else if (*it == '{')
 		{
 			data = parseObject(text, it);
 		}
@@ -226,12 +235,16 @@ std::vector<JsonData>	JsonParser::parseArray
 			_errorExit("Error: Malformed array format");
 		}
 
-		it++;
-		while (it != text.end() && std::isspace(*it))
-			it++;
+		_skipWhiteSpaces(text, it);
 
-		if (it != text.end() && *it == ',')
+		if (it == text.end())
+		{
+			_errorExit("Error: EOF encountered while reading array");
+		}
+		else if (*it == ',')
+		{
 			it++;
+		}
 
 		arr.push_back(data);
 	}
@@ -245,12 +258,15 @@ JsonData	JsonParser::parseObject
 	JsonData										jsonData;
 	std::vector<std::pair< std::string, JsonData> >	jsonObject;
 
-	while (it != text.end() && std::isspace(*it))
-		++it;
+	_skipWhiteSpaces(text, it);
 
-	if (it == text.end() || *it != '{')
+	if (it == text.end())
 	{
-		_errorExit("Error: Object must start with open curly bracket");
+		_errorExit("Error: EOF encountered before reading object");
+	}
+	else if (*it != '{')
+	{
+		_errorExit("Error: Object must start with an open curly bracket");
 	}
 	it++;
 
@@ -260,8 +276,7 @@ JsonData	JsonParser::parseObject
 
 		jsonObject.push_back(keyValuePair);
 
-		while (it != text.end() && std::isspace(*it))
-			it++;
+		_skipWhiteSpaces(text, it);
 
 	} while (it != text.end() && *it != '}');
 
@@ -279,7 +294,7 @@ bool	JsonParser::checkElementEnd
 
 	if (it == text.end())
 	{
-		_errorExit("Error: Incomplete array");
+		_errorExit("Error: EOF encountered before checking array end");
 	}
 
 	cur = it + 1;
@@ -301,12 +316,13 @@ bool	JsonParser::checkElementEnd
 
 	if (cur == text.end())
 	{
-		_errorExit("Error: Malformed array format");
+		_errorExit("Error: EOF encountered while checking array end");
 	}
 	else if (*cur == '\"')
 	{
 		if (comma == true)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -318,6 +334,7 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == true)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -329,6 +346,7 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == true)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -340,6 +358,7 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == true)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -351,6 +370,7 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == false)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -370,7 +390,7 @@ bool	JsonParser::checkKeyValueEnd
 
 	if (it == text.end())
 	{
-		_errorExit("Error: Incomplete object");
+		_errorExit("Error: EOF encountered before checking object end");
 	}
 
 	cur = it + 1;
@@ -392,12 +412,13 @@ bool	JsonParser::checkKeyValueEnd
 
 	if (cur == text.end())
 	{
-		_errorExit("Error: Malformed key value pair");
+		_errorExit("Error: EOF encountered while checking object end");
 	}
 	else if (*cur == '\"')
 	{
 		if (comma == true)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -409,6 +430,7 @@ bool	JsonParser::checkKeyValueEnd
 	{
 		if (comma == false)
 		{
+			it++;
 			return true;
 		}
 		else
@@ -431,12 +453,12 @@ std::string	JsonParser::parsePrimitive
 		value += *it;
 		it++;
 	}
-
-	if (it == text.end())
-	{
-		_errorExit("Error: Invalid primitive");
-	}
 	it--;
+
+	if (it + 1 == text.end())
+	{
+		_errorExit("Error: EOF encountered while reading primitive");
+	}
 
 	type = getPrimitiveType(value);
 	if (type == TYPE_ERROR)
@@ -455,10 +477,13 @@ std::string	JsonParser::parseStringKey
 	key = getStringData(text, it);
 
 	it++;
-	while (it != text.end() && std::isspace(*it))
-		it++;
+	_skipWhiteSpaces(text, it);
 
-	if (it == text.end() || *it != ':')
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF encountered while reading key");
+	}
+	else if (*it != ':')
 	{
 		_errorExit("Error: Missing colon after key");
 	}
@@ -470,7 +495,16 @@ std::string	JsonParser::parseStringKey
 std::string	JsonParser::parseStringValue
 (std::string const& text, std::string::iterator& it)
 {
-	return getStringData(text, it);
+	std::string value;
+
+	value = getStringData(text, it);
+
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF encountered while reading value");
+	}
+
+	return value;
 }
 
 std::string	JsonParser::getStringData
@@ -509,11 +543,6 @@ std::string	JsonParser::getStringData
 		it++;
 	}
 
-	if (it == text.end())
-	{
-		_errorExit("Error: Malformed String Data type");
-	}
-
 	return str;
 }
 
@@ -542,4 +571,11 @@ static void	_errorExit(std::string const& msg)
 {
 	std::cerr << msg << std::endl;
 	std::exit(1);
+}
+
+static void	_skipWhiteSpaces
+(std::string const& text, std::string::iterator& it)
+{
+	while (it != text.end() && std::isspace(*it))
+		it++;
 }

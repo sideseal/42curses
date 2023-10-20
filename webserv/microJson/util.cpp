@@ -35,24 +35,33 @@ void	printJsonArray(std::vector<JsonData> const& jsonArray, size_t depth)
 	for (size_t i = 0; i < jsonArray.size(); ++i)
 	{
 		for (size_t j = 0; j < depth + 1; ++j)
-			std::cout << "\t";
+			std::cout << "    ";
 
 		if (!jsonArray[i]._obj.empty())
 		{
 			std::cout << "{" << std::endl;
-			printJson(jsonArray[i], depth + 1);
+			printJsonObject(jsonArray[i], depth + 1);
 			for (size_t j = 0; j < depth + 1; ++j)
-				std::cout << "\t";
-			std::cout << "}" << " (" << convertType(jsonArray[i]._type) << ")";
+				std::cout << "    ";
+			std::cout << "}"
+				<< COLOR
+				<< " (" << convertType(jsonArray[i]._type) << ")"
+				<< RESET;
 		}
 		else if (!jsonArray[i]._arr.empty())
 		{
 			printJsonArray(jsonArray[i]._arr, depth + 1);
-			std::cout << " (" << convertType(jsonArray[i]._type) << ")";
+			std::cout
+				<< COLOR
+				<< " (" << convertType(jsonArray[i]._type) << ")"
+				<< RESET;
 		}
 		else
 		{
-			std::cout << jsonArray[i]._str << " (" << convertType(jsonArray[i]._type) << ")";
+			std::cout << jsonArray[i]._str
+				<< COLOR
+				<< " (" << convertType(jsonArray[i]._type) << ")"
+				<< RESET;
 		}
 
 		if (i < jsonArray.size() - 1)
@@ -61,12 +70,12 @@ void	printJsonArray(std::vector<JsonData> const& jsonArray, size_t depth)
 	}
 
 	for (size_t i = 0; i < depth; ++i)
-		std::cout << "\t";
+		std::cout << "    ";
 
 	std::cout << "]";
 }
 
-void	printJson(JsonData const& jsonData, size_t depth = 0)
+void	printJsonObject(JsonData const& jsonData, size_t depth)
 {
 	std::vector< std::pair<std::string, JsonData> > const& jsonObject
 		= jsonData._obj;
@@ -74,28 +83,45 @@ void	printJson(JsonData const& jsonData, size_t depth = 0)
 	for (size_t i = 0; i < jsonObject.size(); ++i)
 	{
 		for (size_t j = 0; j < depth; ++j)
-			std::cout << "\t";
+			std::cout << "    ";
 
 		std::cout << jsonObject[i].first << ": ";
 
 		if (!jsonObject[i].second._obj.empty())
 		{
 			std::cout << "{" << std::endl;
-			printJson(jsonObject[i].second, depth + 1);
+			printJsonObject(jsonObject[i].second, depth + 1);
 			for (size_t j = 0; j < depth; ++j)
-				std::cout << "\t";
-			std::cout << "}" << " (" << convertType(jsonObject[i].second._type) << ")";
+				std::cout << "    ";
+			std::cout << "}"
+				<< COLOR
+				<< " (" << convertType(jsonObject[i].second._type) << ")"
+				<< RESET;
 		}
 		else if (!jsonObject[i].second._arr.empty())
 		{
 			printJsonArray(jsonObject[i].second._arr, depth);
-			std::cout << " (" << convertType(jsonObject[i].second._type) << ")";
+			std::cout
+				<< COLOR
+				" (" << convertType(jsonObject[i].second._type) << ")"
+				<< RESET;
 		}
 		else
 		{
-			std::cout << jsonObject[i].second._str << " (" << convertType(jsonObject[i].second._type) << ")";
+			std::cout << jsonObject[i].second._str
+				<< COLOR
+				<< " (" << convertType(jsonObject[i].second._type) << ")"
+				<< RESET;
 		}
 		std::cout << std::endl;
 	}
 }
 
+void	printJson(JsonData const& jsonData)
+{
+	if (jsonData._obj.empty())
+		return ;
+	std::cout << "{" << std::endl;
+	printJsonObject(jsonData, 1);
+	std::cout << "}" << std::endl;
+}
