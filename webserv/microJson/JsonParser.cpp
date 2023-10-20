@@ -27,6 +27,8 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 
 	readFile(filepath, text);
 	start = text.begin();
+
+	_skipWhiteSpaces(text, start);
 	this->_json = parseObject(text, start);
 	return this->_json;
 }
@@ -161,17 +163,6 @@ std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
 		_errorExit("Error: Malformed object format");
 	}
 
-	_skipWhiteSpaces(text, it);
-
-	if (it == text.end())
-	{
-		_errorExit("Error: EOF encountered while reading object");
-	}
-	else if (*it == ',')
-	{
-		it++;
-	}
-
 	return std::make_pair(key, data);
 }
 
@@ -258,8 +249,6 @@ JsonData	JsonParser::parseObject
 	JsonData										jsonData;
 	std::vector<std::pair< std::string, JsonData> >	jsonObject;
 
-	_skipWhiteSpaces(text, it);
-
 	if (it == text.end())
 	{
 		_errorExit("Error: EOF encountered before reading object");
@@ -271,12 +260,22 @@ JsonData	JsonParser::parseObject
 	it++;
 
 	do {
+		// 여기 진행중...
 		std::pair<std::string, JsonData> keyValuePair
 			= retriveKeyValuePair(text, it);
 
 		jsonObject.push_back(keyValuePair);
 
 		_skipWhiteSpaces(text, it);
+
+		if (it == text.end())
+		{
+			_errorExit("Error: EOF encountered while reading object");
+		}
+		else if (*it == ',')
+		{
+			it++;
+		}
 
 	} while (it != text.end() && *it != '}');
 
