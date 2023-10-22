@@ -27,13 +27,12 @@ class JsonParser
 												JsonData const& jsonData,
 												std::string const& key
 											);
-
 	private:
 		void								readFile(
 												std::string const& filepath,
 												std::string& output
 											);
-		std::pair<std::string, JsonData>	retriveKeyValuePair(
+		JsonData							parseValue(
 												std::string const& text,
 												std::string::iterator& it
 											);

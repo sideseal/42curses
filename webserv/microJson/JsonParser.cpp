@@ -29,7 +29,17 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 	start = text.begin();
 
 	_skipWhiteSpaces(text, start);
-	this->_json = parseObject(text, start);
+
+	this->_json = parseValue(text, start);
+
+	start++;
+	_skipWhiteSpaces(text, start);
+
+	if (start != text.end())
+	{
+		_errorExit("Error: Failed to parse JSON file");
+	}
+
 	return this->_json;
 }
 
@@ -104,67 +114,42 @@ void	JsonParser::readFile
 	output = ss.str();
 }
 
-std::pair<std::string, JsonData>	JsonParser::retriveKeyValuePair
+JsonData	JsonParser::parseValue
 (std::string const& text, std::string::iterator& it)
 {
-	std::string	key;
-	JsonData	data;
+	JsonData	value;
 
-	_skipWhiteSpaces(text, it);
-
-	if (it == text.end())
+	if (*it == '{')
 	{
-		_errorExit("Error: EOF encountered while reading object");
+		value = parseObject(text, it);
 	}
 	else if (*it == '\"')
 	{
-		key = parseStringKey(text, it);
-	}
-	else if (*it == '}')
-	{
-		return std::make_pair(key, data);
-	}
-	else
-	{
-		_errorExit("Error: Invalid object key");
-	}
-
-	_skipWhiteSpaces(text, it);
-
-	if (it == text.end())
-	{
-		_errorExit("Error: EOF encountered while reading object");
-	}
-	else if (*it == '{')
-	{
-		data = parseObject(text, it);
-	}
-	else if (*it == '\"')
-	{
-		data._type = TYPE_STRING;
-		data._str = parseStringValue(text, it);
+		value._type = TYPE_STRING;
+		value._str = parseStringValue(text, it);
 	}
 	else if (*it == '[')
 	{
-		data._type = TYPE_ARRAY;
-		data._arr = parseArray(text, it);
+		value._type = TYPE_ARRAY;
+		value._arr = parseArray(text, it);
 	}
 	else if (std::isalnum(*it) || *it == '.' || *it == '-' || *it == '+')
 	{
-		data._str = parsePrimitive(text, it, data._type);
+		value._str = parsePrimitive(text, it, value._type);
 	}
 	else
 	{
 		_errorExit("Error: Invalid object value");
 	}
 
-	if (checkKeyValueEnd(text, it) == false)
-	{
-		_errorExit("Error: Malformed object format");
-	}
-
-	return std::make_pair(key, data);
+	return value;
 }
+
+/*
+ * TODO
+ * Array도 BNF 형식에 맞게 변경해보기
+ * parseValue로 시작하는게 아니라 parseJson으로 시작하기?
+ */
 
 std::vector<JsonData>	JsonParser::parseArray
 (std::string const& text, std::string::iterator& it)
@@ -221,6 +206,7 @@ std::vector<JsonData>	JsonParser::parseArray
 			_errorExit("Error: Invalid array element");
 		}
 
+		// void로 바꿀까?
 		if (checkElementEnd(text, it) == false)
 		{
 			_errorExit("Error: Malformed array format");
@@ -257,27 +243,92 @@ JsonData	JsonParser::parseObject
 	{
 		_errorExit("Error: Object must start with an open curly bracket");
 	}
-	it++;
+	else
+	{
+		it++;
+	}
 
-	do {
-		// 여기 진행중...
-		std::pair<std::string, JsonData> keyValuePair
-			= retriveKeyValuePair(text, it);
+	_skipWhiteSpaces(text, it);
 
-		jsonObject.push_back(keyValuePair);
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF encountered while reading object");
+	}
+	else if (*it == '}')
+	{
+		jsonData._type = TYPE_OBJECT;
+		return jsonData;
+	}
+	else
+	{
+		// proceed (object has key-value)
+	}
+
+	while (it != text.end() && *it != '}')
+	{
+		std::string	key;
+		JsonData	value;
 
 		_skipWhiteSpaces(text, it);
 
 		if (it == text.end())
 		{
-			_errorExit("Error: EOF encountered while reading object");
+			_errorExit("Error: EOF encountered before reading object key");
 		}
-		else if (*it == ',')
+		else if (*it == '\"')
+		{
+			key = parseStringKey(text, it);
+		}
+		else
+		{
+			_errorExit("Error: Object key must starts with double quote");
+		}
+
+		_skipWhiteSpaces(text, it);
+
+		if (it == text.end())
+		{
+			_errorExit("Error: EOF encountered while reading object key");
+		}
+		else if (*it != ':')
+		{
+			_errorExit("Error: Missing colon after key");
+		}
+		else
 		{
 			it++;
 		}
 
-	} while (it != text.end() && *it != '}');
+		_skipWhiteSpaces(text, it);
+
+		value = parseValue(text, it);
+
+		jsonObject.push_back(std::make_pair(key, value));
+
+		if (it == text.end())
+		{
+			_errorExit("Error: EOF encountered while reading object value");
+		}
+		else if (checkKeyValueEnd(text, it) == false)
+		{
+			_errorExit("Error: Malformed object format");
+		}
+		else 
+		{
+			// proceed (value has valid object end part)
+		}
+
+		if (*it == ',')
+		{
+			it++;
+		}
+		else
+		{
+			// nothing to do
+		}
+
+		_skipWhiteSpaces(text, it);
+	}
 
 	jsonData._type = TYPE_OBJECT;
 	jsonData._obj = jsonObject;
@@ -387,11 +438,6 @@ bool	JsonParser::checkKeyValueEnd
 	std::string::iterator	cur;
 	bool					comma = false;
 
-	if (it == text.end())
-	{
-		_errorExit("Error: EOF encountered before checking object end");
-	}
-
 	cur = it + 1;
 	while (cur != text.end() && (*cur == ',' || std::isspace(*cur)))
 	{
@@ -406,12 +452,16 @@ bool	JsonParser::checkKeyValueEnd
 				_errorExit("Error: Duplicate comma");
 			}
 		}
+		else
+		{
+			// skipped
+		}
 		cur++;
 	}
 
 	if (cur == text.end())
 	{
-		_errorExit("Error: EOF encountered while checking object end");
+		_errorExit("Error: EOF encountered while checking object end part");
 	}
 	else if (*cur == '\"')
 	{
@@ -437,8 +487,12 @@ bool	JsonParser::checkKeyValueEnd
 			_errorExit("Error: Found comma before end of object");
 		}
 	}
+	else
+	{
+		_errorExit("Error: Object key must starts with double quote");
+	}
 
-	return false;
+	return false; // unreachable
 }
 
 std::string	JsonParser::parsePrimitive
@@ -474,18 +528,6 @@ std::string	JsonParser::parseStringKey
 	std::string	key;
 
 	key = getStringData(text, it);
-
-	it++;
-	_skipWhiteSpaces(text, it);
-
-	if (it == text.end())
-	{
-		_errorExit("Error: EOF encountered while reading key");
-	}
-	else if (*it != ':')
-	{
-		_errorExit("Error: Missing colon after key");
-	}
 	it++;
 
 	return key;

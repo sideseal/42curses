@@ -119,9 +119,25 @@ void	printJsonObject(JsonData const& jsonData, size_t depth)
 
 void	printJson(JsonData const& jsonData)
 {
-	if (jsonData._obj.empty())
+	if (jsonData._obj.empty() && jsonData._arr.empty())
+	{
+		std::cout << "JSON is empty!" << std::endl;
 		return ;
-	std::cout << "{" << std::endl;
-	printJsonObject(jsonData, 1);
-	std::cout << "}" << std::endl;
+	}
+	if (jsonData._type == TYPE_OBJECT)
+	{
+		std::cout << "{" << std::endl;
+		printJsonObject(jsonData, 1);
+		std::cout << "}" << std::endl;
+	}
+	else if (jsonData._type == TYPE_ARRAY)
+	{
+		// std::cout << "[" << std::endl;
+		printJsonArray(jsonData._arr, 0);
+		// std::cout << "]" << std::endl;
+	}
+	else
+	{
+		// unreachable
+	}
 }

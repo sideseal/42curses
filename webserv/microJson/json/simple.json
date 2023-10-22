@@ -1,0 +1,9 @@
+{
+	"string": "hello",
+	"object": {
+		"primitive": 100,
+		"primitive": true,
+		"primitive": null
+	},
+	"array": [false, "404", {}, { "string": "world" }, [], [42]]
+}
