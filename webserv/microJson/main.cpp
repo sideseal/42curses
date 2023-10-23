@@ -10,7 +10,11 @@ int	main(int argc, char *argv[])
 		std::cerr << "Please test with a file" << std::endl;
 		return 1;
 	}
-	jsonParser.parseJson(argv[1]);
-	printJson(jsonParser.getJson());
+	else
+	{
+		jsonParser.parseJson(argv[1]);
+		printJson(jsonParser.getJson());
+	}
+
 	return 0;
 }

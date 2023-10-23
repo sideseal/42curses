@@ -16,7 +16,7 @@ NAME = a.out
 all: $(NAME)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	mkdir -p obj
+	@mkdir -p obj
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@ -MD $(LDFLAGS)
 
 $(NAME): $(OBJECTS)

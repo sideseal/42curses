@@ -1,9 +1,22 @@
 {
 	"string": "hello",
 	"object": {
-		"primitive": 100,
+		"primitive": 42,
 		"primitive": true,
 		"primitive": null
 	},
-	"array": [false, "404", {}, { "string": "world" }, [], [42]]
+	"array": [42.42E+4, false,  "\"404\"",  { }, { "string": "world" }, [ ]],
+	"recursive": {
+		"recur": {
+			"recur": {
+				"recur": {
+					"recur": {
+						"recur": {
+							"string": "bye!"
+						}
+					}
+				}
+			}
+		}
+	}
 }

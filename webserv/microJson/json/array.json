@@ -1,8 +1,10 @@
 [
 	1,
 	2,
-	3,
+	true,
 	{
-		"text": "text"
-	}
+		"text": "text",
+		"bool": false
+	},
+	[ "hello", -42.42e-4 ]
 ]

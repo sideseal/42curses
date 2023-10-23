@@ -9,6 +9,32 @@ static void	_skipWhiteSpaces(std::string const& txt, std::string::iterator& it);
 
 JsonParser::JsonParser(void) {}
 
+JsonParser::JsonParser(JsonParser const& target)
+{
+	if (this != &target)
+	{
+		*this = target;
+	}
+	else
+	{
+		// nothing to do
+	}
+}
+
+JsonParser&	JsonParser::operator=(JsonParser const& target)
+{
+	if (this != &target)
+	{
+		this->_json = target._json;
+	}
+	else
+	{
+		// nothing to do
+	}
+
+	return *this;
+}
+
 JsonParser::~JsonParser(void) {}
 
 /* *************************************************************************** *
@@ -30,7 +56,18 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 
 	_skipWhiteSpaces(text, start);
 
-	this->_json = parseValue(text, start);
+	if (*start == '{')
+	{
+		this->_json = parseObject(text, start);
+	}
+	else if (*start == '[')
+	{
+		this->_json = parseArray(text, start);
+	}
+	else
+	{
+		_errorExit("Error: Invalid Json format");
+	}
 
 	start++;
 	_skipWhiteSpaces(text, start);
@@ -38,6 +75,10 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 	if (start != text.end())
 	{
 		_errorExit("Error: Failed to parse JSON file");
+	}
+	else
+	{
+		// parse Json successfully
 	}
 
 	return this->_json;
@@ -100,6 +141,10 @@ void	JsonParser::readFile
 	{
 		_errorExit("Error: Cannot open " + filepath);
 	}
+	else
+	{
+		// file OK
+	}
 
 	ss << file.rdbuf();
 
@@ -108,8 +153,10 @@ void	JsonParser::readFile
 		file.close();
 		_errorExit("Error: Failed to read a file");
 	}
-
-	file.close();
+	else
+	{
+		file.close(); // read OK
+	}
 
 	output = ss.str();
 }
@@ -125,17 +172,15 @@ JsonData	JsonParser::parseValue
 	}
 	else if (*it == '\"')
 	{
-		value._type = TYPE_STRING;
-		value._str = parseStringValue(text, it);
+		value = parseString(text, it);
 	}
 	else if (*it == '[')
 	{
-		value._type = TYPE_ARRAY;
-		value._arr = parseArray(text, it);
+		value = parseArray(text, it);
 	}
 	else if (std::isalnum(*it) || *it == '.' || *it == '-' || *it == '+')
 	{
-		value._str = parsePrimitive(text, it, value._type);
+		value = parsePrimitive(text, it);
 	}
 	else
 	{
@@ -145,19 +190,11 @@ JsonData	JsonParser::parseValue
 	return value;
 }
 
-/*
- * TODO
- * Array도 BNF 형식에 맞게 변경해보기
- * parseValue로 시작하는게 아니라 parseJson으로 시작하기?
- */
-
-std::vector<JsonData>	JsonParser::parseArray
+JsonData	JsonParser::parseArray
 (std::string const& text, std::string::iterator& it)
 {
-	std::vector<JsonData>	arr;
-	std::string::iterator	nxt;
-
-	_skipWhiteSpaces(text, it);
+	JsonData				jsonData;
+	std::vector<JsonData>	jsonArray;
 
 	if (it == text.end())
 	{
@@ -167,66 +204,65 @@ std::vector<JsonData>	JsonParser::parseArray
 	{
 		_errorExit("Error: Array must start with an open square bracket");
 	}
-	it++;
-
-	while (it != text.end())
+	else
 	{
-		JsonData	data;
+		it++;
+	}
 
-		_skipWhiteSpaces(text, it);
+	_skipWhiteSpaces(text, it);
+
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF enconutered while reading array");
+	}
+	else if (*it == ']')
+	{
+		jsonData._type = TYPE_ARRAY;
+		return jsonData;
+	}
+	else
+	{
+		// proceed (array has elements)
+	}
+
+	while (it != text.end() && *it != ']')
+	{
+		JsonData	element;
+
+		element = parseValue(text, it);
+		jsonArray.push_back(element);
 
 		if (it == text.end())
 		{
-			_errorExit("Error: EOF encountered while reading array");
+			_errorExit("Error: EOF encountered while reading array element");
 		}
-		else if (*it == ']')
-		{
-			return arr;
-		}
-		else if (*it == '{')
-		{
-			data = parseObject(text, it);
-		}
-		else if (*it == '\"')
-		{
-			data._type = TYPE_STRING;
-			data._str = parseStringValue(text, it);
-		}
-		else if (*it == '[')
-		{
-			data._type = TYPE_ARRAY;
-			data._arr = parseArray(text, it);
-		}
-		else if (std::isalnum(*it) || *it == '.' || *it == '-' || *it == '+')
-		{
-			data._str = parsePrimitive(text, it, data._type);
-		}
-		else
-		{
-			_errorExit("Error: Invalid array element");
-		}
-
-		// void로 바꿀까?
-		if (checkElementEnd(text, it) == false)
+		else if (checkElementEnd(text, it) == false)
 		{
 			_errorExit("Error: Malformed array format");
 		}
-
-		_skipWhiteSpaces(text, it);
-
-		if (it == text.end())
-		{
-			_errorExit("Error: EOF encountered while reading array");
-		}
-		else if (*it == ',')
+		else
 		{
 			it++;
 		}
 
-		arr.push_back(data);
+		_skipWhiteSpaces(text, it);
+
+		if (*it == ',')
+		{
+			it++;
+		}
+		else
+		{
+			// nothing to do
+		}
+
+		_skipWhiteSpaces(text, it);
 	}
 
-	return arr;
+	jsonData._type = TYPE_ARRAY;
+	jsonData._arr = jsonArray;
+
+	return jsonData;
 }
 
 JsonData	JsonParser::parseObject
@@ -269,8 +305,6 @@ JsonData	JsonParser::parseObject
 		std::string	key;
 		JsonData	value;
 
-		_skipWhiteSpaces(text, it);
-
 		if (it == text.end())
 		{
 			_errorExit("Error: EOF encountered before reading object key");
@@ -278,6 +312,7 @@ JsonData	JsonParser::parseObject
 		else if (*it == '\"')
 		{
 			key = parseStringKey(text, it);
+			it++;
 		}
 		else
 		{
@@ -302,7 +337,6 @@ JsonData	JsonParser::parseObject
 		_skipWhiteSpaces(text, it);
 
 		value = parseValue(text, it);
-
 		jsonObject.push_back(std::make_pair(key, value));
 
 		if (it == text.end())
@@ -311,12 +345,15 @@ JsonData	JsonParser::parseObject
 		}
 		else if (checkKeyValueEnd(text, it) == false)
 		{
-			_errorExit("Error: Malformed object format");
+			// character is not included in end parts of object
+			_errorExit("Error: Object key must starts with double quote");
 		}
 		else 
 		{
-			// proceed (value has valid object end part)
+			it++;
 		}
+
+		_skipWhiteSpaces(text, it);
 
 		if (*it == ',')
 		{
@@ -336,16 +373,32 @@ JsonData	JsonParser::parseObject
 	return jsonData;
 }
 
+JsonData	JsonParser::parseString
+(std::string const& text, std::string::iterator& it)
+{
+	JsonData	jsonData;
+
+	jsonData._type = TYPE_STRING;
+	jsonData._str = parseStringValue(text, it);
+
+	return jsonData;
+}
+
+JsonData	JsonParser::parsePrimitive
+(std::string const& text, std::string::iterator& it)
+{
+	JsonData	jsonData;
+
+	jsonData._str = parsePrimitiveValue(text, it, jsonData._type);
+
+	return jsonData;
+}
+
 bool	JsonParser::checkElementEnd
 (std::string const& text, std::string::iterator& it)
 {
 	std::string::iterator	cur;
 	bool					comma = false;
-
-	if (it == text.end())
-	{
-		_errorExit("Error: EOF encountered before checking array end");
-	}
 
 	cur = it + 1;
 	while (cur != text.end() && (*cur == ',' || std::isspace(*cur)))
@@ -361,6 +414,10 @@ bool	JsonParser::checkElementEnd
 				_errorExit("Error: Duplicate comma");
 			}
 		}
+		else
+		{
+			// skipped
+		}
 		cur++;
 	}
 
@@ -372,7 +429,6 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == true)
 		{
-			it++;
 			return true;
 		}
 		else
@@ -384,7 +440,6 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == true)
 		{
-			it++;
 			return true;
 		}
 		else
@@ -396,7 +451,6 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == true)
 		{
-			it++;
 			return true;
 		}
 		else
@@ -404,11 +458,10 @@ bool	JsonParser::checkElementEnd
 			_errorExit("Error: Missing comma before element");
 		}
 	}
-	else if (std::isalnum(*cur) || *it == '.' || *it == '-' || *it == '+')
+	else if (std::isalnum(*cur) || *cur == '.' || *cur == '-' || *cur == '+')
 	{
 		if (comma == true)
 		{
-			it++;
 			return true;
 		}
 		else
@@ -420,13 +473,16 @@ bool	JsonParser::checkElementEnd
 	{
 		if (comma == false)
 		{
-			it++;
 			return true;
 		}
 		else
 		{
 			_errorExit("Error: Found comma before end of array");
 		}
+	}
+	else
+	{
+		// fallthrough to false
 	}
 
 	return false;
@@ -467,7 +523,6 @@ bool	JsonParser::checkKeyValueEnd
 	{
 		if (comma == true)
 		{
-			it++;
 			return true;
 		}
 		else
@@ -479,7 +534,6 @@ bool	JsonParser::checkKeyValueEnd
 	{
 		if (comma == false)
 		{
-			it++;
 			return true;
 		}
 		else
@@ -489,13 +543,13 @@ bool	JsonParser::checkKeyValueEnd
 	}
 	else
 	{
-		_errorExit("Error: Object key must starts with double quote");
+		// fallthrough to false
 	}
 
-	return false; // unreachable
+	return false;
 }
 
-std::string	JsonParser::parsePrimitive
+std::string	JsonParser::parsePrimitiveValue
 (std::string const& text, std::string::iterator& it, jsonType& type)
 {
 	std::string	value;
@@ -506,17 +560,25 @@ std::string	JsonParser::parsePrimitive
 		value += *it;
 		it++;
 	}
-	it--;
 
-	if (it + 1 == text.end())
+	if (it == text.end())
 	{
 		_errorExit("Error: EOF encountered while reading primitive");
 	}
+	else
+	{
+		it--;
+	}
 
 	type = getPrimitiveType(value);
+
 	if (type == TYPE_ERROR)
 	{
 		_errorExit("Error: Invalid primitive");
+	}
+	else
+	{
+		// primitive has valid type
 	}
 
 	return value;
@@ -528,7 +590,6 @@ std::string	JsonParser::parseStringKey
 	std::string	key;
 
 	key = getStringData(text, it);
-	it++;
 
 	return key;
 }
@@ -539,11 +600,6 @@ std::string	JsonParser::parseStringValue
 	std::string value;
 
 	value = getStringData(text, it);
-
-	if (it == text.end())
-	{
-		_errorExit("Error: EOF encountered while reading value");
-	}
 
 	return value;
 }
@@ -593,14 +649,42 @@ jsonType	JsonParser::getPrimitiveType(std::string const& str)
 
 	static_cast<void>(strtol(str.c_str(), &endptr, 10));
 	if (*endptr == '\0')
+	{
 		return TYPE_INTEGER;
+	}
+	else
+	{
+		// fallthrough
+	}
+
 	static_cast<void>(strtod(str.c_str(), &endptr));
 	if (*endptr == '\0')
+	{
 		return TYPE_FLOAT;
+	}
+	else
+	{
+		// fallthrough
+	}
+
 	if (str == "true" || str == "false")
+	{
 		return TYPE_BOOLEAN;
+	}
+	else
+	{
+		// fallthrough
+	}
+
 	if (str == "null")
+	{
 		return TYPE_NULL;
+	}
+	else
+	{
+		// fallthrough
+	}
+
 	return TYPE_ERROR;
 }
 
