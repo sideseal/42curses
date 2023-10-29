@@ -703,9 +703,13 @@ std::string	JsonParser::getStringData
 						{
 							_errorExit("Error: Malformed string data type");
 						}
-						else
+						else if (isxdigit(*it))
 						{
 							str += *it;
+						}
+						else
+						{
+							_errorExit("Error: Invalid unicode string");
 						}
 					}
 					break;
