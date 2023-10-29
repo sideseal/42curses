@@ -198,7 +198,7 @@ JsonData	JsonParser::parseValue
 	}
 	else
 	{
-		_errorExit("Error: Invalid object value");
+		_errorExit("Error: Invalid value");
 	}
 
 	return value;
