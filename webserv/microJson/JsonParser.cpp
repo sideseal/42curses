@@ -66,15 +66,23 @@ JsonData&	JsonParser::parseJson(std::string const& filepath)
 	}
 	else
 	{
-		_errorExit("Error: Invalid Json format");
+		_errorExit("Error: Invalid JSON format");
 	}
 
-	start++;
+	if (start == text.end())
+	{
+		_errorExit("Error: JSON is not properly terminated by format");
+	}
+	else
+	{
+		start++;
+	}
+
 	_skipWhiteSpaces(text, start);
 
 	if (start != text.end())
 	{
-		_errorExit("Error: Failed to parse JSON file");
+		_errorExit("Error: Invalid JSON format");
 	}
 	else
 	{
@@ -244,9 +252,15 @@ JsonData	JsonParser::parseArray
 	{
 		JsonData	element;
 
-		element = parseValue(text, it);
-
-		jsonArray.push_back(element);
+		if (it == text.end())
+		{
+			_errorExit("Error: EOF encountered while reading array element");
+		}
+		else
+		{
+			element = parseValue(text, it);
+			jsonArray.push_back(element);
+		}
 
 		if (it == text.end())
 		{
@@ -266,13 +280,12 @@ JsonData	JsonParser::parseArray
 		if (*it == ',')
 		{
 			it++;
+			_skipWhiteSpaces(text, it);
 		}
 		else
 		{
 			// nothing to do
 		}
-
-		_skipWhiteSpaces(text, it);
 	}
 
 	jsonData._str = "Array";
@@ -354,9 +367,15 @@ JsonData	JsonParser::parseObject
 
 		_skipWhiteSpaces(text, it);
 
-		value = parseValue(text, it);
-
-		jsonObject.push_back(std::make_pair(key, value));
+		if (it == text.end())
+		{
+			_errorExit("Error: EOF encountered while reading object value");
+		}
+		else
+		{
+			value = parseValue(text, it);
+			jsonObject.push_back(std::make_pair(key, value));
+		}
 
 		if (it == text.end())
 		{
@@ -377,13 +396,12 @@ JsonData	JsonParser::parseObject
 		if (*it == ',')
 		{
 			it++;
+			_skipWhiteSpaces(text, it);
 		}
 		else
 		{
 			// nothing to do
 		}
-
-		_skipWhiteSpaces(text, it);
 	}
 
 	jsonData._str = "Object";
@@ -632,6 +650,15 @@ std::string	JsonParser::getStringData
 	char		ch;
 
 	it++;
+	if (it == text.end())
+	{
+		_errorExit("Error: EOF encountered while reading string value");
+	}
+	else
+	{
+		// proceed
+	}
+
 	while (it != text.end())
 	{
 		ch = *it;
