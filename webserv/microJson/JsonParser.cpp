@@ -603,6 +603,10 @@ std::string	JsonParser::parsePrimitiveValue
 	{
 		_errorExit("Error: EOF encountered while reading primitive");
 	}
+	else if (!(std::isspace(*it) || *it == ',' || *it == ']' || *it == '}'))
+	{
+		_errorExit("Error: Invalid primitive");
+	}
 	else
 	{
 		it--;
