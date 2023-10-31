@@ -146,4 +146,3 @@ echo "Hello, gychoi! ^_^\n"
 export MAIL="gychoi@student.42seoul.kr"
 
 source /Users/gychoi/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#alias pkgsrc="/Users/gychoi/misc/42_pkgsrc/pkgsrc_init.sh"
