@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/10/31 16:50:58 by gychoi           ###   ########.fr        #
+#    Updated: 2023/11/09 22:25:22 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
 ifdef DEBUG
-	CXXFLAGS += -fsanitize=address -g3
+	CXXFLAGS += -O1 -g -fsanitize=address,undefined, -fno-omit-frame-pointer
 endif
 
 %.o: %.cpp
@@ -37,8 +37,10 @@ $(NAME): $(OBJS)
 
 all: $(NAME)
 
+.NOTPARALLEL: debug
 debug: fclean
-	$(MAKE) all DEBUG=1
+	$(MAKE) DEBUG=1
+	export MallocNanoZone=0 && ./a.out
 
 clean:
 	$(RM) $(OBJS) $(DEPS)
