@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/11/09 22:25:22 by gychoi           ###   ########.fr        #
+#    Updated: 2023/11/10 22:22:55 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ CXXFLAGS += -I.
 CXXFLAGS += -Wall -Wextra -Werror -Wpedantic
 RM = rm -rf
 
-SRCS = main.cpp
+SRCS = main.cpp \
+	   Bureaucrat.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
