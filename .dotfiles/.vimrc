@@ -17,7 +17,7 @@ autocmd VimEnter * so /usr/share/vim/vimrc
 syntax on
 set termguicolors
 "darkblue, murphy, slate,
-colorscheme murphy
+colorscheme blue
 set number
 set nuw=5
 set relativenumber
@@ -37,7 +37,7 @@ set statusline +=%=%5l		"current line
 set statusline +=/%L		"total lines
 set statusline +=%4v\ 		"virtual column number
 set statusline +=0x%04B\ 	"character under cursorset showcmd
-hi Statusline ctermbg=lightgreen ctermfg=black
+" hi Statusline ctermbg=lightgreen ctermfg=black
 " --------------------------------------------
 set wildmenu
 set wildmode=longest,list
@@ -81,7 +81,7 @@ set nofoldenable
 "set incsearch
 "set showmatch
 
-hi MatchParen ctermbg=lightgreen ctermfg=black
+" hi MatchParen ctermbg=lightgreen ctermfg=black
 
 "set ignorecase
 "set smartcase
@@ -253,6 +253,47 @@ autocmd BufWritePre ~/.vimrc :1,10s/^\" Last Modified: \zs.*$/\=strftime('%Y-%m-
 "     endfor
 "   endif
 " endif
+
+function! CreateCenteredComment(comment)
+	" Check if the comment fits within an 80-character comment.
+	if len(a:comment) >= 74
+		echoerr "Error: Comment is too long"
+		return
+	endif
+
+	" Save the current line number of the cursor.
+	let current_line = line('.')
+
+	" Calculate the number of spaces on each side.
+	let spaces_on_each_side = (74 - len(a:comment)) / 2
+
+	" If length of comment is even, distribute them equally.
+	" If it's odd, add one more space to the right side.
+	let left_spaces = spaces_on_each_side
+	let right_spaces = spaces_on_each_side + (len(a:comment) % 2)
+
+	" The input comment to be inserted into the comment block.
+	let inner_comment = '/* ' . repeat(' ', left_spaces) . a:comment .
+						\ repeat(' ', right_spaces) . ' */'
+
+	" The beginning part of the comment block.
+	let start_comment = '/* ' . repeat('*', 74) . ' */'
+
+	" The ending part of the comment block.
+	let end_comment = '/* ' . repeat('*', 74) . ' */'
+
+	" Make the completed comment block at the current cursor position.
+	call append(current_line, [start_comment, inner_comment, end_comment])
+
+	" Move the cursor down below the comment block and add an empty line.
+	call append(current_line + 4, [''])
+
+	" Move the cursor down.
+	call cursor(current_line + 4, 1)
+endfunction
+
+" Set up a mapping to call the function.
+nnoremap CC :call CreateCenteredComment(input('Enter comment: '))<CR>
 
 " 0. Tips to remember
 " 10^w< 	-> decrease buffer size (vertically)
