@@ -6,30 +6,40 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/10 22:42:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/12 19:40:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
-static void	_constCopyWarning(std::string const& object);
+static void	_copyConstWarning(std::string const& object);
 
 /* ************************************************************************** */
 /*                          Constructor & Destructor                          */
 /* ************************************************************************** */
-
-Bureaucrat::Bureaucrat(void)
+Bureaucrat::Bureaucrat()
 	: mName(std::string())
 	, mGrade(0)
 {
 	// nothing to do
 }
 
-Bureaucrat::Bureaucrat(std::string name, short grade)
+Bureaucrat::Bureaucrat(std::string name, int grade)
+	throw(GradeTooHighException, GradeTooLowException)
 	: mName(name)
 {
-	// if grade is in range
-	this->mGrade = grade;
+	if (grade < 1)
+	{
+		throw GradeTooHighException();
+	}
+	else if (grade > 150)
+	{
+		throw GradeTooLowException();
+	}
+	else
+	{
+		this->mGrade = grade;
+	}
 }
 
 Bureaucrat::Bureaucrat(Bureaucrat const& target)
@@ -43,40 +53,178 @@ Bureaucrat&	Bureaucrat::operator=(Bureaucrat const& target)
 {
 	if (this != &target)
 	{
-		_constCopyWarning(this->getName());
+		_copyConstWarning(this->getName());
 		this->mGrade = target.getGrade();
 	}
 	return *this;
 }
 
-Bureaucrat::~Bureaucrat(void)
+Bureaucrat::~Bureaucrat()
 {
 	// nothing to do
 }
 
 /* ************************************************************************** */
-/*                              Getter & Setter                               */
+/*                         Getter & Setter Functions                          */
 /* ************************************************************************** */
+std::string const&	Bureaucrat::getName() const
 
-std::string const&	Bureaucrat::getName(void) const
 {
 	return this->mName;
 }
 
-short	Bureaucrat::getGrade(void) const
+int	Bureaucrat::getGrade() const
 {
 	return this->mGrade;
 }
 
-void	Bureaucrat::setGrade(short& grade)
+void	Bureaucrat::setGrade(int grade)
+throw(GradeTooHighException, GradeTooLowException)
 {
-	this->mGrade = grade;
+	if (grade < 1)
+	{
+		throw GradeTooLowException();
+	}
+	else if (grade > 150)
+	{
+		throw GradeTooHighException();
+	}
+	else
+	{
+		this->mGrade = grade;
+	}
+}
+
+/* ************************************************************************** */
+/*                           Public Member Function                           */
+/* ************************************************************************** */
+void	Bureaucrat::increaseGrade() throw(GradeTooHighException)
+{
+	int	grade = this->getGrade();
+
+	if (grade > 1)
+	{
+		this->setGrade(--grade);
+	}
+	else
+	{
+		throw GradeTooHighException();
+	}
+}
+
+void	Bureaucrat::decreaseGrade() throw(GradeTooLowException)
+{
+	int	grade = this->getGrade();
+
+	if (grade < 150)
+	{
+		this->setGrade(++grade);
+	}
+	else
+	{
+		throw GradeTooLowException();
+	}
+}
+
+/* ************************************************************************** */
+/*              GradeTooHighException : Constructor & Destructor              */
+/* ************************************************************************** */
+Bureaucrat::GradeTooHighException::GradeTooHighException()
+	: mMessage("ERROR: Grade Too High!")
+{
+	// nothing to do
+}
+
+Bureaucrat::GradeTooHighException::GradeTooHighException
+(GradeTooHighException const& target)
+	: mMessage(target.getMessage())
+{
+	// nothing to do
+}
+
+Bureaucrat::GradeTooHighException&
+Bureaucrat::GradeTooHighException::operator=
+(GradeTooHighException const& target)
+{
+	if (this != &target)
+	{
+		this->mMessage = target.getMessage();
+	}
+	return *this;
+}
+
+Bureaucrat::GradeTooHighException::~GradeTooHighException() throw()
+{
+	// nothing to do
+}
+
+/* ************************************************************************** */
+/*                  GradeTooHighException : Getter Function                   */
+/* ************************************************************************** */
+std::string const&	Bureaucrat::GradeTooHighException::getMessage() const
+{
+	return this->mMessage;
+}
+
+/* ************************************************************************** */
+/*                 GradeTooHighException : Function Override                  */
+/* ************************************************************************** */
+const char*	Bureaucrat::GradeTooHighException::what() const throw()
+{
+	return this->getMessage().c_str();
+}
+
+/* ************************************************************************** */
+/*              GradeTooLowException : Constructor & Destructor               */
+/* ************************************************************************** */
+Bureaucrat::GradeTooLowException::GradeTooLowException()
+	: mMessage("ERROR: Grade Too Low!")
+{
+	// nothing to do
+}
+
+Bureaucrat::GradeTooLowException::GradeTooLowException
+(GradeTooLowException const& target)
+	: mMessage(target.getMessage())
+{
+	// nothing to do
+}
+
+Bureaucrat::GradeTooLowException&
+Bureaucrat::GradeTooLowException::operator=
+(GradeTooLowException const& target)
+{
+	if (this != &target)
+	{
+		this->mMessage = target.getMessage();
+	}
+	return *this;
+}
+
+Bureaucrat::GradeTooLowException::~GradeTooLowException() throw()
+{
+	// nothing to do
+}
+
+/* ************************************************************************** */
+/*                   GradeTooLowException : Getter Function                   */
+/* ************************************************************************** */
+std::string const&	Bureaucrat::GradeTooLowException::getMessage() const
+{
+	return this->mMessage;
+}
+
+/* ************************************************************************** */
+/*                  GradeTooLowException : Function Override                  */
+/* ************************************************************************** */
+const char*	Bureaucrat::GradeTooLowException::what() const throw()
+{
+	return this->getMessage().c_str();
 }
 
 /* ************************************************************************** */
 /*                              Global Function                               */
 /* ************************************************************************** */
-
 std::ostream&	operator<<(std::ostream& os, Bureaucrat const& target)
 {
 	os << target.getName() << ", bureaucrat grade " << target.getGrade() << ".";
@@ -86,8 +234,7 @@ std::ostream&	operator<<(std::ostream& os, Bureaucrat const& target)
 /* ************************************************************************** */
 /*                              Helper Functions                              */
 /* ************************************************************************** */
-
-static void	_constCopyWarning(std::string const& object)
+static void	_copyConstWarning(std::string const& object)
 {
 	std::cout << "INFO: You are trying to overwrite a const type variable: " <<
 		object << ". " << "This operation will be ignored." << std::endl;

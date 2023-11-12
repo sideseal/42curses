@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 23:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/10 22:56:38 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/12 19:41:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,81 @@
 #define __BUREAUCRAT_HPP__
 
 #include <iostream>
+#include <limits>
+#include <stdexcept>
 #include <string>
 
+/* ************************************************************************** */
+/*                                 Bureaucrat                                 */
+/* ************************************************************************** */
 class Bureaucrat
 {
 public:
-	Bureaucrat(void);
-	Bureaucrat(std::string name, short grade);
+	Bureaucrat();
+	Bureaucrat(std::string name, int grade) throw
+		(GradeTooHighException, GradeTooLowException);
 	Bureaucrat(Bureaucrat const& target);
 	Bureaucrat&			operator=(Bureaucrat const& target);
-	~Bureaucrat(void);
+	~Bureaucrat();
+
+	// 음수 grade는 Invalid로 처리?
+public:
+	std::string const&	getName() const;
+	int					getGrade() const;
+	void				setGrade(int grade) throw
+							(GradeTooHighException, GradeTooLowException);
 
 public:
-	std::string const&	getName(void) const;
-	short				getGrade(void) const;
-	void				setGrade(short& grade);
-
-public:
-	// decrement
-	// increment
-	// exception
+	void				increaseGrade() throw(GradeTooHighException);
+	void				decreaseGrade() throw(GradeTooLowException);
 
 private:
 	std::string const	mName;
-	short				mGrade;
+	int					mGrade;
+
+/* ************************************************************************** */
+/*                     Bureaucrat::GradeTooHighException                      */
+/* ************************************************************************** */
+public:
+	class GradeTooHighException : public std::exception
+	{
+	public:
+		GradeTooHighException();
+		GradeTooHighException(GradeTooHighException const& target);
+		GradeTooHighException&	operator=(GradeTooHighException const& target);
+		virtual ~GradeTooHighException() throw();
+
+	public:
+		std::string const&		getMessage() const;
+
+	public:
+		virtual char const*		what() const throw();
+
+	private:
+		std::string				mMessage;
+	};
+
+/* ************************************************************************** */
+/*                      Bureaucrat::GradeTooLowException                      */
+/* ************************************************************************** */
+public:
+	class GradeTooLowException : public std::exception
+	{
+	public:
+		GradeTooLowException();
+		GradeTooLowException(GradeTooLowException const& target);
+		GradeTooLowException&	operator=(GradeTooLowException const& target);
+		virtual ~GradeTooLowException() throw();
+
+	public:
+		std::string const&		getMessage() const;
+
+	public:
+		virtual char const*		what() const throw();
+
+	private:
+		std::string				mMessage;
+	};
 };
 
 std::ostream&			operator<<(std::ostream& os, Bureaucrat const& target);
