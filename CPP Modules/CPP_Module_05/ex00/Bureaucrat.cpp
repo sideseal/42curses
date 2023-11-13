@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/12 19:40:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:35:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ Bureaucrat::~Bureaucrat()
 /*                         Getter & Setter Functions                          */
 /* ************************************************************************** */
 std::string const&	Bureaucrat::getName() const
-
 {
 	return this->mName;
 }
@@ -234,8 +233,8 @@ std::ostream&	operator<<(std::ostream& os, Bureaucrat const& target)
 /* ************************************************************************** */
 /*                              Helper Functions                              */
 /* ************************************************************************** */
-static void	_copyConstWarning(std::string const& object)
+static void	_copyConstWarning(std::string const& variable)
 {
 	std::cout << "INFO: You are trying to overwrite a const type variable: " <<
-		object << ". " << "This operation will be ignored." << std::endl;
+		variable << ". " << "This operation will be ignored." << std::endl;
 }

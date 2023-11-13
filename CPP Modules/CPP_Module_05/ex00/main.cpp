@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/12 19:30:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/13 23:10:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,15 @@ int	main()
 		std::cout << "Decrease Grade" << std::endl;
 		bureaucrat.decreaseGrade();
 		std::cout << bureaucrat << std::endl;
+
+		std::cout << "------------------" << std::endl;
+		std::cout << "Hello, James!" << std::endl;
+
+		Bureaucrat	James("James", 9);
+		std::cout << James << std::endl;
+
+		James = bureaucrat;
+		std::cout << "James... you sneaky one!" << std::endl;
 	}
 	catch (std::exception & e)
 	{

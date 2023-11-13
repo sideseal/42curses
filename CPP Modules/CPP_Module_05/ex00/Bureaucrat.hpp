@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 23:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/12 19:41:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:35:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #define __BUREAUCRAT_HPP__
 
 #include <iostream>
-#include <limits>
 #include <stdexcept>
 #include <string>
 
@@ -32,7 +31,6 @@ public:
 	Bureaucrat&			operator=(Bureaucrat const& target);
 	~Bureaucrat();
 
-	// 음수 grade는 Invalid로 처리?
 public:
 	std::string const&	getName() const;
 	int					getGrade() const;
