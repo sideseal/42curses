@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 18:11:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 21:22:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ Bureaucrat&	Bureaucrat::operator=(Bureaucrat const& target)
 {
 	if (this != &target)
 	{
-		_copyConstWarning(this->getName());
+		_copyConstWarning("mName");
 		this->mGrade = target.getGrade();
 	}
 	return *this;
@@ -82,11 +82,11 @@ throw(GradeTooHighException, GradeTooLowException)
 {
 	if (grade < 1)
 	{
-		throw GradeTooLowException("Grade too low!");
+		throw GradeTooHighException("Grade too high");
 	}
 	else if (grade > 150)
 	{
-		throw GradeTooHighException("Grade too high");
+		throw GradeTooLowException("Grade too low!");
 	}
 	else
 	{

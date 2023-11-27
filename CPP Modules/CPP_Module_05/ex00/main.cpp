@@ -6,12 +6,12 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 18:12:14 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 22:44:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucrat.hpp"
 #include <sstream>
+#include "Bureaucrat.hpp"
 
 int	main()
 {
@@ -68,16 +68,20 @@ int	main()
 		Bureaucrat	bureaucrat(name, grade);
 		std::cout << bureaucrat << std::endl;
 
-		std::cout << "Increase Grade" << std::endl;
+		std::cout << "[Increase Grade]" << std::endl;
 		bureaucrat.increaseGrade();
 		std::cout << bureaucrat << std::endl;
 
-		std::cout << "Decrease Grade" << std::endl;
+		std::cout << "[Decrease Grade]" << std::endl;
 		bureaucrat.decreaseGrade();
 		std::cout << bureaucrat << std::endl;
 
-		std::cout << "Decrease Grade Again" << std::endl;
+		std::cout << "[Decrease Grade Again]" << std::endl;
 		bureaucrat.decreaseGrade();
+		std::cout << bureaucrat << std::endl;
+
+		std::cout << "[Increase Grade Again]" << std::endl;
+		bureaucrat.increaseGrade();
 		std::cout << bureaucrat << std::endl;
 
 		std::cout << "------------------" << std::endl;
@@ -88,7 +92,7 @@ int	main()
 
 		James = bureaucrat;
 		std::cout << James << std::endl;
-		std::cout << "James... don't do that!" << std::endl;
+		std::cout << "James! don't do that!" << std::endl;
 	}
 	catch (std::exception & e)
 	{
