@@ -286,7 +286,7 @@ function! CreateCenteredComment(comment)
 	call append(current_line, [start_comment, inner_comment, end_comment])
 
 	" Move the cursor down below the comment block and add an empty line.
-	call append(current_line + 4, [''])
+	call append(current_line + 3, [''])
 
 	" Move the cursor down.
 	call cursor(current_line + 4, 1)
