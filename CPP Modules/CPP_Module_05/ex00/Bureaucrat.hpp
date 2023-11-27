@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 23:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/13 17:35:13 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 18:04:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ class Bureaucrat
 {
 public:
 	Bureaucrat();
-	Bureaucrat(std::string name, int grade) throw
-		(GradeTooHighException, GradeTooLowException);
+	Bureaucrat(std::string name, int grade)
+		throw(GradeTooHighException, GradeTooLowException);
 	Bureaucrat(Bureaucrat const& target);
 	Bureaucrat&			operator=(Bureaucrat const& target);
 	~Bureaucrat();
@@ -34,8 +34,8 @@ public:
 public:
 	std::string const&	getName() const;
 	int					getGrade() const;
-	void				setGrade(int grade) throw
-							(GradeTooHighException, GradeTooLowException);
+	void				setGrade(int grade)
+							throw(GradeTooHighException, GradeTooLowException);
 
 public:
 	void				increaseGrade() throw(GradeTooHighException);
@@ -53,6 +53,7 @@ public:
 	{
 	public:
 		GradeTooHighException();
+		GradeTooHighException(std::string const& msg);
 		GradeTooHighException(GradeTooHighException const& target);
 		GradeTooHighException&	operator=(GradeTooHighException const& target);
 		virtual ~GradeTooHighException() throw();
@@ -75,6 +76,7 @@ public:
 	{
 	public:
 		GradeTooLowException();
+		GradeTooLowException(std::string const& msg);
 		GradeTooLowException(GradeTooLowException const& target);
 		GradeTooLowException&	operator=(GradeTooLowException const& target);
 		virtual ~GradeTooLowException() throw();

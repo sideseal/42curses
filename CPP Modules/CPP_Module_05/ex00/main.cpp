@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 16:03:45 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 18:12:14 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,19 @@ int	main()
 		std::cout << "Enter the bureaucrat grade (1 to 150): ";
 		std::getline(std::cin, gradeInput);
 
+		bool	isAllDigits = true;
+
+		for (size_t i = 0; i < gradeInput.length(); ++i)
+		{
+			if (!std::isdigit(gradeInput[i])) {
+				isAllDigits = false;
+				break;
+			}
+		}
+
 		std::istringstream	iss(gradeInput);
-		if (!(iss >> grade))
+
+		if (!isAllDigits || gradeInput.empty() || (!(iss >> grade)))
 		{
 			std::cout << "Invalid input. Please enter a valid integer.\n";
 		}
@@ -65,6 +76,10 @@ int	main()
 		bureaucrat.decreaseGrade();
 		std::cout << bureaucrat << std::endl;
 
+		std::cout << "Decrease Grade Again" << std::endl;
+		bureaucrat.decreaseGrade();
+		std::cout << bureaucrat << std::endl;
+
 		std::cout << "------------------" << std::endl;
 		std::cout << "Hello, James!" << std::endl;
 
@@ -73,7 +88,7 @@ int	main()
 
 		James = bureaucrat;
 		std::cout << James << std::endl;
-		std::cout << "James... you bad bastard!" << std::endl;
+		std::cout << "James... don't do that!" << std::endl;
 	}
 	catch (std::exception & e)
 	{

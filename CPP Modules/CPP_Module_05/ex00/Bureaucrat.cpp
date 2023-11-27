@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 16:37:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 18:11:01 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ throw(GradeTooHighException, GradeTooLowException)
 {
 	if (grade < 1)
 	{
-		throw GradeTooLowException();
+		throw GradeTooLowException("Grade too low!");
 	}
 	else if (grade > 150)
 	{
-		throw GradeTooHighException();
+		throw GradeTooHighException("Grade too high");
 	}
 	else
 	{
@@ -107,7 +107,7 @@ void	Bureaucrat::increaseGrade() throw(GradeTooHighException)
 	}
 	else
 	{
-		throw GradeTooHighException();
+		throw GradeTooHighException("Grade too high!");
 	}
 }
 
@@ -121,7 +121,7 @@ void	Bureaucrat::decreaseGrade() throw(GradeTooLowException)
 	}
 	else
 	{
-		throw GradeTooLowException();
+		throw GradeTooLowException("Grade too low!");
 	}
 }
 
@@ -129,7 +129,13 @@ void	Bureaucrat::decreaseGrade() throw(GradeTooLowException)
 /*              GradeTooHighException : Constructor & Destructor              */
 /* ************************************************************************** */
 Bureaucrat::GradeTooHighException::GradeTooHighException()
-	: mMessage("ERROR: Grade Too High!")
+	: mMessage("Bureaucrat::GradeTooHighException")
+{
+	// nothing to do
+}
+
+Bureaucrat::GradeTooHighException::GradeTooHighException(std::string const& msg)
+	: mMessage("Bureaucrat::GradeTooHighException: " + msg)
 {
 	// nothing to do
 }
@@ -177,7 +183,13 @@ const char*	Bureaucrat::GradeTooHighException::what() const throw()
 /*              GradeTooLowException : Constructor & Destructor               */
 /* ************************************************************************** */
 Bureaucrat::GradeTooLowException::GradeTooLowException()
-	: mMessage("ERROR: Grade Too Low!")
+	: mMessage("Bureaucrat::GradeTooLowException")
+{
+	// nothing to do
+}
+
+Bureaucrat::GradeTooLowException::GradeTooLowException(std::string const& msg)
+	: mMessage("Bureaucrat::GradeTooLowException: " + msg)
 {
 	// nothing to do
 }
