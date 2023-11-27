@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/13 17:35:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 16:37:09 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ Bureaucrat::Bureaucrat(std::string name, int grade)
 }
 
 Bureaucrat::Bureaucrat(Bureaucrat const& target)
-	: mName(target.getName())
-	, mGrade(target.getGrade())
+	: mName(target.getName()),
+	  mGrade(target.getGrade())
 {
 	// nothing to do
 }
