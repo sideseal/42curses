@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/13 23:10:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/27 16:03:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	main()
 		std::cout << James << std::endl;
 
 		James = bureaucrat;
-		std::cout << "James... you sneaky one!" << std::endl;
+		std::cout << James << std::endl;
+		std::cout << "James... you bad bastard!" << std::endl;
 	}
 	catch (std::exception & e)
 	{

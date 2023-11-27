@@ -6,15 +6,15 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/11/10 22:22:55 by gychoi           ###   ########.fr        #
+#    Updated: 2023/11/27 15:56:56 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = a.out
 CXX = c++
 CXXFLAGS = -std=c++98 -MD
-CXXFLAGS += -I.
 CXXFLAGS += -Wall -Wextra -Werror -Wpedantic
+CXXFLAGS += -I.
 RM = rm -rf
 
 SRCS = main.cpp \
