@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 16:23:50 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 22:44:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/28 16:46:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Form
 {
 public:
 	Form();
-	Form(std::string name, int signGrade, int executeGrade)
+	Form(std::string const& name, int signGrade, int executeGrade)
 		throw(GradeTooHighException, GradeTooLowException);
 	Form(Form const& target);
 	Form&				operator=(Form const& target);

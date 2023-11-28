@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 22:44:11 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/28 17:05:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ int	main()
 		Form	form(formName, formSignGrade, formExecuteGrade);
 		std::cout << form << std::endl;
 
+		bureaucrat.signForm(form);
+		std::cout << form << std::endl;
 	}
 	catch (std::exception & e)
 	{
