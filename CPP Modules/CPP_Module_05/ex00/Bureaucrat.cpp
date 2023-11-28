@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 16:12:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/28 16:19:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ Bureaucrat::Bureaucrat()
 	// nothing to do
 }
 
-Bureaucrat::Bureaucrat(std::string name, int grade)
+Bureaucrat::Bureaucrat(std::string const& name, int grade)
 	throw(GradeTooHighException, GradeTooLowException)
 	: mName(name),
 	  mGrade(grade)

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 23:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 18:04:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/28 16:19:53 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Bureaucrat
 {
 public:
 	Bureaucrat();
-	Bureaucrat(std::string name, int grade)
+	Bureaucrat(std::string const& name, int grade)
 		throw(GradeTooHighException, GradeTooLowException);
 	Bureaucrat(Bureaucrat const& target);
 	Bureaucrat&			operator=(Bureaucrat const& target);
