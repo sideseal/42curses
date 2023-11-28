@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/27 21:22:53 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/28 16:12:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ Bureaucrat::Bureaucrat()
 
 Bureaucrat::Bureaucrat(std::string name, int grade)
 	throw(GradeTooHighException, GradeTooLowException)
-	: mName(name)
+	: mName(name),
+	  mGrade(grade)
 {
 	if (grade < 1)
 	{
@@ -38,7 +39,7 @@ Bureaucrat::Bureaucrat(std::string name, int grade)
 	}
 	else
 	{
-		this->mGrade = grade;
+		// nothing to do
 	}
 }
 
