@@ -6,12 +6,12 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:36:55 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 22:15:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/29 22:28:22 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 
 static void	_copyConstWarning(std::string const& object);
 
@@ -26,7 +26,8 @@ Bureaucrat::Bureaucrat()
 }
 
 Bureaucrat::Bureaucrat(std::string const& name, int grade)
-	throw(GradeTooHighException, GradeTooLowException)
+	throw(Bureaucrat::GradeTooHighException,
+		  Bureaucrat::GradeTooLowException)
 	: mName(name),
 	  mGrade(grade)
 {
@@ -143,6 +144,29 @@ void	Bureaucrat::signForm(AForm& form)
 		std::cout
 		<< this->getName()
 		<< " couldn't sign "
+		<< form.getName()
+		<< " because "
+		<< e.what()
+		<< std::endl;
+	}
+}
+
+void	Bureaucrat::executeForm(AForm const& form)
+{
+	try
+	{
+		form.execute(*this);
+		std::cout
+		<< this->getName()
+		<< " executed "
+		<< form.getName()
+		<< std::endl;
+	}
+	catch (std::exception & e)
+	{
+		std::cout
+		<< this->getName()
+		<< " couldn't execute "
 		<< form.getName()
 		<< " because "
 		<< e.what()

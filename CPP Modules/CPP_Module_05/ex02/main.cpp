@@ -6,13 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 22:13:45 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/29 22:37:05 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sstream>
 #include "Bureaucrat.hpp"
-#include "AForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 
 void	setBureaucratInfo(std::string& bureaucratName, int& bureaucratGrade)
 {
@@ -64,15 +64,13 @@ void	setBureaucratInfo(std::string& bureaucratName, int& bureaucratGrade)
 	}
 }
 
-void	setFormInfo(std::string& formName, int& signGrade, int& executeGrade)
+void	setFormInfo(std::string& formName, std::string const& formType)
 {
 	std::string	formNameInput;
-	std::string	formSignGradeInput;
-	std::string formExecuteGradeInput;
 
 	while (true)
 	{
-		std::cout << "Enter the form name: ";
+		std::cout << "Enter the " << formType << " name: ";
 		std::getline(std::cin, formNameInput);
 
 		if (formNameInput.empty())
@@ -85,62 +83,6 @@ void	setFormInfo(std::string& formName, int& signGrade, int& executeGrade)
 			break;
 		}
 	}
-
-	while (true)
-	{
-		std::cout << "Enter the form sign grade (1 to 150): ";
-		std::getline(std::cin, formSignGradeInput);
-
-		bool	isAllDigits = true;
-
-		for (size_t i = 0; i < formSignGradeInput.length(); ++i)
-		{
-			if (!std::isdigit(formSignGradeInput[i])) {
-				isAllDigits = false;
-				break;
-			}
-		}
-
-		std::istringstream	iss(formSignGradeInput);
-
-		if (!isAllDigits || formSignGradeInput.empty() 
-			|| (!(iss >> signGrade)))
-		{
-			std::cout << "Invalid input. Please enter a valid integer.\n";
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	while (true)
-	{
-		std::cout << "Enter the form execution grade (1 to 150): ";
-		std::getline(std::cin, formExecuteGradeInput);
-
-		bool	isAllDigits = true;
-
-		for (size_t i = 0; i < formExecuteGradeInput.length(); ++i)
-		{
-			if (!std::isdigit(formExecuteGradeInput[i])) {
-				isAllDigits = false;
-				break;
-			}
-		}
-
-		std::istringstream	iss(formExecuteGradeInput);
-
-		if (!isAllDigits || formExecuteGradeInput.empty() 
-			|| (!(iss >> executeGrade)))
-		{
-			std::cout << "Invalid input. Please enter a valid integer.\n";
-		}
-		else
-		{
-			break;
-		}
-	}
 }
 
 int	main()
@@ -148,22 +90,22 @@ int	main()
 	std::string	bureaucratName;
 	int			bureaucratGrade;
 	std::string	formName;
-	int			formSignGrade;
-	int			formExecuteGrade;
 
 	setBureaucratInfo(bureaucratName, bureaucratGrade);
-	setFormInfo(formName, formSignGrade, formExecuteGrade);
+	setFormInfo(formName, "shrubberyCreationForm");
 
 	try
 	{
 		Bureaucrat	bureaucrat(bureaucratName, bureaucratGrade);
 		std::cout << bureaucrat << std::endl;
 
-		AForm	form(formName, formSignGrade, formExecuteGrade);
-		std::cout << form << std::endl;
+		ShrubberyCreationForm	sForm(formName);
+		std::cout << sForm << std::endl;
 
-		bureaucrat.signForm(form);
-		std::cout << form << std::endl;
+//		bureaucrat.signForm(sForm);
+//		std::cout << sForm << std::endl;
+
+		bureaucrat.executeForm(sForm);
 	}
 	catch (std::exception & e)
 	{

@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/11/28 22:06:48 by gychoi           ###   ########.fr        #
+#    Updated: 2023/11/29 21:41:53 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ RM = rm -rf
 
 SRCS = main.cpp \
 	   AForm.cpp \
-	   Bureaucrat.cpp
+	   Bureaucrat.cpp \
+	   ShrubberyCreationForm.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 

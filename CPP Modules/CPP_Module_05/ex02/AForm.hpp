@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:46:48 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 22:31:51 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/29 22:39:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ public:
 public:
 	virtual void		beSigned(Bureaucrat const& bureaucrat)
 							throw(GradeTooLowException) = 0;
+	virtual void		execute(Bureaucrat const& executor) const
+							throw(std::runtime_error, GradeTooHighException,
+								  GradeTooLowException) = 0;
 
 private:
 	std::string const	mName;

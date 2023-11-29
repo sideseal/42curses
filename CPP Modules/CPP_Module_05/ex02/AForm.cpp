@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:46:36 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 21:48:30 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/29 21:26:10 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,13 +150,13 @@ std::string const&	AForm::GradeTooHighException::getMessage() const
 /* ************************************************************************** */
 /*                 GradeTooHighException : Function Override                  */
 /* ************************************************************************** */
-const char* AForm::GradeTooHighException::what() const throw()
+const char*	AForm::GradeTooHighException::what() const throw()
 {
 	return this->getMessage().c_str();
 }
 
 /* ************************************************************************** */
-/*             GradeTooLowException : Construccctor & Destructor              */
+/*              GradeTooLowException : Constructor & Destructor               */
 /* ************************************************************************** */
 AForm::GradeTooLowException::GradeTooLowException()
 	: mMessage("AForm::GradeTooLowException")

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 23:13:08 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 22:14:49 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/29 22:27:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ public:
 	void				increaseGrade() throw(GradeTooHighException);
 	void				decreaseGrade() throw(GradeTooLowException);
 	void				signForm(AForm& form);
+	void				executeForm(AForm const& form);
 
 
 private:

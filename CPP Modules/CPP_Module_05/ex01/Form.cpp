@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 16:24:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/11/28 17:06:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/11/29 21:27:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ const char* Form::GradeTooHighException::what() const throw()
 }
 
 /* ************************************************************************** */
-/*             GradeTooLowException : Construccctor & Destructor              */
+/*              GradeTooLowException : Constructor & Destructor               */
 /* ************************************************************************** */
 Form::GradeTooLowException::GradeTooLowException()
 	: mMessage("Form::GradeTooLowException")
