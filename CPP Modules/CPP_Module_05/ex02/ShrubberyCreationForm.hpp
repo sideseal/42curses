@@ -85,6 +85,8 @@ public:
 	};
 };
 
+// making another execption class?
+
 std::ostream&			operator<<(std::ostream& os,
 								   ShrubberyCreationForm const& target);
 
