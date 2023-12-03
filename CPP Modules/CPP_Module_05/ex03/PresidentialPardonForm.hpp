@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ShrubberyCreationForm.hpp                          :+:      :+:    :+:   */
+/*   PresidentialPardonForm.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 22:10:06 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 22:17:49 by gychoi           ###   ########.fr       */
+/*   Created: 2023/12/03 23:31:16 by gychoi            #+#    #+#             */
+/*   Updated: 2023/12/04 00:00:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __SHRUBBERYCREATIONFORM_HPP__
-#define __SHRUBBERYCREATIONFORM_HPP__
-
-#include <fstream>
+#ifndef __PRESIDENTIALPARDONFORM_HPP__
+#define __PRESIDENTIALPARDONFORM_HPP__
 
 #include "AForm.hpp"
 
 /* ************************************************************************** */
-/*                           ShrubberyCreationForm                            */
+/*                           PresidentialPardonForm                           */
 /* ************************************************************************** */
-class ShrubberyCreationForm : public AForm
+class PresidentialPardonForm : public AForm
 {
 public:
-	ShrubberyCreationForm();
-	ShrubberyCreationForm(std::string const& targetsName);
-	ShrubberyCreationForm(ShrubberyCreationForm const& target)
+	PresidentialPardonForm();
+	PresidentialPardonForm(std::string const& targetsName);
+	PresidentialPardonForm(PresidentialPardonForm const& target)
 		throw(GradeTooHighException, GradeTooLowException);
-	ShrubberyCreationForm&	operator=(ShrubberyCreationForm const& target);
-	virtual ~ShrubberyCreationForm();
+	PresidentialPardonForm&	operator=(PresidentialPardonForm const& target);
+	virtual ~PresidentialPardonForm();
 
 public:
 	virtual void			beSigned(Bureaucrat const& bureaucrat)
@@ -39,7 +37,7 @@ public:
 									  FormNotSignedException);
 
 /* ************************************************************************** */
-/*                ShrubberyCreationForm::GradeTooHighException                */
+/*               PresidentialPardonForm::GradeTooHighException                */
 /* ************************************************************************** */
 public:
 	class GradeTooHighException : public AForm::GradeTooHighException
@@ -62,7 +60,7 @@ public:
 	};
 
 /* ************************************************************************** */
-/*                ShrubberyCreationForm::GradeTooLowException                 */
+/*                PresidentialPardonForm::GradeTooLowException                */
 /* ************************************************************************** */
 public:
 	class GradeTooLowException : public AForm::GradeTooLowException
@@ -85,7 +83,7 @@ public:
 	};
 
 /* ************************************************************************** */
-/*               ShrubberyCreationForm::FormNotSignedException                */
+/*               PresidentialPardonForm::FormNotSignedException               */
 /* ************************************************************************** */
 public:
 	class FormNotSignedException : public std::exception
@@ -109,6 +107,6 @@ public:
 };
 
 std::ostream&	operator<<(std::ostream& os,
-						   ShrubberyCreationForm const& target);
+						   PresidentialPardonForm const& target);
 
-#endif /* __SHRUBBERYCREATIONFORM_HPP__ */
+#endif /* __PRESIDENTIALPARDONFORM_HPP__ */

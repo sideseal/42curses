@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ShrubberyCreationForm.hpp                          :+:      :+:    :+:   */
+/*   RobotomyRequestForm.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 22:10:06 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 22:17:49 by gychoi           ###   ########.fr       */
+/*   Created: 2023/12/03 22:01:51 by gychoi            #+#    #+#             */
+/*   Updated: 2023/12/03 23:10:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __SHRUBBERYCREATIONFORM_HPP__
-#define __SHRUBBERYCREATIONFORM_HPP__
+#ifndef __ROBOTOMYREQUESTFORM_HPP__
+#define __ROBOTOMYREQUESTFORM_HPP__
 
-#include <fstream>
+#include <cstdlib>
+#include <ctime>
 
 #include "AForm.hpp"
 
 /* ************************************************************************** */
-/*                           ShrubberyCreationForm                            */
+/*                            RobotomyRequestForm                             */
 /* ************************************************************************** */
-class ShrubberyCreationForm : public AForm
+class RobotomyRequestForm : public AForm
 {
 public:
-	ShrubberyCreationForm();
-	ShrubberyCreationForm(std::string const& targetsName);
-	ShrubberyCreationForm(ShrubberyCreationForm const& target)
+	RobotomyRequestForm();
+	RobotomyRequestForm(std::string const& targetName);
+	RobotomyRequestForm(RobotomyRequestForm const& target)
 		throw(GradeTooHighException, GradeTooLowException);
-	ShrubberyCreationForm&	operator=(ShrubberyCreationForm const& target);
-	virtual ~ShrubberyCreationForm();
+	RobotomyRequestForm&	operator=(RobotomyRequestForm const& target);
+	virtual ~RobotomyRequestForm();
 
 public:
 	virtual void			beSigned(Bureaucrat const& bureaucrat)
@@ -39,7 +40,7 @@ public:
 									  FormNotSignedException);
 
 /* ************************************************************************** */
-/*                ShrubberyCreationForm::GradeTooHighException                */
+/*                 RobotomyRequestForm::GradeTooHighException                 */
 /* ************************************************************************** */
 public:
 	class GradeTooHighException : public AForm::GradeTooHighException
@@ -62,7 +63,7 @@ public:
 	};
 
 /* ************************************************************************** */
-/*                ShrubberyCreationForm::GradeTooLowException                 */
+/*                 RobotomyRequestForm::GradeTooLowException                  */
 /* ************************************************************************** */
 public:
 	class GradeTooLowException : public AForm::GradeTooLowException
@@ -85,7 +86,7 @@ public:
 	};
 
 /* ************************************************************************** */
-/*               ShrubberyCreationForm::FormNotSignedException                */
+/*                RobotomyRequestForm::FormNotSignedException                 */
 /* ************************************************************************** */
 public:
 	class FormNotSignedException : public std::exception
@@ -108,7 +109,6 @@ public:
 	};
 };
 
-std::ostream&	operator<<(std::ostream& os,
-						   ShrubberyCreationForm const& target);
+std::ostream&	operator<<(std::ostream& os, RobotomyRequestForm const& target);
 
-#endif /* __SHRUBBERYCREATIONFORM_HPP__ */
+#endif /* __ROBOTOMYREQUESTFORM_HPP__ */

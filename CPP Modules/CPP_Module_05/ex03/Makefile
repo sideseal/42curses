@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/12/04 00:00:26 by gychoi           ###   ########.fr        #
+#    Updated: 2023/12/04 00:22:38 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ RM = rm -rf
 SRCS = main.cpp \
 	   AForm.cpp \
 	   Bureaucrat.cpp \
+	   Intern.cpp \
 	   PresidentialPardonForm.cpp \
 	   RobotomyRequestForm.cpp \
 	   ShrubberyCreationForm.cpp

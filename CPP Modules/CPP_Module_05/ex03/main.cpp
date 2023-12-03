@@ -6,15 +6,13 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/04 00:02:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/04 01:39:17 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sstream>
 #include "Bureaucrat.hpp"
-#include "PresidentialPardonForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "ShrubberyCreationForm.hpp"
+#include "Intern.hpp"
 
 void	setBureaucratInfo(std::string& bureaucratName, int& bureaucratGrade)
 {
@@ -120,20 +118,22 @@ int	main()
 
 	try
 	{
+		Intern	intern;
+
 		std::cout << "INFO: Creating ShrubberyCreationForm..." << std::endl;
 		setFormInfo(formName, "ShrubberyCreationForm");
-		ShrubberyCreationForm	sForm(formName);
-		std::cout << sForm << '\n' << std::endl;
+		AForm*	sForm = intern.makeForm("shrubbery creation", formName);
+		std::cout << *sForm << '\n' << std::endl;
 
 		std::cout << "INFO: Creating RobotomyRequestForm..." << std::endl;
 		setFormInfo(formName, "RobotomyRequestForm");
-		RobotomyRequestForm		rForm(formName);
-		std::cout << rForm << '\n' << std::endl;
+		AForm*	rForm = intern.makeForm("robotomy request", formName);
+		std::cout << *rForm << '\n' << std::endl;
 
 		std::cout << "INFO: Creating PresidentialPardonForm..." << std::endl;
 		setFormInfo(formName, "PresidentialPardonForm");
-		PresidentialPardonForm	pForm(formName);
-		std::cout << pForm << '\n' << std::endl;
+		AForm*	pForm = intern.makeForm("presidential pardon", formName);
+		std::cout << *pForm << '\n' << std::endl;
 
 		std::cout << "INFO: Creating Bureaucrat..." << std::endl;
 		setBureaucratInfo(bureaucratName, bureaucratGrade);
@@ -142,46 +142,56 @@ int	main()
 
 		if (askConfirm("INFO: Do you want to sign ShrubberyCreationForm?"))
 		{
-			bureaucrat.signForm(sForm);
+			bureaucrat.signForm(*sForm);
 		}
 		else
 		{
 			// skipped
 		}
-		std::cout << sForm << '\n' << std::endl;
+		std::cout << *sForm << '\n' << std::endl;
 
 		if (askConfirm("INFO: Do you want to sign RobotomyCreationForm?"))
 		{
-			bureaucrat.signForm(rForm);
+			bureaucrat.signForm(*rForm);
 		}
 		else
 		{
 			// skipped
 		}
-		std::cout << rForm << '\n' << std::endl;
+		std::cout << *rForm << '\n' << std::endl;
 
 		if (askConfirm("INFO: Do you want to sign PresidentialPardonForm?"))
 		{
-			bureaucrat.signForm(pForm);
+			bureaucrat.signForm(*pForm);
 		}
 		else
 		{
 			// skippled
 		}
-		std::cout << pForm << '\n' << std::endl;
+		std::cout << *pForm << '\n' << std::endl;
 
 		std::cout << "INFO: Executing ShrubberyCreationForm..." << std::endl;
-		bureaucrat.executeForm(sForm);
+		bureaucrat.executeForm(*sForm);
 
 		std::cout << std::endl;
 
 		std::cout << "INFO: Executing RobotomyCreationForm..." << std::endl;
-		bureaucrat.executeForm(rForm);
+		bureaucrat.executeForm(*rForm);
 
 		std::cout << std::endl;
 
 		std::cout << "INFO: Executing PresidentialPardonForm..." << std::endl;
-		bureaucrat.executeForm(pForm);
+		bureaucrat.executeForm(*pForm);
+
+		std::cout << std::endl;
+
+		std::cout << "INFO: Creating NuclearLaunchForm..." << std::endl;
+		AForm*	nForm = intern.makeForm("nuclear launch", "Big Red Button");
+
+		delete sForm;
+		delete rForm;
+		delete pForm;
+		delete nForm;
 	}
 	catch (std::exception & e)
 	{

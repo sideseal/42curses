@@ -1,57 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AForm.hpp                                          :+:      :+:    :+:   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 21:46:48 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 20:31:22 by gychoi           ###   ########.fr       */
+/*   Created: 2023/11/09 23:13:08 by gychoi            #+#    #+#             */
+/*   Updated: 2023/11/29 22:27:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __AFORM_HPP__
-#define __AFORM_HPP__
+#ifndef __BUREAUCRAT_HPP__
+#define __BUREAUCRAT_HPP__
 
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
-#include "Bureaucrat.hpp"
+class AForm;
 
 /* ************************************************************************** */
-/*                                   AForm                                    */
+/*                                 Bureaucrat                                 */
 /* ************************************************************************** */
-class AForm
+class Bureaucrat
 {
 public:
-	AForm();
-	AForm(std::string const& name, int signGrade, int executeGrade)
+	Bureaucrat();
+	Bureaucrat(std::string const& name, int grade)
 		throw(GradeTooHighException, GradeTooLowException);
-	AForm(AForm const& target);
-	AForm&				operator=(AForm const& target);
-	virtual ~AForm();
+	Bureaucrat(Bureaucrat const& target);
+	Bureaucrat&			operator=(Bureaucrat const& target);
+	~Bureaucrat();
 
 public:
 	std::string const&	getName() const;
-	bool				getIsSigned() const;
-	int					getSignGrade() const;
-	int					getExecuteGrade() const;
-	void				setIsSigned(bool isSigned);
+	int					getGrade() const;
+	void				setGrade(int grade)
+							throw(GradeTooHighException, GradeTooLowException);
 
 public:
-	virtual void		beSigned(Bureaucrat const& bureaucrat) = 0;
-	virtual void		execute(Bureaucrat const& executor) const = 0;
+	void				increaseGrade() throw(GradeTooHighException);
+	void				decreaseGrade() throw(GradeTooLowException);
+	void				signForm(AForm& form);
+	void				executeForm(AForm const& form);
+
 
 private:
 	std::string const	mName;
-	bool				mbIsSigned;
-	int const			mSignGrade;
-	int const			mExecuteGrade;
+	int					mGrade;
 
 /* ************************************************************************** */
-/*                        AForm::GradeTooHighException                        */
+/*                     Bureaucrat::GradeTooHighException                      */
 /* ************************************************************************** */
 public:
 	class GradeTooHighException : public std::exception
@@ -74,7 +74,7 @@ public:
 	};
 
 /* ************************************************************************** */
-/*                         AForm::GradeTooLowException                        */
+/*                      Bureaucrat::GradeTooLowException                      */
 /* ************************************************************************** */
 public:
 	class GradeTooLowException : public std::exception
@@ -97,6 +97,6 @@ public:
 	};
 };
 
-std::ostream&			operator<<(std::ostream& os, AForm const& target);
+std::ostream&			operator<<(std::ostream& os, Bureaucrat const& target);
 
-#endif /* __AFORM_HPP__ */
+#endif /* __BUREAUCRAT_HPP__ */

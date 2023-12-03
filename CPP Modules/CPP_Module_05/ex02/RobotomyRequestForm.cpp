@@ -1,36 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ShrubberyCreationForm.cpp                          :+:      :+:    :+:   */
+/*   RobotomyRequestForm.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 22:09:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 23:51:12 by gychoi           ###   ########.fr       */
+/*   Created: 2023/12/03 22:01:37 by gychoi            #+#    #+#             */
+/*   Updated: 2023/12/04 00:13:26 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
 
 static void	_copyConstWarning(std::string const& variable);
 
 /* ************************************************************************** */
 /*                          Constructor & Destructor                          */
 /* ************************************************************************** */
-ShrubberyCreationForm::ShrubberyCreationForm()
-	: AForm(std::string(), 145, 137)
+RobotomyRequestForm::RobotomyRequestForm()
+	: AForm(std::string(), 72, 45)
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(std::string const& targetName)
-	: AForm(targetName, 145, 137)
+RobotomyRequestForm::RobotomyRequestForm(std::string const& targetName)
+	: AForm(targetName, 72, 45)
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm
-(ShrubberyCreationForm const& target)
+RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm const& target)
 	throw(GradeTooHighException, GradeTooLowException) try
 	: AForm(target.getName(), target.getSignGrade(), target.getExecuteGrade())
 {
@@ -41,8 +40,8 @@ catch (std::exception & e)
 	throw;
 }
 
-ShrubberyCreationForm&	ShrubberyCreationForm::operator=
-(ShrubberyCreationForm const& target)
+RobotomyRequestForm&	RobotomyRequestForm::operator=
+(RobotomyRequestForm const& target)
 {
 	if (this != &target)
 	{
@@ -54,7 +53,7 @@ ShrubberyCreationForm&	ShrubberyCreationForm::operator=
 	return *this;
 }
 
-ShrubberyCreationForm::~ShrubberyCreationForm()
+RobotomyRequestForm::~RobotomyRequestForm()
 {
 	// nothing to do
 }
@@ -62,7 +61,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 /* ************************************************************************** */
 /*                           Public Member Function                           */
 /* ************************************************************************** */
-void	ShrubberyCreationForm::beSigned(Bureaucrat const& bureaucrat)
+void	RobotomyRequestForm::beSigned(Bureaucrat const& bureaucrat)
 throw(GradeTooLowException)
 {
 	if (this->getSignGrade() < bureaucrat.getGrade())
@@ -75,8 +74,8 @@ throw(GradeTooLowException)
 	}
 }
 
-void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException)
+void	RobotomyRequestForm::execute(Bureaucrat const & executor) const
+throw (GradeTooLowException, FormNotSignedException)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -88,68 +87,56 @@ throw(GradeTooLowException, FormNotSignedException)
 	}
 	else
 	{
-		std::ofstream	outfile(this->getName() + "_shrubbery");
+		std::cout
+		<< "\033[4m"
+		<< "[Unbearably loud drilling noise]"
+		<< "\033[0m"
+		<< std::endl;
 
-		if (!outfile.is_open())
+		srand(time(NULL));
+
+		if (rand() % 2 == 1)
 		{
-			throw std::runtime_error("Unable to create file!");
+			std::cout
+			<< "INFO: Successfully robotomized "
+			<< this->getName()
+			<< "." << std::endl;
 		}
-
-		outfile << "                               " << "\n";
-		outfile << "        .:-:: .- -.-           " << "\n";
-		outfile << "       -===**++++== :-==       " << "\n";
-		outfile << "     -=-::++=+--*+==+==-:      " << "\n";
-		outfile << "   .=++=--=+*+#=+#**=:=*+=.    " << "\n";
-		outfile << "   +#+=*=++*=+**#*+*##=*-=*.   " << "\n";
-		outfile << "  .++-+=*####+=**#==#:###++.   " << "\n";
-		outfile << "    *++=++%+#*+#*++==+**#-*+   " << "\n";
-		outfile << "   :%%=+*+#*.**++*#+==+*+**+*. " << "\n";
-		outfile << "  .+++-++#%###+-+****+=#++++=: " << "\n";
-		outfile << " :**=###%%##%%***#**###*#*+.-: " << "\n";
-		outfile << "  -*%*%******-=#=#####.-#%***  " << "\n";
-		outfile << " .+#%#*##*#*%*%*##+**#**#.     " << "\n";
-		outfile << "     *%%***#%%%#:*+##-*:=      " << "\n";
-		outfile << "    =-+* *%  .-#:*#*##*#:      " << "\n";
-		outfile << "               #%  #+          " << "\n";
-		outfile << "               *#              " << "\n";
-		outfile << "               *+              " << "\n";
-		outfile << "               =:              " << "\n";
-		outfile << "             .++%-=.           " << "\n";
-		outfile << "                               " << "\n";
-		outfile << "Created by " << executor.getName()
-				<< "[" << executor.getGrade() << "]" << std::endl;
-
-		outfile.close();
-
-		std::cout << "INFO: Successfully created shrubbery!" << std::endl;
+		else
+		{
+			std::cout
+			<< "INFO: Robotomize "
+			<< this->getName()
+			<< " Failed." << std::endl;
+		}
 	}
 }
 
 /* ************************************************************************** */
 /*              GradeTooHighException : Constructor & Destructor              */
 /* ************************************************************************** */
-ShrubberyCreationForm::GradeTooHighException::GradeTooHighException()
-	: mMessage("ShrubberyCreationForm::GradeTooHighException")
+RobotomyRequestForm::GradeTooHighException::GradeTooHighException()
+	: mMessage("RobotomyRequestForm::GradeTooHighException")
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::GradeTooHighException::GradeTooHighException
+RobotomyRequestForm::GradeTooHighException::GradeTooHighException
 (std::string const& msg)
-	: mMessage("ShrubberyCreationForm::GradeTooHighException: " + msg)
+	: mMessage("RobotomyRequestForm::GradeTooHighException: " + msg)
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::GradeTooHighException::GradeTooHighException
+RobotomyRequestForm::GradeTooHighException::GradeTooHighException
 (GradeTooHighException const& target)
 	: mMessage(target.getMessage())
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::GradeTooHighException&
-ShrubberyCreationForm::GradeTooHighException::operator=
+RobotomyRequestForm::GradeTooHighException&
+RobotomyRequestForm::GradeTooHighException::operator=
 (GradeTooHighException const& target)
 {
 	if (this != &target)
@@ -159,7 +146,7 @@ ShrubberyCreationForm::GradeTooHighException::operator=
 	return *this;
 }
 
-ShrubberyCreationForm::GradeTooHighException::~GradeTooHighException() throw()
+RobotomyRequestForm::GradeTooHighException::~GradeTooHighException() throw()
 {
 	// nothing to do
 }
@@ -167,7 +154,7 @@ ShrubberyCreationForm::GradeTooHighException::~GradeTooHighException() throw()
 /* ************************************************************************** */
 /*                  GradeTooHighException : Getter Function                   */
 /* ************************************************************************** */
-std::string const&	ShrubberyCreationForm::GradeTooHighException::getMessage()
+std::string const&	RobotomyRequestForm::GradeTooHighException::getMessage()
 	const
 {
 	return this->mMessage;
@@ -176,7 +163,7 @@ std::string const&	ShrubberyCreationForm::GradeTooHighException::getMessage()
 /* ************************************************************************** */
 /*                 GradeTooHighException : Function Override                  */
 /* ************************************************************************** */
-const char*	ShrubberyCreationForm::GradeTooHighException::what() const throw()
+const char*	RobotomyRequestForm::GradeTooHighException::what() const throw()
 {
 	return this->getMessage().c_str();
 }
@@ -184,28 +171,28 @@ const char*	ShrubberyCreationForm::GradeTooHighException::what() const throw()
 /* ************************************************************************** */
 /*              GradeTooLowException : Constructor & Destructor               */
 /* ************************************************************************** */
-ShrubberyCreationForm::GradeTooLowException::GradeTooLowException()
-	: mMessage("ShrubberyCreationForm::GradeTooLowException")
+RobotomyRequestForm::GradeTooLowException::GradeTooLowException()
+	: mMessage("RobotomyRequestForm::GradeTooLowException")
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::GradeTooLowException::GradeTooLowException
+RobotomyRequestForm::GradeTooLowException::GradeTooLowException
 (std::string const& msg)
-	: mMessage("ShrubberyCreationForm::GradeTooLowException: " + msg)
+	: mMessage("RobotomyRequestForm::GradeTooLowException: " + msg)
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::GradeTooLowException::GradeTooLowException
+RobotomyRequestForm::GradeTooLowException::GradeTooLowException
 (GradeTooLowException const& target)
 	: mMessage(target.getMessage())
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::GradeTooLowException&
-ShrubberyCreationForm::GradeTooLowException::operator=
+RobotomyRequestForm::GradeTooLowException&
+RobotomyRequestForm::GradeTooLowException::operator=
 (GradeTooLowException const& target)
 {
 	if (this != &target)
@@ -215,7 +202,7 @@ ShrubberyCreationForm::GradeTooLowException::operator=
 	return *this;
 }
 
-ShrubberyCreationForm::GradeTooLowException::~GradeTooLowException() throw()
+RobotomyRequestForm::GradeTooLowException::~GradeTooLowException() throw()
 {
 	// nothing to do
 }
@@ -223,7 +210,7 @@ ShrubberyCreationForm::GradeTooLowException::~GradeTooLowException() throw()
 /* ************************************************************************** */
 /*                   GradeTooLowException : Getter Function                   */
 /* ************************************************************************** */
-std::string const&	ShrubberyCreationForm::GradeTooLowException::getMessage()
+std::string const&	RobotomyRequestForm::GradeTooLowException::getMessage()
 	const
 {
 	return this->mMessage;
@@ -232,7 +219,7 @@ std::string const&	ShrubberyCreationForm::GradeTooLowException::getMessage()
 /* ************************************************************************** */
 /*                  GradeTooLowException : Function Override                  */
 /* ************************************************************************** */
-const char*	ShrubberyCreationForm::GradeTooLowException::what() const throw()
+const char*	RobotomyRequestForm::GradeTooLowException::what() const throw()
 {
 	return this->getMessage().c_str();
 }
@@ -240,28 +227,28 @@ const char*	ShrubberyCreationForm::GradeTooLowException::what() const throw()
 /* ************************************************************************** */
 /*             FormNotSignedException : Constructor & Destructor              */
 /* ************************************************************************** */
-ShrubberyCreationForm::FormNotSignedException::FormNotSignedException()
-	: mMessage("ShrubberyCreationForm::FormNotSignedException")
+RobotomyRequestForm::FormNotSignedException::FormNotSignedException()
+	: mMessage("RobotomyRequestForm::FormNotSignedException")
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::FormNotSignedException::FormNotSignedException
+RobotomyRequestForm::FormNotSignedException::FormNotSignedException
 (std::string const& msg)
-	: mMessage("ShrubberyCreationForm::FormNotSignedException: " + msg)
+	: mMessage("RobotomyRequestForm::FormNotSignedException: " + msg)
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::FormNotSignedException::FormNotSignedException
+RobotomyRequestForm::FormNotSignedException::FormNotSignedException
 (FormNotSignedException const& target)
 	: mMessage(target.getMessage())
 {
 	// nothing to do
 }
 
-ShrubberyCreationForm::FormNotSignedException&
-ShrubberyCreationForm::FormNotSignedException::operator=
+RobotomyRequestForm::FormNotSignedException&
+RobotomyRequestForm::FormNotSignedException::operator=
 (FormNotSignedException const& target)
 {
 	if (this != &target)
@@ -271,7 +258,7 @@ ShrubberyCreationForm::FormNotSignedException::operator=
 	return *this;
 }
 
-ShrubberyCreationForm::FormNotSignedException::~FormNotSignedException() throw()
+RobotomyRequestForm::FormNotSignedException::~FormNotSignedException() throw()
 {
 	// nothing to do
 }
@@ -279,7 +266,7 @@ ShrubberyCreationForm::FormNotSignedException::~FormNotSignedException() throw()
 /* ************************************************************************** */
 /*                  FormNotSigendException : Getter Function                  */
 /* ************************************************************************** */
-std::string const&	ShrubberyCreationForm::FormNotSignedException::getMessage()
+std::string const&	RobotomyRequestForm::FormNotSignedException::getMessage()
 	const
 {
 	return this->mMessage;
@@ -288,7 +275,7 @@ std::string const&	ShrubberyCreationForm::FormNotSignedException::getMessage()
 /* ************************************************************************** */
 /*                 FormNotSigendException : Function Override                 */
 /* ************************************************************************** */
-const char*	ShrubberyCreationForm::FormNotSignedException::what() const throw()
+const char*	RobotomyRequestForm::FormNotSignedException::what() const throw()
 {
 	return this->getMessage().c_str();
 }
@@ -298,14 +285,14 @@ const char*	ShrubberyCreationForm::FormNotSignedException::what() const throw()
 /* ************************************************************************** */
 
 std::ostream&	operator<<
-(std::ostream& os, ShrubberyCreationForm const& target)
+(std::ostream& os, RobotomyRequestForm const& target)
 {
 	std::string	isAFormSigned = target.getIsSigned() ? "true" : "false";
 
 	os << target.getName()
-	<< ", ShrubberyCreationForm signed " << isAFormSigned
-	<< ", ShrubberyCreationForm sign grade " << target.getSignGrade()
-	<< ", ShrubberyCreationForm execution grade " << target.getExecuteGrade()
+	<< ", RobotomyRequestForm signed " << isAFormSigned
+	<< ", RobotomyRequestForm sign grade " << target.getSignGrade()
+	<< ", RobotomyRequestForm execution grade " << target.getExecuteGrade()
 	<< ".";
 	return os;
 }
