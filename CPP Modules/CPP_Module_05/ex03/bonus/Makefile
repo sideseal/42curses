@@ -6,7 +6,7 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 22:46:41 by gychoi            #+#    #+#              #
-#    Updated: 2023/12/04 00:22:38 by gychoi           ###   ########.fr        #
+#    Updated: 2023/12/04 19:56:20 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS = main.cpp \
 	   Intern.cpp \
 	   PresidentialPardonForm.cpp \
 	   RobotomyRequestForm.cpp \
-	   ShrubberyCreationForm.cpp
+	   ShrubberyCreationForm.cpp \
+	   GUI.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
