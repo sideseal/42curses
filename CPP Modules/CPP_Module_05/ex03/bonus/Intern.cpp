@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 00:22:42 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/04 16:26:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/04 16:26:20 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ Intern::Intern(Intern const& target)
 
 Intern&	Intern::operator=(Intern const& target)
 {
-	(void)target;
+	if (this != &target)
+	{
+		(void)target;
+	}
 	return *this;
 }
 
