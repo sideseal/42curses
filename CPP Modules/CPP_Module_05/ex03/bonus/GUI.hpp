@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/05 23:35:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/06 22:29:10 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+
+#include "Bureaucrat.hpp"
+#include "Intern.hpp"
 
 #define OK (1)
 #define ERR (0)
@@ -44,10 +47,18 @@ enum eKey
 	RIGHT,
 	LEFT,
 	ENTER,
-	LETTER
+	LETTER,
+	BACKSPACE
 };
 
-enum eProcess
+enum eLogin
+{
+	ID,
+	GRADE,
+	CHECK_LOGIN
+};
+
+enum ePopUP
 {
 	DISABLE,
 	SIGN,
@@ -57,16 +68,16 @@ enum eProcess
 
 enum eStage
 {
+	LOGIN,
 	LOBBY,
 	FORM,
-	SHOW,
 	MESSAGE
 };
 
 enum eMode
 {
 	MAKE,
-	WATCH,
+	LOGOUT,
 	QUIT
 };
 
@@ -78,17 +89,38 @@ enum eForm
 	BACK
 };
 
+struct FormInfo
+{
+	std::string	name;
+	AForm*		form;
+};
+
+struct BureaucratInfo
+{
+	std::string	name;
+	std::string	grade;
+	Bureaucrat*	bureaucrat;
+};
+
 struct Status
 {
-	std::string		buffer;
-	unsigned int	stage;
-	unsigned int	mode;
-	char			letter;
-	int				select;
-	bool			popUp;
-	int				popUpProcess;
-	bool			pressEnter;
-	int				yesNo;
+	// float speed
+	std::string				buffer;
+	char					letter;
+	unsigned short			stage;
+	unsigned short			mode;
+	short					select;
+	bool					create;
+	bool					popUp;
+	short					popUpProcess;
+	bool					pressEnter;
+	bool					yesNo;
+	bool					pressLetter;
+	bool					pressBackSpace;
+	struct BureaucratInfo	bureaucratInfo;
+	struct FormInfo			formInfo;
+	bool					isError;
+	std::string				errorMessage;
 };
 
 extern struct Status status;
@@ -100,13 +132,19 @@ void	eraseTerminal();
 int		readInput();
 int		readKey(char* buf, int k);
 void	controlKey(int key);
+void	makeBuffer();
 
-void	drawStage();
+void	initStatus();
+void	deleteInfo();
+void	setStage();
 void	updateStage();
 void	updatePopUp();
 
+void	printError();
 void	drawLobby();
 void	drawForm();
-void	popMessage();
+void	drawSignPopUp();
+void	drawNamePopUp();
+void	drawLogin();
 
 #endif /* __GUI_HPP__ */
