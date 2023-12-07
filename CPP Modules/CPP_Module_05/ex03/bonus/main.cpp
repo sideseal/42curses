@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/06 22:29:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/07 18:34:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	signalHandler(__attribute__((unused)) int signum)
 
 void	delay()
 {
-	req.tv_nsec = 0.1 * 1000000000;
+	req.tv_nsec = status.renderSpeed * 1000000000;
 	nanosleep(&req, &rem);
 }
 

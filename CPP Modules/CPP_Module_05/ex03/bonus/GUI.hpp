@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/06 22:29:10 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/07 18:34:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ struct BureaucratInfo
 
 struct Status
 {
-	// float speed
+	float					renderSpeed;
 	std::string				buffer;
 	char					letter;
 	unsigned short			stage;

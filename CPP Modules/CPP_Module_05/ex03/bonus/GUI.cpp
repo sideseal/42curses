@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/06 22:36:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/07 18:46:25 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ void	deleteBureaucrat()
 
 void	initStatus()
 {
+	status.renderSpeed = 0.1f;
 	status.buffer.clear();
 	status.letter = '\0';
 	//	need to keep status.stage info
@@ -349,8 +350,8 @@ void	updateStage()
 			switch (status.select)
 			{
 				case MAKE:
-					status.stage = FORM;
 					initStatus();
+					status.stage = FORM;
 					break;
 				case LOGOUT:
 					// not developed
@@ -369,6 +370,7 @@ void	updateStage()
 			switch (status.select)
 			{
 				case SHRUBBERY:
+					initStatus();
 					status.popUp = true;
 					status.stage = MESSAGE;
 					status.popUpProcess = SIGN;
@@ -380,8 +382,8 @@ void	updateStage()
 					// not developed
 					break;
 				case BACK:
+					initStatus();
 					status.stage = LOBBY;
-					status.select = 0;
 					break;
 				default:
 					break;
@@ -397,8 +399,9 @@ void	updateStage()
 					}
 					else
 					{
-						status.popUp = false;
+						initStatus();
 						status.stage = FORM;
+						status.popUp = false;
 						status.popUpProcess = DISABLE;
 					}
 					break;
@@ -717,6 +720,7 @@ void	drawNamePopUp()
 	int		startPosX = (WIDTH - BOX_WIDTH) / 2;
 	size_t	remainingLines = BOX_HEIGHT - 2;
 
+	status.renderSpeed = 0.03;
 	/*
 	 * drawing top
 	 */
@@ -811,6 +815,7 @@ void	drawLogin()
 	int		startPosX = (WIDTH - BOX_WIDTH) / 2;
 	size_t	remainingLines = BOX_HEIGHT - 2;
 
+	status.renderSpeed = 0.03;
 	/*
 	 * drawing top
 	 */
