@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:09:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 23:51:12 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/08 23:12:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ throw(GradeTooLowException)
 }
 
 void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException)
+throw(GradeTooLowException, FormNotSignedException, char const*)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -121,7 +121,7 @@ throw(GradeTooLowException, FormNotSignedException)
 
 		outfile.close();
 
-		std::cout << "INFO: Successfully created shrubbery!" << std::endl;
+		throw "Successfully created shrubbery!";
 	}
 }
 

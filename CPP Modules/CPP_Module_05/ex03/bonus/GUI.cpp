@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/07 18:46:25 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 03:18:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,15 @@ void	controlKey(int key)
 			}
 			break;
 		case DOWN:
-			if (status.stage == LOBBY && status.select < 2)
+			if (status.stage == LOBBY && status.select < 3)
 			{
 				status.select++;
 			}
 			else if (status.stage == FORM && status.select < 3)
+			{
+				status.select++;
+			}
+			else if (status.stage == CHECK && status.select < 7)
 			{
 				status.select++;
 			}
@@ -249,6 +253,82 @@ void	deleteBureaucrat()
 	status.bureaucratInfo.bureaucrat = 0;
 }
 
+void	createForm()
+{
+	Intern	intern;
+
+	switch (status.select)
+	{
+		case SHRUBBERY:
+			status.formInfo.form = intern.makeForm("shrubbery creation",
+												   status.formInfo.name);
+			break;
+		case ROBOTOMY:
+			status.formInfo.form = intern.makeForm("robotomy request",
+												   status.formInfo.name);
+			break;
+		case PRESIDENT:
+			status.formInfo.form = intern.makeForm("presidential pardon",
+												   status.formInfo.name);
+			break;
+		default:
+			break;
+	}
+}
+
+void	signForm()
+{
+	try
+	{
+		if (status.bureaucratInfo.bureaucrat == 0)
+		{
+			throw std::logic_error("ERROR: bureaucrat not found");
+		}
+		else
+		{
+			status.bureaucratInfo.bureaucrat->signForm(*status.formInfo.form);
+		}
+	}
+	catch (std::exception & e)
+	{
+		status.stage = FORM;
+		throw;
+	};
+}
+
+void	executeForm()
+{
+	try
+	{
+		if (status.bureaucratInfo.bureaucrat == 0)
+		{
+			throw std::logic_error("ERROR: bureaucrat not found");
+		}
+		else
+		{
+			status.bureaucratInfo.bureaucrat->executeForm
+				(*status.formInfo.form);
+		}
+	}
+	catch (std::exception & e)
+	{
+		status.stage = FORM;
+		throw;
+	}
+	catch (char const* s)
+	{
+		status.formInfo.message = s;
+	};
+}
+
+void	deleteForm()
+{
+	status.formInfo.name.clear();
+	status.formInfo.message.clear();
+	delete status.formInfo.form;
+	status.formInfo.form = 0;
+}
+
 /* ************************************************************************** */
 /*                                   Logic                                    */
 /* ************************************************************************** */
@@ -256,10 +336,8 @@ void	deleteBureaucrat()
 void	initStatus()
 {
 	status.renderSpeed = 0.1f;
-	status.buffer.clear();
 	status.letter = '\0';
 	//	need to keep status.stage info
-	status.mode = 0;
 	status.select = 0;
 	status.create = false;
 	status.popUp = false;
@@ -268,6 +346,7 @@ void	initStatus()
 	status.yesNo = false;
 	status.pressLetter = false;
 	status.pressBackSpace = false;
+	// need to keey shrubberyArray and filename
 	status.isError = false;
 	status.errorMessage.clear();
 }
@@ -278,6 +357,10 @@ void	deleteInfo()
 	{
 		deleteBureaucrat();
 	}
+	else if (status.stage == FORM)
+	{
+		deleteForm();
+	}
 }
 
 void	setStage()
@@ -285,11 +368,18 @@ void	setStage()
 	switch (status.stage)
 	{
 		case LOGIN:
+			changeRenderSpeed(0.03f);
 			drawLogin();
 			makeBuffer();
 			break;
 		case LOBBY:
 			drawLobby();
+			break;
+		case CHECK:
+			drawCheck();
+			break;
+		case IMAGE:
+			drawImage();
 			break;
 		case FORM:
 			drawForm();
@@ -313,7 +403,6 @@ void	updateStage()
 	switch (status.stage)
 	{
 		case LOGIN:
-			makeBuffer();
 			switch (status.select)
 			{
 				case ID:
@@ -353,8 +442,11 @@ void	updateStage()
 					initStatus();
 					status.stage = FORM;
 					break;
+				case SHOW:
+					initStatus();
+					status.stage = CHECK;
+					break;
 				case LOGOUT:
-					// not developed
 					initStatus();
 					deleteBureaucrat();
 					status.stage = LOGIN;
@@ -366,11 +458,30 @@ void	updateStage()
 					break;
 			}
 			break;
+		case CHECK:
+			switch (status.select)
+			{
+				case BACK:
+					initStatus();
+					status.stage = LOBBY;
+					break;
+				default:
+					setFilename();
+					initStatus();
+					status.stage = IMAGE;
+					break;
+			}
+			break;
+		case IMAGE:
+			break;
 		case FORM:
 			switch (status.select)
 			{
-				case SHRUBBERY:
+				case BACK:
 					initStatus();
+					status.stage = LOBBY;
+					break;
+				case SHRUBBERY:
 					status.popUp = true;
 					status.stage = MESSAGE;
 					status.popUpProcess = SIGN;
@@ -380,10 +491,6 @@ void	updateStage()
 					break;
 				case PRESIDENT:
 					// not developed
-					break;
-				case BACK:
-					initStatus();
-					status.stage = LOBBY;
 					break;
 				default:
 					break;
@@ -395,19 +502,38 @@ void	updateStage()
 				case SIGN:
 					if (status.yesNo == true)
 					{
+						changeRenderSpeed(0.03f);
 						status.popUpProcess = NAME;
 					}
 					else
 					{
 						initStatus();
 						status.stage = FORM;
-						status.popUp = false;
-						status.popUpProcess = DISABLE;
 					}
 					break;
 				case NAME:
-					// if makeForm ok -> execute
-					// notOk -> go back to form
+					changeRenderSpeed(0.1f);
+					createForm();
+					signForm();
+					status.yesNo = false;
+					status.popUpProcess = EXECUTE;
+					break;
+				case EXECUTE:
+					if (status.yesNo == true)
+					{
+						executeForm();
+						status.popUpProcess = RESULT;
+					}
+					else
+					{
+						initStatus();
+						status.stage = FORM;
+					}
+					break;
+				case RESULT:
+					deleteForm();
+					initStatus();
+					status.stage = FORM;
 					break;
 				default:
 					break;
@@ -435,9 +561,22 @@ void	updatePopUp()
 				{
 					drawNamePopUp();
 				}
+				else if (status.popUpProcess == EXECUTE)
+				{
+					drawExecutePopUp();
+				}
+				else if (status.popUpProcess == RESULT)
+				{
+					drawResultPopUp();
+				}
 			}
 		}
 	}
+}
+
+void	setFilename()
+{
+	status.filename = status.shrubberyArray[status.select];
 }
 
 /* ************************************************************************** */
@@ -454,7 +593,10 @@ void	printError()
 
 void	drawLobby()
 {
-	std::string const	menu[3] = { "Make Form", "Logout", "Quit" };
+	std::string const	menu[4] = { "Make Form",
+									"Verify Task",
+									"Logout",
+									"Quit" };
 	std::string const	welcome = "Welcome to Bureaucrat.net!";
 	size_t				remainingLines = HEIGHT - 2;
 
@@ -499,7 +641,7 @@ void	drawLobby()
 	/*
 	 * drawing menu section
 	 */
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if (status.select == i)
 		{
@@ -539,12 +681,106 @@ void	drawLobby()
 	std::cout << "┘" << std::endl;
 }
 
+void	drawCheck()
+{
+	std::string 		shrubberyArray[8];
+	std::string const	banner = "Verify administration work";
+	size_t				remainingLines = HEIGHT - 2;
+
+	shrubberyArray[0] = "[Back]";
+	findAllShrubberyFiles(shrubberyArray);
+	for (size_t i = 0; i < 8; i++)
+	{
+		status.shrubberyArray[i] = shrubberyArray[i + 1];
+	}
+	/*
+	 * drawing top
+	 */
+	std::cout << "┌";
+	for (size_t i = 0; i < WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┐" << std::endl;
+
+	/*
+	 * drawing header
+	 */
+	size_t	sideSpace = (WIDTH - banner.length()) / 2;
+	size_t	startPos = sideSpace;
+	size_t	endPos = sideSpace;
+
+	std::cout << "│";
+	for (size_t i = 0; i < startPos - 1; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << banner;
+	for (size_t i = 0; i < endPos - 1; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << "│" << std::endl;
+	remainingLines--;
+
+	std::cout << "├";
+	for (size_t i = 0; i < WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┤" << std::endl;
+	remainingLines--;
+
+	/*
+	 * drawing menu section
+	 */
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (status.select == i)
+		{
+			std::cout << "│ " << SELECT << shrubberyArray[i];
+		}
+		else
+		{
+			std::cout << "│ " << shrubberyArray[i];
+		}
+
+		for (size_t j = 0; j < WIDTH - shrubberyArray[i].length() - 4; j++)
+		{
+			std::cout << " ";
+		}
+		std::cout << RESET << " │" << std::endl;
+		remainingLines--;
+	}
+
+	for (size_t i = 0; i < remainingLines; i++)
+	{
+		std::cout << "│";
+		for (size_t i = 0; i < WIDTH - 2; i++)
+		{
+			std::cout << " ";
+		}
+		std::cout << "│" << std::endl;
+	}
+
+	/*
+	 * drawing bottom
+	 */
+	std::cout << "└";
+	for (size_t i = 0; i < WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┘" << std::endl;
+}
+
 void	drawForm()
 {
-	std::string const	menu[4] = { "Making shrubbery",
-									"Requesting robotomy",
-									"Pardon the president",
-									"[Back]"};
+	std::string const	menu[4] = {"[Back]",
+								   "Making shrubbery",
+								   "Requesting robotomy",
+								   "Pardon the president"};
 	std::string const	welcome = "Choose your work";
 	size_t				remainingLines = HEIGHT - 2;
 
@@ -658,12 +894,12 @@ void	drawSignPopUp()
 		std::cout << " ";
 	}
 	std::cout << " │" << std::endl;
-	remainingLines--;
+	remainingLines -= 2;
 
 	/*
 	 * drawing body
 	 */
-	for (size_t i = 0; i < remainingLines - 1; i++)
+	for (size_t i = 0; i < remainingLines; i++)
 	{
 		std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
 		std::cout << "│";
@@ -720,7 +956,6 @@ void	drawNamePopUp()
 	int		startPosX = (WIDTH - BOX_WIDTH) / 2;
 	size_t	remainingLines = BOX_HEIGHT - 2;
 
-	status.renderSpeed = 0.03;
 	/*
 	 * drawing top
 	 */
@@ -776,7 +1011,7 @@ void	drawNamePopUp()
 	std::cout << "│" << std::endl;
 	remainingLines--;
 
-	for (size_t i = 0; i < remainingLines - 1; i++)
+	for (size_t i = 0; i < remainingLines; i++)
 	{
 		std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
 		std::cout << "│";
@@ -809,13 +1044,195 @@ void	drawNamePopUp()
 	std::cout << "┘" << std::endl;
 }
 
+void	drawExecutePopUp()
+{
+	int		startPosY = (HEIGHT - BOX_HEIGHT) / 2;
+	int		startPosX = (WIDTH - BOX_WIDTH) / 2;
+	size_t	remainingLines = BOX_HEIGHT - 2;
+
+	/*
+	 * drawing top
+	 */
+	std::cout << "\033[" << startPosY << ";" << startPosX << "H";
+	std::cout << "┌";
+	for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┐" << std::endl;
+
+	/*
+	 * drawing header
+	 */
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::string const	message = "Do you want to execute this Form?";
+
+	std::cout << "│ " << message;
+	for (size_t i = 0; i < BOX_WIDTH - message.length() - 4; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << " │" << std::endl;
+	remainingLines -= 2;
+
+	/*
+	 * drawing body
+	 */
+	for (size_t i = 0; i < remainingLines; i++)
+	{
+		std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+		std::cout << "│";
+		for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+		{
+			std::cout << " ";
+		}
+		std::cout << "│" << std::endl;
+	}
+
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::cout << "│";
+	for (size_t i = 0; i < MARGIN; i++)
+	{
+		std::cout << " ";
+	}
+
+	if (status.yesNo == true)
+	{
+		std::cout
+		<< SELECT << "[YES]" << RESET
+		<< "         "
+		<< "[NO]";
+	}
+	else
+	{
+		std::cout
+		<< "[YES]"
+		<< "         "
+		<< SELECT << "[NO]" << RESET;
+	}
+
+	for (size_t i = 0; i < MARGIN; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << "│" << std::endl;
+
+	/*
+	 * drawing bottom
+	 */
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::cout << "└";
+	for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┘" << std::endl;
+}
+
+void	drawResultPopUp()
+{
+	int		startPosY = (HEIGHT - BOX_HEIGHT) / 2;
+	int		startPosX = (WIDTH - BOX_WIDTH) / 2;
+	size_t	remainingLines = BOX_HEIGHT - 2;
+
+	/*
+	 * drawing top
+	 */
+	std::cout << "\033[" << startPosY << ";" << startPosX << "H";
+	std::cout << "┌";
+	for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┐" << std::endl;
+
+	/*
+	 * drawing header
+	 */
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::string const	message = "Message";
+
+	std::cout << "│ " << message;
+	for (size_t i = 0; i < BOX_WIDTH - message.length() - 4; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << " │" << std::endl;
+	remainingLines--;
+
+	/*
+	 * drawing body
+	 */
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::cout << "│";
+	for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << "│" << std::endl;
+	remainingLines--;
+
+	size_t	msgLen = status.formInfo.message.length();
+	size_t	printLen = BOX_WIDTH - 4;
+
+	for (size_t i = 0; i < msgLen; i += printLen)
+	{
+		std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+		std::cout << "│ ";
+		for (size_t j = 0; j < BOX_WIDTH - 4 && i + j < msgLen; j++)
+		{
+			std::cout << status.formInfo.message[i + j];
+		}
+		for (int k = 0; k < static_cast<int>(printLen - (msgLen - i)); k++)
+		{
+			std::cout << " ";
+		}
+		std::cout << " │" << std::endl;
+		if (remainingLines > 1)
+		{
+			remainingLines--;
+		}
+	}
+
+	for (size_t i = 0; i < remainingLines; i++)
+	{
+		std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+		std::cout << "│";
+		for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+		{
+			std::cout << " ";
+		}
+		std::cout << "│" << std::endl;
+	}
+
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::string const	message2 = "Press [Enter] to continue";
+
+	std::cout << "│ ";
+	for (size_t i = 0; i < BOX_WIDTH - message2.length() - 4; i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << message2 << " │" << std::endl;
+
+	/*
+	 * drawing bottom
+	 */
+	std::cout << "\033[" << ++startPosY << ";" << startPosX << "H";
+	std::cout << "└";
+	for (size_t i = 0; i < BOX_WIDTH - 2; i++)
+	{
+		std::cout << "─";
+	}
+	std::cout << "┘" << std::endl;
+}
+
 void	drawLogin()
 {
 	int		startPosY = (HEIGHT - BOX_HEIGHT) / 2;
 	int		startPosX = (WIDTH - BOX_WIDTH) / 2;
 	size_t	remainingLines = BOX_HEIGHT - 2;
 
-	status.renderSpeed = 0.03;
 	/*
 	 * drawing top
 	 */
@@ -960,4 +1377,27 @@ void	drawLogin()
 /*                                   Utils                                    */
 /* ************************************************************************** */
 
+void	changeRenderSpeed(float speed)
+{
+	status.renderSpeed = speed;
+}
 
+void	findAllShrubberyFiles(std::string shrubberyArray[])
+{
+	DIR*			dir;
+	struct dirent*	ent;
+	int				index = 0;
+
+	if ((dir = opendir(".")) == NULL)
+		throw "Could not open directory";
+
+	while ((ent = readdir(dir)) != NULL)
+	{
+		size_t	len = strlen(ent->d_name);
+		if (len > 10 && std::string(ent->d_name + len - 10) == "_shrubbery")
+		{
+			shrubberyArray[(index++ % 7) + 1] = std::string(ent->d_name);
+		}
+	}
+	closedir(dir);
+}

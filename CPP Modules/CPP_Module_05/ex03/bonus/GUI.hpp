@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/07 18:34:59 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 03:12:29 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #ifndef __GUI_HPP__
 #define __GUI_HPP__
 
+#include <dirent.h>
 #include <signal.h>
 #include <sys/ioctl.h>
 #include <termios.h>
@@ -58,40 +59,45 @@ enum eLogin
 	CHECK_LOGIN
 };
 
-enum ePopUP
-{
-	DISABLE,
-	SIGN,
-	NAME,
-	EXEC
-};
-
 enum eStage
 {
 	LOGIN,
 	LOBBY,
+	CHECK,
+	IMAGE,
 	FORM,
 	MESSAGE
 };
 
-enum eMode
+enum eLobby
 {
 	MAKE,
+	SHOW,
 	LOGOUT,
 	QUIT
 };
 
 enum eForm
 {
+	BACK,
 	SHRUBBERY,
 	ROBOTOMY,
-	PRESIDENT,
-	BACK
+	PRESIDENT
+};
+
+enum ePopUP
+{
+	DISABLE,
+	SIGN,
+	NAME,
+	EXECUTE,
+	RESULT
 };
 
 struct FormInfo
 {
 	std::string	name;
+	std::string	message;
 	AForm*		form;
 };
 
@@ -105,10 +111,8 @@ struct BureaucratInfo
 struct Status
 {
 	float					renderSpeed;
-	std::string				buffer;
 	char					letter;
 	unsigned short			stage;
-	unsigned short			mode;
 	short					select;
 	bool					create;
 	bool					popUp;
@@ -119,6 +123,8 @@ struct Status
 	bool					pressBackSpace;
 	struct BureaucratInfo	bureaucratInfo;
 	struct FormInfo			formInfo;
+	std::string				shrubberyArray[7];
+	std::string				filename;
 	bool					isError;
 	std::string				errorMessage;
 };
@@ -142,9 +148,15 @@ void	updatePopUp();
 
 void	printError();
 void	drawLobby();
+void	drawCheck();
 void	drawForm();
 void	drawSignPopUp();
 void	drawNamePopUp();
+void	drawExecutePopUp();
+void	drawResultPopUp();
 void	drawLogin();
+
+void	changeRenderSpeed(float speed);
+void	findAllShrubberyFiles(std::string shrubberyArray[]);
 
 #endif /* __GUI_HPP__ */

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 00:22:42 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/04 16:26:20 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/08 23:16:32 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ AForm*	Intern::makeForm
 			std::cout << "Intern can't find " << targetName << std::endl;
 			return 0;
 	}
-
-	std::cout << "Intern creates " << targetName << std::endl;
 
 	return form;
 }

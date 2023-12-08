@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/07 18:34:41 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 02:09:48 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	delay()
 
 void	check()
 {
-//	std::cout << status.bureaucratInfo.bureaucrat << std::endl;
-//	if (status.bureaucratInfo.bureaucrat != 0)
-//	{
-//		std::cout << status.bureaucratInfo.bureaucrat->getName() << std::endl;
-//		std::cout << status.bureaucratInfo.bureaucrat->getGrade() << std::endl;
-//	}
+	std::cout << status.formInfo.form << std::endl;
+	if (status.formInfo.form != 0)
+	{
+		std::cout << status.formInfo.form->getName() << std::endl;
+		std::cout << status.formInfo.message << std::endl;
+	}
 }
 
 int	main()
@@ -63,7 +63,7 @@ int	main()
 			updateStage();
 			updatePopUp();
 
-			check();
+			//check();
 			printError();
 
 			int	key = readInput();
@@ -77,6 +77,13 @@ int	main()
 			deleteInfo();
 			status.isError = true;
 			status.errorMessage = e.what();
+		}
+		catch (char const* s)
+		{
+			initStatus();
+			deleteInfo();
+			status.isError = true;
+			status.errorMessage = s;
 		}
 	}
 
