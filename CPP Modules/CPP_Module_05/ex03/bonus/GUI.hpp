@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/09 03:12:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 22:36:45 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ enum eForm
 enum ePopUP
 {
 	DISABLE,
-	SIGN,
 	NAME,
+	SIGN,
 	EXECUTE,
 	RESULT
 };

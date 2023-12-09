@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:09:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/08 23:12:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 22:28:35 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ throw(GradeTooLowException, FormNotSignedException, char const*)
 			throw std::runtime_error("Unable to create file!");
 		}
 
+		// 한줄로 만들어서 파일 저장 후 에러 goodbit 체크
 		outfile << "                               " << "\n";
 		outfile << "        .:-:: .- -.-           " << "\n";
 		outfile << "       -===**++++== :-==       " << "\n";

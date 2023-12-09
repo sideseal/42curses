@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/09 02:09:48 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 22:48:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ struct Status			status;
 
 void	check_leaks()
 {
-	system("leaks a.out");
+	system("leaks -- a.out");
 }
 
 void	signalHandler(__attribute__((unused)) int signum)

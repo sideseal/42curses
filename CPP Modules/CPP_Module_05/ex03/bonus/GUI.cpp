@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/09 03:18:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/09 22:45:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,7 +379,7 @@ void	setStage()
 			drawCheck();
 			break;
 		case IMAGE:
-			drawImage();
+//			drawImage();
 			break;
 		case FORM:
 			drawForm();
@@ -466,7 +466,7 @@ void	updateStage()
 					status.stage = LOBBY;
 					break;
 				default:
-					setFilename();
+//					setFilename();
 					initStatus();
 					status.stage = IMAGE;
 					break;
@@ -482,9 +482,11 @@ void	updateStage()
 					status.stage = LOBBY;
 					break;
 				case SHRUBBERY:
+					initStatus();
 					status.popUp = true;
 					status.stage = MESSAGE;
-					status.popUpProcess = SIGN;
+					status.popUpProcess = NAME;
+					changeRenderSpeed(0.03f);
 					break;
 				case ROBOTOMY:
 					// not developed
@@ -499,23 +501,21 @@ void	updateStage()
 		case MESSAGE:
 			switch (status.popUpProcess)
 			{
-				case SIGN:
-					if (status.yesNo == true)
-					{
-						changeRenderSpeed(0.03f);
-						status.popUpProcess = NAME;
-					}
-					else
-					{
-						initStatus();
-						status.stage = FORM;
-					}
-					break;
 				case NAME:
 					changeRenderSpeed(0.1f);
 					createForm();
-					signForm();
 					status.yesNo = false;
+					status.popUpProcess = SIGN;
+					break;
+				case SIGN:
+					if (status.yesNo == true)
+					{
+						signForm();
+					}
+					else
+					{
+						status.yesNo = false;
+					}
 					status.popUpProcess = EXECUTE;
 					break;
 				case EXECUTE:
@@ -526,6 +526,7 @@ void	updateStage()
 					}
 					else
 					{
+						deleteForm();
 						initStatus();
 						status.stage = FORM;
 					}
@@ -553,13 +554,13 @@ void	updatePopUp()
 		{
 			if (status.select == SHRUBBERY)
 			{
-				if (status.popUpProcess == SIGN)
-				{
-					drawSignPopUp();
-				}
-				else if (status.popUpProcess == NAME)
+				if (status.popUpProcess == NAME)
 				{
 					drawNamePopUp();
+				}
+				else if (status.popUpProcess == SIGN)
+				{
+					drawSignPopUp();
 				}
 				else if (status.popUpProcess == EXECUTE)
 				{
