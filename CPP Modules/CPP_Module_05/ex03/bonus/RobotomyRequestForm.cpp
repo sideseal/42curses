@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 22:01:37 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/04 00:13:26 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 21:23:44 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ throw(GradeTooLowException)
 }
 
 void	RobotomyRequestForm::execute(Bureaucrat const & executor) const
-throw (GradeTooLowException, FormNotSignedException)
+throw(GradeTooLowException, FormNotSignedException, char const*)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -87,27 +87,23 @@ throw (GradeTooLowException, FormNotSignedException)
 	}
 	else
 	{
-		std::cout
-		<< "\033[4m"
-		<< "[Unbearably loud drilling noise]"
-		<< "\033[0m"
-		<< std::endl;
-
 		srand(time(NULL));
 
 		if (rand() % 2 == 1)
 		{
-			std::cout
-			<< "INFO: Successfully robotomized "
-			<< this->getName()
-			<< "." << std::endl;
+			std::string	message = "Successfully robotomized "
+								+ this->getName()
+								+ ".";
+
+			throw message.c_str();
 		}
 		else
 		{
-			std::cout
-			<< "INFO: Robotomize "
-			<< this->getName()
-			<< " Failed." << std::endl;
+			std::string	message = "Sorry. Robotomize "
+								+ this->getName()
+								+ " Failed.";
+
+			throw message.c_str();
 		}
 	}
 }

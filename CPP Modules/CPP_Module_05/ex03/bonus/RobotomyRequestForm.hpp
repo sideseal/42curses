@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 22:01:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 23:10:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 21:27:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ public:
 								throw(GradeTooLowException);
 	virtual void			execute(Bureaucrat const& executor) const
 								throw(GradeTooLowException,
-									  FormNotSignedException);
+									  FormNotSignedException,
+									  char const*);
 
 /* ************************************************************************** */
 /*                 RobotomyRequestForm::GradeTooHighException                 */

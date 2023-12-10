@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 23:31:16 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/04 00:00:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 21:31:39 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ public:
 								throw(GradeTooLowException);
 	virtual void			execute(Bureaucrat const& executor) const
 								throw(GradeTooLowException,
-									  FormNotSignedException);
+									  FormNotSignedException,
+									  char const*);
 
 /* ************************************************************************** */
 /*               PresidentialPardonForm::GradeTooHighException                */

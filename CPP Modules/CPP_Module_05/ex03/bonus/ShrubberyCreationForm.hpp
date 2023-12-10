@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:10:06 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/08 22:23:21 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 21:17:31 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #ifndef __SHRUBBERYCREATIONFORM_HPP__
 #define __SHRUBBERYCREATIONFORM_HPP__
 
+#include <cstdlib>
+#include <ctime>
 #include <fstream>
 
 #include "AForm.hpp"
@@ -36,7 +38,8 @@ public:
 								throw(GradeTooLowException);
 	virtual void			execute(Bureaucrat const& executor) const
 								throw(GradeTooLowException,
-									  FormNotSignedException, char const*);
+									  FormNotSignedException,
+									  char const*);
 
 /* ************************************************************************** */
 /*                ShrubberyCreationForm::GradeTooHighException                */

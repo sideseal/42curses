@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:41 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/09 22:36:45 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 21:47:15 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,19 +111,19 @@ struct BureaucratInfo
 struct Status
 {
 	float					renderSpeed;
+	bool					renderStop;
 	char					letter;
 	unsigned short			stage;
 	short					select;
 	bool					create;
-	bool					popUp;
-	short					popUpProcess;
+	short					popUp;
 	bool					pressEnter;
 	bool					yesNo;
 	bool					pressLetter;
 	bool					pressBackSpace;
 	struct BureaucratInfo	bureaucratInfo;
 	struct FormInfo			formInfo;
-	std::string				shrubberyArray[7];
+	std::string				shrubberyArray[8];
 	std::string				filename;
 	bool					isError;
 	std::string				errorMessage;
@@ -140,23 +140,32 @@ int		readKey(char* buf, int k);
 void	controlKey(int key);
 void	makeBuffer();
 
+void	deleteBureaucrat();
+void	deleteForm();
+
 void	initStatus();
 void	deleteInfo();
 void	setStage();
-void	updateStage();
+void	updateStatus();
 void	updatePopUp();
+void	setFilename();
 
-void	printError();
 void	drawLobby();
 void	drawCheck();
 void	drawForm();
 void	drawSignPopUp();
 void	drawNamePopUp();
 void	drawExecutePopUp();
-void	drawResultPopUp();
+void	drawShrubberyResultPopUp();
+void	drawRobotomyResultPopUp();
 void	drawLogin();
+void	drawImage();
+void	drawGoodbye();
 
+void	printIfError();
 void	changeRenderSpeed(float speed);
+void	setFilename();
 void	findAllShrubberyFiles(std::string shrubberyArray[]);
+short	getArraySize(std::string const arr[], short size);
 
 #endif /* __GUI_HPP__ */

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:09:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/09 22:28:35 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 18:52:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,27 +96,59 @@ throw(GradeTooLowException, FormNotSignedException, char const*)
 		}
 
 		// 한줄로 만들어서 파일 저장 후 에러 goodbit 체크
-		outfile << "                               " << "\n";
-		outfile << "        .:-:: .- -.-           " << "\n";
-		outfile << "       -===**++++== :-==       " << "\n";
-		outfile << "     -=-::++=+--*+==+==-:      " << "\n";
-		outfile << "   .=++=--=+*+#=+#**=:=*+=.    " << "\n";
-		outfile << "   +#+=*=++*=+**#*+*##=*-=*.   " << "\n";
-		outfile << "  .++-+=*####+=**#==#:###++.   " << "\n";
-		outfile << "    *++=++%+#*+#*++==+**#-*+   " << "\n";
-		outfile << "   :%%=+*+#*.**++*#+==+*+**+*. " << "\n";
-		outfile << "  .+++-++#%###+-+****+=#++++=: " << "\n";
-		outfile << " :**=###%%##%%***#**###*#*+.-: " << "\n";
-		outfile << "  -*%*%******-=#=#####.-#%***  " << "\n";
-		outfile << " .+#%#*##*#*%*%*##+**#**#.     " << "\n";
-		outfile << "     *%%***#%%%#:*+##-*:=      " << "\n";
-		outfile << "    =-+* *%  .-#:*#*##*#:      " << "\n";
-		outfile << "               #%  #+          " << "\n";
-		outfile << "               *#              " << "\n";
-		outfile << "               *+              " << "\n";
-		outfile << "               =:              " << "\n";
-		outfile << "             .++%-=.           " << "\n";
-		outfile << "                               " << "\n";
+		srand(time(NULL));
+
+		if (rand() % 2 == 1)
+		{
+			outfile << "                               " << "\n";
+			outfile << "        .:-:: .- -.-           " << "\n";
+			outfile << "       -===**++++== :-==       " << "\n";
+			outfile << "     -=-::++=+--*+==+==-:      " << "\n";
+			outfile << "   .=++=--=+*+#=+#**=:=*+=.    " << "\n";
+			outfile << "   +#+=*=++*=+**#*+*##=*-=*.   " << "\n";
+			outfile << "  .++-+=*####+=**#==#:###++.   " << "\n";
+			outfile << "    *++=++%+#*+#*++==+**#-*+   " << "\n";
+			outfile << "   :%%=+*+#*.**++*#+==+*+**+*. " << "\n";
+			outfile << "  .+++-++#%###+-+****+=#++++=: " << "\n";
+			outfile << " :**=###%%##%%***#**###*#*+.-: " << "\n";
+			outfile << "  -*%*%******-=#=#####.-#%***  " << "\n";
+			outfile << " .+#%#*##*#*%*%*##+**#**#.     " << "\n";
+			outfile << "     *%%***#%%%#:*+##-*:=      " << "\n";
+			outfile << "    =-+* *%  .-#:*#*##*#:      " << "\n";
+			outfile << "               #%  #+          " << "\n";
+			outfile << "               *#              " << "\n";
+			outfile << "               *+              " << "\n";
+			outfile << "               =:              " << "\n";
+			outfile << "             .++%-=.           " << "\n";
+			outfile << "                               " << "\n";
+		}
+		else
+		{
+			outfile << "                                   " << "\n";
+			outfile << "                  __ _             " << "\n";
+			outfile << "               !0@@@0NL            " << "\n";
+			outfile << "       ;@NN|@b0@@0BN]@$@$H         " << "\n";
+			outfile << "     ,;BNW@@0NNN@$@NN@0B@@b@L      " << "\n";
+			outfile << "    PTEX]@BB^}@B0BN_/]y@$KQ@bP+    " << "\n";
+			outfile << "    !@`]@W8@@@0@$#N@@NE]h]BBb`^    " << "\n";
+			outfile << "    ` `P''$@@@BRB#B@NEp@p@WB/`     " << "\n";
+			outfile << "        ,ARB@BBBNN@B@@@]RBNE`      " << "\n";
+			outfile << "        0@@R@@@BK0B@B0B0NNB=_#_    " << "\n";
+			outfile << "        0Z$BNBBB$BBBWBR2BN@@E&L_   " << "\n";
+			outfile << "         B9@RBRRDBBR00BMH   F      " << "\n";
+			outfile << "        TBR' 9R@B@NMB6N@H          " << "\n";
+			outfile << "               TTB   T`0,          " << "\n";
+			outfile << "                 N                 " << "\n";
+			outfile << "                 L                 " << "\n";
+			outfile << "                 :                 " << "\n";
+			outfile << "                 L                 " << "\n";
+			outfile << "                 L                 " << "\n";
+			outfile << "                 I                 " << "\n";
+			outfile << "                 h_                " << "\n";
+			outfile << "                 '`                " << "\n";
+			outfile << "                                   " << "\n";
+		}
+
 		outfile << "Created by " << executor.getName()
 				<< "[" << executor.getGrade() << "]" << std::endl;
 

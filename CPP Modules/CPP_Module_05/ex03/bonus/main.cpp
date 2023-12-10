@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/09 22:48:56 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/10 21:39:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	check_leaks()
 
 void	signalHandler(__attribute__((unused)) int signum)
 {
+	deleteBureaucrat();
+	deleteForm();
+	resetTerminal();
 	exit(0);
 }
 
@@ -33,14 +36,11 @@ void	delay()
 	nanosleep(&req, &rem);
 }
 
-void	check()
+void	check(int key)
 {
-	std::cout << status.formInfo.form << std::endl;
-	if (status.formInfo.form != 0)
-	{
-		std::cout << status.formInfo.form->getName() << std::endl;
-		std::cout << status.formInfo.message << std::endl;
-	}
+	std::cout << key << std::endl;
+	std::cout << status.renderSpeed << std::endl;
+	std::cout << status.renderStop << std::endl;
 }
 
 int	main()
@@ -50,24 +50,23 @@ int	main()
 
 	if (configureTerminal() == false)
 	{
+		resetTerminal();
 		return 1;
 	}
 
 	initStatus();
+	eraseTerminal();
+	drawLogin();
 	while (!exitLoop)
 	{
 		try
 		{
-			eraseTerminal();
-			setStage();
-			updateStage();
-			updatePopUp();
-
-			//check();
-			printError();
-
 			int	key = readInput();
 			controlKey(key);
+			makeBuffer();
+			updateStatus();
+			setStage();
+			updatePopUp();
 
 			delay();
 		}
