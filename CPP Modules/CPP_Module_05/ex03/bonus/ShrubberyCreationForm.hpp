@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:10:06 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/10 21:17:31 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 18:29:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ public:
 	virtual void			execute(Bureaucrat const& executor) const
 								throw(GradeTooLowException,
 									  FormNotSignedException,
-									  char const*);
+									  std::string);
 
 /* ************************************************************************** */
 /*                ShrubberyCreationForm::GradeTooHighException                */

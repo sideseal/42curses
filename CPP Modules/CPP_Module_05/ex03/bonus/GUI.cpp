@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:56:31 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/10 22:05:03 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 18:29:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,7 +331,7 @@ void	executeForm()
 		status.stage = FORM;
 		throw;
 	}
-	catch (char const* s)
+	catch (std::string & s)
 	{
 		status.formInfo.message = s;
 	};

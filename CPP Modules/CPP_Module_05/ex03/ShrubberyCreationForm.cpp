@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:09:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/03 23:51:12 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 22:20:35 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,38 +88,53 @@ throw(GradeTooLowException, FormNotSignedException)
 	}
 	else
 	{
-		std::ofstream	outfile(this->getName() + "_shrubbery");
+		std::ofstream	outfile((this->getName() + "_shrubbery").c_str());
 
 		if (!outfile.is_open())
 		{
 			throw std::runtime_error("Unable to create file!");
 		}
 
-		outfile << "                               " << "\n";
-		outfile << "        .:-:: .- -.-           " << "\n";
-		outfile << "       -===**++++== :-==       " << "\n";
-		outfile << "     -=-::++=+--*+==+==-:      " << "\n";
-		outfile << "   .=++=--=+*+#=+#**=:=*+=.    " << "\n";
-		outfile << "   +#+=*=++*=+**#*+*##=*-=*.   " << "\n";
-		outfile << "  .++-+=*####+=**#==#:###++.   " << "\n";
-		outfile << "    *++=++%+#*+#*++==+**#-*+   " << "\n";
-		outfile << "   :%%=+*+#*.**++*#+==+*+**+*. " << "\n";
-		outfile << "  .+++-++#%###+-+****+=#++++=: " << "\n";
-		outfile << " :**=###%%##%%***#**###*#*+.-: " << "\n";
-		outfile << "  -*%*%******-=#=#####.-#%***  " << "\n";
-		outfile << " .+#%#*##*#*%*%*##+**#**#.     " << "\n";
-		outfile << "     *%%***#%%%#:*+##-*:=      " << "\n";
-		outfile << "    =-+* *%  .-#:*#*##*#:      " << "\n";
-		outfile << "               #%  #+          " << "\n";
-		outfile << "               *#              " << "\n";
-		outfile << "               *+              " << "\n";
-		outfile << "               =:              " << "\n";
-		outfile << "             .++%-=.           " << "\n";
-		outfile << "                               " << "\n";
-		outfile << "Created by " << executor.getName()
-				<< "[" << executor.getGrade() << "]" << std::endl;
+		char const* tree =
+			"                               \n"
+			"        .:-:: .- -.-           \n"
+			"       -===**++++== :-==       \n"
+			"     -=-::++=+--*+==+==-:      \n"
+			"   .=++=--=+*+#=+#**=:=*+=.    \n"
+			"   +#+=*=++*=+**#*+*##=*-=*.   \n"
+			"  .++-+=*####+=**#==#:###++.   \n"
+			"    *++=++%+#*+#*++==+**#-*+   \n"
+			"   :%%=+*+#*.**++*#+==+*+**+*. \n"
+			"  .+++-++#%###+-+****+=#++++=: \n"
+			" :**=###%%##%%***#**###*#*+.-: \n"
+			"  -*%*%******-=#=#####.-#%***  \n"
+			" .+#%#*##*#*%*%*##+**#**#.     \n"
+			"     *%%***#%%%#:*+##-*:=      \n"
+			"    =-+* *%  .-#:*#*##*#:      \n"
+			"               #%  #+          \n"
+			"               *#              \n"
+			"               *+              \n"
+			"               =:              \n"
+			"             .++%-=.           \n"
+			"                               \n"
+			"Created by ";
+
+		outfile << tree
+				<< executor.getName()
+				<< "[" << executor.getGrade() << "]"
+				<< std::endl;
+
+		if (!outfile.good())
+		{
+			throw std::runtime_error("Error writing to file!");
+		}
 
 		outfile.close();
+
+		if (outfile.fail())
+		{
+			throw std::runtime_error("Error closing file!");
+		}
 
 		std::cout << "INFO: Successfully created shrubbery!" << std::endl;
 	}

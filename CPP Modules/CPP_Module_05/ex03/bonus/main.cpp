@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:20:33 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/10 21:39:46 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 22:24:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,6 @@ void	delay()
 {
 	req.tv_nsec = status.renderSpeed * 1000000000;
 	nanosleep(&req, &rem);
-}
-
-void	check(int key)
-{
-	std::cout << key << std::endl;
-	std::cout << status.renderSpeed << std::endl;
-	std::cout << status.renderStop << std::endl;
 }
 
 int	main()
@@ -77,12 +70,12 @@ int	main()
 			status.isError = true;
 			status.errorMessage = e.what();
 		}
-		catch (char const* s)
+		catch (...)
 		{
 			initStatus();
 			deleteInfo();
 			status.isError = true;
-			status.errorMessage = s;
+			status.errorMessage = "Something went wrong...";
 		}
 	}
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 22:01:37 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/10 21:23:44 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 18:30:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ throw(GradeTooLowException)
 }
 
 void	RobotomyRequestForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException, char const*)
+throw(GradeTooLowException, FormNotSignedException, std::string)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -95,7 +95,7 @@ throw(GradeTooLowException, FormNotSignedException, char const*)
 								+ this->getName()
 								+ ".";
 
-			throw message.c_str();
+			throw message;
 		}
 		else
 		{
@@ -103,7 +103,7 @@ throw(GradeTooLowException, FormNotSignedException, char const*)
 								+ this->getName()
 								+ " Failed.";
 
-			throw message.c_str();
+			throw message;
 		}
 	}
 }

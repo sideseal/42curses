@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 23:31:04 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/04 00:02:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 23:03:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,9 @@ throw(GradeTooLowException, FormNotSignedException)
 		std::cout
 		<< "INFO: "
 		<< this->getName()
+		<< " has been pardoned by "
 		<< "\033[34m"
-		<< " has been pardoned by Zaphod Beeblebrox!"
+		<< "Zaphod Beeblebrox!"
 		<< "\033[0m"
 		<< std::endl;
 	}

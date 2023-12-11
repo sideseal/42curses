@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 23:31:04 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/10 21:32:05 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 18:25:33 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ throw(GradeTooLowException)
 }
 
 void	PresidentialPardonForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException, char const*)
+throw(GradeTooLowException, FormNotSignedException, std::string)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -92,7 +92,7 @@ throw(GradeTooLowException, FormNotSignedException, char const*)
 							+ this->getName()
 							+ " has been pardoned by Zaphod Beeblebrox!";
 
-		throw message.c_str();
+		throw message;
 	}
 }
 

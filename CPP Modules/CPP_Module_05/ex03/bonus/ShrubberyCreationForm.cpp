@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 22:09:51 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/10 18:52:33 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/11 22:21:14 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ throw(GradeTooLowException)
 }
 
 void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException, char const*)
+throw(GradeTooLowException, FormNotSignedException, std::string)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -95,66 +95,86 @@ throw(GradeTooLowException, FormNotSignedException, char const*)
 			throw std::runtime_error("Unable to create file!");
 		}
 
-		// 한줄로 만들어서 파일 저장 후 에러 goodbit 체크
 		srand(time(NULL));
 
 		if (rand() % 2 == 1)
 		{
-			outfile << "                               " << "\n";
-			outfile << "        .:-:: .- -.-           " << "\n";
-			outfile << "       -===**++++== :-==       " << "\n";
-			outfile << "     -=-::++=+--*+==+==-:      " << "\n";
-			outfile << "   .=++=--=+*+#=+#**=:=*+=.    " << "\n";
-			outfile << "   +#+=*=++*=+**#*+*##=*-=*.   " << "\n";
-			outfile << "  .++-+=*####+=**#==#:###++.   " << "\n";
-			outfile << "    *++=++%+#*+#*++==+**#-*+   " << "\n";
-			outfile << "   :%%=+*+#*.**++*#+==+*+**+*. " << "\n";
-			outfile << "  .+++-++#%###+-+****+=#++++=: " << "\n";
-			outfile << " :**=###%%##%%***#**###*#*+.-: " << "\n";
-			outfile << "  -*%*%******-=#=#####.-#%***  " << "\n";
-			outfile << " .+#%#*##*#*%*%*##+**#**#.     " << "\n";
-			outfile << "     *%%***#%%%#:*+##-*:=      " << "\n";
-			outfile << "    =-+* *%  .-#:*#*##*#:      " << "\n";
-			outfile << "               #%  #+          " << "\n";
-			outfile << "               *#              " << "\n";
-			outfile << "               *+              " << "\n";
-			outfile << "               =:              " << "\n";
-			outfile << "             .++%-=.           " << "\n";
-			outfile << "                               " << "\n";
+			char const* tree =
+				"                               \n"
+				"        .:-:: .- -.-           \n"
+				"       -===**++++== :-==       \n"
+				"     -=-::++=+--*+==+==-:      \n"
+				"   .=++=--=+*+#=+#**=:=*+=.    \n"
+				"   +#+=*=++*=+**#*+*##=*-=*.   \n"
+				"  .++-+=*####+=**#==#:###++.   \n"
+				"    *++=++%+#*+#*++==+**#-*+   \n"
+				"   :%%=+*+#*.**++*#+==+*+**+*. \n"
+				"  .+++-++#%###+-+****+=#++++=: \n"
+				" :**=###%%##%%***#**###*#*+.-: \n"
+				"  -*%*%******-=#=#####.-#%***  \n"
+				" .+#%#*##*#*%*%*##+**#**#.     \n"
+				"     *%%***#%%%#:*+##-*:=      \n"
+				"    =-+* *%  .-#:*#*##*#:      \n"
+				"               #%  #+          \n"
+				"               *#              \n"
+				"               *+              \n"
+				"               =:              \n"
+				"             .++%-=.           \n"
+				"                               \n"
+				"Created by ";
+
+			outfile << tree
+					<< executor.getName()
+					<< "[" << executor.getGrade() << "]"
+					<< std::endl;
 		}
 		else
 		{
-			outfile << "                                   " << "\n";
-			outfile << "                  __ _             " << "\n";
-			outfile << "               !0@@@0NL            " << "\n";
-			outfile << "       ;@NN|@b0@@0BN]@$@$H         " << "\n";
-			outfile << "     ,;BNW@@0NNN@$@NN@0B@@b@L      " << "\n";
-			outfile << "    PTEX]@BB^}@B0BN_/]y@$KQ@bP+    " << "\n";
-			outfile << "    !@`]@W8@@@0@$#N@@NE]h]BBb`^    " << "\n";
-			outfile << "    ` `P''$@@@BRB#B@NEp@p@WB/`     " << "\n";
-			outfile << "        ,ARB@BBBNN@B@@@]RBNE`      " << "\n";
-			outfile << "        0@@R@@@BK0B@B0B0NNB=_#_    " << "\n";
-			outfile << "        0Z$BNBBB$BBBWBR2BN@@E&L_   " << "\n";
-			outfile << "         B9@RBRRDBBR00BMH   F      " << "\n";
-			outfile << "        TBR' 9R@B@NMB6N@H          " << "\n";
-			outfile << "               TTB   T`0,          " << "\n";
-			outfile << "                 N                 " << "\n";
-			outfile << "                 L                 " << "\n";
-			outfile << "                 :                 " << "\n";
-			outfile << "                 L                 " << "\n";
-			outfile << "                 L                 " << "\n";
-			outfile << "                 I                 " << "\n";
-			outfile << "                 h_                " << "\n";
-			outfile << "                 '`                " << "\n";
-			outfile << "                                   " << "\n";
+			char const* tree =
+				"                                  \n"
+				"                  __ _            \n"
+				"               !0@@@0NL           \n"
+				"       ;@NN|@b0@@0BN]@$@$H        \n"
+				"     ,;BNW@@0NNN@$@NN@0B@@b@L     \n"
+				"    PTEX]@BB^}@B0BN_/]y@$KQ@bP+   \n"
+				"    !@`]@W8@@@0@$#N@@NE]h]BBb`^   \n"
+				"    ` `P''$@@@BRB#B@NEp@p@WB/`    \n"
+				"        ,ARB@BBBNN@B@@@]RBNE`     \n"
+				"        0@@R@@@BK0B@B0B0NNB=_#_   \n"
+				"        0Z$BNBBB$BBBWBR2BN@@E&L_  \n"
+				"         B9@RBRRDBBR00BMH   F     \n"
+				"        TBR' 9R@B@NMB6N@H         \n"
+				"               TTB   T`0,         \n"
+				"                 N                \n"
+				"                 L                \n"
+				"                 :                \n"
+				"                 L                \n"
+				"                 L                \n"
+				"                 I                \n"
+				"                 h_               \n"
+				"                 '`               \n"
+				"                                  \n"
+				"Created by ";
+
+			outfile << tree
+					<< executor.getName()
+					<< "[" << executor.getGrade() << "]"
+					<< std::endl;
 		}
 
-		outfile << "Created by " << executor.getName()
-				<< "[" << executor.getGrade() << "]" << std::endl;
+		if (!outfile.good())
+		{
+			throw std::runtime_error("Error writing to file!");
+		}
 
 		outfile.close();
 
-		throw "Successfully created shrubbery!";
+		if (outfile.fail())
+		{
+			throw std::runtime_error("Error closing file!");
+		}
+
+		throw std::string("Successfully created shrubbery!");
 	}
 }
 
