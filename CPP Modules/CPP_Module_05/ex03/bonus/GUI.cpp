@@ -181,9 +181,13 @@ void	makeBuffer()
 			switch(status.select)
 			{
 				case ID:
-					if (status.pressBackSpace == true
-						&& status.bureaucratInfo.name.length() > 0)
+					if (status.pressBackSpace == true)
 					{
+						if (status.bureaucratInfo.name.length() == 0)
+						{
+							break;
+						}
+
 						status.bureaucratInfo.name.erase(
 							status.bureaucratInfo.name.length() - 1
 						);
@@ -194,9 +198,13 @@ void	makeBuffer()
 					}
 					break;
 				case GRADE:
-					if (status.pressBackSpace == true
-						&& status.bureaucratInfo.grade.length() > 0)
+					if (status.pressBackSpace == true)
 					{
+						if (status.bureaucratInfo.grade.length() == 0)
+						{
+							break;
+						}
+
 						status.bureaucratInfo.grade.erase(
 							status.bureaucratInfo.grade.length() - 1
 						);
@@ -212,9 +220,13 @@ void	makeBuffer()
 			break;
 		case MESSAGE:
 			if (status.popUp == NAME
-				&& status.pressBackSpace == true
-				&& status.formInfo.name.length() > 0)
+				&& status.pressBackSpace == true)
 			{
+				if (status.formInfo.name.length() == 0)
+				{
+					break;
+				}
+
 				status.formInfo.name.erase(
 					status.formInfo.name.length() - 1
 				);
