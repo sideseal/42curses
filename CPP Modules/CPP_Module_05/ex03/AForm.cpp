@@ -27,7 +27,6 @@ AForm::AForm()
 }
 
 AForm::AForm(std::string const& name, int signGrade, int executeGrade)
-	throw(GradeTooHighException, GradeTooLowException)
 	: mName(name),
 	  mbIsSigned(false),
 	  mSignGrade(signGrade),

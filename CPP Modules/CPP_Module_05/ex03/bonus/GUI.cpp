@@ -181,9 +181,12 @@ void	makeBuffer()
 			switch(status.select)
 			{
 				case ID:
-					if (status.pressBackSpace == true)
+					if (status.pressBackSpace == true
+						&& status.bureaucratInfo.name.length() > 0)
 					{
-						status.bureaucratInfo.name.pop_back();
+						status.bureaucratInfo.name.erase(
+							status.bureaucratInfo.name.length() - 1
+						);
 					}
 					else if (status.bureaucratInfo.name.length() < 8)
 					{
@@ -191,9 +194,12 @@ void	makeBuffer()
 					}
 					break;
 				case GRADE:
-					if (status.pressBackSpace == true)
+					if (status.pressBackSpace == true
+						&& status.bureaucratInfo.grade.length() > 0)
 					{
-						status.bureaucratInfo.grade.pop_back();
+						status.bureaucratInfo.grade.erase(
+							status.bureaucratInfo.grade.length() - 1
+						);
 					}
 					else if (status.bureaucratInfo.grade.length() < 3)
 					{
@@ -205,9 +211,13 @@ void	makeBuffer()
 			}
 			break;
 		case MESSAGE:
-			if (status.popUp == NAME && status.pressBackSpace == true)
+			if (status.popUp == NAME
+				&& status.pressBackSpace == true
+				&& status.formInfo.name.length() > 0)
 			{
-				status.formInfo.name.pop_back();
+				status.formInfo.name.erase(
+					status.formInfo.name.length() - 1
+				);
 			}
 			else if (status.popUp == NAME
 					 && status.formInfo.name.length() < 8)
@@ -1543,7 +1553,7 @@ void	drawLogin()
 
 void	drawImage()
 {
-	std::ifstream	file(status.filename);
+	std::ifstream	file((status.filename).c_str());
 
 	if (!file.is_open())
 	{
@@ -1590,7 +1600,7 @@ void	drawImage()
 	/*
 	 * drawing body
 	 */
-	file.open(status.filename);
+	file.open((status.filename).c_str());
 
 	if (!file.is_open())
 	{

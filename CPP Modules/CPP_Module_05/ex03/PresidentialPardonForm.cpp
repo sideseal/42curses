@@ -30,8 +30,7 @@ PresidentialPardonForm::PresidentialPardonForm(std::string const& targetName)
 }
 
 PresidentialPardonForm::PresidentialPardonForm
-(PresidentialPardonForm const& target)
-	throw(GradeTooHighException, GradeTooLowException) try
+(PresidentialPardonForm const& target) try
 	: AForm(target.getName(), target.getSignGrade(), target.getExecuteGrade())
 {
 	// nothing to do
@@ -63,7 +62,6 @@ PresidentialPardonForm::~PresidentialPardonForm()
 /*                           Public Member Function                           */
 /* ************************************************************************** */
 void	PresidentialPardonForm::beSigned(Bureaucrat const& bureaucrat)
-throw(GradeTooLowException)
 {
 	if (this->getSignGrade() < bureaucrat.getGrade())
 	{
@@ -76,7 +74,6 @@ throw(GradeTooLowException)
 }
 
 void	PresidentialPardonForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -117,7 +114,7 @@ PresidentialPardonForm::GradeTooHighException::GradeTooHighException
 
 PresidentialPardonForm::GradeTooHighException::GradeTooHighException
 (GradeTooHighException const& target)
-	: mMessage(target.getMessage())
+	: AForm::GradeTooHighException(target.getMessage())
 {
 	// nothing to do
 }
@@ -173,7 +170,7 @@ PresidentialPardonForm::GradeTooLowException::GradeTooLowException
 
 PresidentialPardonForm::GradeTooLowException::GradeTooLowException
 (GradeTooLowException const& target)
-	: mMessage(target.getMessage())
+	: AForm::GradeTooLowException(target.getMessage())
 {
 	// nothing to do
 }

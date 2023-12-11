@@ -30,8 +30,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string const& targetName)
 }
 
 ShrubberyCreationForm::ShrubberyCreationForm
-(ShrubberyCreationForm const& target)
-	throw(GradeTooHighException, GradeTooLowException) try
+(ShrubberyCreationForm const& target) try
 	: AForm(target.getName(), target.getSignGrade(), target.getExecuteGrade())
 {
 	// nothing to do
@@ -63,7 +62,6 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 /*                           Public Member Function                           */
 /* ************************************************************************** */
 void	ShrubberyCreationForm::beSigned(Bureaucrat const& bureaucrat)
-throw(GradeTooLowException)
 {
 	if (this->getSignGrade() < bureaucrat.getGrade())
 	{
@@ -76,7 +74,6 @@ throw(GradeTooLowException)
 }
 
 void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -158,7 +155,7 @@ ShrubberyCreationForm::GradeTooHighException::GradeTooHighException
 
 ShrubberyCreationForm::GradeTooHighException::GradeTooHighException
 (GradeTooHighException const& target)
-	: mMessage(target.getMessage())
+	: AForm::GradeTooHighException(target.getMessage())
 {
 	// nothing to do
 }
@@ -214,7 +211,7 @@ ShrubberyCreationForm::GradeTooLowException::GradeTooLowException
 
 ShrubberyCreationForm::GradeTooLowException::GradeTooLowException
 (GradeTooLowException const& target)
-	: mMessage(target.getMessage())
+	: AForm::GradeTooLowException(target.getMessage())
 {
 	// nothing to do
 }

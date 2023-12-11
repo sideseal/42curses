@@ -24,18 +24,13 @@ class PresidentialPardonForm : public AForm
 public:
 	PresidentialPardonForm();
 	PresidentialPardonForm(std::string const& targetsName);
-	PresidentialPardonForm(PresidentialPardonForm const& target)
-		throw(GradeTooHighException, GradeTooLowException);
+	PresidentialPardonForm(PresidentialPardonForm const& target);
 	PresidentialPardonForm&	operator=(PresidentialPardonForm const& target);
 	virtual ~PresidentialPardonForm();
 
 public:
-	virtual void			beSigned(Bureaucrat const& bureaucrat)
-								throw(GradeTooLowException);
-	virtual void			execute(Bureaucrat const& executor) const
-								throw(GradeTooLowException,
-									  FormNotSignedException,
-									  std::string);
+	virtual void			beSigned(Bureaucrat const& bureaucrat);
+	virtual void			execute(Bureaucrat const& executor) const;
 
 /* ************************************************************************** */
 /*               PresidentialPardonForm::GradeTooHighException                */

@@ -27,7 +27,6 @@ Form::Form()
 }
 
 Form::Form(std::string const& name, int signGrade, int executeGrade)
-	throw(GradeTooHighException, GradeTooLowException)
 	: mName(name),
 	  mbIsSigned(false),
 	  mSignGrade(signGrade),
@@ -105,7 +104,6 @@ void	Form::setIsSigned(bool isSigned)
 /*                           Public Member Function                           */
 /* ************************************************************************** */
 void	Form::beSigned(Bureaucrat const& bureaucrat)
-throw(GradeTooLowException)
 {
 	if (this->getSignGrade() < bureaucrat.getGrade())
 	{

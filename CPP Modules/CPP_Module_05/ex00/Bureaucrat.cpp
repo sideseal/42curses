@@ -25,7 +25,6 @@ Bureaucrat::Bureaucrat()
 }
 
 Bureaucrat::Bureaucrat(std::string const& name, int grade)
-	throw(GradeTooHighException, GradeTooLowException)
 	: mName(name),
 	  mGrade(grade)
 {
@@ -79,7 +78,6 @@ int	Bureaucrat::getGrade() const
 }
 
 void	Bureaucrat::setGrade(int grade)
-throw(GradeTooHighException, GradeTooLowException)
 {
 	if (grade < 1)
 	{
@@ -98,7 +96,7 @@ throw(GradeTooHighException, GradeTooLowException)
 /* ************************************************************************** */
 /*                           Public Member Function                           */
 /* ************************************************************************** */
-void	Bureaucrat::increaseGrade() throw(GradeTooHighException)
+void	Bureaucrat::increaseGrade()
 {
 	int	grade = this->getGrade();
 
@@ -112,7 +110,7 @@ void	Bureaucrat::increaseGrade() throw(GradeTooHighException)
 	}
 }
 
-void	Bureaucrat::decreaseGrade() throw(GradeTooLowException)
+void	Bureaucrat::decreaseGrade()
 {
 	int	grade = this->getGrade();
 

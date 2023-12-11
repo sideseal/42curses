@@ -27,8 +27,7 @@ class Form
 {
 public:
 	Form();
-	Form(std::string const& name, int signGrade, int executeGrade)
-		throw(GradeTooHighException, GradeTooLowException);
+	Form(std::string const& name, int signGrade, int executeGrade);
 	Form(Form const& target);
 	Form&				operator=(Form const& target);
 	~Form();
@@ -41,8 +40,7 @@ public:
 	void				setIsSigned(bool isSigned);
 
 public:
-	void				beSigned(Bureaucrat const& bureaucrat)
-							throw(GradeTooLowException);
+	void				beSigned(Bureaucrat const& bureaucrat);
 
 private:
 	std::string const	mName;

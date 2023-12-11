@@ -27,18 +27,13 @@ class RobotomyRequestForm : public AForm
 public:
 	RobotomyRequestForm();
 	RobotomyRequestForm(std::string const& targetName);
-	RobotomyRequestForm(RobotomyRequestForm const& target)
-		throw(GradeTooHighException, GradeTooLowException);
+	RobotomyRequestForm(RobotomyRequestForm const& target);
 	RobotomyRequestForm&	operator=(RobotomyRequestForm const& target);
 	virtual ~RobotomyRequestForm();
 
 public:
-	virtual void			beSigned(Bureaucrat const& bureaucrat)
-								throw(GradeTooLowException);
-	virtual void			execute(Bureaucrat const& executor) const
-								throw(GradeTooLowException,
-									  FormNotSignedException,
-									  std::string);
+	virtual void			beSigned(Bureaucrat const& bureaucrat);
+	virtual void			execute(Bureaucrat const& executor) const;
 
 /* ************************************************************************** */
 /*                 RobotomyRequestForm::GradeTooHighException                 */

@@ -26,17 +26,13 @@ class ShrubberyCreationForm : public AForm
 public:
 	ShrubberyCreationForm();
 	ShrubberyCreationForm(std::string const& targetsName);
-	ShrubberyCreationForm(ShrubberyCreationForm const& target)
-		throw(GradeTooHighException, GradeTooLowException);
+	ShrubberyCreationForm(ShrubberyCreationForm const& target);
 	ShrubberyCreationForm&	operator=(ShrubberyCreationForm const& target);
 	virtual ~ShrubberyCreationForm();
 
 public:
-	virtual void			beSigned(Bureaucrat const& bureaucrat)
-								throw(GradeTooLowException);
-	virtual void			execute(Bureaucrat const& executor) const
-								throw(GradeTooLowException,
-									  FormNotSignedException);
+	virtual void			beSigned(Bureaucrat const& bureaucrat);
+	virtual void			execute(Bureaucrat const& executor) const;
 
 /* ************************************************************************** */
 /*                ShrubberyCreationForm::GradeTooHighException                */

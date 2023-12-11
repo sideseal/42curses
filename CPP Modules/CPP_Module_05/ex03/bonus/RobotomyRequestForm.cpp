@@ -29,8 +29,7 @@ RobotomyRequestForm::RobotomyRequestForm(std::string const& targetName)
 	// nothing to do
 }
 
-RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm const& target)
-	throw(GradeTooHighException, GradeTooLowException) try
+RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm const& target) try
 	: AForm(target.getName(), target.getSignGrade(), target.getExecuteGrade())
 {
 	// nothing to do
@@ -62,7 +61,6 @@ RobotomyRequestForm::~RobotomyRequestForm()
 /*                           Public Member Function                           */
 /* ************************************************************************** */
 void	RobotomyRequestForm::beSigned(Bureaucrat const& bureaucrat)
-throw(GradeTooLowException)
 {
 	if (this->getSignGrade() < bureaucrat.getGrade())
 	{
@@ -75,7 +73,6 @@ throw(GradeTooLowException)
 }
 
 void	RobotomyRequestForm::execute(Bureaucrat const & executor) const
-throw(GradeTooLowException, FormNotSignedException, std::string)
 {
 	if (this->getExecuteGrade() < executor.getGrade())
 	{
@@ -126,7 +123,7 @@ RobotomyRequestForm::GradeTooHighException::GradeTooHighException
 
 RobotomyRequestForm::GradeTooHighException::GradeTooHighException
 (GradeTooHighException const& target)
-	: mMessage(target.getMessage())
+	: AForm::GradeTooHighException(target.getMessage())
 {
 	// nothing to do
 }
@@ -182,7 +179,7 @@ RobotomyRequestForm::GradeTooLowException::GradeTooLowException
 
 RobotomyRequestForm::GradeTooLowException::GradeTooLowException
 (GradeTooLowException const& target)
-	: mMessage(target.getMessage())
+	: AForm::GradeTooLowException(target.getMessage())
 {
 	// nothing to do
 }

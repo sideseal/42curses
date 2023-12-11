@@ -25,8 +25,7 @@ class Bureaucrat
 {
 public:
 	Bureaucrat();
-	Bureaucrat(std::string const& name, int grade)
-		throw(GradeTooHighException, GradeTooLowException);
+	Bureaucrat(std::string const& name, int grade);
 	Bureaucrat(Bureaucrat const& target);
 	Bureaucrat&			operator=(Bureaucrat const& target);
 	~Bureaucrat();
@@ -34,12 +33,11 @@ public:
 public:
 	std::string const&	getName() const;
 	int					getGrade() const;
-	void				setGrade(int grade)
-							throw(GradeTooHighException, GradeTooLowException);
+	void				setGrade(int grade);
 
 public:
-	void				increaseGrade() throw(GradeTooHighException);
-	void				decreaseGrade() throw(GradeTooLowException);
+	void				increaseGrade();
+	void				decreaseGrade();
 
 private:
 	std::string const	mName;

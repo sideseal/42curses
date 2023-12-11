@@ -27,8 +27,7 @@ class AForm
 {
 public:
 	AForm();
-	AForm(std::string const& name, int signGrade, int executeGrade)
-		throw(GradeTooHighException, GradeTooLowException);
+	AForm(std::string const& name, int signGrade, int executeGrade);
 	AForm(AForm const& target);
 	AForm&				operator=(AForm const& target);
 	virtual ~AForm();
