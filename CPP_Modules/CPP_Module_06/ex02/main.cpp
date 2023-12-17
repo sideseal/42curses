@@ -5,24 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 20:56:07 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/17 22:28:39 by gychoi           ###   ########.fr       */
+/*   Created: 2023/12/18 03:29:51 by gychoi            #+#    #+#             */
+/*   Updated: 2023/12/18 03:46:03 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#include "Base.hpp"
 
-int	main(int argc, char *argv[])
+int	main()
 {
-	if (argc != 2)
+	Base*	p = generate();
+
+	try
 	{
-		std::cout << "Usage: " << argv[0] << " <literal>" << std::endl;
-		return 1;
+		identify(p);
+		identify(*p);
 	}
-	else
+	catch (std::exception& e)
 	{
-		std::string	input = argv[1];
-		ScalarConverter::convert(input);
+		std::cout << e.what() << std::endl;
 	}
 	return 0;
 }

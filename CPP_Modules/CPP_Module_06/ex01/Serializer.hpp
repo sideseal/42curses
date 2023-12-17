@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ScalarConverter.hpp                                :+:      :+:    :+:   */
+/*   Serializer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 21:11:15 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/17 21:34:11 by gychoi           ###   ########.fr       */
+/*   Created: 2023/12/17 22:26:03 by gychoi            #+#    #+#             */
+/*   Updated: 2023/12/18 02:51:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef __SCALAR_CONVERTER_HPP__
-#define __SCALAR_CONVERTER_HPP__
+#ifndef __SERIALIZER_HPP__
+#define __SERIALIZER_HPP__
 
-#include <limits>
+#include <stdint.h>
 #include <iostream>
-#include <stdexcept>
-#include <string>
 
-class ScalarConverter
+struct Data
 {
-private:
-	ScalarConverter();
-	ScalarConverter(ScalarConverter const& target);
-	ScalarConverter&	operator=(ScalarConverter const& target);
-	~ScalarConverter();
-
-public:
-	static void			convert(std::string const& literal);
+	std::string	data;
 };
 
-#endif /* __SCALAR_CONVERTER_HPP__ */
+class Serializer
+{
+private:
+	Serializer();
+	Serializer(Serializer const& target);
+	Serializer&	operator=(Serializer const& target);
+	~Serializer();
+
+public:
+	static uintptr_t	serialize(Data* ptr);
+	static Data*		deserialize(uintptr_t raw);
+};
+
+#endif /* __SERIALIZER_HPP__ */
