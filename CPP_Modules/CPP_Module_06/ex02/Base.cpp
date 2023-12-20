@@ -104,7 +104,7 @@ void	identify(Base& p)
 
 	if (flag == false)
 	{
-		throw std::bad_cast();
+		throw std::runtime_error("Bad Reference");
 	}
 	else
 	{

@@ -14,6 +14,8 @@
 #ifndef __SCALAR_CONVERTER_HPP__
 #define __SCALAR_CONVERTER_HPP__
 
+#include <cstdlib>
+#include <cstring>
 #include <limits>
 #include <iostream>
 #include <stdexcept>
