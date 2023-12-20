@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 21:12:02 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/17 22:13:28 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/20 21:50:21 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,21 @@ static double	_getValidValue(std::string const& literal)
 	char*	endPtr = 0;
 	double	value = std::strtod(literal.c_str(), &endPtr);
 
-	if (endPtr && *endPtr != '\0')
+	if (endPtr && *endPtr != '\0') // non-digit char founds
 	{
-		if (literal.length() == 1 && !value)
+		if (!value && literal.length() == 1)
 		{
+			// allow one char literal
 			value = static_cast<double>(literal[0]);
 		}
 		else if (std::strcmp(endPtr, "f"))
 		{
+			// if non-digit char includes, only 'f' format allows
 			throw std::invalid_argument("Invalid argument: " + literal);
 		}
 		else if (literal.find('.') == std::string::npos)
 		{
+			// '42f' - invalid literal format
 			throw std::invalid_argument("Invalid argument: " + literal);
 		}
 		else
@@ -105,7 +108,7 @@ static double	_getValidValue(std::string const& literal)
 	}
 	else
 	{
-		// Valid integer / float / double literal
+		// Valid integer / float / double literal format
 	}
 	return value;
 }
@@ -151,6 +154,13 @@ static void	_printFloat(double const& value)
 	{
 		std::cout << "float: nanf" << std::endl;
 	}
+	else if ((value < -std::numeric_limits<float>::max()
+			  && value != -std::numeric_limits<float>::infinity())
+			|| (value > std::numeric_limits<float>::max()
+				&& value != std::numeric_limits<float>::infinity()))
+	{
+		std::cout << "float: impossible" << std::endl;
+	}
 	else if (floatVal == std::numeric_limits<float>::infinity())
 	{
 		std::cout << "float: +inff" << std::endl;
@@ -170,6 +180,13 @@ static void	_printDouble(double const& value)
 	if (_isnan(value))
 	{
 		std::cout << "double: nan" << std::endl;
+	}
+	else if ((value < -std::numeric_limits<double>::max()
+			  && value != -std::numeric_limits<double>::infinity())
+			|| (value > std::numeric_limits<double>::max()
+				&& value != std::numeric_limits<double>::infinity()))
+	{
+		std::cout << "double: impossible" << std::endl;
 	}
 	else if (value == std::numeric_limits<double>::infinity())
 	{

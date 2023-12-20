@@ -6,11 +6,14 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 03:05:05 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/18 03:47:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/20 23:19:43 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Base.hpp"
+#include "A.hpp"
+#include "B.hpp"
+#include "C.hpp"
 
 /* ************************************************************************** */
 /*                          Constructor & Destructor                          */
@@ -25,7 +28,7 @@ Base::~Base()
 /*                             Exported Functions                             */
 /* ************************************************************************** */
 
-Base*	generate()
+Base*	generate(void)
 {
 	srand(time(0));
 

@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Base.hpp                                           :+:      :+:    :+:   */
+/*   C.cpp                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 02:53:26 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/20 23:19:33 by gychoi           ###   ########.fr       */
+/*   Created: 2023/12/20 23:14:57 by gychoi            #+#    #+#             */
+/*   Updated: 2023/12/20 23:15:13 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-#ifndef __BASE_HPP__
-#define __BASE_HPP__
+#include "C.hpp"
 
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
+/* ************************************************************************** */
+/*                          Constructor & Destructor                          */
+/* ************************************************************************** */
 
-class Base
+C::~C()
 {
-public:
-	virtual ~Base();
-};
-
-Base*	generate(void);
-void	identify(Base* p);
-void	identify(Base& p);
-
-#endif /* __BASE_HPP__ */
+	// nothing to do
+}
