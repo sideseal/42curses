@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 01:03:17 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/22 18:05:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/25 01:46:27 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,17 @@ void	iter(T const* arr, size_t len, F const& func)
 template <typename T>
 void	display(T const& a)
 {
-	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-	std::cout.precision(2);
-
 	std::cout << a << std::endl;
 }
 
-template<typename F, typename T>
-std::ostream&	operator<<(std::ostream& os, F(*p)(T))
+template<typename T, size_t size>
+size_t	getArrayLength(T (&)[size])
+{
+	return size;
+}
+
+template<typename T, typename F>
+std::ostream&	operator<<(std::ostream& os, F (*p)(T))
 {
 	return os << reinterpret_cast<void*>(p);
 }

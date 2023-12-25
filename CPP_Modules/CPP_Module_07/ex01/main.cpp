@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 01:02:56 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/22 18:08:30 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/25 01:39:30 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,24 @@ int	main()
 	int	iArr[] = {1, 2, 3};
 
 	std::cout << "Testing int array" << std::endl;
-	::iter(iArr, 3, ::display<int>);
+	::iter(iArr, ::getArrayLength(iArr), ::display<int>);
 
 	std::cout << std::endl;
+
+	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+	std::cout.precision(2);
 
 	float const	cfArr[] = {-0.42f, 2.04f, 3.0f};
 
 	std::cout << "Testing float const array" << std::endl;
-	::iter(cfArr, 3, ::display<float>);
+	::iter(cfArr, ::getArrayLength(cfArr), ::display<float>);
 
 	std::cout << std::endl;
 
 	std::string	sArr[] = {"hello", "42", "seoul"};
 
 	std::cout << "Testing string array" << std::endl;
-	::iter(sArr, 3, ::display<std::string>);
+	::iter(sArr, ::getArrayLength(sArr), ::display<std::string>);
 
 	std::cout << "\n--------------------\n";
 
