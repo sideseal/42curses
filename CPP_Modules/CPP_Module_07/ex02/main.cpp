@@ -1,14 +1,15 @@
 #include <iostream>
 #include <Array.hpp>
+#include <cstdlib>
 
-void	checkLeaks()
-{
-	system("leaks a.out");
-}
+// void	checkLeaks()
+// {
+// 	system("leaks a.out");
+// }
 
 void test()
 {
-	atexit(checkLeaks);
+	// atexit(checkLeaks);
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 	std::cout.precision(1);
 

@@ -37,16 +37,12 @@ int	main()
 	std::cout << "Testing string array" << std::endl;
 	::iter(sArr, ::getArrayLength(sArr), ::display<std::string>);
 
-	std::cout << "\n--------------------\n";
+	// std::cout << "\n--------------------\n";
 
-	void	(*fp1)(int) = reinterpret_cast<void (*)(int)>(&::display<int>);
-	void	(*fp2)(std::string) = reinterpret_cast
-								  <void (*)(std::string)>
-								  (&::display<std::string>);
-	void	(*fp3)(float) = reinterpret_cast
-								  <void (*)(float)>
-								  (&::display<float>);
-	void	(*fp4)(int) = reinterpret_cast<void (*)(int)>(&::display<int>);
+	void	(*fp1)(const int&) = reinterpret_cast<void (*)(const int&)>(&::display<int>);
+	void	(*fp2)(const std::string&) = reinterpret_cast<void (*)(const std::string&)>(&::display<std::string>);
+	void	(*fp3)(const float&) = reinterpret_cast<void (*)(const float&)>(&::display<float>);
+	void	(*fp4)(const int&) = reinterpret_cast<void (*)(const int&)>(&::display<int>);
 
 	std::cout << "Template Function(int) fp1 address: " << fp1 << std::endl;
 	std::cout << "Template Function(string) fp2 address: " << fp2 << std::endl;
