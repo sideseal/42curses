@@ -101,7 +101,6 @@ T&	Array<T>::operator[](unsigned int n)
 template <typename T>
 T const&	Array<T>::operator[](unsigned int n) const
 {
-	std::cout << "#################I AM IN CONST#################" << std::endl;
 	if (static_cast<int>(n) < 0)
 	{
 		throw std::out_of_range("Invalid index");
