@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 01:02:56 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/25 01:39:30 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/27 17:06:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,15 @@ int	main()
 
 	// std::cout << "\n--------------------\n";
 
-	void	(*fp1)(const int&) = reinterpret_cast<void (*)(const int&)>(&::display<int>);
-	void	(*fp2)(const std::string&) = reinterpret_cast<void (*)(const std::string&)>(&::display<std::string>);
-	void	(*fp3)(const float&) = reinterpret_cast<void (*)(const float&)>(&::display<float>);
-	void	(*fp4)(const int&) = reinterpret_cast<void (*)(const int&)>(&::display<int>);
+	void	(*fp1)(const int&)
+				= reinterpret_cast<void (*)(const int&)>(&::display<int>);
+	void	(*fp2)(const std::string&)
+				= reinterpret_cast<void (*)(const std::string&)>
+				  (&::display<std::string>);
+	void	(*fp3)(const float&)
+				= reinterpret_cast<void (*)(const float&)>(&::display<float>);
+	void	(*fp4)(const int&)
+				= reinterpret_cast<void (*)(const int&)>(&::display<int>);
 
 	std::cout << "Template Function(int) fp1 address: " << fp1 << std::endl;
 	std::cout << "Template Function(string) fp2 address: " << fp2 << std::endl;
