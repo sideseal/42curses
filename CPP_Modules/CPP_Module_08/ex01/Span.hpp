@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 00:12:05 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/26 00:28:23 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/31 01:11:30 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #ifndef __SPAN_HPP__
 #define __SPAN_HPP__
 
+#include <algorithm>
+#include <cmath>
+#include <deque>
+#include <numeric>
 #include <stdexcept>
 #include <vector>
 
@@ -27,13 +31,30 @@ public:
 	~Span();
 
 public:
-	void				addNumber(int num);
-	unsigned int		shortestSpan();
-	unsigned int		longestSpan();
+	void				addNumber(int number);
+	template<typename I>
+	void				addNumbers(I first, I last);
+	unsigned int		shortestSpan() const;
+	unsigned int		longestSpan() const;
 
 private:
 	unsigned int		mSize;
 	std::vector<int>	mVec;
 };
+
+template<typename I>
+void	Span::addNumbers(I first, I last)
+{
+	int	dist = std::distance(first, last);
+
+	if (this->mVec.size() + dist > this->mSize)
+	{
+		throw std::runtime_error("Not enough vector space to store numbers");
+	}
+	else
+	{
+		this->mVec.insert(this->mVec.end(), first, last);
+	}
+}
 
 #endif /* __SPAN_HPP__ */

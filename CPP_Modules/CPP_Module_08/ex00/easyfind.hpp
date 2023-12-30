@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 22:52:29 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/26 00:00:36 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/30 20:59:46 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #ifndef __EASYFIND_HPP__
 #define __EASYFIND_HPP__
 
-#include <algorithm>
 #include <stdexcept>
 #include <sstream>
 
@@ -38,12 +37,12 @@ typename T::iterator	easyfind(T& container, int const& value)
 template <typename T>
 typename T::const_iterator	easyfind(T const& container, int const& value)
 {
-	typename T::const_iterator	it;
-	for (it = container.begin(); it != container.end(); it++)
+	typename T::const_iterator	cit;
+	for (cit = container.begin(); cit != container.end(); cit++)
 	{
-		if (*it == value)
+		if (*cit == value)
 		{
-			return it;
+			return cit;
 		}
 	}
 

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 22:52:15 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/26 00:01:22 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/30 17:52:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	main()
 
 		display(cdq);
 
-		std::deque<int>::const_iterator	it = easyfind(cdq, -2);
-		std::cout << "find: " << *it << std::endl;
+		std::deque<int>::const_iterator	cit = easyfind(cdq, -2);
+		std::cout << "find: " << *cit << std::endl;
 	}
 	catch (std::exception& e)
 	{
