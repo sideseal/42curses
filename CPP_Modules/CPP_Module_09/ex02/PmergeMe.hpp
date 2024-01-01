@@ -6,13 +6,14 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:08:24 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/31 21:35:24 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/01 19:37:01 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __PMERGEME_HPP__
 #define __PMERGEME_HPP__
 
+#include <algorithm>
 #include <cstdlib>
 #include <deque>
 #include <limits>
@@ -33,7 +34,7 @@ public:
 	static void						setSequence(char** seq, int len);
 
 public:
-//	static void	fordJohnsonSort(std::vector<int>& v);
+	static void	fordJohnsonSort(std::vector<int>& v, int size);
 //	static void	fordJohnsonSort(std::deque<int>& d);
 
 private:

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 16:52:54 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/31 22:30:41 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/01 23:46:41 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 #include <iomanip>
 #include "PmergeMe.hpp"
 
-#include <unistd.h>
-
 void	displaySequence(std::vector<int> const& vec, std::string const& str)
 {
-	std::cout << std::left << std::setw(7) << str + ": ";
+	std::cout << std::left << std::setw(8) << str + ": ";
 	for (std::vector<int>::const_iterator it = vec.begin();
 		 it != vec.end(); it++)
 	{
@@ -47,7 +45,7 @@ void	measureSortTime
 	std::cout << std::endl;
 }
 
-#include <unistd.h>
+// CPU Time으로 바꿔야 할까?
 void	execute(std::vector<int> const& sequence)
 {
 	std::deque<int>		dq;
@@ -59,12 +57,12 @@ void	execute(std::vector<int> const& sequence)
 
 	clock_gettime(CLOCK_MONOTONIC, &vStartTime);
 	vec.assign(sequence.begin(), sequence.end());
-	// sorting vector sequence
+	PmergeMe::fordJohnsonSort(vec, vec.size());
 	clock_gettime(CLOCK_MONOTONIC, &vEndTime);
 
 	clock_gettime(CLOCK_MONOTONIC, &dStartTime);
 	dq.assign(sequence.begin(), sequence.end());
-	// sorting vector sequence
+	// sorting deque sequence
 	clock_gettime(CLOCK_MONOTONIC, &dEndTime);
 
 	displaySequence(sequence, "Before");
