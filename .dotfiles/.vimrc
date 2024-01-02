@@ -13,11 +13,15 @@
 autocmd VimEnter * so /usr/share/vim/vimrc
 
 " 1. General setup
-"set nocompatible
-syntax on
-set termguicolors
+set nocompatible
+syntax enable
+if has ('termguicolors')
+	set termguicolors
+	set t_Co=256
+endif
 "darkblue, murphy, slate,
 colorscheme blue
+hi clear
 set number
 set nuw=5
 set relativenumber
@@ -51,8 +55,8 @@ set mouse+=a
 set noimd
 set splitright
 set splitbelow
-" set backspace=indent,eol,start
-" set hidden
+set backspace=indent,eol,start
+set hidden
 set history=1000
 
 set ve+=onemore
@@ -77,25 +81,24 @@ augroup markdown
 augroup END
 set nofoldenable
 
-"set hlsearch
-"set incsearch
-"set showmatch
-
-" hi MatchParen ctermbg=lightgreen ctermfg=black
-
-"set ignorecase
-"set smartcase
+set hlsearch
+set incsearch
+" hi Search ctermbg=120 ctermfg=236 guibg=#87FF87 guifg=#303030
+set showmatch
+" hi MatchParen cterm=bold ctermbg=120 ctermfg=236 term=bold guibg=#87FF87 guifg=#303030
+set ignorecase
+set smartcase
 set nows
 nnoremap <ESC><ESC> :noh<return>
 
-" filetype indent plugin on
+filetype indent plugin on
 set autoindent
 set smartindent
-" set cindent
+set cindent
 set smarttab
 set tabstop=4
 set shiftwidth=4
-" set noexpandtab
+set noexpandtab
 set fileencodings=utf-8,euc-kr
 set fencs=ucs-bom,utf-8,euc-kr
 set guifont=D2Coding:h12:cHANGEUL:qDEFAULT
@@ -104,8 +107,10 @@ set guifontwide=D2Coding:h14
 set list
 " set listchars=tab:•·,trail:─,space:␣,eol:$
 set listchars=tab:•·,trail:─
-hi NonText ctermfg=darkgrey guifg=grey70
-hi SpecialKey ctermfg=darkgrey guifg=grey70
+" hi NonText ctermfg=darkgrey guifg=grey70
+" hi SpecialKey ctermfg=darkgrey guifg=grey70
+hi NonText ctermfg=Gray ctermbg=Gray  guifg=Gray guibg=#0000AA
+hi SpecialKey ctermfg=Gray guifg=Gray
 
 
 nnoremap k gk
@@ -123,7 +128,7 @@ let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[5 q" "EI = NORMAL mode (ELSE)
 set ttimeout
 set ttimeoutlen=1
-" set ttyfast
+set ttyfast
 
 
 " 2. Personal settings
