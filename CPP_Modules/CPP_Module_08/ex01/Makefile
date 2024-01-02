@@ -6,14 +6,15 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 20:52:01 by gychoi            #+#    #+#              #
-#    Updated: 2023/12/30 23:18:14 by gychoi           ###   ########.fr        #
+#    Updated: 2024/01/02 18:58:54 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ex01
 CXX = c++
-CXXFLAGS = -std=c++98 -MD
+CXXFLAGS = -std=c++98
 CXXFLAGS += -Wall -Wextra -Werror -Wshadow
+CXXFLAGS += -MD
 CXXFLAGS += -I.
 RM = rm -rf
 
