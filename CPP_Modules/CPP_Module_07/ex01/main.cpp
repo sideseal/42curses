@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 01:02:56 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/27 17:06:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/27 19:01:51 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main()
 	float const	cfArr[] = {-0.42f, 2.04f, 3.0f};
 
 	std::cout << "Testing float const array" << std::endl;
-	::iter(cfArr, ::getArrayLength(cfArr), ::display<float>);
+	::iter(cfArr, ::getArrayLength(cfArr), ::display<float const>);
 
 	std::cout << std::endl;
 
@@ -37,7 +37,7 @@ int	main()
 	std::cout << "Testing string array" << std::endl;
 	::iter(sArr, ::getArrayLength(sArr), ::display<std::string>);
 
-	// std::cout << "\n--------------------\n";
+	std::cout << "\n--------------------\n";
 
 	void	(*fp1)(const int&)
 				= reinterpret_cast<void (*)(const int&)>(&::display<int>);

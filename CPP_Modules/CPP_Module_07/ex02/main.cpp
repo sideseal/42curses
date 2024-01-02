@@ -13,7 +13,7 @@ void test()
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 	std::cout.precision(1);
 
-	std::cout << "My Array Test" << std::endl;
+	std::cout << "\nMy Array Test" << std::endl;
 
 	std::cout << "\n[Creating Empty Array...]" << std::endl;
 	Array<int>	empty;
@@ -113,7 +113,7 @@ void test()
 		std::cout << "Caught exception: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n[Testing 'size' Member Function division...]" << std::endl;
+	std::cout << "\n[Testing Member Function seperation...]" << std::endl;
 	unsigned int	tmp = ia.size();
 	std::cout << "ia.size(): " << ia.size() << ", tmp: " << tmp << std::endl;
 	std::cout << "Incrementing tmp..." << std::endl;
