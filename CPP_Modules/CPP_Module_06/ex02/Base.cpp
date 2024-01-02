@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 03:05:05 by gychoi            #+#    #+#             */
-/*   Updated: 2023/12/20 23:19:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2023/12/21 17:16:18 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ Base*	generate(void)
 		case 2:
 			return new C();
 		default:
-			;
-			// unreachable
+			; // unreachable
 	}
 	return 0;
 }
