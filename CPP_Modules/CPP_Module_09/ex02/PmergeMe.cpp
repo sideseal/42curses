@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:50:53 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/02 03:15:09 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/03 22:11:04 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,23 @@ void	PmergeMe::setSequence(char** seq, int len)
 /*                           Public Member Function                           */
 /* ************************************************************************** */
 
-void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size)
+void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 {
-	std::cout << "vec: "; showVector(v); std::cout << "size: " << size << std::endl;
+	std::cout << "vec : "; showVector(v); std::cout << "size: " << size << std::endl;
 	if (size <= 1)
 	{
 		return;
 	}
 
-	int		staggler = 0;
-	bool	hasStaggler = false;
+	std::vector<int>	staggler;
 
 	if (size % 2)
 	{
-		staggler = v[size - 1];
-		hasStaggler = true;
-		v.erase(v.begin() + size - 1);
+		for (int i = 0; i < turn; i++)
+		{
+			staggler.push_back(v[(i + 1) * (size - 1)]);
+			v.erase(v.begin() + ((i + 1) * (size - 1)));
+		}
 		size--;
 	}
 
@@ -99,61 +100,32 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size)
 		{
 			std::swap(v[i], v[i + 1]);
 
-			for (size_t j = size; j < v.size(); j *= 2)
+			for (int j = 1; j < turn; j++)
 			{
-				std::swap(v[j + i], v[j + i + 1]);
-				j *= 2; // 여기부터 다시
+				std::swap(v[j * size + i], v[j * size + i + 1]);
 			}
 		}
 	}
-
 	std::cout << "swap: "; showVector(v); std::cout << std::endl;
 
-	std::vector<int>	main(size / 2);
-	std::vector<int>	pend(size / 2);
 	std::vector<int>	temp;
-	size_t				tIdx;
 
-	for (int i = 0; i < size / 2; i++)
+	for (int i = 0; i < turn; i++)
 	{
-		main[i] = v[2 * i];
-
-		for (size_t j = size; j < v.size(); j *= j)
+		for (int j = 0; j < size / 2; j++)
 		{
-			temp.push_back(v[j + (2 * i)]);
+			temp.push_back(v[(2 * j) + (i * size)]);
+		}
+		for (int j = 0; j < size / 2; j++)
+		{
+			temp.push_back(v[(2 * j + 1) + (i * size)]);
 		}
 	}
-	for (int i = 0; i < size / 2; i++)
-	{
-		pend[i] = v[2 * i + 1];
-
-		for (size_t j = size; j < v.size(); j *= j)
-		{
-			temp.push_back(v[j + (2 * i + 1)]);
-			tIdx = j;
-		}
-	}
-	if (hasStaggler)
-	{
-		std::cout << "staggler: " << staggler << std::endl;
-		pend.push_back(staggler);
-	}
-	for (size_t i = tIdx + size; i < v.size(); i++)
-	{
-		temp.push_back(v[i]);
-	}
-	std::cout << "main: "; showVector(main); std::cout << std::endl;
-	std::cout << "pend: "; showVector(pend); std::cout << std::endl;
 	std::cout << "temp: "; showVector(temp); std::cout << std::endl;
 
-	main.insert(main.end(), pend.begin(), pend.end());
-	main.insert(main.end(), temp.begin(), temp.end());
+	v = temp;
 
-
-
-	v = main;
-
-	fordJohnsonSort(v, size / 2);
+	fordJohnsonSort(v, size / 2, turn * 2);
 
 
 

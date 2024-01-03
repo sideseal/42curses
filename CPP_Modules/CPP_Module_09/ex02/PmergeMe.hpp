@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:08:24 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/01 19:37:01 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/03 21:36:59 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ public:
 	static void						setSequence(char** seq, int len);
 
 public:
-	static void	fordJohnsonSort(std::vector<int>& v, int size);
+	static void	fordJohnsonSort(std::vector<int>& v, int size, int turn = 1);
 //	static void	fordJohnsonSort(std::deque<int>& d);
 
 private:
