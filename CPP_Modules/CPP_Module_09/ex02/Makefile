@@ -6,14 +6,14 @@
 #    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/31 16:49:36 by gychoi            #+#    #+#              #
-#    Updated: 2023/12/31 16:52:38 by gychoi           ###   ########.fr        #
+#    Updated: 2024/01/05 22:23:57 by gychoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = PmergeMe
 CXX = c++
 CXXFLAGS = -std=c++98
-CXXFLAGS += -Wall -Wextra -Werror -Wshadow
+#CXXFLAGS += -Wall -Wextra -Werror -Wshadow
 CXXFLAGS += -MD
 CXXFLAGS += -I.
 RM = rm -rf

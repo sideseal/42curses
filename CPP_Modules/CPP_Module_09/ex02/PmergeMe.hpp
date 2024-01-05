@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:08:24 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/03 21:36:59 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/05 20:59:25 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,30 @@ public:
 
 private:
 	static std::vector<int>	sSequence;
+	static std::deque<int>	sPartialJacobsthalSequence;
 };
+
+
+
+
+
+template <typename T>
+bool	isAllSorted(const T arr[], int size)
+{
+	if (size <= 1)
+	{
+		return true;
+	}
+
+	for (int i = 1; i < size; i++)
+	{
+		if (arr[i - 1] > arr[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 
 #endif /* __PMERGEME_HPP__ */
