@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 16:52:54 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/05 19:22:27 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/07 23:15:58 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 #include <iostream>
 #include <iomanip>
 #include "PmergeMe.hpp"
-
-
-
-
-
 
 void	displaySequence(std::vector<int> const& vec, std::string const& str)
 {
@@ -50,7 +45,6 @@ void	measureSortTime
 	std::cout << std::endl;
 }
 
-// CPU Time으로 바꿔야 할까?
 void	execute(std::vector<int> const& sequence)
 {
 	std::deque<int>		dq;
@@ -67,13 +61,23 @@ void	execute(std::vector<int> const& sequence)
 
 	clock_gettime(CLOCK_MONOTONIC, &dStartTime);
 	dq.assign(sequence.begin(), sequence.end());
-	// sorting deque sequence
+	PmergeMe::fordJohnsonSort(dq, dq.size());
 	clock_gettime(CLOCK_MONOTONIC, &dEndTime);
+
+	if (!isAllSorted(vec, vec.size()) || !isAllSorted(dq, dq.size()))
+	{
+		throw std::runtime_error("KO: Array is not sorted");
+	}
+	else
+	{
+		// OK: great job, gychoi!
+	}
 
 	displaySequence(sequence, "Before");
 	displaySequence(vec, "After");
 	measureSortTime(vStartTime, vEndTime, "std::vector<int>", vec.size());
 	measureSortTime(dStartTime, dEndTime, "std::deque<int>", sequence.size());
+
 }
 
 int	main(int argc, char* argv[])
@@ -102,3 +106,4 @@ int	main(int argc, char* argv[])
 	}
 	return 0;
 }
+
