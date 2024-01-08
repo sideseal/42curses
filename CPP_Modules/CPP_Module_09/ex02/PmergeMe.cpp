@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:50:53 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/08 00:01:39 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/08 23:05:07 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,6 @@ static int				_binarySearch(std::vector<int> const& arr,
 									  int left, int right, int target);
 static int				_binarySearch(std::deque<int> const& arr,
 									  int left, int right, int target);
-
-#include <iostream>
-void	showVector(std::vector<int>& v)
-{
-	for (std::vector<int>::iterator it = v.begin(); it != v.end(); it++)
-	{
-		std::cout << *it << " ";
-	}
-}
 
 /* ************************************************************************** */
 /*                          Constructor & Destructor                          */
@@ -84,9 +75,6 @@ void	PmergeMe::setSequence(char** seq, int len)
 
 void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 {
-	std::cout << " vec: "; showVector(v);
-	std::cout << "size: " << size << ", turn: " << turn << std::endl;
-
 	if (size <= 1)
 	{
 		return;
@@ -100,7 +88,6 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		size--;
 		for (int i = 0; i < turn; i++)
 		{
-			std::cout << "staggler: " << v[(i + 1) * (size)] << std::endl;
 			staggler.push_back(v[(i + 1) * size]);
 			v.erase(v.begin() + ((i + 1) * size));
 		}
@@ -120,8 +107,6 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		}
 	}
 
-	std::cout << "swap: "; showVector(v); std::cout << std::endl;
-
 	std::vector<int>	temp;
 
 	for (int i = 0; i < turn; i++)
@@ -136,15 +121,9 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		}
 	}
 
-	std::cout << "temp: "; showVector(v); std::cout << std::endl;
-
 	v = temp;
 
-	std::cout << " vec: "; showVector(v); std::cout << std::endl;
-
 	fordJohnsonSort(v, size / 2, turn * 2);
-
-	std::cout << "==========recur==========" << std::endl;
 
 	if (!staggler.empty())
 	{
@@ -160,9 +139,6 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		size++;
 	}
 
-	std::cout << " vec: "; showVector(v);
-	std::cout << "size: " << size << ", turn: " << turn << std::endl;
-
 	std::vector<int>	main;
 	std::vector<int>	pend;
 
@@ -177,22 +153,22 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		pend.push_back(v[size - 1]);
 	}
 
-	std::cout << "main: "; showVector(main); std::cout << std::endl;
-	std::cout << "pend: "; showVector(pend); std::cout << std::endl;
-
 	main.insert(main.begin(), pend.front());
+	size_t subSequenceLen = 2;
 
 	for (int i = 1; i < sPartialJacobsthalSequence.size(); i++)
 	{
-		int		currJacobNum = sPartialJacobsthalSequence[i];
-		int		prevJacobNum = sPartialJacobsthalSequence[i - 1];
-		int		rangeIndex = currJacobNum > pend.size()
-							 ? pend.size() - 1
-							 : currJacobNum - 1;
+		int	currJacobNum = sPartialJacobsthalSequence[i];
+		int	prevJacobNum = sPartialJacobsthalSequence[i - 1];
+		int	rangeIndex = currJacobNum > pend.size()
+						 ? pend.size() - 1
+						 : currJacobNum - 1;
 
+		subSequenceLen *= 2;
 		for (int j = rangeIndex; j >= prevJacobNum; j--)
 		{
-			int	index = _binarySearch(main, 0, main.size() - 1, pend[j]);
+			size_t	endRange = std::min(subSequenceLen - 2, main.size() - 1);
+			int	index = _binarySearch(main, 0, endRange, pend[j]);
 
 			main.insert(main.begin() + index, pend[j]);
 		}
@@ -203,17 +179,14 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		}
 	}
 
-	std::cout << "sort: "; showVector(main); std::cout << std::endl;
-
 	std::vector<int>	index;
 
 	for (int i = 0; i < main.size(); i++)
 	{
 		std::vector<int>::iterator	it = std::find(v.begin(), v.end(), main[i]);
+
 		index.push_back(std::distance(v.begin(), it));
 	}
-
-	std::cout << " idx: "; showVector(index); std::cout << std::endl;
 
 	std::vector<int>().swap(temp);
 
@@ -225,8 +198,6 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 			temp.push_back(v[i * size + index[j]]);
 		}
 	}
-
-	std::cout << "temp: "; showVector(temp); std::cout << std::endl;
 
 	v = temp;
 }
@@ -246,8 +217,8 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& v, int size, int turn)
 		size--;
 		for (int i = 0; i < turn; i++)
 		{
-			staggler.push_back(v[(i + 1) * (size)]);
-			v.erase(v.begin() + ((i + 1) * (size)));
+			staggler.push_back(v[(i + 1) * size]);
+			v.erase(v.begin() + ((i + 1) * size));
 		}
 		hasStaggler = true;
 	}
@@ -312,18 +283,21 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& v, int size, int turn)
 	}
 
 	main.insert(main.begin(), pend.front());
+	size_t subSequenceLen = 2;
 
 	for (int i = 1; i < sPartialJacobsthalSequence.size(); i++)
 	{
-		int		currJacobNum = sPartialJacobsthalSequence[i];
-		int		prevJacobNum = sPartialJacobsthalSequence[i - 1];
-		int		rangeIndex = currJacobNum > pend.size()
-							 ? pend.size() - 1
-							 : currJacobNum - 1;
+		int	currJacobNum = sPartialJacobsthalSequence[i];
+		int	prevJacobNum = sPartialJacobsthalSequence[i - 1];
+		int	rangeIndex = currJacobNum > pend.size()
+						 ? pend.size() - 1
+						 : currJacobNum - 1;
 
+		subSequenceLen *= 2;
 		for (int j = rangeIndex; j >= prevJacobNum; j--)
 		{
-			int	index = _binarySearch(main, 0, main.size() - 1, pend[j]);
+			size_t	endRange = std::min(subSequenceLen - 2, main.size() - 1);
+			int	index = _binarySearch(main, 0, endRange, pend[j]);
 
 			main.insert(main.begin() + index, pend[j]);
 		}
@@ -339,6 +313,7 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& v, int size, int turn)
 	for (int i = 0; i < main.size(); i++)
 	{
 		std::deque<int>::iterator	it = std::find(v.begin(), v.end(), main[i]);
+
 		index.push_back(std::distance(v.begin(), it));
 	}
 
