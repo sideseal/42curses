@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 16:52:54 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/08 22:10:29 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/10 17:55:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,13 @@ void	execute(std::vector<int> const& sequence)
 	PmergeMe::fordJohnsonSort(dq, dq.size());
 	clock_gettime(CLOCK_MONOTONIC, &dEndTime);
 
-	if (!isAllSorted(vec, vec.size()) || !isAllSorted(dq, dq.size()))
+	if (!isAllSorted(vec))
 	{
-		throw std::runtime_error("KO: Array is not sorted");
+		throw std::runtime_error("KO: Vector is not sorted");
+	}
+	else if (!isAllSorted(dq))
+	{
+		throw std::runtime_error("KO: Deque is not sorted");
 	}
 	else
 	{
@@ -80,6 +84,7 @@ void	execute(std::vector<int> const& sequence)
 
 }
 
+// 0일 경우에 처리
 int	main(int argc, char* argv[])
 {
 	if (argc < 2)
@@ -103,6 +108,7 @@ int	main(int argc, char* argv[])
 	catch (std::exception& e)
 	{
 		std::cout << e.what() << std::endl;
+		return 1;
 	}
 	return 0;
 }
