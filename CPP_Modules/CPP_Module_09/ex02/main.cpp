@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 16:52:54 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/10 17:55:00 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:38:06 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	execute(std::vector<int> const& sequence)
 
 }
 
-// 0일 경우에 처리
 int	main(int argc, char* argv[])
 {
 	if (argc < 2)
