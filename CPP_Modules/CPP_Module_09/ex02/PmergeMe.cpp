@@ -6,14 +6,14 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:50:53 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/10 17:56:43 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/10 21:59:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-std::vector<int>	PmergeMe::sSequence;
-std::deque<int>		PmergeMe::sPartialJacobsthalSequence;
+std::vector<int>		PmergeMe::sSequence;
+std::deque<int>			PmergeMe::sPartialJacobsthalSequence;
 
 static int				_getValidElement(char const* str);
 static std::deque<int>	_generatePartialJacobsthalSequence();
@@ -21,23 +21,6 @@ static int				_binarySearch(int* const& arr,
 									  int left, int right, int target);
 static int				_binarySearch(std::deque<int> const& arr,
 									  int left, int right, int target);
-
-#include <iostream>
-void	show(std::vector<int>& v)
-{
-	for (std::vector<int>::iterator it = v.begin(); it != v.end(); it++)
-	{
-		std::cout << *it << " ";
-	}
-}
-
-void	showPair(std::vector<std::pair<int, int> >& v)
-{
-	for (std::vector<std::pair<int, int> >::iterator it = v.begin(); it != v.end(); it++)
-	{
-		std::cout << "(" << it->first << ", " << it->second << ")";
-	}
-}
 
 /* ************************************************************************** */
 /*                          Constructor & Destructor                          */

@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 16:52:54 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/10 18:38:06 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/10 21:59:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	execute(std::vector<int> const& sequence)
 	displaySequence(vec, "After");
 	measureSortTime(vStartTime, vEndTime, "std::vector<int>", vec.size());
 	measureSortTime(dStartTime, dEndTime, "std::deque<int>", dq.size());
-
 }
 
 int	main(int argc, char* argv[])
