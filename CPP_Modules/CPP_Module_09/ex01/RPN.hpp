@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/31 16:51:38 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/11 00:42:15 by gychoi           ###   ########.fr       */
+/*   Created: 2024/01/10 22:01:31 by gychoi            #+#    #+#             */
+/*   Updated: 2024/01/11 01:08:57 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
+#ifndef __RPN_HPP__
+#define __RPN_HPP__
 
-#include "RPN.hpp"
+#include <cstdlib>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
 
-int	main(int argc, char* argv[])
+class RPN
 {
-	if (argc != 2)
-	{
-		std::cout << "Usage: ./RPN <Expression>" << std::endl;
-		return 1;
-	}
-	else
-	{
-		// ready to execute
-	}
+private:
+	RPN();
+	RPN(RPN const& other);
+	RPN&	operator=(RPN const& other);
+	~RPN();
 
-	try
-	{
-		std::cout << RPN::execute(argv[1]) << std::endl;
-	}
-	catch (std::exception& e)
-	{
-		std::cout << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
-}
+public:
+	static int	execute(char* expr);
+
+private:
+	static std::stack<int>	sStack;
+};
+
+#endif /* __RPN_HPP__ */
