@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:08:24 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/07 23:01:25 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/10 17:42:00 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,19 @@ private:
 };
 
 template <typename T>
-bool	isAllSorted(T const& arr, size_t size)
+bool	isAllSorted(T const& arr)
 {
-	if (size <= 1)
+	std::vector<int>	originSequence = PmergeMe::getSequence();
+	if (originSequence.size() != arr.size())
 	{
-		return true;
+		return false;
 	}
 
-	for (size_t i = 1; i < size; i++)
+	sort(originSequence.begin(), originSequence.end());
+
+	for (size_t i = 0; i < originSequence.size(); i++)
 	{
-		if (arr[i - 1] > arr[i])
+		if (originSequence[i] != arr[i])
 		{
 			return false;
 		}
