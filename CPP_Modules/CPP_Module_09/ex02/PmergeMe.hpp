@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:08:24 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/10 17:42:00 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:53:08 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+struct ValuePair
+{
+	int	value;
+	int	index;
+};
 
 class PmergeMe
 {

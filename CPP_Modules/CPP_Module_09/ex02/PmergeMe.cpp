@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:50:53 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/10 21:59:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:10:56 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ std::deque<int>			PmergeMe::sPartialJacobsthalSequence;
 static int				_getValidElement(char const* str);
 static std::deque<int>	_generatePartialJacobsthalSequence();
 static int				_binarySearch(int* const& arr,
-									  int left, int right, int target);
-static int				_binarySearch(std::deque<int> const& arr,
 									  int left, int right, int target);
 
 /* ************************************************************************** */
@@ -139,26 +137,43 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		size++;
 	}
 
-	std::vector<std::pair<int, int> >	main;
-	std::vector<std::pair<int, int> >	pend;
+	std::vector<ValuePair>	main;
+	std::vector<ValuePair>	pend;
 
 	for (int i = 0; i < size / 2; i++)
 	{
-		main.push_back(std::make_pair(v[i], i));
-		pend.push_back(std::make_pair(v[i + size / 2], i + size / 2));
+		ValuePair	mainPair;
+		ValuePair	pendPair;
+
+		mainPair.value = v[i];
+		mainPair.index = i;
+		pendPair.value = v[i + size / 2];
+		pendPair.index = i + size / 2;
+
+		main.push_back(mainPair);
+		pend.push_back(pendPair);
 	}
 
 	if (hasStaggler)
 	{
-		pend.push_back(std::make_pair(v[size - 1], size - 1));
-	}
+		ValuePair	stagPair;
 
-	main.insert(main.begin(), pend.front());
+		stagPair.value = v[size - 1];
+		stagPair.index = size - 1;
+
+		pend.push_back(stagPair);
+	}
 
 	int subSequenceLen = 2;
 
-	for (int i = 1; i < sPartialJacobsthalSequence.size(); i++)
+	for (int i = 0; i < sPartialJacobsthalSequence.size(); i++)
 	{
+		if (i == 0)
+		{
+			main.insert(main.begin(), pend.front());
+			continue;
+		}
+
 		int	pendArrSize = pend.size();
 		int	currJacobNum = sPartialJacobsthalSequence[i];
 		int	prevJacobNum = sPartialJacobsthalSequence[i - 1];
@@ -175,10 +190,10 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 
 			for (size_t i = 0; i < mainArrSize; i++)
 			{
-				mainArr[i] = main[i].first;
+				mainArr[i] = main[i].value;
 			}
 
-			int	index = _binarySearch(mainArr, 0, endRange, pend[j].first);
+			int	index = _binarySearch(mainArr, 0, endRange, pend[j].value);
 
 			main.insert(main.begin() + index, pend[j]);
 		}
@@ -193,7 +208,7 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 
 	for (int i = 0; i < main.size(); i++)
 	{
-		index.push_back(main[i].second);
+		index.push_back(main[i].index);
 	}
 
 	std::vector<int>().swap(temp);
@@ -275,26 +290,43 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 		size++;
 	}
 
-	std::deque<std::pair<int, int> >	main;
-	std::deque<std::pair<int, int> >	pend;
+	std::vector<ValuePair>	main;
+	std::vector<ValuePair>	pend;
 
 	for (int i = 0; i < size / 2; i++)
 	{
-		main.push_back(std::make_pair(d[i], i));
-		pend.push_back(std::make_pair(d[i + size / 2], i + size / 2));
+		ValuePair	mainPair;
+		ValuePair	pendPair;
+
+		mainPair.value = d[i];
+		mainPair.index = i;
+		pendPair.value = d[i + size / 2];
+		pendPair.index = i + size / 2;
+
+		main.push_back(mainPair);
+		pend.push_back(pendPair);
 	}
 
 	if (hasStaggler)
 	{
-		pend.push_back(std::make_pair(d[size - 1], size - 1));
-	}
+		ValuePair	stagPair;
 
-	main.insert(main.begin(), pend.front());
+		stagPair.value = d[size - 1];
+		stagPair.index = size - 1;
+
+		pend.push_back(stagPair);
+	}
 
 	int subSequenceLen = 2;
 
-	for (int i = 1; i < sPartialJacobsthalSequence.size(); i++)
+	for (int i = 0; i < sPartialJacobsthalSequence.size(); i++)
 	{
+		if (i == 0)
+		{
+			main.insert(main.begin(), pend.front());
+			continue;
+		}
+
 		int	pendArrSize = pend.size();
 		int	currJacobNum = sPartialJacobsthalSequence[i];
 		int	prevJacobNum = sPartialJacobsthalSequence[i - 1];
@@ -311,10 +343,10 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 
 			for (size_t i = 0; i < mainArrSize; i++)
 			{
-				mainArr[i] = main[i].first;
+				mainArr[i] = main[i].value;
 			}
 
-			int	index = _binarySearch(mainArr, 0, endRange, pend[j].first);
+			int	index = _binarySearch(mainArr, 0, endRange, pend[j].value);
 
 			main.insert(main.begin() + index, pend[j]);
 		}
@@ -329,7 +361,7 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 
 	for (int i = 0; i < main.size(); i++)
 	{
-		index.push_back(main[i].second);
+		index.push_back(main[i].index);
 	}
 
 	std::deque<int>().swap(temp);
@@ -443,29 +475,6 @@ static std::deque<int>	_generatePartialJacobsthalSequence()
 
 static int	_binarySearch
 (int* const& arr, int left, int right, int target)
-{
-	while (left <= right)
-	{
-		int	mid = left + (right - left) / 2;
-
-		if (arr[mid] == target)
-		{
-			return mid;
-		}
-		else if (arr[mid] < target)
-		{
-			left = mid + 1;
-		}
-		else
-		{
-			right = mid - 1;
-		}
-	}
-	return left;
-}
-
-static int	_binarySearch
-(std::deque<int> const& arr, int left, int right, int target)
 {
 	while (left <= right)
 	{

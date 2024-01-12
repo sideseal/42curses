@@ -48,6 +48,11 @@ for ((a = 1, c = 1; a <= 3002;)); do
 		fi
 	fi
 
+	if [ "$a" -eq 3000 ]; then
+		./PmergeMe $args
+		break
+	fi
+
 	if [ "$a" -le 999 ]; then
 		((a++))
 		if [ "$generate" -eq 1 ]; then
