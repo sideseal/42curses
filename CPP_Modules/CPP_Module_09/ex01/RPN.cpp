@@ -6,16 +6,16 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:01:14 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/11 01:08:16 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:22:37 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
 
-std::stack<int>	RPN::sStack;
+std::stack<int, std::list<int> >	RPN::sStack;
 
-static void	_calculate(std::stack<int>& s, char const& oprt);
-static int	_popOperand(std::stack<int>& s);
+static void	_calculate(std::stack<int, std::list<int> >& s, char const& oprt);
+static int	_popOperand(std::stack<int, std::list<int> >& s);
 static bool	_isValidToken(std::string const& token);
 static bool	_isOperator(char const& ch);
 
@@ -91,7 +91,7 @@ int	RPN::execute(char* expr)
 /*                              Utility Function                              */
 /* ************************************************************************** */
 
-static void	_calculate(std::stack<int>& s, char const& oprt)
+static void	_calculate(std::stack<int, std::list<int> >& s, char const& oprt)
 {
 	if (s.size() < 2)
 	{
@@ -134,7 +134,7 @@ static void	_calculate(std::stack<int>& s, char const& oprt)
 	}
 }
 
-static int	_popOperand(std::stack<int>& s)
+static int	_popOperand(std::stack<int, std::list<int> >& s)
 {
 	int	op = s.top();
 

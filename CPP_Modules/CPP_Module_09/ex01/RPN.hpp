@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:01:31 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/11 01:08:57 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:21:50 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __RPN_HPP__
 
 #include <cstdlib>
+#include <list>
 #include <sstream>
 #include <stack>
 #include <stdexcept>
@@ -30,7 +31,7 @@ public:
 	static int	execute(char* expr);
 
 private:
-	static std::stack<int>	sStack;
+	static std::stack<int, std::list<int> >	sStack;
 };
 
 #endif /* __RPN_HPP__ */
