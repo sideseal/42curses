@@ -109,7 +109,7 @@ set list
 set listchars=tab:•·,trail:─
 " hi NonText ctermfg=darkgrey guifg=grey70
 " hi SpecialKey ctermfg=darkgrey guifg=grey70
-hi NonText ctermfg=Gray ctermbg=Gray  guifg=Gray guibg=#0000AA
+hi NonText ctermfg=DarkBlue ctermbg=DarkBlue guifg=DarkBlue guibg=DarkBlue
 hi SpecialKey ctermfg=Gray guifg=Gray
 
 
