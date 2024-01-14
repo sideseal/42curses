@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:08:24 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/12 16:53:08 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/14 21:02:02 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	isAllSorted(T const& arr)
 		return false;
 	}
 
-	sort(originSequence.begin(), originSequence.end());
+	std::sort(originSequence.begin(), originSequence.end());
 
 	for (size_t i = 0; i < originSequence.size(); i++)
 	{
