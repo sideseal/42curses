@@ -13,7 +13,7 @@
 NAME = PmergeMe
 CXX = c++
 CXXFLAGS = -std=c++98
-#CXXFLAGS += -Wall -Wextra -Werror -Wshadow
+CXXFLAGS += -Wall -Wextra -Werror -Wshadow
 CXXFLAGS += -MD
 CXXFLAGS += -I.
 RM = rm -rf

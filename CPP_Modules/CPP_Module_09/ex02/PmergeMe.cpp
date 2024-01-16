@@ -164,9 +164,9 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		pend.push_back(stagPair);
 	}
 
-	int subSequenceLen = 2;
+	size_t subSequenceLen = 2;
 
-	for (int i = 0; i < sPartialJacobsthalSequence.size(); i++)
+	for (size_t i = 0; i < sPartialJacobsthalSequence.size(); i++)
 	{
 		if (i == 0)
 		{
@@ -184,13 +184,13 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		subSequenceLen *= 2;
 		for (int j = rangeIndex; j >= prevJacobNum; j--)
 		{
-			int	mainArrSize = main.size();
-			int	mainArr[mainArrSize];
-			int	endRange = std::min(subSequenceLen - 2, mainArrSize - 1);
+			size_t	mainArrSize = main.size();
+			int		mainArr[mainArrSize];
+			int		endRange = std::min(subSequenceLen - 2, mainArrSize - 1);
 
-			for (size_t i = 0; i < mainArrSize; i++)
+			for (size_t k = 0; k < mainArrSize; k++)
 			{
-				mainArr[i] = main[i].value;
+				mainArr[k] = main[k].value;
 			}
 
 			int	index = _binarySearch(mainArr, 0, endRange, pend[j].value);
@@ -206,7 +206,7 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 
 	std::vector<int>	index;
 
-	for (int i = 0; i < main.size(); i++)
+	for (size_t i = 0; i < main.size(); i++)
 	{
 		index.push_back(main[i].index);
 	}
@@ -317,9 +317,9 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 		pend.push_back(stagPair);
 	}
 
-	int subSequenceLen = 2;
+	size_t subSequenceLen = 2;
 
-	for (int i = 0; i < sPartialJacobsthalSequence.size(); i++)
+	for (size_t i = 0; i < sPartialJacobsthalSequence.size(); i++)
 	{
 		if (i == 0)
 		{
@@ -337,13 +337,13 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 		subSequenceLen *= 2;
 		for (int j = rangeIndex; j >= prevJacobNum; j--)
 		{
-			int	mainArrSize = main.size();
-			int	mainArr[mainArrSize];
-			int	endRange = std::min(subSequenceLen - 2, mainArrSize - 1);
+			size_t	mainArrSize = main.size();
+			int		mainArr[mainArrSize];
+			int		endRange = std::min(subSequenceLen - 2, mainArrSize - 1);
 
-			for (size_t i = 0; i < mainArrSize; i++)
+			for (size_t k = 0; k < mainArrSize; k++)
 			{
-				mainArr[i] = main[i].value;
+				mainArr[k] = main[k].value;
 			}
 
 			int	index = _binarySearch(mainArr, 0, endRange, pend[j].value);
@@ -359,7 +359,7 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 
 	std::deque<int>	index;
 
-	for (int i = 0; i < main.size(); i++)
+	for (size_t i = 0; i < main.size(); i++)
 	{
 		index.push_back(main[i].index);
 	}
