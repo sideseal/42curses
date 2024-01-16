@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:50:53 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/14 21:01:56 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/16 21:10:22 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,6 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 		pend.push_back(stagPair);
 	}
 
-	size_t subSequenceLen = 2;
-
 	for (size_t i = 0; i < sPartialJacobsthalSequence.size(); i++)
 	{
 		if (i == 0)
@@ -174,19 +172,17 @@ void	PmergeMe::fordJohnsonSort(std::vector<int>& v, int size, int turn)
 			continue;
 		}
 
-		int	pendArrSize = pend.size();
-		int	currJacobNum = sPartialJacobsthalSequence[i];
-		int	prevJacobNum = sPartialJacobsthalSequence[i - 1];
-		int	rangeIndex = currJacobNum > pendArrSize
-						 ? pendArrSize - 1
-						 : currJacobNum - 1;
+		size_t	pendArrSize = pend.size();
+		size_t	currJacobNum = sPartialJacobsthalSequence[i];
+		size_t	prevJacobNum = sPartialJacobsthalSequence[i - 1];
+		size_t	rangeIndex = std::min(currJacobNum, pendArrSize) - 1;
 
-		subSequenceLen *= 2;
-		for (int j = rangeIndex; j >= prevJacobNum; j--)
+		for (size_t j = rangeIndex; j >= prevJacobNum; j--)
 		{
 			size_t	mainArrSize = main.size();
 			int		mainArr[mainArrSize];
-			int		endRange = std::min(subSequenceLen - 2, mainArrSize - 1);
+			size_t	endRange = std::min(mainArrSize,
+										currJacobNum + prevJacobNum - 1) - 1;
 
 			for (size_t k = 0; k < mainArrSize; k++)
 			{
@@ -317,8 +313,6 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 		pend.push_back(stagPair);
 	}
 
-	size_t subSequenceLen = 2;
-
 	for (size_t i = 0; i < sPartialJacobsthalSequence.size(); i++)
 	{
 		if (i == 0)
@@ -327,19 +321,17 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 			continue;
 		}
 
-		int	pendArrSize = pend.size();
-		int	currJacobNum = sPartialJacobsthalSequence[i];
-		int	prevJacobNum = sPartialJacobsthalSequence[i - 1];
-		int	rangeIndex = currJacobNum > pendArrSize
-						 ? pendArrSize - 1
-						 : currJacobNum - 1;
+		size_t	pendArrSize = pend.size();
+		size_t	currJacobNum = sPartialJacobsthalSequence[i];
+		size_t	prevJacobNum = sPartialJacobsthalSequence[i - 1];
+		size_t	rangeIndex = std::min(currJacobNum, pendArrSize) - 1;
 
-		subSequenceLen *= 2;
-		for (int j = rangeIndex; j >= prevJacobNum; j--)
+		for (size_t j = rangeIndex; j >= prevJacobNum; j--)
 		{
 			size_t	mainArrSize = main.size();
 			int		mainArr[mainArrSize];
-			int		endRange = std::min(subSequenceLen - 2, mainArrSize - 1);
+			size_t	endRange = std::min(mainArrSize,
+										currJacobNum + prevJacobNum - 1) - 1;
 
 			for (size_t k = 0; k < mainArrSize; k++)
 			{

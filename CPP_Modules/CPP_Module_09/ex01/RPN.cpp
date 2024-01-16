@@ -6,7 +6,7 @@
 /*   By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:01:14 by gychoi            #+#    #+#             */
-/*   Updated: 2024/01/12 17:22:37 by gychoi           ###   ########.fr       */
+/*   Updated: 2024/01/16 15:40:42 by gychoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	RPN::execute(char* expr)
 
 	while (std::getline(iss, token, ' '))
 	{
-		if (!iss.eof() && !iss.good())
+		if (iss.fail())
 		{
 			throw std::runtime_error("Failed to read string stream");
 		}
