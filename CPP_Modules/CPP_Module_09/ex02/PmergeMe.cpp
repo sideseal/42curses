@@ -286,8 +286,8 @@ void	PmergeMe::fordJohnsonSort(std::deque<int>& d, int size, int turn)
 		size++;
 	}
 
-	std::vector<ValuePair>	main;
-	std::vector<ValuePair>	pend;
+	std::deque<ValuePair>	main;
+	std::deque<ValuePair>	pend;
 
 	for (int i = 0; i < size / 2; i++)
 	{
