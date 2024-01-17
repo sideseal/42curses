@@ -58,7 +58,7 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 	
 	if (!dbFile.is_open())
 	{
-		throw std::runtime_error("could not open file.");
+		throw std::runtime_error("could not open DB.");
 	}
 	else
 	{
@@ -66,7 +66,7 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 
 		if (!std::getline(dbFile, header))
 		{
-			throw std::runtime_error("Unable to read db header.");
+			throw std::runtime_error("Unable to read DB header.");
 		}
 		else if (header != "date,exchange_rate")
 		{
@@ -87,7 +87,11 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 		std::string			exchangeRate;
 		std::string			remain;
 
-		if (line.empty())
+		if (dbFile.fail())
+		{
+			throw std::runtime_error("Failed to read DB file.");
+		}
+		else if (line.empty())
 		{
 			continue;
 		}
@@ -95,21 +99,21 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 		{
 			if (!_isValidDateFormat(date))
 			{
-				throw std::runtime_error(std::string("bad input => ")
+				throw std::runtime_error(std::string("bad DB input => ")
 										 + date);
 			}
 			else if (!(iss >> exchangeRate))
 			{
-				throw std::runtime_error("Unable to read exchange rate.");
+				throw std::runtime_error("Unable to read exchange rate in DB.");
 			}
 			else if (!_isValidDouble(exchangeRate))
 			{
-				throw std::runtime_error(std::string("bad input => ")
+				throw std::runtime_error(std::string("bad DB input => ")
 										 + exchangeRate);
 			}
 			else if (std::getline(iss, remain))
 			{
-				throw std::runtime_error(std::string("bad input => ")
+				throw std::runtime_error(std::string("bad DB input => ")
 										 + line);
 			}
 			else
@@ -121,11 +125,11 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 
 			if (rate < 0)
 			{
-				throw std::runtime_error("not a positive number.");
+				throw std::runtime_error("not a positive number in DB.");
 			}
 			else if (rate > std::numeric_limits<int>::max())
 			{
-				throw std::runtime_error("too large a number.");
+				throw std::runtime_error("too large a number in DB.");
 			}
 			else
 			{
@@ -138,7 +142,7 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 
 				if ((epochTime = std::mktime(&tm)) == -1)
 				{
-					throw std::runtime_error("Failed to convert epoch time.");
+					throw std::runtime_error("Failed to convert epoch time in DB.");
 				}
 				else
 				{
@@ -148,7 +152,7 @@ void	BitcoinExchange::setExchangeMap(char const* path)
 		}
 		else
 		{
-			throw std::runtime_error("Unable to read db data.");
+			throw std::runtime_error("Unable to read DB data.");
 		}
 	}
 }
@@ -188,7 +192,11 @@ void	BitcoinExchange::execute(char const* path)
 		std::string			exchangeRate;
 		std::string			remain;
 
-		if (line.empty())
+		if (inputFile.fail())
+		{
+			throw std::runtime_error("Failed to read input file.");
+		}
+		else if (line.empty())
 		{
 			continue;
 		}
@@ -264,7 +272,7 @@ void	BitcoinExchange::execute(char const* path)
 					}
 					else
 					{
-						// go on!
+						// found exact exchange date
 					}
 
 					std::cout << date << " => " << rate << " = "
