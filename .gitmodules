@@ -1,5 +1,5 @@
 [submodule "minishell"]
-	path = minishell
+	path = minishell/minishell
 	url = https://github.com/sideseal/minishell.git
 [submodule "miniRT/miniRT"]
 	path = miniRT/miniRT
