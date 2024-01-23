@@ -1,4 +1,4 @@
-[submodule "minishell"]
+[submodule "minishell/minishell"]
 	path = minishell/minishell
 	url = https://github.com/sideseal/minishell.git
 [submodule "miniRT/miniRT"]
