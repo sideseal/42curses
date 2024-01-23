@@ -7,6 +7,3 @@
 [submodule "ft_transcendence/frontend"]
 	path = ft_transcendence/frontend
 	url = https://github.com/bukdu7seong/frontend.git
-[submodule "minishell/minishell"]
-	path = minishell/minishell
-	url = https://github.com/sideseal/minishell.git
