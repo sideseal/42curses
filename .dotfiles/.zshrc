@@ -134,6 +134,7 @@ export PATH=$HOME/Library/Python/3.8/lib/python/site-packages:$PATH
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias wmv="~/misc/utils/wmv/wmv.zsh"
+alias inception="~/misc/utils/vnc/inception"
 alias rld="exec zsh"
 alias nn="norminette -R CheckForbiddenSourceHeader"
 alias hh="norminette -R CheckDefine"
