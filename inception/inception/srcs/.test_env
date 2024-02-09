@@ -1,0 +1,13 @@
+# ************************************************************************** #
+#                                 DISCLAIMER                                 #
+#              YOU SHOULD PASTE YOUR PRIVATE ENV INTO THIS FILE              #
+# ************************************************************************** #
+
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=wordpress
+MYSQL_USER=user
+MYSQL_PASSWORD=passwd
+
+WORDPRESS_DB_NAME=wordpress
+WORDPRESS_DB_USER=user
+WORDPRESS_DB_PASSWORD=passwd

@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  mariadb:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    image: mariadb:10.6.4-focal
+    command: "--default-authentication-plugin=mysql_native_password"
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .test_env
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+    #   - MYSQL_DATABASE=$MYSQL_DATABASE
+    #   - MYSQL_USER=$MYSQL_USER
+    #   - MYSQL_PASSWORD=$MYSQL_PASSWORD
+    expose:
+      - 3306
+    restart: always
+
+  wordpress:
+    image: wordpress:php7.4-fpm
+    volumes:
+      - wp_data:/var/www/html
+    env_file:
+      - .test_env
+    environment:
+      - WORDPRESS_DB_HOST=mariadb:3306
+    #   - WORDPRESS_DB_USER=$WORDPRESS_DB_USER
+    #   - WORDPRESS_DB_PASSWORD=$WORDPRESS_DB_PASSWORD
+    #   - WORDPRESS_DB_NAME=$MYSQL_DATABASE
+    depends_on:
+      - mariadb
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "9000:80"
+    volumes:
+      - ./requirements/nginx:/etc/nginx/conf.d
+      - wp_data:/var/www/html
+    depends_on:
+      - wordpress
+    restart: always
+
+volumes:
+  db_data:
+  wp_data:
+
+networks:
+  default:
+    driver: bridge
