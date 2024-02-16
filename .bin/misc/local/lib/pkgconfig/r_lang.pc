@@ -1,0 +1,11 @@
+prefix=/Users/gychoi/misc/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: r_lang
+Description: The UNIX-like reverse engineering toolkit
+Version: 5.8.9
+Requires: r_util
+Cflags: -I${includedir}/libr
+Libs: -L${libdir} -lr_lang -ldl
