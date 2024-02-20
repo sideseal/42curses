@@ -27,7 +27,7 @@ fpath=($ZSH/plugins/zsh-completions/src $fpath)
 ### --- PLUGIN SETTINGS ------------------------------------
 
 # ZSH-COMPLETIONS
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -d $HOME/.cache/zsh/zcompdump-$ZSH_VERSION
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 ### ---- SETTINGS -------------------------------------------
