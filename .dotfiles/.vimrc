@@ -19,9 +19,12 @@ if has ('termguicolors')
 	set termguicolors
 	set t_Co=256
 endif
-"darkblue, murphy, slate,
-colorscheme blue
+" darkblue, murphy, slate,
+" colorscheme borlandp
 hi clear
+" set background=dark
+colorscheme defnoche
+
 set number
 set nuw=5
 set relativenumber
@@ -118,17 +121,18 @@ nnoremap j gj
 nnoremap <UP>	gk
 nnoremap <DOWN>	gj
 
-set cursorline
-set cursorlineopt=number
-hi CursorLineNr cterm=bold
-
-autocmd VimLeave * let &t_me="\<Esc>]50;CursorShape=1\x7"
-let &t_SI.="\e[5 q" "SI = INSERT mode
-let &t_SR.="\e[4 q" "SR = REPLACE mode
-let &t_EI.="\e[5 q" "EI = NORMAL mode (ELSE)
-set ttimeout
-set ttimeoutlen=1
-set ttyfast
+" 
+" set cursorline
+" set cursorlineopt=number
+" hi CursorLineNr cterm=bold
+" 
+" autocmd VimLeave * let &t_me="\<Esc>]50;CursorShape=1\x7"
+" let &t_SI.="\e[5 q" "SI = INSERT mode
+" let &t_SR.="\e[4 q" "SR = REPLACE mode
+" let &t_EI.="\e[5 q" "EI = NORMAL mode (ELSE)
+" set ttimeout
+" set ttimeoutlen=1
+" set ttyfast
 
 
 " 2. Personal settings
