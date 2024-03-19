@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    docker-compose.yml                                 :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: gychoi <gychoi@student.42seoul.kr>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/03/19 14:57:59 by gychoi            #+#    #+#              #
+#    Updated: 2024/03/19 14:58:03 by gychoi           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 version: "3.8"
 name: inception
 
@@ -12,55 +24,91 @@ services:
     image: yobasystems/alpine-mariadb
     env_file:
       - .test_env
-    expose:
-      - "3306"
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
+    #   start_period: 10s
     volumes:
       - mariadb:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      network:
+        ipv4_address: "172.42.42.40"
+    restart: on-failure:3
 
   wordpress:
     container_name: wordpress
     image: wordpress:php7.4-fpm
     depends_on:
       - mariadb
-    links:
-      - mariadb
+      # mariadb:
+      #   condition: service_healthy
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:9000"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
+    #   start_period: 10s
     env_file:
       - .test_env
-    expose:
-      - "9000"
-    restart: always
     volumes:
       - wordpress:/var/www/html
+    expose:
+      - "9000"
+    networks:
+      network:
+        ipv4_address: "172.42.42.41"
+    restart: on-failure:3
 
   nginx:
     container_name: nginx
     image: yobasystems/alpine-nginx
     depends_on:
       - wordpress
-    links:
-      - wordpress
-    ports:
-      - "4444:80"
-    restart: always
+      # wordpress:
+      #   condition: service_healthy
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:80"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
+    #   start_period: 10s
     volumes:
       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - wordpress:/var/www/html
+    ports:
+      - target: "80"
+        published: "8080"
+        host_ip: "127.0.0.1"
+        protocol: "tcp"
+
+    networks:
+      network:
+        ipv4_address: "172.42.42.42"
+    restart: on-failure:3
 
 volumes:
   mariadb:
     driver: local
     driver_opts:
       type: none
-      o: bind
       device: ${MARIADB_PATH}
+      o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      o: bind
       device: ${WORDPRESS_PATH}
+      o: bind
 
 networks:
-  net-inception:
+  network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.42.42.0/24"
+          gateway: "172.42.42.1"

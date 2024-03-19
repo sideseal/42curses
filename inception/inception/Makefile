@@ -12,23 +12,25 @@
 
 .DEFAULT_GOAL := all
 
-DOCKER = docker
-DOCKER_COMPOSE = $(DOCKER) compose
-SRCS = srcs/docker-compose.yml
+NAME := inception
+DOCKER := docker
+COMPOSE := $(DOCKER) compose
+SRCS := srcs/docker-compose.yml
+COMMAND = @$(COMPOSE) -f $(SRCS) -p $(NAME)
 
-.PHONY: up down start stop
+.PHONY: up down start stop rm
 
 up:
-	@$(DOCKER_COMPOSE) -f $(SRCS) up -d
+	$(COMMAND) up -d
 
 down:
-	@$(DOCKER_COMPOSE) -f $(SRCS) down
+	$(COMMAND) down
 
 start:
-	@$(DOCKER_COMPOSE) -f $(SRCS) start
+	$(COMMAND) start
 
 stop:
-	@$(DOCKER_COMPOSE) -f $(SRCS) stop
+	$(COMMAND) stop
 
 .PHONY: all clean fclean re
 
@@ -38,17 +40,17 @@ export MARIADB_PATH = ${PWD}/data/mariadb
 export WORDPRESS_PATH = ${PWD}/data/wordpress
 
 all:
-	@mkdir -p ${MARIADB_PATH}	
-	@mkdir -p ${WORDPRESS_PATH}
-	@$(DOCKER_COMPOSE) -f $(SRCS) up --build -d
+	@mkdir -p ${MARIADB_PATH} ${WORDPRESS_PATH}
+	$(COMMAND) up --build -d
 
-clean:
-	@$(DOCKER_COMPOSE) -f $(SRCS) down --volumes
+clean: down
+	@echo "Container '$(NAME)' is stopped and removed."
+
+fclean:
+	$(COMMAND) down --volumes --rmi all
 	@rm -rf $(PWD)/data
-
-fclean: clean
-# docker rmi $(docker images --filter "label=com.example.description" -q)
-	@$(DOCKER_COMPOSE) -f $(SRCS) down --rmi all
+	@echo "Container '$(NAME)' is stopped and removed."
+	@echo "Volumes and images are removed."
 
 re: fclean
 	$(MAKE) all
