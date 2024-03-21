@@ -18,10 +18,11 @@ COMPOSE := $(DOCKER) compose
 SRCS := srcs/docker-compose.yml
 COMMAND = @$(COMPOSE) -f $(SRCS) -p $(NAME)
 
-.PHONY: up down start stop rm
+.PHONY: up down start stop rebuild
 
 up:
 	$(COMMAND) up -d
+
 
 down:
 	$(COMMAND) down
@@ -31,6 +32,14 @@ start:
 
 stop:
 	$(COMMAND) stop
+
+rebuild:
+	$(COMMAND) down -v
+	$(COMMAND) up --build -d
+	@dangling_images=$$($(DOCKER) images -q -f dangling=true); \
+    if [ -n "$$dangling_images" ]; then \
+        $(DOCKER) rmi $$dangling_images; \
+    fi
 
 .PHONY: all clean fclean re
 
