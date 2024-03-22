@@ -36,9 +36,11 @@ cat << EOF > $tmpfile
     FLUSH PRIVILEGES;
 EOF
 
-/usr/bin/mariadbd --user=mysql --datadir=/var/lib/mysql --bootstrap < $tmpfile
+# 나눠야 한다...
+
+mariadbd --user=mysql --datadir=/var/lib/mysql --bootstrap < $tmpfile
 rm -f $tmpfile
 
 echo 'Starting MariaDB Container...'
 
-exec /usr/bin/mariadbd --user=mysql --datadir=/var/lib/mysql --console $@
+exec mariadbd --user=mysql --datadir=/var/lib/mysql $@

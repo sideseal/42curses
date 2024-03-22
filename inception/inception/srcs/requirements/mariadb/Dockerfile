@@ -12,14 +12,13 @@ COPY tools/healthcheck.sh /scripts/healthcheck.sh
 COPY tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY conf/my.cnf /etc/my.cnf.d/my.cnf
 
-RUN chmod +x /scripts/docker-entrypoint.sh \
-    && chmod +x /scripts/healthcheck.sh
+RUN chmod +x /scripts/docker-entrypoint.sh /scripts/healthcheck.sh
+
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 
 VOLUME ["/var/lib/mysql"]
 
 EXPOSE 3306
 
-ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=3 \
     CMD ["/scripts/healthcheck.sh"]

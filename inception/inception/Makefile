@@ -18,11 +18,10 @@ COMPOSE := $(DOCKER) compose
 SRCS := srcs/docker-compose.yml
 COMMAND = @$(COMPOSE) -f $(SRCS) -p $(NAME)
 
-.PHONY: up down start stop rebuild
+.PHONY: up down start stop clear rebuild
 
 up:
 	$(COMMAND) up -d
-
 
 down:
 	$(COMMAND) down
@@ -33,13 +32,16 @@ start:
 stop:
 	$(COMMAND) stop
 
-rebuild:
-	$(COMMAND) down -v
-	$(COMMAND) up --build -d
+clear:
+	@echo "Removing dangling images..."
 	@dangling_images=$$($(DOCKER) images -q -f dangling=true); \
     if [ -n "$$dangling_images" ]; then \
         $(DOCKER) rmi $$dangling_images; \
     fi
+
+rebuild: clear
+	$(COMMAND) down -v
+	$(COMMAND) up --force-recreate -d
 
 .PHONY: all clean fclean re
 
@@ -52,11 +54,11 @@ all:
 	@mkdir -p ${MARIADB_PATH} ${WORDPRESS_PATH}
 	$(COMMAND) up --build -d
 
-clean: down
+clean: down clear
 	@echo "Container '$(NAME)' is stopped and removed."
 
-fclean:
-	$(COMMAND) down --volumes --rmi all
+fclean: clear
+	$(COMMAND) down -v --rmi all
 	@rm -rf $(PWD)/data
 	@echo "Container '$(NAME)' is stopped and removed."
 	@echo "Volumes and images are removed."
