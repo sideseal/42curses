@@ -42,3 +42,6 @@ VOLUME ["/var/www/html"]
 EXPOSE 443
 
 STOPSIGNAL SIGQUIT
+
+HEALTHCHECK --interval=3s --timeout=5s --start-period=3s --retries=3 \
+    CMD wget --quiet --tries=1 --spider --no-check-certificate https://localhost || exit 1
