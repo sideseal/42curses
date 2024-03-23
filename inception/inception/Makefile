@@ -18,10 +18,10 @@ COMPOSE := $(DOCKER) compose
 SRCS := srcs/docker-compose.yml
 COMMAND = @$(COMPOSE) -f $(SRCS) -p $(NAME)
 
-.PHONY: up down start stop clear rebuild
+.PHONY: up down start stop logs clear rebuild
 
 up:
-	$(COMMAND) up -d
+	$(COMMAND) up
 
 down:
 	$(COMMAND) down
@@ -32,6 +32,12 @@ start:
 stop:
 	$(COMMAND) stop
 
+logs:
+	$(COMMAND) logs
+
+kill:
+	$(COMMAND) kill
+
 clear:
 	@echo "Removing dangling images..."
 	@dangling_images=$$($(DOCKER) images -q -f dangling=true); \
@@ -40,8 +46,7 @@ clear:
     fi
 
 rebuild: clear
-	$(COMMAND) down -v
-	$(COMMAND) up --force-recreate -d
+	$(COMMAND) up --build --force-recreate --detach
 
 .PHONY: all clean fclean re
 
@@ -52,13 +57,14 @@ export WORDPRESS_PATH = ${PWD}/data/wordpress
 
 all:
 	@mkdir -p ${MARIADB_PATH} ${WORDPRESS_PATH}
-	$(COMMAND) up --build -d
+	$(COMMAND) up --build --detach
 
-clean: down clear
+clean: clear
+	$(COMMAND) down --volumes
 	@echo "Container '$(NAME)' is stopped and removed."
 
 fclean: clear
-	$(COMMAND) down -v --rmi all
+	$(COMMAND) down --volumes --rmi all
 	@rm -rf $(PWD)/data
 	@echo "Container '$(NAME)' is stopped and removed."
 	@echo "Volumes and images are removed."

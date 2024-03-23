@@ -1,5 +1,23 @@
 # syntax=docker/dockerfile:1
 
+FROM alpine:3.18.6 AS cert-generator
+
+ARG CERT_PATH
+ARG DOMAIN_NAME
+
+RUN apk add --no-cache openssl=3.1.4-r5 \
+    && rm -f /var/cache/apk/* \
+    && mkdir -p /certs
+
+RUN if [ -f $CERT_PATH/$DOMAIN_NAME.pem ] && [ -f $CERT_PATH/$DOMAIN_NAME.key ]; then \
+        cp $CERT_PATH/$DOMAIN_NAME.pem /certs/inception.pem; \
+        cp $CERT_PATH/$DOMAIN_NAME.key /certs/inception.key; \
+    else \
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /certs/inception.key -out /certs/inception.pem \
+        -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=$DOMAIN_NAME"; \
+    fi
+
 FROM alpine:3.18.6
 
 RUN apk add --no-cache nginx=1.24.0-r7 \
@@ -8,12 +26,10 @@ RUN apk add --no-cache nginx=1.24.0-r7 \
     && chmod -R 755 /scripts \
     && mkdir -p /var/www/html \
     && chown -R nginx:nginx /var/www/html \
-    && sed -i \
-        -e 's|access_log /var/log/nginx/access.log main;|access_log /dev/stdout main;|' \
-        -e 's|error_log /var/log/nginx/error.log warn;|error_log /dev/stderr notice;|' \
-        -e 's|ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;|ssl_protocols TLSv1.2;|' \
-        /etc/nginx/nginx.conf
+    && mkdir -p /etc/nginx/certs
 
+COPY --from=cert-generator /certs/inception.pem /etc/nginx/certs/inception.pem
+COPY --from=cert-generator /certs/inception.key /etc/nginx/certs/inception.key
 COPY tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY conf/my.conf /etc/nginx/http.d/default.conf
 
@@ -23,6 +39,6 @@ ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 
 VOLUME ["/var/www/html"]
 
-EXPOSE 80 443
+EXPOSE 443
 
 STOPSIGNAL SIGQUIT
