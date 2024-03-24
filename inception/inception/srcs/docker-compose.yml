@@ -16,10 +16,10 @@ name: inception
 services:
   mariadb:
     container_name: mariadb
+    image: mariadb:gychoi
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    image: mariadb:gychoi
     env_file: .env
     volumes:
       - mariadb:/var/lib/mysql
@@ -32,7 +32,16 @@ services:
 
   wordpress:
     container_name: wordpress
-    image: wordpress:php7.4-fpm
+    # image: wordpress:php8.1-fpm-alpine
+    image: wordpress:gychoi
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD", "true"]
+      interval: 3s
+      timeout: 5s
+      retries: 3
     depends_on:
       mariadb:
         condition: service_healthy
@@ -48,23 +57,22 @@ services:
 
   nginx:
     container_name: nginx
+    image: nginx:gychoi
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
       args:
         CERT_PATH: ${CERTS_}
         DOMAIN_NAME: ${DOMAIN_NAME}
-    image: nginx:gychoi
     depends_on:
-      - wordpress
-      # wordpress:
-      #   condition: service_healthy
+      wordpress:
+        condition: service_healthy
     env_file: .env
     volumes:
       - wordpress:/var/www/html
     ports:
       - target: 443
-        published: 4242
+        published: 42424
         host_ip: "127.0.0.1"
         protocol: "tcp"
     networks:
