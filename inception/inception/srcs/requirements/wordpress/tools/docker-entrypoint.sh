@@ -45,9 +45,6 @@ if ! wp core is-installed --path=$WP_PATH --allow-root; then
     wp cache flush --allow-root --path=$WP_PATH
 fi
 
-chown -R www:www $WP_PATH
-chmod -R 1777 $WP_PATH
-
 echo "Starting Wordpress Container..."
 
 exec php-fpm81 -F

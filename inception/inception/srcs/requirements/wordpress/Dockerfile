@@ -2,6 +2,7 @@
 
 FROM alpine:3.18.6
 
+# https://dev.to/vikbert/my-checklist-of-php-extensions-used-in-alpine-docker-image-1g3j
 RUN apk add --no-cache \
     php81=8.1.27-r0 \
     php81-pecl-apcu=5.1.22-r0 \
@@ -22,29 +23,26 @@ RUN apk add --no-cache \
     php81-session=8.1.27-r0 \
     php81-zip=8.1.27-r0 \
     mariadb-client=10.11.6-r0 \
-    curl=8.5.0-r0 \ 
+    curl=8.5.0-r0 \
     && rm -f /var/cache/apk/* \
     && mkdir -p /scripts \
     && chmod -R 755 /scripts \
     && adduser -D -u 8282 -s /sbin/nologin www \
     && mkdir -p /var/www/html \
-    && chown -R www:www /var/www/html \
-    && mkdir -p /run/php \
-    && chown -R www:www /run/php
+    && chown -R www:www /var/www/html
 
 ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp-cli.phar
-COPY tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
+COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY conf/my.conf /etc/php81/php-fpm.d/www.conf
 
-RUN chmod +x /scripts/docker-entrypoint.sh \
-    && chmod +x /usr/local/bin/wp-cli.phar \
-    && ln -s /usr/local/bin/wp-cli.phar /usr/local/bin/wp
+RUN chmod +x /usr/local/bin/wp-cli.phar && \ 
+    ln -s /usr/local/bin/wp-cli.phar /usr/local/bin/wp
 
 WORKDIR /var/www/html
 
-ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
+ENTRYPOINT /scripts/docker-entrypoint.sh
 
-VOLUME ["/var/www/html"]
+VOLUME /var/www/html
 
 STOPSIGNAL SIGQUIT
 

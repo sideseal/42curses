@@ -11,15 +11,13 @@ RUN apk add --no-cache mariadb=10.11.6-r0 mariadb-client=10.11.6-r0 \
     && chown -R mysql:mysql /var/lib/mysql \
     && mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db
 
-COPY tools/healthcheck.sh /scripts/healthcheck.sh
-COPY tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
+COPY --chmod=755 tools/healthcheck.sh /scripts/healthcheck.sh
+COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY conf/my.cnf /etc/my.cnf.d/my.cnf
 
-RUN chmod +x /scripts/docker-entrypoint.sh /scripts/healthcheck.sh
+ENTRYPOINT /scripts/docker-entrypoint.sh
 
-ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
-
-VOLUME ["/var/lib/mysql"]
+VOLUME /var/lib/mysql
 
 EXPOSE 3306
 
