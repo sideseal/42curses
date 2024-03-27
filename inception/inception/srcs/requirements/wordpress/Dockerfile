@@ -28,7 +28,9 @@ RUN apk add --no-cache \
     && chmod -R 755 /scripts \
     && adduser -D -u 8282 -s /sbin/nologin www \
     && mkdir -p /var/www/html \
-    && chown -R www:www /var/www/html
+    && chown -R www:www /var/www/html \
+    && mkdir -p /run/php \
+    && chown -R www:www /run/php
 
 ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp-cli.phar
 COPY tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh

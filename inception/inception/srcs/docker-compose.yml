@@ -65,16 +65,12 @@ services:
         CERT_PATH: ${CERTS_}
         DOMAIN_NAME: ${DOMAIN_NAME}
     depends_on:
-      wordpress:
-        condition: service_healthy
+      - wordpress
     env_file: .env
     volumes:
       - wordpress:/var/www/html
     ports:
-      - target: 443
-        published: 42424
-        host_ip: "127.0.0.1"
-        protocol: "tcp"
+      - "443:443"
     networks:
       network:
         ipv4_address: "172.42.42.42"

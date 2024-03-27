@@ -27,6 +27,7 @@ RUN apk add --no-cache nginx=1.24.0-r7 \
     && mkdir -p /var/www/html \
     && chown -R nginx:nginx /var/www/html \
     && mkdir -p /etc/nginx/certs
+    # need to add 8282 uid
 
 COPY --from=cert-generator /certs/inception.pem /etc/nginx/certs/inception.pem
 COPY --from=cert-generator /certs/inception.key /etc/nginx/certs/inception.key
@@ -43,5 +44,5 @@ EXPOSE 443
 
 STOPSIGNAL SIGQUIT
 
-HEALTHCHECK --interval=3s --timeout=5s --start-period=3s --retries=3 \
-    CMD wget --quiet --tries=1 --spider --no-check-certificate https://localhost:443 || exit 1
+# HEALTHCHECK --interval=3s --timeout=5s --start-period=3s --retries=3 \
+#     CMD wget --quiet --tries=1 --spider --no-check-certificate https://localhost:443 || exit 1

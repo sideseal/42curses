@@ -44,6 +44,8 @@ clear:
     if [ -n "$$dangling_images" ]; then \
         $(DOCKER) rmi $$dangling_images; \
     fi
+	@echo "Removing build cache..."
+	$(DOCKER) builder prune -af
 
 rebuild: clear
 	$(COMMAND) up --build --force-recreate --detach

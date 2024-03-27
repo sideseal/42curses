@@ -4,6 +4,8 @@ set -ex
 
 WP_PATH="/var/www/html"
 
+# need to prevent admin admin
+
 if [ ! -e $WP_PATH/wp-config.php ]; then
     echo "Creating WordPress..."
 
@@ -27,9 +29,9 @@ if ! wp core is-installed --path=$WP_PATH --allow-root; then
     wp core install \
         --path=$WP_PATH \
         --allow-root \
-        --url=$DOMAIN_NAME \
+        --url=https://$DOMAIN_NAME \
         --title="Inception" \
-        --admin_user=$WORDPRESS_ADMIN \
+        --admin_user=$WORDPRESS_ADMIN_USER \
         --admin_password=$WORDPRESS_ADMIN_PASSWORD \
         --admin_email=$WORDPRESS_ADMIN_EMAIL
 
@@ -39,6 +41,8 @@ if ! wp core is-installed --path=$WP_PATH --allow-root; then
         --path=$WP_PATH \
         --allow-root \
         --user_pass=$WORDPRESS_USER_PASSWORD
+
+    wp cache flush --allow-root --path=$WP_PATH
 fi
 
 chown -R www:www $WP_PATH
