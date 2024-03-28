@@ -43,5 +43,5 @@ EXPOSE 443
 
 STOPSIGNAL SIGQUIT
 
-# HEALTHCHECK --interval=3s --timeout=5s --start-period=3s --retries=3 \
-#     CMD wget --quiet --tries=1 --spider --no-check-certificate https://localhost:443 || exit 1
+HEALTHCHECK --interval=3s --timeout=5s --start-period=3s --retries=3 \
+    CMD wget --quiet --tries=1 --spider --no-check-certificate https://localhost/health || exit 1

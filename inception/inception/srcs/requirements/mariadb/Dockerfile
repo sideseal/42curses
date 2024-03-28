@@ -9,7 +9,12 @@ RUN apk add --no-cache mariadb=10.11.6-r0 mariadb-client=10.11.6-r0 \
     && mkdir -p /run/mysqld \
     && chown -R mysql:mysql /run/mysqld \
     && chown -R mysql:mysql /var/lib/mysql \
-    && mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db
+    && mariadb-install-db \
+        --user=mysql \
+        --datadir=/var/lib/mysql \
+        --skip-test-db \
+        --skip-name-resolve \
+        --skip-host-cache
 
 COPY --chmod=755 tools/healthcheck.sh /scripts/healthcheck.sh
 COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
