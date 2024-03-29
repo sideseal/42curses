@@ -31,19 +31,18 @@ if [ "$MYSQL_USER" != "" ]; then
         echo >&2 'error: MYSQL_USER is specified but MYSQL_PASSWORD is not set'
         return 1
     else
-        createUser="CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-        ALTER USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+        createUser="CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
     fi
 fi
 
 if [ "$MYSQL_DATABASE" != "" ] && [ "$MYSQL_USER" != "" ]; then
-    grantPrivileges="GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION;"
+    grantPrivileges="GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
 fi
 
 cat <<-EOF > $tmpfile  
     FLUSH PRIVILEGES;
     ALTER USER root@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-    GRANT ALL ON *.* TO root@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON *.* TO root@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
     DROP DATABASE IF EXISTS test;
     $createDatabase
     $createUser
