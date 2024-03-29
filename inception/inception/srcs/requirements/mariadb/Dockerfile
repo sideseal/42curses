@@ -18,7 +18,7 @@ RUN apk add --no-cache mariadb=10.11.6-r0 mariadb-client=10.11.6-r0 \
 
 COPY --chmod=755 tools/healthcheck.sh /scripts/healthcheck.sh
 COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
-COPY conf/my.cnf /etc/my.cnf.d/my.cnf
+COPY --chown=nginx:nginx conf/my.cnf /etc/my.cnf.d/my.cnf
 
 ENTRYPOINT /scripts/docker-entrypoint.sh
 

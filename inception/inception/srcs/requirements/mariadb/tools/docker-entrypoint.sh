@@ -41,7 +41,6 @@ if [ "$MYSQL_DATABASE" != "" ] && [ "$MYSQL_USER" != "" ]; then
 fi
 
 cat <<-EOF > $tmpfile  
-    USE mysql;
     FLUSH PRIVILEGES;
     ALTER USER root@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
     GRANT ALL ON *.* TO root@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
