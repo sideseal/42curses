@@ -23,7 +23,6 @@ RUN apk add --no-cache \
     php81-session=8.1.27-r0 \
     php81-zip=8.1.27-r0 \
     mariadb-client=10.11.6-r0 \
-    curl=8.5.0-r0 \
     && rm -f /var/cache/apk/* \
     && mkdir -p /scripts \
     && chmod -R 755 /scripts \
@@ -31,12 +30,12 @@ RUN apk add --no-cache \
     && mkdir -p /var/www/html \
     && chown -R www:www /var/www/html
 
-ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp-cli.phar
+ADD --chmod=755 https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp-cli.phar
+COPY --chmod=755 tools/healthcheck.sh /scripts/healthcheck.sh
 COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
-COPY conf/my.conf /etc/php81/php-fpm.d/www.conf
+COPY --chown=www:www conf/my.conf /etc/php81/php-fpm.d/www.conf
 
-RUN chmod +x /usr/local/bin/wp-cli.phar && \ 
-    ln -s /usr/local/bin/wp-cli.phar /usr/local/bin/wp
+RUN ln -s /usr/local/bin/wp-cli.phar /usr/local/bin/wp
 
 WORKDIR /var/www/html
 
@@ -49,4 +48,4 @@ STOPSIGNAL SIGQUIT
 EXPOSE 9000
 
 HEALTHCHECK --interval=3s --timeout=5s --start-period=3s --retries=3 \
-    CMD true
+    CMD /scripts/healthcheck.sh

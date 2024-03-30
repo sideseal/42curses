@@ -4,7 +4,36 @@ set -ex
 
 WP_PATH="/var/www/html"
 
-# need to prevent admin admin
+WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME:-""}
+WORDPRESS_DB_USER=${WORDPRESS_DB_USER:-""}
+WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD:-""}
+WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST:-"mariadb"}
+
+WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER:-""}
+WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD:-""}
+WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL:-""}
+
+WORDPRESS_USER=${WORDPRESS_USER:-"user"}
+WORDPRESS_USER_EMAIL=${WORDPRESS_USER_EMAIL:-""}
+WORDPRESS_USER_PASSWORD=${WORDPRESS_USER_PASSWORD:-"user"}
+
+error=0
+case "$WORDPRESS_ADMIN_USER" in
+    *admin*|'')
+        error=1
+        ;;
+esac
+
+case "$WORDPRESS_ADMIN_PASSWORD" in
+    *admin*|'')
+        error=1
+        ;;
+esac
+
+if [ $error -eq 1 ]; then
+    echo >&2 'error: WORDPRESS_ADMIN_USER and WORDPRESS_ADMIN_PASSWORD must not contain "admin" or be empty'
+    return 1
+fi
 
 if [ ! -e $WP_PATH/wp-config.php ]; then
     echo "Creating WordPress..."
@@ -21,6 +50,8 @@ if [ ! -e $WP_PATH/wp-config.php ]; then
         --dbuser=$WORDPRESS_DB_USER \
         --dbpass=$WORDPRESS_DB_PASSWORD \
         --dbhost=$WORDPRESS_DB_HOST
+    
+    chmod 600 $WP_PATH/wp-config.php
 fi
 
 if ! wp core is-installed --path=$WP_PATH --allow-root; then

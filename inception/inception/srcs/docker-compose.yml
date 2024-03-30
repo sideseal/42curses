@@ -34,11 +34,6 @@ services:
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
-    healthcheck:
-      test: ["CMD", "true"]
-      interval: 3s
-      timeout: 5s
-      retries: 3
     depends_on:
       mariadb:
         condition: service_healthy
@@ -61,7 +56,8 @@ services:
         CERT_PATH: ${CERTS_}
         DOMAIN_NAME: ${DOMAIN_NAME}
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_healthy
     env_file: .env
     volumes:
       - wordpress:/var/www/html
