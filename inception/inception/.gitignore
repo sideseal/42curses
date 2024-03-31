@@ -1,3 +1,4 @@
 data/
 certs/
+.env
 ihatemac.sh

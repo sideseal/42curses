@@ -39,7 +39,7 @@ RUN ln -s /usr/local/bin/wp-cli.phar /usr/local/bin/wp
 
 WORKDIR /var/www/html
 
-ENTRYPOINT /scripts/docker-entrypoint.sh
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 
 VOLUME /var/www/html
 

@@ -20,7 +20,7 @@ COPY --chmod=755 tools/healthcheck.sh /scripts/healthcheck.sh
 COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY --chown=mysql:mysql conf/my.cnf /etc/my.cnf.d/my.cnf
 
-ENTRYPOINT /scripts/docker-entrypoint.sh
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 
 VOLUME /var/lib/mysql
 

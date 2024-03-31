@@ -19,13 +19,13 @@ WORDPRESS_USER_PASSWORD=${WORDPRESS_USER_PASSWORD:-"user"}
 
 error=0
 case "$WORDPRESS_ADMIN_USER" in
-    *admin*|'')
+    *admin*|*Admin*|'')
         error=1
         ;;
 esac
 
 case "$WORDPRESS_ADMIN_PASSWORD" in
-    *admin*|'')
+    *admin*|*Admin*|'')
         error=1
         ;;
 esac
@@ -34,6 +34,8 @@ if [ $error -eq 1 ]; then
     echo >&2 'error: WORDPRESS_ADMIN_USER and WORDPRESS_ADMIN_PASSWORD must not contain "admin" or be empty'
     return 1
 fi
+
+mariadb-admin ping -h 172.21.42.40 -u${WORDPRESS_DB_USER} -p${WORDPRESS_DB_PASSWORD} || return 1
 
 if [ ! -e $WP_PATH/wp-config.php ]; then
     echo "Creating WordPress..."
@@ -50,8 +52,6 @@ if [ ! -e $WP_PATH/wp-config.php ]; then
         --dbuser=$WORDPRESS_DB_USER \
         --dbpass=$WORDPRESS_DB_PASSWORD \
         --dbhost=$WORDPRESS_DB_HOST
-    
-    chmod 600 $WP_PATH/wp-config.php
 fi
 
 if ! wp core is-installed --path=$WP_PATH --allow-root; then

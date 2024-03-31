@@ -35,7 +35,7 @@ COPY --from=cert-generator /certs/$DOMAIN_NAME.key /etc/nginx/certs/inception.ke
 COPY --chmod=755 tools/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY --chown=nginx:nginx conf/my.conf /etc/nginx/http.d/default.conf
 
-ENTRYPOINT /scripts/docker-entrypoint.sh
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 
 VOLUME /var/www/html
 

@@ -12,6 +12,7 @@
 
 .DEFAULT_GOAL := all
 
+USER := gychoi
 NAME := inception
 DOCKER := docker
 COMPOSE := $(DOCKER) compose
@@ -35,6 +36,9 @@ stop:
 logs:
 	$(COMMAND) logs
 
+logs-all:
+	${COMPOSE} -f ${SRCS} logs -f
+
 kill:
 	$(COMMAND) kill
 
@@ -53,9 +57,9 @@ rebuild: clear
 .PHONY: all clean fclean re
 
 # need to change path
-export PWD = $(shell pwd)
-export MARIADB_PATH = ${PWD}/data/mariadb
-export WORDPRESS_PATH = ${PWD}/data/wordpress
+export USER_PATH = /home/${USER}
+export MARIADB_PATH = ${USER_PATH}/data/mariadb
+export WORDPRESS_PATH = ${USER_PATH}/data/wordpress
 
 all:
 	@mkdir -p ${MARIADB_PATH} ${WORDPRESS_PATH}
@@ -67,7 +71,7 @@ clean: clear
 
 fclean: clear
 	$(COMMAND) down --volumes --rmi all
-	@rm -rf $(PWD)/data
+	@sudo rm -rf $(USER_PATH)/data
 	@echo "Container '$(NAME)' is stopped and removed."
 	@echo "Volumes and images are removed."
 
