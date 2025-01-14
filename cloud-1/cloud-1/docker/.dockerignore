@@ -1,5 +1,0 @@
-# ensure .env must be removed on the production stage
-# .env
-.git
-docker-compose.yml
-.dockerignore

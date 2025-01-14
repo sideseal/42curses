@@ -1,0 +1,20 @@
+{$DOMAIN} {
+	handle_path /pma* {
+		root * /var/www/phpmyadmin
+		encode gzip
+		php_fastcgi phpmyadmin:9000 {
+			root /var/www/html
+			try_files {path} {path}/index.php =404
+	    }
+	    file_server
+	}
+
+	handle {
+		root * /var/www/html
+		encode gzip
+		php_fastcgi wordpress:9000 {
+			try_files {path} {path}/index.php =404
+		}
+		file_server
+	}
+}

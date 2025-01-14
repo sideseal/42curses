@@ -1,0 +1,71 @@
+- name: Install docker and docker compose
+  hosts: all
+  become: true
+  remote_user: root
+  vars:
+    ansible_ssh_private_key_file: "~/.ssh/cloud.pem"
+
+  tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+      become: true
+
+    - name: Install Docker dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+      become: true
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      become: true
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+      become: true
+
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+      become: true
+
+    - name: Start and Enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Setup docker compose files
+      copy:
+        src: "files/"
+        dest: "/files"
+
+    - name: Create .env on remote server
+      copy:
+        dest: "/files/.env"
+        content: |
+          MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
+          MYSQL_USER={{ mysql_user }}
+          MYSQL_PASSWORD={{ mysql_password }}
+          EMAIL={{ email }}
+          DOMAIN={{ domain }}
+
+    - name: Start service
+      become: true
+      community.docker.docker_compose_v2:
+        project_src: "/files"

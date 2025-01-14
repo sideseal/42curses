@@ -1,0 +1,27 @@
+- name: Install docker and docker compose
+  hosts: all
+  become: true
+  remote_user: root
+  vars:
+    ansible_ssh_private_key_file: "~/.ssh/cloud.pem"
+
+  tasks:
+    - name: Setup docker compose files
+      copy:
+        src: "files/"
+        dest: "/files"
+
+    - name: Create .env on remote server
+      copy:
+        dest: "/files/.env"
+        content: |
+          MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
+          MYSQL_USER={{ mysql_user }}
+          MYSQL_PASSWORD={{ mysql_password }}
+          EMAIL={{ email }}
+          DOMAIN={{ domain }}
+
+    - name: Start service
+      become: true
+      community.docker.docker_compose_v2:
+        project_src: "/files"
